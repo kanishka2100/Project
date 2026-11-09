@@ -50,7 +50,17 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="./styles.css">
 </head>
-<body class="bg-[#fffbf5] dark:bg-[#0f1115] text-[#1f1d1a] dark:text-[#f8fafc] min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-white">
+<body class="bg-[#fffbf5] dark:bg-[#0f1115] text-[#1f1d1a] dark:text-[#f8fafc] min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-white relative overflow-x-hidden">
+
+  <!-- Interactive Food & Aroma Cursor Graphics Canvas -->
+  <canvas id="food-cursor-canvas" class="fixed inset-0 pointer-events-none z-0 w-full h-full"></canvas>
+
+  <!-- Ambient Culinary Color Mesh Glows -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="ambient-glow ambient-glow-orange"></div>
+    <div class="ambient-glow ambient-glow-emerald"></div>
+    <div class="ambient-glow ambient-glow-rose"></div>
+  </div>
 
   <!-- ============================================== -->
   <!-- 1. TOP GLOBAL NAVIGATION BAR                  -->
@@ -183,7 +193,7 @@
   <!-- ============================================== -->
   <!-- 2. OPTIONAL KITCHEN PANTRY DRAWER              -->
   <!-- ============================================== -->
-  <aside id="pantry-drawer" class="hidden bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 px-4 lg:px-8 py-5 transition-all shadow-md">
+  <aside id="pantry-drawer" class="hidden relative z-20 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 px-4 lg:px-8 py-5 transition-all shadow-md">
     <div class="max-w-7xl mx-auto space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
@@ -227,7 +237,7 @@
   <!-- ============================================== -->
   <!-- 3. MAIN APP VIEW CONTAINERS                    -->
   <!-- ============================================== -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6">
+  <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6">
 
     <!-- ============================================ -->
     <!-- VIEW 1: FLAVORSHIFT AI SWAP LAB (FLAGSHIP)   -->
@@ -417,7 +427,7 @@
   <!-- ============================================== -->
   <!-- 5. GLOBAL FOOTER                               -->
   <!-- ============================================== -->
-  <footer class="mt-16 border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 py-8 px-4 lg:px-8 text-xs text-slate-500">
+  <footer class="relative z-10 mt-16 border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 py-8 px-4 lg:px-8 text-xs text-slate-500">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-3">
         <div class="w-7 h-7 rounded-lg bg-cafe-orange flex items-center justify-center text-white font-black text-xs">
@@ -445,6 +455,7 @@
   <!-- Core Recipe Data & Application Scripts -->
   <script src="./recipes-data.js"></script>
   <script src="./api-service.js"></script>
+  <script src="./food-cursor-canvas.js"></script>
   <script src="./app.js"></script>
 
 </body>
