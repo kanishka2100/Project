@@ -6,6 +6,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Mobile%20Responsive-orange?style=for-the-badge)](https://kanishka2100.github.io/Project/)
 [![Validation](https://img.shields.io/badge/HTV-Human%20Taste%20Validated-emerald?style=for-the-badge)](https://kanishka2100.github.io/Project/)
 [![Team Sprint](https://img.shields.io/badge/72h%20Sprint-4%20Developer%20Roadmap-blue?style=for-the-badge&logo=fastapi)](./TEAM_3DAY_SPRINT.md)
+[![Team Workstreams](https://img.shields.io/badge/Team%20Allocation-2%20Devs%20%7C%204%20Workstreams-purple?style=for-the-badge&logo=git)](./docs/TEAM_WORKSTREAMS.md)
 
 ---
 
