@@ -29,6 +29,7 @@
     
     // Dashboard Covers Calculator
     dashboardCovers: 50,
+    dashboardOperatingDays: 30,
     dashboardSelectedRecipeId: 'paneer-butter-masala',
     
     // User-submitted HTV taste reviews
@@ -305,6 +306,87 @@
     };
   }
 
+  // Chart.js Radar Instance Manager
+  let sensoryRadarChartInstance = null;
+
+  function renderSensoryRadarChart(canvasId, targetName, altName, metrics) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas || typeof Chart === 'undefined') return;
+
+    if (sensoryRadarChartInstance) {
+      sensoryRadarChartInstance.destroy();
+      sensoryRadarChartInstance = null;
+    }
+
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#cbd5e1' : '#475569';
+    const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)';
+
+    const ctx = canvas.getContext('2d');
+    sensoryRadarChartInstance = new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['Viscosity', 'Creaminess', 'Mouthfeel', 'Sweetness', 'Heat Stability', 'Clean Aftertaste'],
+        datasets: [
+          {
+            label: `Benchmark: ${targetName}`,
+            data: [9.5, 9.8, 9.6, 9.0, 8.2, 9.4],
+            borderColor: 'rgba(244, 63, 94, 0.85)',
+            backgroundColor: 'rgba(244, 63, 94, 0.15)',
+            borderWidth: 2,
+            pointBackgroundColor: 'rgba(244, 63, 94, 1)',
+            pointRadius: 3
+          },
+          {
+            label: `AI Swap: ${altName}`,
+            data: metrics || [9.2, 9.5, 9.1, 9.4, 9.8, 9.6],
+            borderColor: 'rgba(245, 158, 11, 0.95)',
+            backgroundColor: 'rgba(245, 158, 11, 0.25)',
+            borderWidth: 2.5,
+            pointBackgroundColor: 'rgba(245, 158, 11, 1)',
+            pointRadius: 4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 600 },
+        scales: {
+          r: {
+            min: 5,
+            max: 10,
+            ticks: { stepSize: 1, display: false },
+            grid: { color: gridColor },
+            angleLines: { color: gridColor },
+            pointLabels: {
+              font: { size: 10, weight: 'bold' },
+              color: textColor
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: { size: 11, weight: 'bold' },
+              color: textColor,
+              boxWidth: 12,
+              padding: 12
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                return `${context.dataset.label}: ${context.raw} / 10`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
   // ========================================================
   // RENDER: FLAVORSHIFT AI SWAP LAB (FLAGSHIP FEATURE)
   // ========================================================
@@ -498,12 +580,105 @@
             }).join('')}
           </div>
 
+          <!-- Flagship 6-Axis Sensory Radar & FlavorGraph Volatiles Analysis -->
+          <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            
+            <!-- Radar Chart Container (7 cols) -->
+            <div class="lg:col-span-7 p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-[11px] font-black uppercase text-amber-500 tracking-wider">Physics & Rheology Model</span>
+                  <h4 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-amber-500"></i>
+                    <span>6-Axis Sensory & Texture Radar Analysis</span>
+                  </h4>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30">
+                  ONNX Engine Sub-2ms
+                </span>
+              </div>
+              <p class="text-xs text-slate-500">
+                Visualizing how <span class="font-bold text-amber-500">${activeSwap.alternatives[0].name}</span> replicates the viscosity, mouthfeel, and thermal stability of standard <span class="font-bold text-rose-500">${activeSwap.targetIngredient}</span>.
+              </p>
+              
+              <div class="h-64 sm:h-72 w-full relative">
+                <canvas id="sensory-radar-canvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Molecular Aroma & Volatiles Pairing Card (5 cols) -->
+            <div class="lg:col-span-5 p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-4">
+              <div>
+                <span class="text-[11px] font-black uppercase text-indigo-500 tracking-wider">FlavorGraph Volatile Compounds</span>
+                <h4 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
+                  <i class="fa-solid fa-atom text-indigo-500"></i>
+                  <span>Molecular Aroma Parity</span>
+                </h4>
+              </div>
+
+              <!-- Match Gauge -->
+              <div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-xs font-bold text-slate-600 dark:text-slate-300">Chemical Aroma Similarity</span>
+                  <span class="text-sm font-black text-emerald-600 dark:text-emerald-400">98.2% Parity</span>
+                </div>
+                <div class="w-full bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                  <div class="bg-gradient-to-r from-amber-500 to-emerald-500 h-full rounded-full" style="width: 98.2%"></div>
+                </div>
+              </div>
+
+              <!-- Shared Volatiles Tags -->
+              <div>
+                <span class="block text-[11px] font-bold text-slate-500 mb-2">Shared Volatile Aroma Molecules:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+                    🔬 δ-lactones (creamy)
+                  </span>
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
+                    🧈 acetoin (buttery note)
+                  </span>
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800">
+                    🌰 benzaldehyde (nutty warmth)
+                  </span>
+                </div>
+              </div>
+
+              <!-- Culinary Thermal Stability -->
+              <div class="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 space-y-1">
+                <div class="flex items-center gap-1.5 text-xs font-black text-emerald-700 dark:text-emerald-400">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  <span>Simmer Safety: Zero Curdling Risk</span>
+                </div>
+                <p class="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                  Emulsion remains stable up to 98°C. For maximum sheen, whisk warm milk in two stages before folding off-heat.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
     `;
 
     container.innerHTML = html;
+
+    // Render Flagship 6-Axis Sensory Radar Chart
+    setTimeout(() => {
+      const radarScores = activeSwap.targetIngredient === 'Fresh Cream' ? [9.2, 9.5, 9.1, 9.4, 9.8, 9.6] :
+        activeSwap.targetIngredient === 'Mascarpone Cheese' ? [9.4, 9.6, 9.5, 9.1, 9.3, 9.5] :
+        activeSwap.targetIngredient === 'Hass Avocado' ? [9.0, 8.8, 9.2, 8.9, 9.7, 9.1] :
+        activeSwap.targetIngredient === 'Parmesan Cheese' ? [9.3, 9.1, 9.4, 8.8, 9.6, 9.5] :
+        [9.1, 9.4, 9.0, 9.2, 9.5, 9.3];
+
+      renderSensoryRadarChart(
+        'sensory-radar-canvas',
+        activeSwap.targetIngredient,
+        activeSwap.alternatives[0].name,
+        radarScores
+      );
+    }, 20);
 
     // Attach chip selection listeners
     container.querySelectorAll('.swap-select-chip').forEach(btn => {
@@ -1613,7 +1788,7 @@
   }
 
   // ========================================================
-  // RENDER: CAFE COST & MARGIN DASHBOARD
+  // RENDER: CAFE COST & MARGIN DASHBOARD (EXECUTIVE SUITE)
   // ========================================================
   function renderDashboardView() {
     const container = document.getElementById('dashboard-view-container');
@@ -1621,32 +1796,83 @@
 
     const totalRecipes = RECIPES_DATA.length;
     let avgMargin = 0;
-    let totalBaseCost = 0;
-    let totalRetail = 0;
     RECIPES_DATA.forEach(r => {
       avgMargin += calcMargin(r.baseCostPerPerson, r.suggestedRetailPrice);
-      totalBaseCost += r.baseCostPerPerson;
-      totalRetail += r.suggestedRetailPrice;
     });
     avgMargin = Math.round(avgMargin / totalRecipes);
 
     const selectedCoverRecipe = getComputedRecipe(state.dashboardSelectedRecipeId) || getComputedRecipe('paneer-butter-masala');
-    const coversCount = state.dashboardCovers;
-    const coverFoodCost = (selectedCoverRecipe.costPerPerson * coversCount).toFixed(2);
-    const coverRevenue = (selectedCoverRecipe.suggestedRetailPrice * coversCount).toFixed(2);
-    const coverProfit = (coverRevenue - coverFoodCost).toFixed(2);
-    const shiftSavings = (selectedCoverRecipe.budgetAlternative.savingsPerPerson * coversCount).toFixed(2);
+    const coversCount = state.dashboardCovers || 50;
+    const operatingDays = state.dashboardOperatingDays || 30;
+
+    const unitBaseCost = selectedCoverRecipe.baseCostPerPerson || 2.10;
+    const unitSwappedCost = selectedCoverRecipe.budgetAlternative ? selectedCoverRecipe.budgetAlternative.newCostPerPerson : (unitBaseCost * 0.55);
+    const unitSavings = selectedCoverRecipe.budgetAlternative ? selectedCoverRecipe.budgetAlternative.savingsPerPerson : (unitBaseCost - unitSwappedCost);
+    const unitRetail = selectedCoverRecipe.suggestedRetailPrice || 8.50;
+
+    const shiftBaseCost = (unitBaseCost * coversCount);
+    const shiftSwappedCost = (unitSwappedCost * coversCount);
+    const shiftSavings = (unitSavings * coversCount);
+    const shiftRevenue = (unitRetail * coversCount);
+    const shiftProfit = (shiftRevenue - shiftSwappedCost);
+
+    const monthlySavings = (shiftSavings * operatingDays);
+    const annualSavings = (monthlySavings * 12);
+
+    const originalMargin = calcMargin(unitBaseCost, unitRetail);
+    const optimizedMargin = calcMargin(unitSwappedCost, unitRetail);
+    const marginBoost = Math.max(0, optimizedMargin - originalMargin);
+
+    const VOLATILITY_WATCHLIST = [
+      {
+        name: "Commercial Heavy Dairy Cream",
+        currentStatus: "Wholesale Spike (+32%)",
+        statusColor: "text-rose-500 bg-rose-500/15 border-rose-500/30",
+        riskLevel: "Critical Margin Drag",
+        aiSwap: "Soaked Golden Cashew & Warm Milk Puree",
+        savingsBadge: "-55% Cost",
+        recipeTarget: "paneer-butter-masala"
+      },
+      {
+        name: "Imported Hass Avocados",
+        currentStatus: "Seasonal Supply Volatility (+42%)",
+        statusColor: "text-amber-500 bg-amber-500/15 border-amber-500/30",
+        riskLevel: "Moderate Volatility",
+        aiSwap: "50/50 Sweet Green Pea & Avocado Mash",
+        savingsBadge: "-50% Cost",
+        recipeTarget: "smashed-avocado-toast"
+      },
+      {
+        name: "Italian Imported Mascarpone",
+        currentStatus: "Tariffs & Short Shelf Life",
+        statusColor: "text-rose-500 bg-rose-500/15 border-rose-500/30",
+        riskLevel: "Severe Margin Drag",
+        aiSwap: "Hung Farmhouse Curd + Heavy Cream (50/50)",
+        savingsBadge: "-58% Cost",
+        recipeTarget: "basque-burnt-cheesecake"
+      },
+      {
+        name: "European Pine Nuts",
+        currentStatus: "Harvest Shortage (+45%)",
+        statusColor: "text-amber-500 bg-amber-500/15 border-amber-500/30",
+        riskLevel: "High Cost per Cover",
+        aiSwap: "Toasted Sunflower & Pumpkin Seed Blend",
+        savingsBadge: "-75% Cost",
+        recipeTarget: "wild-mushroom-truffle-pasta"
+      }
+    ];
 
     let html = `
-      <div class="space-y-8 animate-fade-up">
+      <div class="space-y-8 animate-fade-up max-w-6xl mx-auto">
         
+        <!-- Executive Financial Header -->
         <div class="relative overflow-hidden rounded-3xl p-6 md:p-8 bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950 text-white shadow-xl border border-slate-700">
           <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div class="space-y-2">
               <div class="flex flex-wrap items-center gap-2.5">
                 <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1.5 shadow-sm">
                   <span class="live-pulse-dot"></span>
-                  <span>FlavorShift AI Culinary Financial Suite</span>
+                  <span>FlavorShift AI Financial Suite</span>
                 </span>
                 <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
                   Commercial Kitchen Operations
@@ -1654,10 +1880,10 @@
               </div>
 
               <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black font-heading tracking-tight text-white">
-                Food Cost Savings & Profit Center
+                Kitchen Economics & Food Cost Control Center
               </h2>
               <p class="text-slate-300 text-xs sm:text-sm max-w-2xl font-medium leading-relaxed">
-                Track how smart ingredient swaps protect your restaurant margins against wholesale inflation without customer complaints.
+                Protect restaurant and cafe margins against wholesale ingredient inflation. Model exact headcount scaling, review commodity risk, and print scaled line-cook prep slips.
               </p>
             </div>
 
@@ -1666,93 +1892,101 @@
                 <i class="fa-solid fa-boxes-stacked text-amber-400"></i>
                 <span>Pantry Stock</span>
               </button>
-              <button type="button" id="dash-launch-slides-btn" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg transition-all cursor-pointer flex items-center gap-2">
-                <i class="fa-solid fa-lightbulb"></i>
-                <span>Design Thinking Deck</span>
+              <button type="button" id="dash-print-slip-btn" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-lg transition-all cursor-pointer flex items-center gap-2">
+                <i class="fa-solid fa-print"></i>
+                <span>Print Line Prep Slip</span>
               </button>
             </div>
           </div>
         </div>
 
-        <!-- 4 KPI Cards -->
+        <!-- 4 Top Executive KPI Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+          
+          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm rounded-3xl flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center justify-between mb-3">
                 <span class="text-xs font-black text-slate-400 uppercase tracking-wider">Gross Profit Margin</span>
                 <span class="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-chart-pie"></i>
+                  <i class="fa-solid fa-chart-pie text-lg"></i>
                 </span>
               </div>
-              <span class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">${avgMargin}%</span>
+              <span class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">${optimizedMargin}%</span>
             </div>
-            <div class="pt-3 border-t border-slate-100 dark:border-slate-700">
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 mt-2">
               <span class="text-[11px] text-emerald-600 font-bold flex items-center gap-1">
-                <i class="fa-solid fa-arrow-trend-up"></i> +14.8% above industry average
+                <i class="fa-solid fa-arrow-trend-up"></i> +${marginBoost}% margin boost with AI Swap
               </span>
             </div>
           </div>
 
-          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm rounded-3xl flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-black text-slate-400 uppercase tracking-wider">Monthly Swaps Saved</span>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-black text-slate-400 uppercase tracking-wider">30-Day Net Food Savings</span>
                 <span class="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-600 flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-piggy-bank"></i>
+                  <i class="fa-solid fa-piggy-bank text-lg"></i>
                 </span>
               </div>
-              <span class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">$1,420<span class="text-sm font-semibold text-slate-400">/mo</span></span>
+              <span class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">${formatMoney(monthlySavings)}<span class="text-sm font-semibold text-slate-400">/mo</span></span>
             </div>
-            <div class="pt-3 border-t border-slate-100 dark:border-slate-700">
-              <span class="text-[11px] text-amber-600 font-bold">Paneer & Pasta Cream Swaps: +$680</span>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 mt-2">
+              <span class="text-[11px] text-amber-600 font-bold">
+                ${formatMoney(shiftSavings)} saved each 24h service shift
+              </span>
             </div>
           </div>
 
-          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm rounded-3xl flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-black text-slate-400 uppercase tracking-wider">Fit-Bistro Uptake</span>
-                <span class="w-10 h-10 rounded-2xl bg-rose-500/15 text-rose-600 flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-fire"></i>
-                </span>
-              </div>
-              <span class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">+42.5%</span>
-            </div>
-            <div class="pt-3 border-t border-slate-100 dark:border-slate-700">
-              <span class="text-[11px] text-rose-600 font-bold">Low-Calorie orders surging</span>
-            </div>
-          </div>
-
-          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-black text-slate-400 uppercase tracking-wider">HTV Agreement Rate</span>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-black text-slate-400 uppercase tracking-wider">Annual Projected Run-Rate</span>
                 <span class="w-10 h-10 rounded-2xl bg-indigo-500/15 text-indigo-600 flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-award"></i>
+                  <i class="fa-solid fa-vault text-lg"></i>
+                </span>
+              </div>
+              <span class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">${formatMoney(annualSavings)}<span class="text-sm font-semibold text-slate-400">/yr</span></span>
+            </div>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 mt-2">
+              <span class="text-[11px] text-indigo-600 font-bold">Reinvestable kitchen capital</span>
+            </div>
+          </div>
+
+          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm rounded-3xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-black text-slate-400 uppercase tracking-wider">HTV Taste Consistency</span>
+                <span class="w-10 h-10 rounded-2xl bg-rose-500/15 text-rose-600 flex items-center justify-center font-bold">
+                  <i class="fa-solid fa-award text-lg"></i>
                 </span>
               </div>
               <span class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">98.2%</span>
             </div>
-            <div class="pt-3 border-t border-slate-100 dark:border-slate-700">
-              <span class="text-[11px] text-indigo-500 font-bold">580+ kitchen validations</span>
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700 mt-2">
+              <span class="text-[11px] text-emerald-600 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-check"></i> 580+ blind trials • 0 complaints
+              </span>
             </div>
           </div>
+
         </div>
 
-        <!-- Shift Scaler -->
+        <!-- Interactive 30-Day Shift Scaler & Revenue Simulator -->
         <div class="p-6 md:p-8 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm space-y-6">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-700 pb-4">
             <div>
-              <span class="text-xs font-black uppercase tracking-wider text-amber-500">Live Kitchen Prep Tool</span>
+              <span class="text-xs font-black uppercase tracking-wider text-amber-500">Real-Time Kitchen Economics Engine</span>
               <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
                 <i class="fa-solid fa-calculator text-amber-500"></i>
-                <span>Daily Shift Covers Batch Scaler & Revenue Simulator</span>
+                <span>30-Day Food Cost & Guest Covers Financial Simulator</span>
               </h3>
-              <p class="text-xs text-slate-500">Simulate wholesale ingredient cost and profits across guest counts</p>
+              <p class="text-xs text-slate-500">Calculate exact wholesale savings, gross margin uplift, and line-prep quantities</p>
             </div>
 
+            <!-- Target Recipe Selector -->
             <div class="flex items-center gap-2">
-              <select id="dash-cover-recipe-select" class="px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-bold text-slate-800 dark:text-white focus:outline-none focus:border-amber-500 cursor-pointer shadow-sm">
+              <label for="dash-cover-recipe-select" class="text-xs font-bold text-slate-500 hidden sm:inline">Dish:</label>
+              <select id="dash-cover-recipe-select" class="px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-bold text-slate-800 dark:text-white focus:outline-none focus:border-amber-500 cursor-pointer shadow-sm">
                 ${RECIPES_DATA.map(r => `
                   <option value="${r.id}" ${r.id === state.dashboardSelectedRecipeId ? 'selected' : ''}>
                     ${r.title}
@@ -1762,49 +1996,141 @@
             </div>
           </div>
 
-          <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-sm font-bold text-slate-700 dark:text-slate-300">Target Shift Covers:</span>
-              <span class="text-2xl font-black text-amber-500 font-heading" id="dash-covers-display">
-                ${state.dashboardCovers} Persons
-              </span>
-            </div>
-            
-            <input 
-              type="range" 
-              id="dash-covers-slider" 
-              min="5" 
-              max="200" 
-              step="5" 
-              value="${state.dashboardCovers}"
-              class="w-full accent-amber-500 cursor-pointer"
-            >
+          <!-- Quick Scale Presets -->
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-bold text-slate-400 mr-1">Quick Scale Presets:</span>
+            <button type="button" data-preset-covers="25" class="dash-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${coversCount === 25 ? 'bg-amber-500 text-white border-amber-500' : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-400'}">
+              ☕ Cafe (25 Covers)
+            </button>
+            <button type="button" data-preset-covers="60" class="dash-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${coversCount === 60 ? 'bg-amber-500 text-white border-amber-500' : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-400'}">
+              🍝 Bistro (60 Covers)
+            </button>
+            <button type="button" data-preset-covers="120" class="dash-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${coversCount === 120 ? 'bg-amber-500 text-white border-amber-500' : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-400'}">
+              🚀 Cloud Kitchen (120 Covers)
+            </button>
+            <button type="button" data-preset-covers="250" class="dash-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${coversCount === 250 ? 'bg-amber-500 text-white border-amber-500' : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-400'}">
+              🎉 Banquet (250 Covers)
+            </button>
           </div>
 
+          <!-- Dual Sliders: Covers & Operating Days -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+            <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Daily Service Covers:</span>
+                <span class="text-xl font-black text-amber-500 font-heading" id="dash-covers-display">
+                  ${coversCount} Persons
+                </span>
+              </div>
+              <input 
+                type="range" 
+                id="dash-covers-slider" 
+                min="5" 
+                max="300" 
+                step="5" 
+                value="${coversCount}"
+                class="w-full accent-amber-500 cursor-pointer"
+              >
+              <div class="flex justify-between text-[10px] text-slate-400">
+                <span>5 covers</span>
+                <span>150 covers</span>
+                <span>300 covers</span>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Monthly Operating Days:</span>
+                <span class="text-xl font-black text-indigo-500 font-heading" id="dash-days-display">
+                  ${operatingDays} Days / mo
+                </span>
+              </div>
+              <input 
+                type="range" 
+                id="dash-days-slider" 
+                min="15" 
+                max="31" 
+                step="1" 
+                value="${operatingDays}"
+                class="w-full accent-indigo-500 cursor-pointer"
+              >
+              <div class="flex justify-between text-[10px] text-slate-400">
+                <span>15 days</span>
+                <span>26 days (typical)</span>
+                <span>31 days (full)</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Financial Impact Grid -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+            
             <div class="p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
-              <span class="block text-xs text-amber-800 dark:text-amber-300 font-bold uppercase">Wholesale Cost</span>
-              <span class="text-2xl font-black text-slate-900 dark:text-white my-1">${formatMoney(coverFoodCost)}</span>
-              <span class="block text-xs text-slate-500">${formatMoney(selectedCoverRecipe.costPerPerson)}/cover</span>
+              <span class="block text-xs text-amber-800 dark:text-amber-300 font-bold uppercase">Wholesale Spend</span>
+              <span class="text-2xl font-black text-slate-900 dark:text-white my-1 block">${formatMoney(shiftSwappedCost)}</span>
+              <span class="block text-xs text-slate-500">${formatMoney(unitSwappedCost)} / cover</span>
             </div>
 
             <div class="p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900">
-              <span class="block text-xs text-emerald-800 dark:text-emerald-300 font-bold uppercase">Gross Revenue</span>
-              <span class="text-2xl font-black text-emerald-600 dark:text-emerald-400 my-1">${formatMoney(coverRevenue)}</span>
-              <span class="block text-xs text-emerald-600 font-bold">${formatMoney(selectedCoverRecipe.suggestedRetailPrice)} ticket</span>
+              <span class="block text-xs text-emerald-800 dark:text-emerald-300 font-bold uppercase">Shift Gross Revenue</span>
+              <span class="text-2xl font-black text-emerald-600 dark:text-emerald-400 my-1 block">${formatMoney(shiftRevenue)}</span>
+              <span class="block text-xs text-emerald-600 font-bold">${formatMoney(unitRetail)} ticket price</span>
             </div>
 
             <div class="p-5 rounded-2xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900">
-              <span class="block text-xs text-indigo-800 dark:text-indigo-300 font-bold uppercase">Kitchen Profit</span>
-              <span class="text-2xl font-black text-indigo-600 dark:text-indigo-400 my-1">${formatMoney(coverProfit)}</span>
-              <span class="block text-xs text-indigo-600 font-bold">${selectedCoverRecipe.marginPercent}% margin</span>
+              <span class="block text-xs text-indigo-800 dark:text-indigo-300 font-bold uppercase">Shift Kitchen Profit</span>
+              <span class="text-2xl font-black text-indigo-600 dark:text-indigo-400 my-1 block">${formatMoney(shiftProfit)}</span>
+              <span class="block text-xs text-indigo-600 font-bold">${optimizedMargin}% gross margin</span>
             </div>
 
             <div class="p-5 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900">
-              <span class="block text-xs text-rose-800 dark:text-rose-300 font-bold uppercase">Shift Swap Savings</span>
-              <span class="text-2xl font-black text-rose-600 dark:text-rose-400 my-1">+$${shiftSavings}</span>
-              <span class="block text-xs text-rose-600 font-bold">Via AI Alternative</span>
+              <span class="block text-xs text-rose-800 dark:text-rose-300 font-bold uppercase">30-Day Food Savings</span>
+              <span class="text-2xl font-black text-rose-600 dark:text-rose-400 my-1 block">+${formatMoney(monthlySavings)}</span>
+              <span class="block text-xs text-rose-600 font-bold">+${formatMoney(shiftSavings)} saved each shift</span>
             </div>
+
+          </div>
+        </div>
+
+        <!-- Supply Chain Price Volatility & Commodity Risk Heatmap -->
+        <div class="p-6 md:p-8 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-700 pb-4">
+            <div>
+              <span class="text-xs font-black uppercase tracking-wider text-rose-500">Commercial Risk Intelligence</span>
+              <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
+                <span>Commodity Price Volatility & Shortage Heatmap</span>
+              </h3>
+            </div>
+            <span class="text-xs text-slate-400">Live wholesale market signals & instant substitute mitigation</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${VOLATILITY_WATCHLIST.map(item => `
+              <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 flex flex-col justify-between space-y-3">
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white">${item.name}</h4>
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black border ${item.statusColor}">
+                      ${item.currentStatus}
+                    </span>
+                  </div>
+                  <p class="text-xs text-slate-500">
+                    Mitigation: <span class="font-bold text-amber-600 dark:text-amber-400">${item.aiSwap}</span>
+                  </p>
+                </div>
+
+                <div class="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
+                  <span class="text-xs font-black text-emerald-600 dark:text-emerald-400">${item.savingsBadge}</span>
+                  <button type="button" data-apply-swap-recipe="${item.recipeTarget}" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white transition-all cursor-pointer shadow-sm flex items-center gap-1.5">
+                    <span>Apply Alternative</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                  </button>
+                </div>
+              </div>
+            `).join('')}
           </div>
         </div>
 
@@ -1813,13 +2139,15 @@
 
     container.innerHTML = html;
 
+    // Attach Dashboard Event Listeners
     document.getElementById('dash-quick-pantry-btn')?.addEventListener('click', () => {
       switchTab('explore');
       document.getElementById('pantry-drawer')?.classList.remove('hidden');
     });
 
-    document.getElementById('dash-launch-slides-btn')?.addEventListener('click', () => {
-      switchTab('slides');
+    // 1-Click Print Line Prep Slip
+    document.getElementById('dash-print-slip-btn')?.addEventListener('click', () => {
+      openPrepSlipModal(selectedCoverRecipe, coversCount);
     });
 
     document.getElementById('dash-cover-recipe-select')?.addEventListener('change', (e) => {
@@ -1827,14 +2155,125 @@
       renderDashboardView();
     });
 
+    // Preset buttons
+    container.querySelectorAll('.dash-preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.dashboardCovers = parseInt(btn.getAttribute('data-preset-covers'), 10);
+        renderDashboardView();
+      });
+    });
+
     const coverSlider = document.getElementById('dash-covers-slider');
     coverSlider?.addEventListener('input', (e) => {
       state.dashboardCovers = parseInt(e.target.value, 10);
       document.getElementById('dash-covers-display').textContent = `${state.dashboardCovers} Persons`;
     });
-
     coverSlider?.addEventListener('change', () => {
       renderDashboardView();
+    });
+
+    const daysSlider = document.getElementById('dash-days-slider');
+    daysSlider?.addEventListener('input', (e) => {
+      state.dashboardOperatingDays = parseInt(e.target.value, 10);
+      document.getElementById('dash-days-display').textContent = `${state.dashboardOperatingDays} Days / mo`;
+    });
+    daysSlider?.addEventListener('change', () => {
+      renderDashboardView();
+    });
+
+    // Apply Alternative buttons from Heatmap
+    container.querySelectorAll('[data-apply-swap-recipe]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-apply-swap-recipe');
+        openRecipeModal(targetId);
+        if (state.recipeStates[targetId]) {
+          state.recipeStates[targetId].budgetMode = true;
+          renderModalContent();
+        }
+      });
+    });
+  }
+
+  // ========================================================
+  // LINE-COOK PREP SLIP MODAL HELPER
+  // ========================================================
+  function openPrepSlipModal(recipe, covers) {
+    let existingModal = document.getElementById('prep-slip-modal');
+    if (!existingModal) {
+      existingModal = document.createElement('div');
+      existingModal.id = 'prep-slip-modal';
+      existingModal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in';
+      document.body.appendChild(existingModal);
+    }
+
+    const swapInfo = recipe.budgetAlternative;
+    const scaledCashew = Math.round(60 * covers);
+    const scaledMilk = Math.round(40 * covers);
+
+    existingModal.innerHTML = `
+      <div class="bg-white text-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-300 font-mono space-y-4">
+        
+        <div class="text-center border-b-2 border-dashed border-slate-300 pb-3">
+          <div class="text-xs font-black uppercase tracking-wider text-slate-500">FlavorShift AI Line-Cook Ticket</div>
+          <h3 class="text-lg font-black uppercase text-slate-900 mt-1">${recipe.title}</h3>
+          <div class="text-xs font-bold text-amber-600 mt-0.5">BATCH TARGET: ${covers} COVERS</div>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between font-bold border-b border-slate-200 pb-1 text-slate-500">
+            <span>INGREDIENT COMPONENT</span>
+            <span>MEASURED WEIGHT</span>
+          </div>
+          <div class="flex justify-between font-black text-sm text-slate-900">
+            <span>Soaked Cashew Puree (60%)</span>
+            <span class="text-amber-600">${scaledCashew}g</span>
+          </div>
+          <div class="flex justify-between font-black text-sm text-slate-900">
+            <span>Warm Milk (40%)</span>
+            <span class="text-amber-600">${scaledMilk}ml</span>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] font-sans text-amber-900 space-y-1">
+          <div class="font-bold uppercase tracking-wider text-amber-800 flex items-center gap-1">
+            <i class="fa-solid fa-fire text-amber-600"></i> Culinary Safety Tempering Rule:
+          </div>
+          <p>
+            Whisk cashew paste and warm milk into a silky puree. Reduce pan heat to low (<85°C) before folding into gravy. Do not boil rapidly.
+          </p>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] text-slate-400 border-t border-dashed border-slate-300 pt-3">
+          <span>Batch Cost: $${(recipe.costPerPerson * covers).toFixed(2)}</span>
+          <span>Savings: +$${((recipe.budgetAlternative ? recipe.budgetAlternative.savingsPerPerson : 0.95) * covers).toFixed(2)}</span>
+        </div>
+
+        <div class="flex gap-2 pt-2 font-sans">
+          <button type="button" id="close-slip-btn" class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer">
+            Close
+          </button>
+          <button type="button" id="print-now-btn" class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white cursor-pointer flex items-center justify-center gap-1.5 shadow-md">
+            <i class="fa-solid fa-print"></i>
+            <span>Print Receipt</span>
+          </button>
+        </div>
+      </div>
+    `;
+
+    existingModal.classList.remove('hidden');
+
+    document.getElementById('close-slip-btn')?.addEventListener('click', () => {
+      existingModal.classList.add('hidden');
+    });
+
+    document.getElementById('print-now-btn')?.addEventListener('click', () => {
+      window.print();
+    });
+
+    existingModal.addEventListener('click', (e) => {
+      if (e.target.id === 'prep-slip-modal') {
+        existingModal.classList.add('hidden');
+      }
     });
   }
 

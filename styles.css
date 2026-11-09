@@ -347,3 +347,29 @@ h1, h2, h3, h4, h5, h6 {
   border-color: transparent !important;
   box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35) !important;
 }
+
+/* Sensory Radar & Dashboard Chart Canvas */
+#sensory-radar-canvas {
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
+
+/* Print Ticket Styling */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #prep-slip-modal, #prep-slip-modal * {
+    visibility: visible;
+  }
+  #prep-slip-modal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white !important;
+  }
+  #prep-slip-modal button {
+    display: none !important;
+  }
+}
