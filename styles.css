@@ -1,0 +1,288 @@
+/* FlavorCraft Cafe OS - Vibrant Culinary Styling & Design System */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Vibrant Bright Cafe Daylight Palette */
+  --bg-primary: #fffbf5;
+  --bg-secondary: #fef5ea;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fff8ef;
+  --border-color: #f1dfca;
+  --border-focus: #f97316;
+
+  --text-primary: #1f1d1a;
+  --text-secondary: #635a50;
+  --text-muted: #9c9184;
+
+  --accent-orange: #ff6b35;
+  --accent-amber: #f59e0b;
+  --accent-emerald: #10b981;
+  --accent-teal: #06b6d4;
+  --accent-rose: #f43f5e;
+  --accent-purple: #8b5cf6;
+
+  --shadow-sm: 0 2px 8px rgba(249, 115, 22, 0.08);
+  --shadow-md: 0 8px 24px rgba(249, 115, 22, 0.12);
+  --shadow-lg: 0 16px 36px rgba(249, 115, 22, 0.18);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.6);
+}
+
+/* Dark Theme - Sleek Midnight Bistro Lounge */
+[data-theme="dark"] {
+  --bg-primary: #0f1115;
+  --bg-secondary: #171b22;
+  --bg-card: #1c212a;
+  --bg-card-hover: #232934;
+  --border-color: #2e3544;
+  --border-focus: #fb923c;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+
+  --accent-orange: #fb923c;
+  --accent-amber: #fbbf24;
+  --accent-emerald: #34d399;
+  --accent-teal: #22d3ee;
+  --accent-rose: #fb7185;
+  --accent-purple: #a78bfa;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.6);
+  --glass-bg: rgba(28, 33, 42, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+/* Bright Vibrant Gradients */
+.gradient-cafe-hero {
+  background: linear-gradient(135deg, #ff6b35 0%, #f59e0b 50%, #ec4899 100%);
+}
+
+.gradient-citrus {
+  background: linear-gradient(135deg, #f59e0b 0%, #ff6b35 100%);
+}
+
+.gradient-emerald {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.gradient-berry {
+  background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+}
+
+.gradient-ocean {
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+}
+
+.text-gradient-sunshine {
+  background: linear-gradient(135deg, #ff6b35 0%, #f59e0b 60%, #e11d48 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Glass Cards */
+.cafe-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.cafe-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(255, 107, 53, 0.4);
+}
+
+.glass-nav {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Badges */
+.badge-budget {
+  background: rgba(245, 158, 11, 0.15);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+[data-theme="dark"] .badge-budget {
+  background: rgba(245, 158, 11, 0.22);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.badge-calorie {
+  background: rgba(244, 63, 94, 0.15);
+  color: #e11d48;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+[data-theme="dark"] .badge-calorie {
+  background: rgba(244, 63, 94, 0.22);
+  color: #fb7185;
+  border-color: rgba(244, 63, 94, 0.4);
+}
+
+.badge-vegan {
+  background: rgba(16, 185, 129, 0.15);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+[data-theme="dark"] .badge-vegan {
+  background: rgba(16, 185, 129, 0.22);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-orange);
+}
+
+/* Custom Switch for Toggles */
+.toggle-checkbox:checked {
+  right: 0;
+  border-color: #10b981;
+}
+.toggle-checkbox:checked + .toggle-label {
+  background-color: #10b981;
+}
+
+/* Animations */
+@keyframes pulseSubtle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 3s infinite ease-in-out;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: slideUpFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Printable Kitchen POS Ticket Styling */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #print-ticket-container, #print-ticket-container * {
+    visibility: visible;
+  }
+  #print-ticket-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 15px;
+    background: white !important;
+    color: black !important;
+    font-family: monospace;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
+
+/* Navigation & Filter Active States */
+.active-nav-tab {
+  color: #ff6b35 !important;
+  font-weight: 800 !important;
+  position: relative;
+}
+
+.active-nav-tab::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 10%;
+  width: 80%;
+  height: 3px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #ff6b35, #f59e0b);
+}
+
+[data-theme="dark"] .active-nav-tab {
+  color: #fb923c !important;
+}
+
+.active-cat {
+  background: linear-gradient(135deg, #ff6b35 0%, #f59e0b 100%) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3) !important;
+}
+
+.active-diet {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Modal Backdrop Blur */
+#recipe-webx-modal {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}

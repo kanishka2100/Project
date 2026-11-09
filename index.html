@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlavorCraft Cafe OS | Culinary Operating System for Small Cafes & Restaurants</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN with Custom Cafe Palette -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Outfit', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            cafe: {
+              orange: '#ff6b35',
+              tangerine: '#f97316',
+              amber: '#f59e0b',
+              emerald: '#10b981',
+              rose: '#f43f5e',
+              purple: '#8b5cf6',
+              espresso: '#1f1d1a',
+              crema: '#fffbf5',
+              darkBg: '#0f1115',
+              darkCard: '#1c212a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="bg-[#fffbf5] dark:bg-[#0f1115] text-[#1f1d1a] dark:text-[#f8fafc] min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-white">
+
+  <!-- ============================================== -->
+  <!-- 1. TOP GLOBAL NAVIGATION BAR                  -->
+  <!-- ============================================== -->
+  <header class="glass-nav sticky top-0 z-40 px-4 lg:px-8 py-3.5 transition-colors">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      
+      <!-- Brand & Small Cafe Target Audience Badge -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-500 flex items-center justify-center text-white shadow-md shadow-orange-500/20">
+          <i class="fa-solid fa-mug-saucer text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-heading font-black text-xl tracking-tight text-slate-900 dark:text-white">
+              Flavor<span class="text-cafe-orange">Craft</span>
+            </span>
+            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30">
+              Cafe OS
+            </span>
+          </div>
+          <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 block -mt-0.5">
+            Engineered for Chef Kanishka & Independent Food Operators
+          </span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs (Instruction #4, #6, #10, #17) -->
+      <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+        <button 
+          type="button" 
+          data-tab="explore"
+          class="nav-tab-btn active-nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
+        >
+          <i class="fa-solid fa-utensils"></i>
+          <span>Explore Recipes</span>
+        </button>
+
+        <button 
+          type="button" 
+          data-tab="dashboard"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
+        >
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Cafe Dashboard</span>
+        </button>
+
+        <button 
+          type="button" 
+          data-tab="slides"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
+        >
+          <i class="fa-solid fa-lightbulb text-amber-500"></i>
+          <span>Design Thinking Deck</span>
+        </button>
+
+        <button 
+          type="button" 
+          data-tab="favorites"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer relative"
+        >
+          <i class="fa-solid fa-heart text-rose-500"></i>
+          <span>Favorites</span>
+          <span id="fav-count-badge" class="px-1.5 py-0.2 rounded-full text-[10px] font-black bg-rose-500 text-white ml-0.5">2</span>
+        </button>
+      </nav>
+
+      <!-- Right Controls: Theme Toggle & Quick Pantry Toggle -->
+      <div class="flex items-center gap-2">
+        
+        <!-- Toggle Optional Pantry Drawer Button (Instruction #1) -->
+        <button 
+          type="button" 
+          id="toggle-pantry-drawer-btn"
+          class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-amber-400 dark:hover:border-amber-500 text-slate-700 dark:text-slate-300 shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+          title="Toggle Available Ingredients Drawer (Optional)"
+        >
+          <i class="fa-solid fa-kitchen-set text-amber-500"></i>
+          <span class="hidden sm:inline">Pantry Stock</span>
+          <span id="pantry-active-count" class="hidden px-1.5 py-0.2 rounded-full text-[10px] font-black bg-amber-500 text-white">0</span>
+        </button>
+
+        <!-- Light / Dark Theme Switcher (Instruction #18) -->
+        <button 
+          type="button" 
+          id="theme-toggle-btn"
+          class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-amber-400 text-slate-700 dark:text-slate-300 shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+          title="Toggle Daylight / Dark Theme"
+        >
+          <i class="fa-solid fa-moon text-indigo-500"></i>
+          <span class="hidden sm:inline font-medium text-xs">Dark Mode</span>
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Mobile Navigation Sub-bar -->
+    <div class="md:hidden flex items-center justify-around border-t border-slate-200/80 dark:border-slate-800 mt-2.5 pt-2">
+      <button type="button" data-tab="explore" class="nav-tab-btn active-nav-tab py-1 text-xs font-bold flex flex-col items-center">
+        <i class="fa-solid fa-utensils mb-0.5"></i>
+        <span>Explore</span>
+      </button>
+      <button type="button" data-tab="dashboard" class="nav-tab-btn py-1 text-xs font-bold flex flex-col items-center">
+        <i class="fa-solid fa-chart-pie mb-0.5"></i>
+        <span>Dashboard</span>
+      </button>
+      <button type="button" data-tab="slides" class="nav-tab-btn py-1 text-xs font-bold flex flex-col items-center">
+        <i class="fa-solid fa-lightbulb mb-0.5 text-amber-500"></i>
+        <span>Design Deck</span>
+      </button>
+      <button type="button" data-tab="favorites" class="nav-tab-btn py-1 text-xs font-bold flex flex-col items-center">
+        <i class="fa-solid fa-heart mb-0.5 text-rose-500"></i>
+        <span>Saved</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================== -->
+  <!-- 2. OPTIONAL KITCHEN PANTRY DRAWER (Inst. #1, #12) -->
+  <!-- ============================================== -->
+  <aside id="pantry-drawer" class="hidden bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 px-4 lg:px-8 py-5 transition-all shadow-md">
+    <div class="max-w-7xl mx-auto space-y-4">
+      
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-black uppercase tracking-wider text-amber-500">
+              Kitchen Inventory Filter (Optional)
+            </span>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500">
+              Leave blank to browse all cafe recipes
+            </span>
+          </div>
+          <h3 class="font-heading font-black text-lg text-slate-900 dark:text-white">
+            Select Your Currently Available Ingredients
+          </h3>
+        </div>
+
+        <!-- 1-Click Cafe Pantry Presets (Instruction #12: pre-filled ingredients) -->
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="text-xs font-bold text-slate-400 mr-1">Presets:</span>
+          <button type="button" data-preset="breakfast" class="pantry-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 transition-all cursor-pointer">
+            🥐 Breakfast Cafe
+          </button>
+          <button type="button" data-preset="coffee" class="pantry-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 transition-all cursor-pointer">
+            ☕ Coffee & Bakery
+          </button>
+          <button type="button" data-preset="vegan" class="pantry-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition-all cursor-pointer">
+            🌿 Vegan Bistro
+          </button>
+          <button type="button" data-preset="italian" class="pantry-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 transition-all cursor-pointer">
+            🍝 Italian Bar
+          </button>
+          <button type="button" id="clear-pantry-btn" class="px-2.5 py-1 rounded-lg text-xs font-bold text-slate-500 hover:text-rose-500 border border-slate-200 dark:border-slate-700 cursor-pointer transition-all ml-1">
+            Clear
+          </button>
+        </div>
+      </div>
+
+      <!-- Chips Container -->
+      <div id="pantry-chips-container" class="pt-2">
+        <!-- Rendered by JS from PREFILLED_PANTRY_STAPLES -->
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ============================================== -->
+  <!-- 3. MAIN APP VIEW CONTAINERS                    -->
+  <!-- ============================================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6">
+
+    <!-- ============================================ -->
+    <!-- VIEW A: EXPLORE RECIPES & CATALOG (Inst. #10) -->
+    <!-- ============================================ -->
+    <section id="view-explore" class="tab-view-container space-y-8 animate-fade-up">
+
+      <!-- Dynamic Vibrant Hero Banner (Instruction #3: Bright colours, #8: Small cafe audience) -->
+      <div class="relative rounded-3xl overflow-hidden gradient-cafe-hero p-8 md:p-12 text-white shadow-xl">
+        <div class="relative z-10 max-w-3xl space-y-4">
+          
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-black uppercase tracking-wider">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+            <span>Culinary Engineering OS for Small Food Operators</span>
+          </div>
+
+          <h1 class="font-heading font-black text-3xl sm:text-4xl md:text-5xl leading-tight tracking-tight">
+            Scale by Person Headcount.<br>
+            <span class="text-amber-200">Cut Food Cost by 40%</span> with Smart Swaps.
+          </h1>
+
+          <p class="text-white/90 text-sm md:text-base leading-relaxed max-w-2xl font-medium">
+            Tired of converting milliliters and losing margins to high-cost ingredients? FlavorCraft dynamically recalculates your whole recipe by <strong>number of persons</strong>, replaces expensive ingredients with affordable gourmet alternatives, and generates instant <strong>low-calorie fit versions</strong>.
+          </p>
+
+          <!-- Metric Highlights Bar -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
+            <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+              <span class="block text-xl md:text-2xl font-black text-white">74.8%</span>
+              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Avg Gross Margin</span>
+            </div>
+            <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+              <span class="block text-xl md:text-2xl font-black text-amber-200">1-50 Covers</span>
+              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Person Scaling</span>
+            </div>
+            <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+              <span class="block text-xl md:text-2xl font-black text-white">40-56%</span>
+              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Budget Cost Drop</span>
+            </div>
+            <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+              <span class="block text-xl md:text-2xl font-black text-rose-200">-40% Kcal</span>
+              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Calorie Reducer</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Decorative Background Graphics (Instruction #7) -->
+        <div class="absolute -right-16 -bottom-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute right-12 top-10 opacity-20 hidden lg:block text-9xl">
+          <i class="fa-solid fa-mug-hot"></i>
+        </div>
+      </div>
+
+      <!-- Search, Categories, Dietary Filters & Sort Bar -->
+      <div class="space-y-4">
+        
+        <!-- Search & Sort Row -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          
+          <!-- Search Input -->
+          <div class="relative flex-1 max-w-lg">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input 
+              type="text" 
+              id="search-input"
+              placeholder="Search cafe recipes, ingredients (e.g. Avocado, Pasta), or dietary..." 
+              class="w-full pl-11 pr-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-cafe-orange dark:focus:border-amber-400 shadow-sm transition-all"
+            >
+          </div>
+
+          <!-- Sort Select Dropdown -->
+          <div class="flex items-center gap-2 shrink-0">
+            <span class="text-xs font-bold text-slate-400 hidden sm:inline">Sort by:</span>
+            <select 
+              id="sort-select"
+              class="px-3.5 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cafe-orange shadow-sm cursor-pointer"
+            >
+              <option value="popular">🔥 Most Popular & Searched</option>
+              <option value="cost-asc">💰 Lowest Food Cost ($ / Person)</option>
+              <option value="calories-asc">🥗 Lowest Calories (kcal / Person)</option>
+              <option value="margin-desc">📈 Highest Profit Margin (%)</option>
+              <option value="prep-asc">⚡ Fastest Kitchen Ticket (&lt;10m)</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Category Filter Pills (Instruction #10) -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <button type="button" data-category="all" class="cat-pill active-cat px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
+            All Cafe Menus
+          </button>
+          <button type="button" data-category="Brunch & Toast" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
+            🥑 Brunch & Toast
+          </button>
+          <button type="button" data-category="Coffee & Drinks" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
+            ☕ Coffee & Drinks
+          </button>
+          <button type="button" data-category="Pastas & Mains" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
+            🍝 Pastas & Mains
+          </button>
+          <button type="button" data-category="Bowls & Greens" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
+            🫐 Smoothie Bowls
+          </button>
+          <button type="button" data-category="Paninis & Melts" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
+            🥪 Paninis & Melts
+          </button>
+          <button type="button" data-category="Bakery & Desserts" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
+            🍰 Bakery & Desserts
+          </button>
+          <button type="button" data-category="Healthy Mezze" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
+            🧆 Healthy Mezze
+          </button>
+        </div>
+
+        <!-- Dietary Specific Filter Pills (Instruction #16: Diet specific / vegan specific / vegetarian specific) -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+          <span class="font-bold text-slate-400 shrink-0 mr-1">Diet Focus:</span>
+          <button type="button" data-diet="all" class="diet-pill active-diet px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all">
+            All Diets
+          </button>
+          <button type="button" data-diet="Vegetarian" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all flex items-center gap-1">
+            <i class="fa-solid fa-seedling text-emerald-500"></i> Vegetarian
+          </button>
+          <button type="button" data-diet="Vegan" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all flex items-center gap-1">
+            <i class="fa-solid fa-leaf text-emerald-500"></i> 100% Vegan
+          </button>
+          <button type="button" data-diet="Gluten-Free" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all">
+            🌾 Gluten-Free
+          </button>
+          <button type="button" data-diet="Dairy-Free" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all">
+            🥛 Dairy-Free
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Active Counter and Recipe Grid -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <span id="recipes-count-display" class="text-xs font-black uppercase tracking-wider text-slate-500">
+            Showing 7 of 7 Cafe Staples
+          </span>
+          <span class="text-xs text-amber-600 dark:text-amber-400 font-bold flex items-center gap-1">
+            <i class="fa-solid fa-sparkles"></i> 1-Click Budget & Calorie Swaps Ready
+          </span>
+        </div>
+
+        <div id="recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================ -->
+    <!-- VIEW B: CAFE DASHBOARD VIEW (Instruction #4) -->
+    <!-- ============================================ -->
+    <section id="view-dashboard" class="tab-view-container hidden">
+      <div id="dashboard-view-container">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- VIEW C: DESIGN THINKING SLIDES (Instruction #6)-->
+    <!-- ============================================ -->
+    <section id="view-slides" class="tab-view-container hidden">
+      <div id="slides-view-container">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- VIEW D: FAVORITES VIEW (Instruction #17)     -->
+    <!-- ============================================ -->
+    <section id="view-favorites" class="tab-view-container hidden">
+      <div id="favorites-view-container">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================== -->
+  <!-- 4. RECIPE WEBX MODAL DEEP-DIVE (Inst. #13, #19) -->
+  <!-- ============================================== -->
+  <div id="recipe-webx-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div id="modal-recipe-body" class="w-full">
+      <!-- Dynamically filled with Ingredients FIRST, then Whole Recipe Steps SECOND -->
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- 5. GLOBAL FOOTER                               -->
+  <!-- ============================================== -->
+  <footer class="mt-16 border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 py-8 px-4 lg:px-8 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-7 rounded-lg bg-cafe-orange flex items-center justify-center text-white font-black text-xs">
+          FC
+        </div>
+        <div>
+          <span class="font-bold text-slate-800 dark:text-white">FlavorCraft Cafe OS</span>
+          <span class="block text-[11px] text-slate-400">Created for Small Cafes & Independent Food Operators</span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4 text-xs font-medium">
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-500"></i> No. of Persons Scaling</span>
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-amber-500"></i> Smart Budget Swaps</span>
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-rose-500"></i> Fit-Bistro Calorie Cutter</span>
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-indigo-500"></i> Design Thinking Process</span>
+      </div>
+
+      <div class="text-[11px] text-slate-400">
+        © 2026 FlavorCraft OS • All rights reserved
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Recipe Data & Application Scripts -->
+  <script src="./recipes-data.js"></script>
+  <script src="./app.js"></script>
+
+</body>
+</html>
