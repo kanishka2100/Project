@@ -5,6 +5,7 @@
 [![Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/kanishka2100/first)
 [![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Mobile%20Responsive-orange?style=for-the-badge)](https://kanishka2100.github.io/first/)
 [![Validation](https://img.shields.io/badge/HTV-Human%20Taste%20Validated-emerald?style=for-the-badge)](https://kanishka2100.github.io/first/)
+[![Team Sprint](https://img.shields.io/badge/72h%20Sprint-4%20Developer%20Roadmap-blue?style=for-the-badge&logo=fastapi)](./TEAM_3DAY_SPRINT.md)
 
 ---
 
@@ -166,6 +167,7 @@ flavorshift-ai/
 ├── recipes-data.js       # Core dataset: recipes, alternatives, swap database & slide deck
 ├── app.js                # Core JS logic: state management, calculations, DOM renderers & HTV
 ├── server.ps1            # Lightweight PowerShell web server for local offline testing
+├── TEAM_3DAY_SPRINT.md   # 72-hour execution guide & workstream division for 4 developers
 └── README.md             # Comprehensive project documentation & submission guide
 ```
 
