@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FlavorShift AI | Intelligent Ingredient Substitution & Human Taste Validation Platform</title>
+  <title>FlavorShift AI | Intelligent Culinary Ingredient Substitution & Human Taste Validation Platform</title>
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <!-- Tailwind CSS CDN with Custom Cafe Palette -->
+  <!-- Tailwind CSS CDN with Enhanced Culinary Palette -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -26,17 +26,36 @@
             mono: ['JetBrains Mono', 'monospace'],
           },
           colors: {
-            cafe: {
-              orange: '#ff6b35',
-              tangerine: '#f97316',
-              amber: '#f59e0b',
-              emerald: '#10b981',
-              rose: '#f43f5e',
-              purple: '#8b5cf6',
-              espresso: '#1f1d1a',
-              crema: '#fffbf5',
-              darkBg: '#0f1115',
-              darkCard: '#1c212a'
+            flame: {
+              DEFAULT: '#ff5e36',
+              50: '#fff5f2',
+              100: '#ffe8e2',
+              200: '#ffd5c9',
+              500: '#ff5e36',
+              600: '#ea471f',
+              700: '#c53410',
+            },
+            amber: {
+              DEFAULT: '#f59e0b',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            },
+            emerald: {
+              DEFAULT: '#10b981',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+            },
+            berry: {
+              DEFAULT: '#f43f5e',
+              500: '#f43f5e',
+              600: '#e11d48',
+            },
+            truffle: {
+              DEFAULT: '#8b5cf6',
+              600: '#7c3aed',
+              900: '#1e1b4b',
             }
           }
         }
@@ -47,7 +66,18 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="./styles.css">
 </head>
-<body class="bg-[#fffbf5] dark:bg-[#0f1115] text-[#1f1d1a] dark:text-[#f8fafc] min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-white">
+<body class="min-h-screen flex flex-col font-sans selection:bg-flame selection:text-white">
+
+  <!-- ============================================== -->
+  <!-- 0. AMBIENT FOOD VIDEO BACKGROUND LAYER         -->
+  <!-- ============================================== -->
+  <div id="ambient-video-backdrop" class="ambient-video-backdrop opacity-35 dark:opacity-25 transition-opacity duration-700">
+    <video id="global-ambient-video" autoplay muted loop playsinline>
+      <source src="./assets/videos/culinary-loop.mp4" type="video/mp4">
+      <source src="./assets/videos/food-sizzle.webm" type="video/webm">
+    </video>
+    <div class="ambient-vignette"></div>
+  </div>
 
   <!-- ============================================== -->
   <!-- 1. TOP GLOBAL NAVIGATION BAR                  -->
@@ -57,27 +87,30 @@
       
       <!-- Brand Logo & HTV Badge -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-500 flex items-center justify-center text-white shadow-md shadow-orange-500/20">
-          <i class="fa-solid fa-arrows-rotate text-lg"></i>
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="font-heading font-black text-xl tracking-tight text-slate-900 dark:text-white">
-              Flavor<span class="text-cafe-orange">Shift</span> <span class="text-amber-500 font-mono text-sm px-1.5 py-0.5 rounded-lg bg-amber-500/10 border border-amber-500/30">AI</span>
-            </span>
-            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-              <i class="fa-solid fa-check-double text-[9px]"></i> HTV Verified
-            </span>
+        <a href="#swaplab" data-tab="swaplab" class="nav-brand-link flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-flame to-berry-500 flex items-center justify-center text-white shadow-lg shadow-flame/30 group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-fire-burner text-xl"></i>
           </div>
-        </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-heading font-black text-xl sm:text-2xl tracking-tight text-slate-900 dark:text-white">
+                Flavor<span class="text-flame">Shift</span> <span class="text-amber-500 font-mono text-xs px-2 py-0.5 rounded-lg bg-amber-500/15 border border-amber-500/30">AI</span>
+              </span>
+              <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5 shadow-sm">
+                <span class="live-pulse-dot"></span> HTV Gold
+              </span>
+            </div>
+            <span class="text-[10px] text-slate-500 dark:text-slate-400 block font-medium">Smart Ingredient Swap & Taste Validation</span>
+          </div>
+        </a>
       </div>
 
       <!-- Navigation Tabs -->
-      <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+      <nav class="hidden md:flex items-center gap-1 lg:gap-1.5 bg-slate-100/70 dark:bg-slate-800/60 p-1.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/60 backdrop-blur-md">
         <button 
           type="button" 
           data-tab="swaplab"
-          class="nav-tab-btn active-nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
+          class="nav-tab-btn active-nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-flame dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
         >
           <i class="fa-solid fa-flask-vial text-amber-500"></i>
           <span>AI Swap Lab</span>
@@ -86,16 +119,16 @@
         <button 
           type="button" 
           data-tab="explore"
-          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-flame dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
         >
-          <i class="fa-solid fa-utensils"></i>
-          <span>Explore Recipes</span>
+          <i class="fa-solid fa-utensils text-flame"></i>
+          <span>Explore Menus</span>
         </button>
 
         <button 
           type="button" 
           data-tab="htv"
-          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-flame dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
         >
           <i class="fa-solid fa-users-viewfinder text-emerald-500"></i>
           <span>Human Taste Validation</span>
@@ -104,25 +137,25 @@
         <button 
           type="button" 
           data-tab="dashboard"
-          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-flame dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
         >
-          <i class="fa-solid fa-chart-pie"></i>
-          <span>Cost & Margin Dashboard</span>
+          <i class="fa-solid fa-chart-pie text-cyan-500"></i>
+          <span>Cost & Margin</span>
         </button>
 
         <button 
           type="button" 
           data-tab="slides"
-          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-flame dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
         >
           <i class="fa-solid fa-lightbulb text-amber-500"></i>
-          <span>Design Thinking Deck</span>
+          <span>Design Deck</span>
         </button>
 
         <button 
           type="button" 
           data-tab="favorites"
-          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer relative"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-flame dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer relative"
         >
           <i class="fa-solid fa-heart text-rose-500"></i>
           <span>Favorites</span>
@@ -130,19 +163,33 @@
         </button>
       </nav>
 
-      <!-- Right Controls: Theme Toggle & Quick Pantry Toggle -->
+      <!-- Right Controls: Video Ambient Toggle, Pantry & Theme Toggle -->
       <div class="flex items-center gap-2">
+        <!-- Background Video Ambient Intensity Toggle -->
+        <button 
+          type="button" 
+          id="toggle-video-ambient-btn"
+          class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-amber-400 text-slate-700 dark:text-slate-300 shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+          title="Toggle Background Food Video Ambience"
+        >
+          <i class="fa-solid fa-video text-flame"></i>
+          <span class="hidden lg:inline text-[11px]">Video Reel:</span>
+          <span id="video-status-text" class="text-[11px] font-black text-flame">ON</span>
+        </button>
+
+        <!-- Pantry Stock Drawer Button -->
         <button 
           type="button" 
           id="toggle-pantry-drawer-btn"
           class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-amber-400 dark:hover:border-amber-500 text-slate-700 dark:text-slate-300 shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
-          title="Toggle Available Ingredients Drawer (Optional)"
+          title="Toggle Available Ingredients Drawer"
         >
           <i class="fa-solid fa-kitchen-set text-amber-500"></i>
           <span class="hidden sm:inline">Pantry Stock</span>
           <span id="pantry-active-count" class="hidden px-1.5 py-0.2 rounded-full text-[10px] font-black bg-amber-500 text-white">0</span>
         </button>
 
+        <!-- Theme Toggle -->
         <button 
           type="button" 
           id="theme-toggle-btn"
@@ -150,7 +197,7 @@
           title="Toggle Daylight / Dark Theme"
         >
           <i class="fa-solid fa-moon text-indigo-500"></i>
-          <span class="hidden sm:inline font-medium text-xs">Dark Mode</span>
+          <span class="hidden sm:inline font-medium text-xs">Theme</span>
         </button>
       </div>
 
@@ -163,7 +210,7 @@
         <span>Swap Lab</span>
       </button>
       <button type="button" data-tab="explore" class="nav-tab-btn py-1 text-xs font-bold flex flex-col items-center">
-        <i class="fa-solid fa-utensils mb-0.5"></i>
+        <i class="fa-solid fa-utensils mb-0.5 text-flame"></i>
         <span>Recipes</span>
       </button>
       <button type="button" data-tab="htv" class="nav-tab-btn py-1 text-xs font-bold flex flex-col items-center">
@@ -171,8 +218,8 @@
         <span>HTV Taste</span>
       </button>
       <button type="button" data-tab="dashboard" class="nav-tab-btn py-1 text-xs font-bold flex flex-col items-center">
-        <i class="fa-solid fa-chart-pie mb-0.5"></i>
-        <span>Dashboard</span>
+        <i class="fa-solid fa-chart-pie mb-0.5 text-cyan-500"></i>
+        <span>Margin</span>
       </button>
       <button type="button" data-tab="slides" class="nav-tab-btn py-1 text-xs font-bold flex flex-col items-center">
         <i class="fa-solid fa-lightbulb mb-0.5 text-amber-500"></i>
@@ -184,7 +231,7 @@
   <!-- ============================================== -->
   <!-- 2. OPTIONAL KITCHEN PANTRY DRAWER              -->
   <!-- ============================================== -->
-  <aside id="pantry-drawer" class="hidden bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 px-4 lg:px-8 py-5 transition-all shadow-md">
+  <aside id="pantry-drawer" class="hidden relative z-30 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 px-4 lg:px-8 py-5 transition-all shadow-md">
     <div class="max-w-7xl mx-auto space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
@@ -193,7 +240,7 @@
               Kitchen Inventory Filter (Optional)
             </span>
             <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500">
-              Leave blank to browse all culinary recipes
+              Select items you have to find compatible culinary swaps
             </span>
           </div>
           <h3 class="font-heading font-black text-lg text-slate-900 dark:text-white">
@@ -226,9 +273,111 @@
   </aside>
 
   <!-- ============================================== -->
-  <!-- 3. MAIN APP VIEW CONTAINERS                    -->
+  <!-- 3. GLOBAL CULINARY PHOTO MARQUEE STRIP         -->
   <!-- ============================================== -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6">
+  <div class="relative z-10 food-marquee-container py-3 border-y border-amber-500/20 bg-amber-500/5 dark:bg-slate-900/40 backdrop-blur-sm">
+    <div class="food-marquee-track">
+      <!-- Dish 1: Makhani -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-amber-500/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=120&auto=format&fit=crop&q=80" alt="Makhani" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">Paneer Butter Masala</span>
+          <span class="text-[10px] text-amber-600 dark:text-amber-400 font-bold">✨ Cashew Velvet (98% Match)</span>
+        </div>
+      </div>
+      <!-- Dish 2: Avocado Toast -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-emerald-500/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=120&auto=format&fit=crop&q=80" alt="Avocado Toast" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">Smashed Avocado Toast</span>
+          <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">🥑 Green Pea Silk (-43% Cost)</span>
+        </div>
+      </div>
+      <!-- Dish 3: Truffle Fettuccine -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-purple-500/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=120&auto=format&fit=crop&q=80" alt="Truffle Fettuccine" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">Wild Mushroom Fettuccine</span>
+          <span class="text-[10px] text-purple-600 dark:text-purple-400 font-bold">🍄 Porcini Broth (-56% Cost)</span>
+        </div>
+      </div>
+      <!-- Dish 4: Basque Cheesecake -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-flame/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=120&auto=format&fit=crop&q=80" alt="Basque Cheesecake" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">San Sebastian Basque Cake</span>
+          <span class="text-[10px] text-flame font-bold">🍰 Hung Curd Blend (-55% Cost)</span>
+        </div>
+      </div>
+      <!-- Dish 5: Sourdough Pizza -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-rose-500/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=120&auto=format&fit=crop&q=80" alt="Neapolitan Pizza" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">Neapolitan Sourdough Pizza</span>
+          <span class="text-[10px] text-rose-500 font-bold">🍕 Buffalo Melt Blend (-46% Cost)</span>
+        </div>
+      </div>
+      <!-- Dish 6: Falafel Glow Bowl -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-emerald-500/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=120&auto=format&fit=crop&q=80" alt="Falafel Bowl" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">Crispy Herb Falafel Bowl</span>
+          <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">🧆 Sesame-Sunflower Silk</span>
+        </div>
+      </div>
+      <!-- Dish 7: Chocolate Lava Souffle -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-amber-500/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=120&auto=format&fit=crop&q=80" alt="Molten Lava" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">Belgian Chocolate Soufflé</span>
+          <span class="text-[10px] text-amber-500 font-bold">🍫 Dutch Cacao Fudge (-50% Cost)</span>
+        </div>
+      </div>
+      <!-- Dish 8: Matcha Cloud -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-emerald-500/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=120&auto=format&fit=crop&q=80" alt="Matcha Cloud" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">Kyoto Matcha Cold Cloud</span>
+          <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">🍵 Green Pepita Silk Foam</span>
+        </div>
+      </div>
+
+      <!-- Duplicate Set for Seamless Continuous Loop -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-amber-500/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=120&auto=format&fit=crop&q=80" alt="Makhani" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">Paneer Butter Masala</span>
+          <span class="text-[10px] text-amber-600 dark:text-amber-400 font-bold">✨ Cashew Velvet (98% Match)</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-emerald-500/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=120&auto=format&fit=crop&q=80" alt="Avocado Toast" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">Smashed Avocado Toast</span>
+          <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">🥑 Green Pea Silk (-43% Cost)</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-purple-500/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=120&auto=format&fit=crop&q=80" alt="Truffle Fettuccine" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">Wild Mushroom Fettuccine</span>
+          <span class="text-[10px] text-purple-600 dark:text-purple-400 font-bold">🍄 Porcini Broth (-56% Cost)</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-flame/30 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=120&auto=format&fit=crop&q=80" alt="Basque Cheesecake" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-black text-slate-900 dark:text-white block leading-tight">San Sebastian Basque Cake</span>
+          <span class="text-[10px] text-flame font-bold">🍰 Hung Curd Blend (-55% Cost)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- 4. MAIN APP VIEW CONTAINERS                    -->
+  <!-- ============================================== -->
+  <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6">
 
     <!-- ============================================ -->
     <!-- VIEW 1: FLAVORSHIFT AI SWAP LAB (FLAGSHIP)   -->
@@ -243,129 +392,9 @@
     <!-- VIEW 2: EXPLORE RECIPES & CATALOG            -->
     <!-- ============================================ -->
     <section id="view-explore" class="tab-view-container hidden space-y-8 animate-fade-up">
-
-      <!-- Dynamic Hero Banner -->
-      <div class="relative rounded-3xl overflow-hidden gradient-cafe-hero p-8 md:p-12 text-white shadow-xl">
-        <div class="relative z-10 max-w-3xl space-y-4">
-          
-          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-black uppercase tracking-wider">
-            <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-            <span>FlavorShift AI Culinary Architecture</span>
-          </div>
-
-          <h1 class="font-heading font-black text-3xl sm:text-4xl md:text-5xl leading-tight tracking-tight">
-            Never Compromise on Taste.<br>
-            <span class="text-amber-200">Swap Missing or Expensive Ingredients</span> with AI.
-          </h1>
-
-          <p class="text-white/90 text-sm md:text-base leading-relaxed max-w-2xl font-medium">
-            Cooking Paneer Butter Masala without Fresh Cream? Or Truffle Pasta without expensive truffle oil? FlavorShift AI calculates the exact replacement ratio, models texture & flavor compatibility, and proves it with <strong>Human Taste Validation (HTV)</strong>.
-          </p>
-
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
-            <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-              <span class="block text-xl md:text-2xl font-black text-white">98.2%</span>
-              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Taste Similarity</span>
-            </div>
-            <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-              <span class="block text-xl md:text-2xl font-black text-amber-200">1-50 Covers</span>
-              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Person Scaling</span>
-            </div>
-            <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-              <span class="block text-xl md:text-2xl font-black text-white">40-65%</span>
-              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Ingredient Savings</span>
-            </div>
-            <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-              <span class="block text-xl md:text-2xl font-black text-rose-200">-43% Kcal</span>
-              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Calorie Reducer</span>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="absolute -right-16 -bottom-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
+      <div id="explore-view-container">
+        <!-- Rendered dynamically by JS -->
       </div>
-
-      <!-- Search, Categories, Dietary Filters & Sort Bar -->
-      <div class="space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div class="relative flex-1 max-w-lg">
-            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-            <input 
-              type="text" 
-              id="search-input"
-              placeholder="Search recipes, missing ingredients (e.g. Cream, Paneer, Avocado)..." 
-              class="w-full pl-11 pr-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-cafe-orange dark:focus:border-amber-400 shadow-sm transition-all"
-            >
-          </div>
-
-          <div class="flex items-center gap-2 shrink-0">
-            <span class="text-xs font-bold text-slate-400 hidden sm:inline">Sort by:</span>
-            <select 
-              id="sort-select"
-              class="px-3.5 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cafe-orange shadow-sm cursor-pointer"
-            >
-              <option value="popular">🔥 Most Popular & Searched</option>
-              <option value="cost-asc">💰 Lowest Food Cost ($ / Person)</option>
-              <option value="calories-asc">🥗 Lowest Calories (kcal / Person)</option>
-              <option value="margin-desc">📈 Highest Profit Margin (%)</option>
-              <option value="prep-asc">⚡ Fastest Kitchen Ticket (&lt;10m)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-          <button type="button" data-category="all" class="cat-pill active-cat px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
-            All Menus
-          </button>
-          <button type="button" data-category="Cafe & Bistro Curries" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
-            🍛 Indian Curries & Makhani
-          </button>
-          <button type="button" data-category="Brunch & Toast" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
-            🥑 Brunch & Toast
-          </button>
-          <button type="button" data-category="Pastas & Mains" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
-            🍝 Pastas & Mains
-          </button>
-          <button type="button" data-category="Bakery & Desserts" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
-            🍰 Bakery & Desserts
-          </button>
-          <button type="button" data-category="Coffee & Drinks" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all whitespace-nowrap cursor-pointer">
-            ☕ Coffee & Drinks
-          </button>
-        </div>
-
-        <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
-          <span class="font-bold text-slate-400 shrink-0 mr-1">Diet Focus:</span>
-          <button type="button" data-diet="all" class="diet-pill active-diet px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all">
-            All Diets
-          </button>
-          <button type="button" data-diet="Vegetarian" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all flex items-center gap-1">
-            <i class="fa-solid fa-seedling text-emerald-500"></i> Vegetarian
-          </button>
-          <button type="button" data-diet="Vegan" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all flex items-center gap-1">
-            <i class="fa-solid fa-leaf text-emerald-500"></i> 100% Vegan
-          </button>
-          <button type="button" data-diet="Gluten-Free" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all">
-            🌾 Gluten-Free
-          </button>
-        </div>
-      </div>
-
-      <!-- Recipes Grid -->
-      <div>
-        <div class="flex items-center justify-between mb-4">
-          <span id="recipes-count-display" class="text-xs font-black uppercase tracking-wider text-slate-500">
-            Showing Recipes
-          </span>
-          <span class="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-            <i class="fa-solid fa-check-double"></i> All Swaps Backed by Human Taste Validation
-          </span>
-        </div>
-
-        <div id="recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-      </div>
-
     </section>
 
     <!-- ============================================ -->
@@ -380,7 +409,7 @@
     <!-- ============================================ -->
     <!-- VIEW 4: CAFE COST & MARGIN DASHBOARD         -->
     <!-- ============================================ -->
-    <section id="view-dashboard" class="tab-view-container hidden">
+    <section id="view-dashboard" class="tab-view-container hidden space-y-8 animate-fade-up">
       <div id="dashboard-view-container">
         <!-- Rendered by JS -->
       </div>
@@ -389,7 +418,7 @@
     <!-- ============================================ -->
     <!-- VIEW 5: DESIGN THINKING SLIDES               -->
     <!-- ============================================ -->
-    <section id="view-slides" class="tab-view-container hidden">
+    <section id="view-slides" class="tab-view-container hidden space-y-8 animate-fade-up">
       <div id="slides-view-container">
         <!-- Rendered by JS -->
       </div>
@@ -398,7 +427,7 @@
     <!-- ============================================ -->
     <!-- VIEW 6: FAVORITES VIEW                       -->
     <!-- ============================================ -->
-    <section id="view-favorites" class="tab-view-container hidden">
+    <section id="view-favorites" class="tab-view-container hidden space-y-8 animate-fade-up">
       <div id="favorites-view-container">
         <!-- Rendered by JS -->
       </div>
@@ -407,38 +436,39 @@
   </main>
 
   <!-- ============================================== -->
-  <!-- 4. RECIPE WEBX MODAL DEEP-DIVE                 -->
+  <!-- 5. RECIPE WEBX MODAL DEEP-DIVE                 -->
   <!-- ============================================== -->
-  <div id="recipe-webx-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
-    <div id="modal-recipe-body" class="w-full">
+  <div id="recipe-webx-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div id="modal-recipe-body" class="w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-3xl shadow-2xl">
       <!-- Dynamically filled with Ingredients FIRST, then Whole Recipe Steps SECOND -->
     </div>
   </div>
 
   <!-- ============================================== -->
-  <!-- 5. GLOBAL FOOTER                               -->
+  <!-- 6. GLOBAL FOOTER                               -->
   <!-- ============================================== -->
-  <footer class="mt-16 border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 py-8 px-4 lg:px-8 text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+  <footer class="relative z-10 mt-16 border-t border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md py-10 px-4 lg:px-8 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-3">
-        <div class="w-7 h-7 rounded-lg bg-cafe-orange flex items-center justify-center text-white font-black text-xs">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-flame to-berry-500 flex items-center justify-center text-white font-black text-sm shadow-md shadow-flame/20">
           FS
         </div>
         <div>
-          <span class="font-bold text-slate-800 dark:text-white">FlavorShift AI</span>
-          <span class="block text-[11px] text-slate-400">AI Culinary Ingredient Substitution & Human Taste Validation Platform</span>
+          <span class="font-heading font-black text-base text-slate-800 dark:text-white">FlavorShift AI</span>
+          <span class="block text-[11px] text-slate-400">Intelligent Culinary Ingredient Substitution & Human Taste Validation Platform</span>
         </div>
       </div>
 
-      <div class="flex flex-wrap items-center gap-4 text-xs font-medium">
-        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-500"></i> Human Taste Validation (HTV)</span>
-        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-amber-500"></i> Exact Ratio & Quantity Calculator</span>
-        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-rose-500"></i> Texture & Flavor Match Matrix</span>
-        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-indigo-500"></i> No. of Persons Scaling</span>
+      <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-semibold">
+        <span class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400"><i class="fa-solid fa-check-double"></i> 98.2% Human Taste Validation (HTV)</span>
+        <span class="flex items-center gap-1.5 text-amber-600 dark:text-amber-400"><i class="fa-solid fa-calculator"></i> Exact Gram & Person Scaling</span>
+        <span class="flex items-center gap-1.5 text-rose-500"><i class="fa-solid fa-chart-line"></i> 40-65% Wholesale Savings</span>
+        <span class="flex items-center gap-1.5 text-purple-500"><i class="fa-solid fa-leaf"></i> Zero-Compromise Calorie Reducer</span>
       </div>
 
-      <div class="text-[11px] text-slate-400">
-        © 2026 FlavorShift AI • All rights reserved
+      <div class="text-[11px] text-slate-400 text-center md:text-right">
+        <span>© 2026 FlavorShift AI</span>
+        <span class="block text-[10px] text-slate-400/80 mt-0.5">Empowering Chefs, Cafes & Culinary Creators</span>
       </div>
     </div>
   </footer>
