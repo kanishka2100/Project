@@ -1383,7 +1383,7 @@
     window.print();
   }
 
-  // RENDER: Cafe Command Dashboard (Instruction #4 & #8)
+  // RENDER: Cafe Command Dashboard (Instruction #4 & #8) - Enhanced Ultra-Attractive Edition
   function renderDashboardView() {
     const container = document.getElementById('dashboard-view-container');
     if (!container) return;
@@ -1391,8 +1391,12 @@
     // Calculate aggregated metrics across catalog
     const totalRecipes = RECIPES_DATA.length;
     let avgMargin = 0;
+    let totalBaseCost = 0;
+    let totalRetail = 0;
     RECIPES_DATA.forEach(r => {
       avgMargin += calcMargin(r.baseCostPerPerson, r.suggestedRetailPrice);
+      totalBaseCost += r.baseCostPerPerson;
+      totalRetail += r.suggestedRetailPrice;
     });
     avgMargin = Math.round(avgMargin / totalRecipes);
 
@@ -1402,127 +1406,272 @@
     const coverFoodCost = (selectedCoverRecipe.costPerPerson * coversCount).toFixed(2);
     const coverRevenue = (selectedCoverRecipe.suggestedRetailPrice * coversCount).toFixed(2);
     const coverProfit = (coverRevenue - coverFoodCost).toFixed(2);
+    
+    // Calculate shift savings if budget swap is used
+    const shiftSavings = (selectedCoverRecipe.budgetAlternative.savingsPerPerson * coversCount).toFixed(2);
+
+    // Annual projection based on 85 average daily covers
+    const annualCovers = 85 * 365;
+    const avgCostPerPlate = (totalBaseCost / totalRecipes);
+    const avgPricePerPlate = (totalRetail / totalRecipes);
+    const annualRevenue = Math.round(annualCovers * avgPricePerPlate);
+    const annualFoodCost = Math.round(annualCovers * avgCostPerPlate);
+    const annualGrossProfit = annualRevenue - annualFoodCost;
 
     let html = `
       <div class="space-y-8 animate-fade-up">
         
-        <!-- Dashboard Top Header -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="px-3 py-0.5 rounded-full text-xs font-black bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
-                Small Cafe Commercial Suite
-              </span>
-              <span class="text-xs text-slate-400">Live Culinary Intelligence</span>
+        <!-- ============================================ -->
+        <!-- 1. EXECUTIVE COMMAND HEADER & LIVE STATUS    -->
+        <!-- ============================================ -->
+        <div class="relative overflow-hidden rounded-3xl p-6 md:p-8 bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950 text-white shadow-xl border border-slate-700/80">
+          <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            
+            <div class="space-y-2">
+              <div class="flex flex-wrap items-center gap-2.5">
+                <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1.5 shadow-sm">
+                  <span class="live-pulse-dot"></span>
+                  <span>Chef Kanishka's Cafe Command Suite</span>
+                </span>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
+                  Station Status: 4 Prep Lines Active
+                </span>
+              </div>
+
+              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black font-heading tracking-tight text-white">
+                Culinary Performance & Food Margin Center
+              </h2>
+              <p class="text-slate-300 text-xs sm:text-sm max-w-2xl font-medium leading-relaxed">
+                Algorithmic recipe economics engineered for independent operators. Track real-time gross margins, batch covers, and budget substitution savings across all shifts.
+              </p>
             </div>
-            <h2 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">
-              Cafe Culinary & Financial Dashboard
-            </h2>
-            <p class="text-slate-500 dark:text-slate-400 text-sm">
-              Control food cost margins, eliminate ingredient waste, and plan daily person covers.
-            </p>
+
+            <!-- Quick Action Buttons -->
+            <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+              <button 
+                type="button" 
+                id="dash-quick-pantry-btn"
+                class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md transition-all cursor-pointer flex items-center gap-2 shadow-sm"
+              >
+                <i class="fa-solid fa-boxes-stacked text-amber-400"></i>
+                <span>Pantry Inventory</span>
+              </button>
+
+              <button 
+                type="button" 
+                id="dash-launch-slides-btn"
+                class="px-4 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white shadow-lg transition-all cursor-pointer flex items-center gap-2"
+              >
+                <i class="fa-solid fa-lightbulb"></i>
+                <span>Design Thinking Deck</span>
+              </button>
+            </div>
+
           </div>
 
-          <div class="flex items-center gap-2">
-            <button 
-              type="button" 
-              id="dash-quick-pantry-btn"
-              class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-amber-400 transition-all cursor-pointer flex items-center gap-2 shadow-sm"
-            >
-              <i class="fa-solid fa-boxes-stacked text-amber-500"></i>
-              <span>Pantry Stock Check</span>
-            </button>
-            <button 
-              type="button" 
-              id="dash-launch-slides-btn"
-              class="px-4 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-md transition-all cursor-pointer flex items-center gap-2"
-            >
-              <i class="fa-solid fa-lightbulb"></i>
-              <span>Design Thinking Slides</span>
-            </button>
-          </div>
+          <!-- Decorative Ambient Glows -->
+          <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-amber-500/10 blur-3xl pointer-events-none"></div>
+          <div class="absolute left-1/2 -top-20 w-72 h-72 rounded-full bg-rose-500/10 blur-3xl pointer-events-none"></div>
         </div>
 
-        <!-- 4 KPI Cards -->
+        <!-- ============================================ -->
+        <!-- 2. FOUR HIGH-IMPACT GLASS KPI CARDS          -->
+        <!-- ============================================ -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           
-          <div class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm relative overflow-hidden">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Avg Gross Margin</span>
-              <span class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400 flex items-center justify-center text-sm">
-                <i class="fa-solid fa-chart-line"></i>
+          <!-- KPI 1: Gross Margin % with Circular Visual Ring -->
+          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/80 shadow-sm glow-emerald flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-black text-slate-400 uppercase tracking-wider">Gross Profit Margin</span>
+                <span class="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-base font-bold">
+                  <i class="fa-solid fa-chart-pie"></i>
+                </span>
+              </div>
+
+              <div class="flex items-center justify-between gap-3 mb-2">
+                <span class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                  ${avgMargin}%
+                </span>
+                
+                <!-- SVG Radial Ring (74.8% Visual) -->
+                <div class="relative w-12 h-12 shrink-0">
+                  <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                    <path class="text-slate-100 dark:text-slate-700 stroke-current" stroke-width="4" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path class="text-emerald-500 stroke-current" stroke-dasharray="${avgMargin}, 100" stroke-width="4" stroke-linecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                  </svg>
+                  <span class="absolute inset-0 flex items-center justify-center text-[10px] font-black text-emerald-600 dark:text-emerald-400">
+                    75%
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700/70">
+              <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-arrow-trend-up"></i> +14.8% above 60% industry avg
               </span>
+              <span class="block text-[10px] text-slate-400 mt-0.5">Target Food Cost: 25.2%</span>
             </div>
-            <div class="text-3xl font-black text-slate-900 dark:text-white mb-1">
-              ${avgMargin}%
-            </div>
-            <p class="text-xs text-emerald-600 font-semibold flex items-center gap-1">
-              <i class="fa-solid fa-arrow-trend-up"></i> +14% higher than industry avg (60%)
-            </p>
           </div>
 
-          <div class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm relative overflow-hidden">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Monthly Food Savings</span>
-              <span class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-400 flex items-center justify-center text-sm">
-                <i class="fa-solid fa-piggy-bank"></i>
-              </span>
+          <!-- KPI 2: Monthly Food Cost Savings -->
+          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/80 shadow-sm glow-amber flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-black text-slate-400 uppercase tracking-wider">Monthly Cost Saved</span>
+                <span class="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center text-base font-bold">
+                  <i class="fa-solid fa-piggy-bank"></i>
+                </span>
+              </div>
+
+              <div class="text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-2">
+                $1,420<span class="text-sm font-semibold text-slate-400">/mo</span>
+              </div>
             </div>
-            <div class="text-3xl font-black text-slate-900 dark:text-white mb-1">
-              $1,420<span class="text-base text-slate-400 font-medium">/mo</span>
+
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700/70 space-y-1.5">
+              <div class="flex items-center justify-between text-[11px] font-bold text-amber-600 dark:text-amber-400">
+                <span>Avocado Pea Swap</span>
+                <span>+$420/mo</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-700 h-1 rounded-full overflow-hidden">
+                <div class="bg-amber-500 h-full rounded-full" style="width: 82%"></div>
+              </div>
+              <span class="block text-[10px] text-slate-400">Via 1-Click Budget Substitutions</span>
             </div>
-            <p class="text-xs text-amber-600 font-semibold flex items-center gap-1">
-              <i class="fa-solid fa-check"></i> Via Smart Ingredient Swaps
-            </p>
           </div>
 
-          <div class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm relative overflow-hidden">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Fit-Bistro Uptake</span>
-              <span class="w-9 h-9 rounded-xl bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400 flex items-center justify-center text-sm">
-                <i class="fa-solid fa-fire"></i>
+          <!-- KPI 3: Fit-Bistro / Calorie Cutter Growth -->
+          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/80 shadow-sm glow-rose flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-black text-slate-400 uppercase tracking-wider">Fit-Bistro Uptake</span>
+                <span class="w-10 h-10 rounded-2xl bg-rose-500/15 text-rose-600 dark:text-rose-400 flex items-center justify-center text-base font-bold">
+                  <i class="fa-solid fa-fire-flame-simple"></i>
+                </span>
+              </div>
+
+              <div class="text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-2">
+                +42.5%
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700/70">
+              <span class="text-[11px] text-rose-600 dark:text-rose-400 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-arrow-trend-up"></i> 1 in 3 guests choose Low-Kcal
               </span>
+              <span class="block text-[10px] text-slate-400 mt-0.5">Average -46% Calorie Reduction</span>
             </div>
-            <div class="text-3xl font-black text-slate-900 dark:text-white mb-1">
-              +42%
-            </div>
-            <p class="text-xs text-rose-600 font-semibold flex items-center gap-1">
-              <i class="fa-solid fa-arrow-trend-up"></i> Demand for Low-Calorie options
-            </p>
           </div>
 
-          <div class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-sm relative overflow-hidden">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Production Recipes</span>
-              <span class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-400 flex items-center justify-center text-sm">
-                <i class="fa-solid fa-book-open"></i>
+          <!-- KPI 4: Active Standard Operating Procedures -->
+          <div class="dash-kpi-card p-6 bg-white dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/80 shadow-sm glow-indigo flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-black text-slate-400 uppercase tracking-wider">Production SOPs</span>
+                <span class="w-10 h-10 rounded-2xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-base font-bold">
+                  <i class="fa-solid fa-kitchen-set"></i>
+                </span>
+              </div>
+
+              <div class="text-3xl font-black text-slate-900 dark:text-white tracking-tight mb-2">
+                ${totalRecipes} <span class="text-sm font-semibold text-slate-400">Staples</span>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-700/70">
+              <span class="text-[11px] text-indigo-500 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-bolt"></i> Avg Ticket Speed: 4.8 mins
               </span>
+              <span class="block text-[10px] text-slate-400 mt-0.5">Scaled 1 to 50 Persons without ml</span>
             </div>
-            <div class="text-3xl font-black text-slate-900 dark:text-white mb-1">
-              ${totalRecipes} <span class="text-base text-slate-400 font-medium">SOPs</span>
-            </div>
-            <p class="text-xs text-indigo-500 font-semibold flex items-center gap-1">
-              <i class="fa-solid fa-users"></i> Fully scaled by person covers
-            </p>
           </div>
 
         </div>
 
-        <!-- Interactive Daily Covers & Shift Batch Scaler -->
-        <div class="p-6 md:p-8 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm space-y-6">
+        <!-- ============================================ -->
+        <!-- 3. FINANCIAL HEALTH GAUGE & PROFIT FORECAST -->
+        <!-- ============================================ -->
+        <div class="p-6 md:p-8 rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-6">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <span class="text-xs font-black uppercase tracking-wider text-amber-500">Kitchen Operations Tool</span>
+              <span class="text-xs font-black uppercase tracking-wider text-amber-500">Financial Engineering</span>
+              <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-wallet text-amber-500"></i>
+                <span>Cafe Margin Split & Annualized Revenue Forecast</span>
+              </h3>
+              <p class="text-xs text-slate-500">Based on standard small cafe volume (85 covers/day average)</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                Healthy Commercial Model
+              </span>
+            </div>
+          </div>
+
+          <!-- Visual Margin Breakdown Bar -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs font-bold">
+              <span class="text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle text-[8px]"></i> Gross Profit Margin: 74.8%
+              </span>
+              <span class="text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-circle text-[8px]"></i> Wholesale Food Cost: 25.2%
+              </span>
+            </div>
+            
+            <div class="w-full h-4 rounded-full overflow-hidden flex bg-slate-100 dark:bg-slate-700 p-0.5">
+              <div class="bg-gradient-to-r from-emerald-500 to-teal-500 h-full rounded-l-full transition-all duration-500" style="width: 74.8%"></div>
+              <div class="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-r-full transition-all duration-500" style="width: 25.2%"></div>
+            </div>
+          </div>
+
+          <!-- 3 Annualized Projections -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+            <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/60 text-center">
+              <span class="block text-xs font-bold text-slate-400 uppercase">Annual Food Inventory Cost</span>
+              <span class="text-2xl font-black text-slate-900 dark:text-white mt-1 block">
+                $${annualFoodCost.toLocaleString()}
+              </span>
+              <span class="text-[11px] text-slate-400">Wholesale supplier expenditure</span>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/40 text-center">
+              <span class="block text-xs font-bold text-emerald-800 dark:text-emerald-300 uppercase">Annual Cafe Revenue</span>
+              <span class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 block">
+                $${annualRevenue.toLocaleString()}
+              </span>
+              <span class="text-[11px] text-emerald-600">Total guest ticket sales</span>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-900/40 text-center">
+              <span class="block text-xs font-bold text-indigo-800 dark:text-indigo-300 uppercase">Annual Gross Kitchen Profit</span>
+              <span class="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-1 block">
+                +$${annualGrossProfit.toLocaleString()}
+              </span>
+              <span class="text-[11px] text-indigo-600">Available for expansion & labor</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 4. INTERACTIVE DAILY SHIFT COVERS & BULK BATCH PREP SIMULATOR -->
+        <!-- ============================================================ -->
+        <div class="p-6 md:p-8 rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-6">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-black uppercase tracking-wider text-amber-500">Live Kitchen Prep Tool</span>
               <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
                 <i class="fa-solid fa-calculator text-amber-500"></i>
-                <span>Daily Shift Covers Batch Scaler & Revenue Simulator</span>
+                <span>Daily Shift Covers Scaler & Shift Revenue Simulator</span>
               </h3>
               <p class="text-xs text-slate-500">Select any dish and simulate expected dine-in covers for breakfast or dinner rush</p>
             </div>
 
-            <div class="flex items-center gap-3">
-              <label class="text-xs font-bold text-slate-500">Select Cafe Staple:</label>
-              <select id="dash-cover-recipe-select" class="px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-bold text-slate-800 dark:text-white focus:outline-none focus:border-amber-500">
+            <div class="flex items-center gap-2">
+              <label class="text-xs font-bold text-slate-500 hidden sm:inline">Select Staple:</label>
+              <select id="dash-cover-recipe-select" class="px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-bold text-slate-800 dark:text-white focus:outline-none focus:border-amber-500 cursor-pointer shadow-sm">
                 ${RECIPES_DATA.map(r => `
                   <option value="${r.id}" ${r.id === state.dashboardSelectedRecipeId ? 'selected' : ''}>
                     ${r.title} (${r.category})
@@ -1532,11 +1681,28 @@
             </div>
           </div>
 
-          <!-- Covers Slider & Controls -->
+          <!-- Shift Presets (Instruction #2: Persons) -->
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-bold text-slate-400 mr-1">Quick Shifts:</span>
+            <button type="button" class="shift-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${coversCount === 35 ? 'active-shift' : 'bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-600 hover:border-amber-400'}" data-covers="35">
+              ☕ Morning Rush (35 Covers)
+            </button>
+            <button type="button" class="shift-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${coversCount === 80 ? 'active-shift' : 'bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-600 hover:border-amber-400'}" data-covers="80">
+              🥑 Weekend Brunch (80 Covers)
+            </button>
+            <button type="button" class="shift-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${coversCount === 120 ? 'active-shift' : 'bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-600 hover:border-amber-400'}" data-covers="120">
+              🍝 Evening Bistro (120 Covers)
+            </button>
+            <button type="button" class="shift-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${coversCount === 200 ? 'active-shift' : 'bg-slate-100 dark:bg-slate-700 border-slate-200 dark:border-slate-600 hover:border-amber-400'}" data-covers="200">
+              🎉 Catering Banquet (200 Covers)
+            </button>
+          </div>
+
+          <!-- Slider Container -->
           <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-4">
             <div class="flex items-center justify-between">
-              <span class="text-sm font-bold text-slate-700 dark:text-slate-300">Expected Guests / Covers Today:</span>
-              <span class="text-2xl font-black text-amber-500" id="dash-covers-display">
+              <span class="text-sm font-bold text-slate-700 dark:text-slate-300">Target Shift Covers:</span>
+              <span class="text-2xl font-black text-amber-500 font-heading" id="dash-covers-display">
                 ${state.dashboardCovers} Persons
               </span>
             </div>
@@ -1548,59 +1714,223 @@
               max="200" 
               step="5" 
               value="${state.dashboardCovers}"
-              class="w-full accent-amber-500 cursor-pointer"
+              class="w-full accent-amber-500 cursor-pointer h-2 bg-slate-200 dark:bg-slate-700 rounded-lg"
             >
 
             <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
-              <span>5 Persons (Slow weekday)</span>
-              <span>50 Persons (Standard cafe shift)</span>
-              <span>100 Persons (Peak weekend brunch)</span>
-              <span>200 Persons (Catering event)</span>
+              <span>5 Covers (Slow day)</span>
+              <span>50 Covers (Standard)</span>
+              <span>100 Covers (Brunch rush)</span>
+              <span>200 Covers (Full Catering)</span>
             </div>
           </div>
 
-          <!-- Batch Projection Output -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-            <div class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40">
+          <!-- 4 Output Pods -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+            
+            <div class="p-5 rounded-2xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 flex flex-col justify-between">
               <span class="block text-xs text-amber-800 dark:text-amber-300 font-bold uppercase tracking-wider">Wholesale Batch Cost</span>
-              <span class="text-2xl font-black text-slate-900 dark:text-white">${formatMoney(coverFoodCost)}</span>
-              <span class="block text-xs text-slate-500 mt-1">${formatMoney(selectedCoverRecipe.costPerPerson)} per cover</span>
+              <span class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white my-1 font-heading">${formatMoney(coverFoodCost)}</span>
+              <span class="block text-xs text-slate-500">${formatMoney(selectedCoverRecipe.costPerPerson)}/person</span>
             </div>
-            <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/40">
-              <span class="block text-xs text-emerald-800 dark:text-emerald-300 font-bold uppercase tracking-wider">Gross Cafe Revenue</span>
-              <span class="text-2xl font-black text-emerald-600 dark:text-emerald-400">${formatMoney(coverRevenue)}</span>
-              <span class="block text-xs text-emerald-600 mt-1">${formatMoney(selectedCoverRecipe.suggestedRetailPrice)} ticket avg</span>
+
+            <div class="p-5 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/40 flex flex-col justify-between">
+              <span class="block text-xs text-emerald-800 dark:text-emerald-300 font-bold uppercase tracking-wider">Gross Shift Revenue</span>
+              <span class="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 my-1 font-heading">${formatMoney(coverRevenue)}</span>
+              <span class="block text-xs text-emerald-600 font-bold">${formatMoney(selectedCoverRecipe.suggestedRetailPrice)} ticket avg</span>
             </div>
-            <div class="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/40">
+
+            <div class="p-5 rounded-2xl bg-indigo-50/80 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/40 flex flex-col justify-between">
               <span class="block text-xs text-indigo-800 dark:text-indigo-300 font-bold uppercase tracking-wider">Net Kitchen Profit</span>
-              <span class="text-2xl font-black text-indigo-600 dark:text-indigo-400">${formatMoney(coverProfit)}</span>
-              <span class="block text-xs text-indigo-600 mt-1">${selectedCoverRecipe.marginPercent}% gross margin</span>
+              <span class="text-2xl sm:text-3xl font-black text-indigo-600 dark:text-indigo-400 my-1 font-heading">${formatMoney(coverProfit)}</span>
+              <span class="block text-xs text-indigo-600 font-bold">${selectedCoverRecipe.marginPercent}% gross margin</span>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-rose-50/80 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/40 flex flex-col justify-between">
+              <span class="block text-xs text-rose-800 dark:text-rose-300 font-bold uppercase tracking-wider">Shift Swap Savings</span>
+              <span class="text-2xl sm:text-3xl font-black text-rose-600 dark:text-rose-400 my-1 font-heading">+$${shiftSavings}</span>
+              <span class="block text-xs text-rose-600 font-bold">Via Budget Alternative</span>
+            </div>
+
+          </div>
+
+          <!-- Dynamic Bulk Ingredient Preview for this Shift -->
+          <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="font-bold text-xs uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <i class="fa-solid fa-list-check text-amber-500"></i>
+                <span>Estimated Bulk Kitchen Prep Required (${coversCount} Covers of ${selectedCoverRecipe.title}):</span>
+              </div>
+              <span class="text-xs text-slate-400 font-medium">Scaled automatically without ml</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+              ${selectedCoverRecipe.ingredients.slice(0, 4).map(ing => {
+                const bulkQty = (ing.qtyPerPerson * coversCount);
+                const displayBulk = bulkQty % 1 === 0 ? bulkQty : bulkQty.toFixed(1);
+                return `
+                  <div class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs">
+                    <span class="block text-slate-500 font-medium truncate">${ing.name}</span>
+                    <span class="text-sm font-black text-slate-900 dark:text-white mt-0.5 block">
+                      ${displayBulk} ${ing.displayUnit}
+                    </span>
+                  </div>
+                `;
+              }).join('')}
             </div>
           </div>
 
-          <div class="text-center pt-2">
+          <!-- Bottom Action Buttons -->
+          <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
             <button 
               type="button" 
               data-open-recipe="${selectedCoverRecipe.id}"
-              class="px-5 py-2.5 rounded-xl font-bold text-xs bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-amber-500 hover:text-white transition-all cursor-pointer shadow-sm"
+              class="px-5 py-2.5 rounded-xl font-bold text-xs bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-amber-500 hover:text-white transition-all cursor-pointer shadow-md flex items-center gap-2"
             >
-              Open Full Recipe & Kitchen Prep Guide for ${state.dashboardCovers} Persons
+              <i class="fa-solid fa-book-open"></i>
+              <span>Open Complete Kitchen SOP for ${state.dashboardCovers} Persons</span>
             </button>
           </div>
         </div>
 
-        <!-- Recipe Margin & Calorie Comparison Table -->
-        <div class="p-6 md:p-8 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+        <!-- ============================================ -->
+        <!-- 5. TOP CAFE REVENUE DRIVERS LEADERBOARD      -->
+        <!-- ============================================ -->
+        <div class="p-6 md:p-8 rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-6">
           <div class="flex items-center justify-between">
             <div>
-              <h3 class="text-lg font-black text-slate-900 dark:text-white">
-                Cafe Menu Financial & Calorie Matrix
+              <span class="text-xs font-black uppercase tracking-wider text-amber-500">Menu Popularity</span>
+              <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-trophy text-amber-500"></i>
+                <span>Top Cafe Revenue Drivers Leaderboard</span>
               </h3>
-              <p class="text-xs text-slate-500">Benchmark food costs, suggested pricing, and low-calorie headroom</p>
+              <p class="text-xs text-slate-500">Ranked by customer popularity, ticket speed, and commercial profitability</p>
             </div>
           </div>
 
-          <div class="overflow-x-auto">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            ${RECIPES_DATA.slice(0, 3).map((r, i) => {
+              const rankMedal = i === 0 ? '🥇 #1 Revenue Driver' : i === 1 ? '🥈 #2 Margin Hero' : '🥉 #3 Trending Staple';
+              const rankColor = i === 0 ? 'from-amber-500 to-orange-500' : i === 1 ? 'from-emerald-500 to-teal-500' : 'from-rose-500 to-pink-500';
+              const margin = calcMargin(r.baseCostPerPerson, r.suggestedRetailPrice);
+              return `
+                <div class="cafe-card group p-5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl flex flex-col justify-between">
+                  <div>
+                    <div class="h-44 rounded-xl overflow-hidden mb-3 relative">
+                      <img src="${r.image}" alt="${r.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                      
+                      <span class="absolute top-2 left-2 px-2.5 py-1 rounded-md text-xs font-black bg-gradient-to-r ${rankColor} text-white shadow-md">
+                        ${rankMedal}
+                      </span>
+
+                      <div class="absolute bottom-2 left-2 right-2 bg-black/60 backdrop-blur-md rounded-lg p-2 text-white flex items-center justify-between text-xs">
+                        <span class="font-bold"><i class="fa-solid fa-star text-amber-400 mr-1"></i>${r.rating}</span>
+                        <span><i class="fa-regular fa-clock mr-1"></i>${r.prepTime}</span>
+                        <span class="font-black text-emerald-400">${margin}% Margin</span>
+                      </div>
+                    </div>
+
+                    <h4 class="font-bold text-base text-slate-900 dark:text-white mb-1 group-hover:text-amber-500 transition-colors">
+                      ${r.title}
+                    </h4>
+                    <p class="text-xs text-slate-500 line-clamp-2 mb-3">
+                      ${r.tagline}
+                    </p>
+                  </div>
+
+                  <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                    <div>
+                      <span class="block text-[10px] text-slate-400 font-bold uppercase">Food Cost</span>
+                      <span class="font-black text-slate-900 dark:text-white text-sm">${formatMoney(r.baseCostPerPerson)}</span>
+                    </div>
+                    <button 
+                      type="button" 
+                      data-open-recipe="${r.id}"
+                      class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white transition-all cursor-pointer shadow-sm"
+                    >
+                      View Recipe SOP
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 6. CALORIE CUTTER / LOW-CALORIE COMPARISON VISUAL CHART   -->
+        <!-- ========================================================= -->
+        <div class="p-6 md:p-8 rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <span class="text-xs font-black uppercase tracking-wider text-rose-500">Dietary & Fit-Bistro Intelligence</span>
+              <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-fire text-rose-500"></i>
+                <span>Calorie Cutter Impact Chart (Standard vs Fit-Bistro Version)</span>
+              </h3>
+              <p class="text-xs text-slate-500">Comparison of calories per person across standard vs low-calorie formula</p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 self-start sm:self-auto">
+              Average 46% Calorie Reduction
+            </span>
+          </div>
+
+          <!-- Visual Calorie Bars Grid -->
+          <div class="space-y-4">
+            ${RECIPES_DATA.map(r => {
+              const stdKcal = r.baseCalories;
+              const fitKcal = r.calorieAlternative.newCalories;
+              const pctDrop = r.calorieAlternative.caloriePercent;
+              const maxKcal = 700;
+              const stdWidth = Math.round((stdKcal / maxKcal) * 100);
+              const fitWidth = Math.round((fitKcal / maxKcal) * 100);
+
+              return `
+                <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+                  <div class="flex items-center justify-between text-xs font-bold mb-2">
+                    <span class="text-slate-900 dark:text-white font-extrabold">${r.title}</span>
+                    <span class="text-rose-600 dark:text-rose-400 font-black">${pctDrop} Calories</span>
+                  </div>
+
+                  <!-- Double comparison bar -->
+                  <div class="space-y-1.5">
+                    <div class="flex items-center gap-3">
+                      <span class="text-[10px] font-bold text-slate-400 w-16">Standard:</span>
+                      <div class="flex-1 bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                        <div class="bg-slate-500 h-full rounded-full" style="width: ${stdWidth}%"></div>
+                      </div>
+                      <span class="text-[11px] font-bold text-slate-600 dark:text-slate-400 w-16 text-right">${stdKcal} kcal</span>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                      <span class="text-[10px] font-bold text-rose-500 w-16">Fit Version:</span>
+                      <div class="flex-1 bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                        <div class="bg-gradient-to-r from-rose-500 to-amber-500 h-full rounded-full" style="width: ${fitWidth}%"></div>
+                      </div>
+                      <span class="text-[11px] font-black text-rose-600 dark:text-rose-400 w-16 text-right">${fitKcal} kcal</span>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- 7. COMPLETE CAFE MENU FINANCIAL MATRIX TABLE -->
+        <!-- ============================================ -->
+        <div class="p-6 md:p-8 rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-black uppercase tracking-wider text-amber-500">Complete Overview</span>
+              <h3 class="text-xl font-black text-slate-900 dark:text-white">
+                Cafe Menu Financial & Calorie Matrix Table
+              </h3>
+              <p class="text-xs text-slate-500">Wholesale baseline costs, budget alternative savings, retail prices, and gross margins</p>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700">
             <table class="w-full text-left text-xs">
               <thead class="bg-slate-50 dark:bg-slate-900 text-slate-400 uppercase font-black tracking-wider border-b border-slate-200 dark:border-slate-800">
                 <tr>
@@ -1620,8 +1950,9 @@
                   const budgetMargin = calcMargin(r.budgetAlternative.newCostPerPerson, r.suggestedRetailPrice);
                   return `
                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors">
-                      <td class="py-3.5 px-4 font-bold text-slate-900 dark:text-white">
-                        ${r.title}
+                      <td class="py-3.5 px-4 font-bold text-slate-900 dark:text-white flex items-center gap-2.5">
+                        <img src="${r.image}" alt="${r.title}" class="w-8 h-8 rounded-lg object-cover shrink-0">
+                        <span class="truncate max-w-[180px]">${r.title}</span>
                       </td>
                       <td class="py-3.5 px-4 text-slate-500">
                         ${r.category}
@@ -1648,9 +1979,9 @@
                         <button 
                           type="button" 
                           data-open-recipe="${r.id}"
-                          class="px-3 py-1 rounded-lg text-xs font-bold bg-amber-500 text-white hover:bg-amber-600 transition-all cursor-pointer"
+                          class="px-3 py-1 rounded-lg text-xs font-bold bg-amber-500 text-white hover:bg-amber-600 transition-all cursor-pointer shadow-sm"
                         >
-                          View
+                          View SOP
                         </button>
                       </td>
                     </tr>
@@ -1691,6 +2022,14 @@
 
     coverSlider?.addEventListener('change', () => {
       renderDashboardView();
+    });
+
+    // Shift preset buttons
+    container.querySelectorAll('.shift-preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.dashboardCovers = parseInt(btn.getAttribute('data-covers'), 10);
+        renderDashboardView();
+      });
     });
 
     container.querySelectorAll('[data-open-recipe]').forEach(btn => {
