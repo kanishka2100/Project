@@ -1,10 +1,10 @@
 # FlavorShift AI 🍳✨
 ### Intelligent Culinary Ingredient Substitution & Human Taste Validation Platform
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-22c55e?style=for-the-badge&logo=github)](https://kanishka2100.github.io/first/)
-[![Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/kanishka2100/first)
-[![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Mobile%20Responsive-orange?style=for-the-badge)](https://kanishka2100.github.io/first/)
-[![Validation](https://img.shields.io/badge/HTV-Human%20Taste%20Validated-emerald?style=for-the-badge)](https://kanishka2100.github.io/first/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-22c55e?style=for-the-badge&logo=github)](https://kanishka2100.github.io/Project/)
+[![Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/kanishka2100/Project)
+[![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Mobile%20Responsive-orange?style=for-the-badge)](https://kanishka2100.github.io/Project/)
+[![Validation](https://img.shields.io/badge/HTV-Human%20Taste%20Validated-emerald?style=for-the-badge)](https://kanishka2100.github.io/Project/)
 [![Team Sprint](https://img.shields.io/badge/72h%20Sprint-4%20Developer%20Roadmap-blue?style=for-the-badge&logo=fastapi)](./TEAM_3DAY_SPRINT.md)
 
 ---
@@ -195,8 +195,8 @@ FlavorShift AI requires **no compilation, package manager, or backend installati
 ### Option A: Open Directly in Any Web Browser (Fastest)
 1. Clone or download the repository to your local machine:
    ```bash
-   git clone https://github.com/kanishka2100/first.git
-   cd first
+   git clone https://github.com/kanishka2100/Project.git
+   cd Project
    ```
 2. Double-click the `index.html` file, or right-click and choose **Open with** $\rightarrow$ **Google Chrome / Microsoft Edge / Mozilla Firefox / Safari**.
 
@@ -249,14 +249,14 @@ If you have Python or Node.js installed:
 ## 11. Live Website Link
 The project is continuously deployed and accessible online across desktop, tablet, and mobile browsers:
 
-🌐 **Deployed Website**: [https://kanishka2100.github.io/first/](https://kanishka2100.github.io/first/)
+🌐 **Deployed Website**: [https://kanishka2100.github.io/Project/](https://kanishka2100.github.io/Project/)
 
 ---
 
 ## 12. GitHub Repository
 The complete source code, version history, and documentation are hosted on GitHub:
 
-🔗 **GitHub Repository**: [https://github.com/kanishka2100/first](https://github.com/kanishka2100/first)
+🔗 **GitHub Repository**: [https://github.com/kanishka2100/Project](https://github.com/kanishka2100/Project)
 
 ---
 
