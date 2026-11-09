@@ -1,0 +1,21 @@
+# FlavorShift AI — Local Development Docker Compose
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: flavorshift-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data
+      - db-data:/app/data/db
+    environment:
+      - FLAVORSHIFT_DEBUG=true
+      - FLAVORSHIFT_DATABASE_URL=sqlite+aiosqlite:///./data/db/flavorshift.db
+      - FLAVORSHIFT_GROQ_API_KEY=${GROQ_API_KEY:-}
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  db-data:

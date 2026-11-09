@@ -1,0 +1,65 @@
+{
+  "_comment": "Seed data: common culinary ingredient profiles for FlavorShift AI",
+  "ingredients": [
+    {
+      "name": "Fresh Cream",
+      "category": "Dairy",
+      "fat_percentage": 30.0,
+      "moisture_percentage": 63.0,
+      "protein_percentage": 2.0,
+      "carbs_percentage": 3.0,
+      "cost_per_100g_usd": 0.70,
+      "common_substitutes": ["Cashew Nut", "Coconut Cream", "Greek Yogurt", "Silken Tofu"]
+    },
+    {
+      "name": "Cashew Nut",
+      "category": "Nuts & Seeds",
+      "fat_percentage": 43.9,
+      "moisture_percentage": 5.2,
+      "protein_percentage": 18.2,
+      "carbs_percentage": 30.2,
+      "cost_per_100g_usd": 1.20,
+      "common_substitutes": ["Almond", "Macadamia Nut"]
+    },
+    {
+      "name": "Paneer",
+      "category": "Dairy",
+      "fat_percentage": 20.0,
+      "moisture_percentage": 55.0,
+      "protein_percentage": 18.0,
+      "carbs_percentage": 1.2,
+      "cost_per_100g_usd": 0.60,
+      "common_substitutes": ["Firm Tofu", "Halloumi", "Ricotta"]
+    },
+    {
+      "name": "Butter",
+      "category": "Dairy",
+      "fat_percentage": 81.0,
+      "moisture_percentage": 15.0,
+      "protein_percentage": 0.9,
+      "carbs_percentage": 0.1,
+      "cost_per_100g_usd": 0.50,
+      "common_substitutes": ["Ghee", "Coconut Oil", "Olive Oil"]
+    },
+    {
+      "name": "Greek Yogurt",
+      "category": "Dairy",
+      "fat_percentage": 5.0,
+      "moisture_percentage": 80.0,
+      "protein_percentage": 10.0,
+      "carbs_percentage": 3.6,
+      "cost_per_100g_usd": 0.25,
+      "common_substitutes": ["Sour Cream", "Coconut Yogurt"]
+    },
+    {
+      "name": "Coconut Cream",
+      "category": "Plant-Based",
+      "fat_percentage": 24.0,
+      "moisture_percentage": 73.0,
+      "protein_percentage": 2.3,
+      "carbs_percentage": 2.7,
+      "cost_per_100g_usd": 0.40,
+      "common_substitutes": ["Cashew Cream", "Oat Cream"]
+    }
+  ]
+}
