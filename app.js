@@ -1431,7 +1431,7 @@
               <div class="flex flex-wrap items-center gap-2.5">
                 <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1.5 shadow-sm">
                   <span class="live-pulse-dot"></span>
-                  <span>Chef Kanishka's Cafe Command Suite</span>
+                  <span>Executive Cafe Command Suite</span>
                 </span>
                 <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
                   Station Status: 4 Prep Lines Active
