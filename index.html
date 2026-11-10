@@ -348,6 +348,34 @@
           <button type="button" data-diet="Gluten-Free" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all">
             🌾 Gluten-Free
           </button>
+          <button type="button" data-diet="Dairy-Free" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all">
+            🥛 Dairy-Free
+          </button>
+          <button type="button" data-diet="Low-Calorie" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all">
+            🥗 Low-Calorie / Fit
+          </button>
+        </div>
+
+        <!-- Allergy Exclusion Filter -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs pt-1 border-t border-slate-200/60 dark:border-slate-700/60">
+          <span class="font-bold text-rose-500 shrink-0 mr-1 flex items-center gap-1">
+            <i class="fa-solid fa-shield-halved"></i> Exclude Allergies:
+          </span>
+          <button type="button" data-allergy="Dairy" class="allergy-pill px-2.5 py-1 rounded-lg font-semibold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 hover:border-rose-400 cursor-pointer transition-all">
+            🚫 No Dairy / Milk
+          </button>
+          <button type="button" data-allergy="Nuts" class="allergy-pill px-2.5 py-1 rounded-lg font-semibold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 hover:border-rose-400 cursor-pointer transition-all">
+            🚫 No Tree Nuts / Cashew
+          </button>
+          <button type="button" data-allergy="Gluten" class="allergy-pill px-2.5 py-1 rounded-lg font-semibold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 hover:border-rose-400 cursor-pointer transition-all">
+            🚫 No Gluten / Wheat
+          </button>
+          <button type="button" data-allergy="Egg" class="allergy-pill px-2.5 py-1 rounded-lg font-semibold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 hover:border-rose-400 cursor-pointer transition-all">
+            🚫 No Eggs
+          </button>
+          <button type="button" id="clear-allergies-btn" class="hidden px-2.5 py-1 rounded-lg font-bold text-rose-600 dark:text-rose-400 hover:underline cursor-pointer">
+            Reset Allergies
+          </button>
         </div>
       </div>
 
@@ -405,6 +433,9 @@
 
   </main>
 
+  <!-- Global Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none max-w-sm w-full"></div>
+
   <!-- ============================================== -->
   <!-- 4. RECIPE WEBX MODAL DEEP-DIVE                 -->
   <!-- ============================================== -->
@@ -443,10 +474,10 @@
   </footer>
 
   <!-- Core Recipe Data & Application Scripts with Cache Buster -->
-  <script src="./recipes-data.js?v=20261111unit"></script>
-  <script src="./api-service.js?v=20261111unit"></script>
-  <script src="./food-cursor-canvas.js?v=20261111unit"></script>
-  <script src="./app.js?v=20261111unit"></script>
+  <script src="./recipes-data.js?v=20261111filter"></script>
+  <script src="./api-service.js?v=20261111filter"></script>
+  <script src="./food-cursor-canvas.js?v=20261111filter"></script>
+  <script src="./app.js?v=20261111filter"></script>
 
 </body>
 </html>

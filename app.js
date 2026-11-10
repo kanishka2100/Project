@@ -10,6 +10,7 @@
     selectedSwapIndex: 0, // Currently active swap in Swap Lab (defaults to Fresh Cream)
     selectedCategory: 'all',
     selectedDiet: 'all',
+    selectedAllergies: new Set(),
     searchQuery: '',
     sortOption: 'popular', // 'popular', 'cost-asc', 'calories-asc', 'margin-desc', 'prep-asc'
     activePantryIngredients: new Set(JSON.parse(localStorage.getItem('flavorshift_pantry') || '[]')),
@@ -147,6 +148,78 @@
     // Fallback: per piece or per unit
     const perUnit = costInr / qty;
     return '₹' + Math.round(perUnit) + '/unit';
+  }
+
+  // Helper: Toast Notification Dispatcher
+  function showNotification(title, message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = `pointer-events-auto transform transition-all duration-300 ease-out translate-y-2 opacity-0 flex items-start gap-3 p-4 rounded-2xl shadow-xl border backdrop-blur-md ${
+      type === 'success'
+        ? 'bg-emerald-950/90 border-emerald-500/40 text-emerald-100'
+        : type === 'warning'
+        ? 'bg-amber-950/90 border-amber-500/40 text-amber-100'
+        : type === 'error'
+        ? 'bg-rose-950/90 border-rose-500/40 text-rose-100'
+        : 'bg-slate-900/90 border-slate-700 text-slate-100'
+    }`;
+
+    const icon = type === 'success' ? 'fa-circle-check text-emerald-400' 
+               : type === 'warning' ? 'fa-triangle-exclamation text-amber-400'
+               : type === 'error' ? 'fa-circle-exclamation text-rose-400'
+               : 'fa-bell text-amber-400';
+
+    toast.innerHTML = `
+      <i class="fa-solid ${icon} text-lg shrink-0 mt-0.5"></i>
+      <div class="flex-1 min-w-0">
+        <h5 class="text-xs font-black uppercase tracking-wider text-white">${title}</h5>
+        <p class="text-xs text-slate-200 mt-0.5 leading-snug font-medium">${message}</p>
+      </div>
+      <button type="button" class="text-slate-400 hover:text-white shrink-0 text-xs transition-colors cursor-pointer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    `;
+
+    toast.querySelector('button').addEventListener('click', () => {
+      toast.classList.add('opacity-0', 'translate-y-2');
+      setTimeout(() => toast.remove(), 300);
+    });
+
+    container.appendChild(toast);
+    requestAnimationFrame(() => {
+      toast.classList.remove('opacity-0', 'translate-y-2');
+    });
+
+    setTimeout(() => {
+      if (toast.parentElement) {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }
+    }, 4500);
+  }
+
+  // Helper: Recipe Allergy Detection
+  function checkRecipeHasAllergy(recipe, allergyType) {
+    const ingNames = (recipe.ingredients || []).map(i => (i.name || '').toLowerCase()).join(' ');
+    if (allergyType === 'Dairy') {
+      const dairyWords = ['paneer', 'milk', 'cream', 'butter', 'ghee', 'cheese', 'yogurt', 'curd', 'malai', 'dairy'];
+      return dairyWords.some(w => ingNames.includes(w));
+    }
+    if (allergyType === 'Nuts') {
+      const nutWords = ['cashew', 'almond', 'walnut', 'pistachio', 'peanut', 'nut'];
+      return nutWords.some(w => ingNames.includes(w));
+    }
+    if (allergyType === 'Gluten') {
+      const glutenWords = ['flour', 'sourdough', 'bread', 'pasta', 'fettuccine', 'wheat', 'maida', 'atta'];
+      return glutenWords.some(w => ingNames.includes(w));
+    }
+    if (allergyType === 'Egg') {
+      const eggWords = ['egg', 'poached egg'];
+      return eggWords.some(w => ingNames.includes(w));
+    }
+    return false;
   }
 
   // Helper: Calculate Gross Profit Margin %
@@ -974,8 +1047,10 @@
   function togglePantryItem(item) {
     if (state.activePantryIngredients.has(item)) {
       state.activePantryIngredients.delete(item);
+      showNotification('Pantry Updated', `Removed ${item} from pantry inventory.`, 'warning');
     } else {
       state.activePantryIngredients.add(item);
+      showNotification('Pantry Updated', `Added ${item} to active pantry inventory.`, 'success');
     }
     localStorage.setItem('flavorshift_pantry', JSON.stringify(Array.from(state.activePantryIngredients)));
     renderPantrySection();
@@ -987,6 +1062,7 @@
     if (!preset) return;
     state.activePantryIngredients = new Set(preset.items);
     localStorage.setItem('flavorshift_pantry', JSON.stringify(Array.from(state.activePantryIngredients)));
+    showNotification('Pantry Preset Applied', `Loaded "${preset.name}" preset with ${preset.items.length} items.`, 'success');
     renderPantrySection();
     renderExploreGrid();
   }
@@ -994,6 +1070,7 @@
   function clearPantry() {
     state.activePantryIngredients.clear();
     localStorage.setItem('flavorshift_pantry', '[]');
+    showNotification('Pantry Cleared', 'All pantry items have been reset.', 'warning');
     renderPantrySection();
     renderExploreGrid();
   }
@@ -1019,10 +1096,23 @@
       }
 
       if (state.selectedDiet !== 'all') {
-        if (!recipe.dietary.includes(state.selectedDiet)) {
-          if (state.selectedDiet === 'Vegan' && recipe.veganOption) {
-            // Keep
-          } else {
+        if (state.selectedDiet === 'Vegan') {
+          if (!recipe.dietary.includes('Vegan') && !recipe.veganOption) return false;
+        } else if (state.selectedDiet === 'Dairy-Free') {
+          if (!recipe.dietary.includes('Dairy-Free') && !recipe.dietary.includes('Vegan')) {
+            if (checkRecipeHasAllergy(recipe, 'Dairy')) return false;
+          }
+        } else if (state.selectedDiet === 'Low-Calorie') {
+          if (!recipe.calorieAlternative && recipe.baseCalories > 450) return false;
+        } else if (!recipe.dietary.includes(state.selectedDiet)) {
+          return false;
+        }
+      }
+
+      // Allergy exclusion filter
+      if (state.selectedAllergies.size > 0) {
+        for (const allergy of state.selectedAllergies) {
+          if (checkRecipeHasAllergy(recipe, allergy)) {
             return false;
           }
         }
@@ -1177,10 +1267,14 @@
 
   // Favorite Toggle
   function toggleFavorite(id) {
+    const recipe = RECIPES_DATA.find(r => r.id === id);
+    const title = recipe ? recipe.title : 'Recipe';
     if (state.favorites.has(id)) {
       state.favorites.delete(id);
+      showNotification('Removed from Favorites', `${title} removed from your saved recipes.`, 'warning');
     } else {
       state.favorites.add(id);
+      showNotification('Saved to Favorites', `${title} added to your saved recipes bookmark.`, 'success');
     }
     localStorage.setItem('flavorshift_favs', JSON.stringify(Array.from(state.favorites)));
     updateFavoritesBadge();
@@ -1713,6 +1807,7 @@
     });
 
     document.getElementById('modal-print-ticket-btn')?.addEventListener('click', () => {
+      showNotification('Printing SOP Ticket', `Preparing kitchen formulation ticket for ${cRec.title}...`, 'success');
       printKitchenTicket(recipeId);
     });
 
@@ -1737,16 +1832,22 @@
 
     document.getElementById('toggle-budget-mode')?.addEventListener('click', () => {
       state.recipeStates[recipeId].budgetMode = !state.recipeStates[recipeId].budgetMode;
+      const isActive = state.recipeStates[recipeId].budgetMode;
+      showNotification('FlavorShift Swap ' + (isActive ? 'Activated' : 'Disabled'), isActive ? 'Applied commercial cost-saver alternative formulation.' : 'Restored standard original ingredients.', isActive ? 'success' : 'warning');
       renderModalContent();
     });
 
     document.getElementById('toggle-calorie-mode')?.addEventListener('click', () => {
       state.recipeStates[recipeId].calorieMode = !state.recipeStates[recipeId].calorieMode;
+      const isActive = state.recipeStates[recipeId].calorieMode;
+      showNotification('Calorie-Cutter Mode ' + (isActive ? 'Activated' : 'Disabled'), isActive ? 'Applied low-calorie wholesome alternative formulation.' : 'Restored standard formulation.', isActive ? 'success' : 'warning');
       renderModalContent();
     });
 
     document.getElementById('toggle-vegan-mode')?.addEventListener('click', () => {
       state.recipeStates[recipeId].veganMode = !state.recipeStates[recipeId].veganMode;
+      const isActive = state.recipeStates[recipeId].veganMode;
+      showNotification('100% Plant-Based Mode ' + (isActive ? 'Activated' : 'Disabled'), isActive ? 'Applied certified vegan dairy-free alternative.' : 'Restored standard formulation.', isActive ? 'success' : 'warning');
       renderModalContent();
     });
 
@@ -1772,7 +1873,7 @@
       const text = document.getElementById('review-text').value.trim();
 
       if (!text) {
-        alert('Please share your cooking and taste experience.');
+        showNotification('Validation Required', 'Please share your cooking and taste experience before submitting.', 'warning');
         return;
       }
 
@@ -1792,6 +1893,7 @@
       });
 
       localStorage.setItem('flavorshift_reviews', JSON.stringify(state.customReviews));
+      showNotification('Review Submitted', `Thank you ${author}! Your taste validation test has been saved and submitted automatically.`, 'success');
       renderModalContent();
     });
   }
@@ -2638,8 +2740,48 @@
         document.querySelectorAll('.diet-pill').forEach(p => p.classList.remove('active-diet'));
         btn.classList.add('active-diet');
         state.selectedDiet = btn.getAttribute('data-diet');
+        showNotification('Diet Filter Applied', `Showing recipes matching: ${state.selectedDiet === 'all' ? 'All Diets' : state.selectedDiet}`, 'success');
         renderExploreGrid();
       });
+    });
+
+    // Allergy Filter Event Listeners
+    const clearAllergiesBtn = document.getElementById('clear-allergies-btn');
+    document.querySelectorAll('.allergy-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const allergy = btn.getAttribute('data-allergy');
+        if (state.selectedAllergies.has(allergy)) {
+          state.selectedAllergies.delete(allergy);
+          btn.classList.remove('bg-rose-500', 'text-white', 'border-rose-600');
+          btn.classList.add('bg-slate-50', 'dark:bg-slate-800/80', 'text-slate-600', 'dark:text-slate-300');
+          showNotification('Allergy Filter Updated', `Allowed ${allergy} ingredients in recipes.`, 'warning');
+        } else {
+          state.selectedAllergies.add(allergy);
+          btn.classList.remove('bg-slate-50', 'dark:bg-slate-800/80', 'text-slate-600', 'dark:text-slate-300');
+          btn.classList.add('bg-rose-500', 'text-white', 'border-rose-600');
+          showNotification('Allergy Filter Applied', `Excluding all recipes containing ${allergy}.`, 'success');
+        }
+
+        if (clearAllergiesBtn) {
+          if (state.selectedAllergies.size > 0) {
+            clearAllergiesBtn.classList.remove('hidden');
+          } else {
+            clearAllergiesBtn.classList.add('hidden');
+          }
+        }
+        renderExploreGrid();
+      });
+    });
+
+    clearAllergiesBtn?.addEventListener('click', () => {
+      state.selectedAllergies.clear();
+      document.querySelectorAll('.allergy-pill').forEach(btn => {
+        btn.classList.remove('bg-rose-500', 'text-white', 'border-rose-600');
+        btn.classList.add('bg-slate-50', 'dark:bg-slate-800/80', 'text-slate-600', 'dark:text-slate-300');
+      });
+      clearAllergiesBtn.classList.add('hidden');
+      showNotification('Allergy Filters Cleared', 'All allergy exclusions have been reset.', 'success');
+      renderExploreGrid();
     });
 
     const sortSelect = document.getElementById('sort-select');
