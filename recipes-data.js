@@ -707,7 +707,7 @@ const RECIPES_DATA = [
     isMostSearched: true,
     rating: 4.94,
     reviewsCount: 155,
-    image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80",
+    image: "./assets/recipes/amritsari-pindi-chole.jpg",
     prepTime: "10 mins",
     cookTime: "25 mins",
     difficulty: "Easy",
@@ -783,7 +783,7 @@ const RECIPES_DATA = [
         date: "4 days ago",
         verifiedCafe: true,
         text: "The tea-tamarind substitute creates that quintessential dark, tangy Pindi flavor at a fraction of the cost of whole anardana.",
-        photo: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/amritsari-pindi-chole.jpg",
         helpfulCount: 57
       }
     ]
