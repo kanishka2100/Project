@@ -405,21 +405,21 @@
     let html = `
       <div class="space-y-8 animate-fade-up max-w-6xl mx-auto">
         
-        <!-- Swap Lab Hero Banner -->
+        <!-- SwapLab Hero Banner -->
         <div class="relative overflow-hidden rounded-3xl p-6 sm:p-10 gradient-cafe-hero text-white shadow-xl">
           <div class="relative z-10 max-w-3xl space-y-3">
             <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-black uppercase tracking-wider">
               <i class="fa-solid fa-flask text-amber-300"></i>
-              <span>FlavorShift AI Substitution Engine</span>
+              <span>AI Substitution Engine</span>
             </div>
             
             <h2 class="font-heading font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-tight">
               Missing an Ingredient?<br>
-              <span class="text-amber-200">Replace it Instantly</span> Without Compromising Taste.
+              <span class="text-amber-200">Replace It Intelligently.</span>
             </h2>
             
             <p class="text-white/90 text-sm sm:text-base leading-relaxed font-medium">
-              Cooking <strong>Paneer Butter Masala</strong> and out of Fresh Cream? Or baking a Basque Cheesecake without Mascarpone? FlavorShift AI calculates the exact replacement ratio, models texture and flavor compatibility, and proves results through <strong>Human Taste Validation (HTV)</strong>.
+              FlavorShift AI calculates exact substitution ratios, models flavour and texture compatibility, and validates every recommendation through <strong>Human Taste Testing (HTV)</strong>.
             </p>
 
             <div class="flex flex-wrap items-center gap-3 pt-2 text-xs font-bold">
@@ -427,7 +427,7 @@
                 <i class="fa-solid fa-calculator text-amber-300"></i> Exact Quantity Ratios
               </span>
               <span class="bg-black/20 backdrop-blur px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5">
-                <i class="fa-solid fa-chart-simple text-emerald-300"></i> Taste & Texture Impact Matrix
+                <i class="fa-solid fa-chart-simple text-emerald-300"></i> Flavour & Texture Matrix
               </span>
               <span class="bg-black/20 backdrop-blur px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5">
                 <i class="fa-solid fa-users-viewfinder text-rose-300"></i> Human Taste Validation
@@ -438,17 +438,17 @@
           <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
         </div>
 
-        <!-- Interactive Ingredient Selector -->
+        <!-- Ingredient Selector -->
         <div class="p-6 rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <span class="text-xs font-black uppercase tracking-wider text-amber-500">Step 1: Select Ingredient</span>
+              <span class="text-xs font-black uppercase tracking-wider text-[#C87957]">Select Ingredient</span>
               <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-                <i class="fa-solid fa-magnifying-glass text-amber-500"></i>
-                <span>Which Ingredient is Missing or Too Expensive in Your Kitchen?</span>
+                <i class="fa-solid fa-magnifying-glass text-[#C87957]"></i>
+                <span>Which ingredient is missing or too expensive?</span>
               </h3>
             </div>
-            <span class="text-xs text-slate-400">Click any ingredient below to trigger AI analysis</span>
+            <span class="text-xs text-slate-400">Select any ingredient to run AI analysis</span>
           </div>
 
           <!-- Quick Ingredient Selection Chips -->
@@ -486,10 +486,10 @@
                 </span>
               </div>
               <h3 class="text-2xl font-black text-slate-900 dark:text-white">
-                AI Predicted Alternatives for "${activeSwap.targetIngredient}"
+                AI Alternatives for "${activeSwap.targetIngredient}"
               </h3>
               <p class="text-xs text-slate-500 mt-1">
-                Problem: <span class="text-rose-500 font-bold">${activeSwap.reasonForSwap}</span>
+                Why swap: <span class="text-rose-500 font-bold">${activeSwap.reasonForSwap}</span>
               </p>
             </div>
 
@@ -497,8 +497,8 @@
             <div class="flex items-center gap-2 p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 shrink-0">
               <i class="fa-solid fa-award text-emerald-500 text-2xl"></i>
               <div>
-                <span class="block text-xs font-black text-emerald-700 dark:text-emerald-300">Human Taste Validation</span>
-                <span class="text-[11px] text-slate-500 font-medium">97.8% Blind Taste Consistency</span>
+                <span class="block text-xs font-black text-emerald-700 dark:text-emerald-300">Human Taste Validated</span>
+                <span class="text-[11px] text-slate-500 font-medium">97.8% blind-taste consistency</span>
               </div>
             </div>
           </div>
@@ -593,10 +593,10 @@
             <div class="lg:col-span-7 p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-[11px] font-black uppercase text-amber-500 tracking-wider">Physics & Rheology Model</span>
+                  <span class="text-[11px] font-black uppercase text-[#C87957] tracking-wider">Sensory Physics Model</span>
                   <h4 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
-                    <i class="fa-solid fa-chart-pie text-amber-500"></i>
-                    <span>6-Axis Sensory & Texture Radar Analysis</span>
+                    <i class="fa-solid fa-chart-pie text-[#C87957]"></i>
+                    <span>6-Axis Sensory & Texture Radar</span>
                   </h4>
                 </div>
                 <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30">
@@ -720,17 +720,14 @@
         <!-- HTV Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
           <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="px-3 py-0.5 rounded-full text-xs font-black bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
-                HTV Community Protocol
-              </span>
-              <span class="text-xs text-slate-400">Human Taste Validation</span>
-            </div>
-            <h2 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">
-              Validating AI Recommendations in Real Kitchens
+            <span class="px-3 py-0.5 rounded-full text-xs font-black bg-[#879B76]/15 text-[#263D32] dark:text-[#879B76] border border-[#879B76]/30">
+              Human Taste Validation
+            </span>
+            <h2 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mt-1">
+              Validated in Real Kitchens
             </h2>
-            <p class="text-xs text-slate-500">
-              AI suggests flavor and texture compatibility; real cooks and cafe patrons test and validate taste similarity.
+            <p class="text-xs text-slate-500 mt-1">
+              Every AI substitution is tested by real cooks and diners — not just algorithms.
             </p>
           </div>
 
@@ -749,19 +746,19 @@
           <div class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center">
             <span class="text-3xl font-black text-emerald-500 font-heading">98.2%</span>
             <span class="block text-xs font-bold text-slate-700 dark:text-slate-300 mt-1">Blind Taste Indistinguishability</span>
-            <span class="block text-[11px] text-slate-400">98 in 100 diners could not tell the ingredient was swapped</span>
+            <span class="block text-[11px] text-slate-400">98 in 100 diners couldn't detect the swap</span>
           </div>
 
           <div class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center">
             <span class="text-3xl font-black text-amber-500 font-heading">580+</span>
             <span class="block text-xs font-bold text-slate-700 dark:text-slate-300 mt-1">Kitchen Trials Completed</span>
-            <span class="block text-[11px] text-slate-400">Tested across cloud kitchens, cafes, and home stoves</span>
+            <span class="block text-[11px] text-slate-400">Cloud kitchens, cafes, and home cooks</span>
           </div>
 
           <div class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center">
             <span class="text-3xl font-black text-rose-500 font-heading">0%</span>
             <span class="block text-xs font-bold text-slate-700 dark:text-slate-300 mt-1">Quality Compromise</span>
-            <span class="block text-[11px] text-slate-400">Strict standard: only swaps scoring ≥90% are accepted</span>
+            <span class="block text-[11px] text-slate-400">Only swaps scoring ≥90% make it through</span>
           </div>
         </div>
 
@@ -1098,9 +1095,9 @@
               <button 
                 type="button"
                 data-open-recipe="${recipe.id}"
-                class="w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                class="w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-[#263D32] hover:bg-[#1B2C24] dark:bg-[#C87957] dark:hover:bg-[#B36848] text-white shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>View Ingredients & Whole Recipe</span>
+                <span>Explore Recipe & Alternatives</span>
                 <i class="fa-solid fa-arrow-right text-xs"></i>
               </button>
             </div>
@@ -1416,14 +1413,14 @@
           <div class="space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
               <div>
-                <span class="text-xs font-black uppercase tracking-wider text-amber-500">Step 1 of 2</span>
+                <span class="text-xs font-black uppercase tracking-wider text-[#C87957]">Formulation</span>
                 <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-                  <i class="fa-solid fa-basket-shopping text-amber-500"></i>
-                  <span>Bill of Ingredients (Scaled for ${cRec.persons} ${cRec.persons === 1 ? 'Person' : 'Persons'})</span>
+                  <i class="fa-solid fa-basket-shopping text-[#C87957]"></i>
+                  <span>Ingredient Specification (${cRec.persons} ${cRec.persons === 1 ? 'Portion' : 'Portions'})</span>
                 </h3>
               </div>
               <div class="text-xs text-slate-500">
-                Total Ingredient Cost: <span class="font-extrabold text-slate-900 dark:text-white">${formatMoney(cRec.totalBatchCost)}</span>
+                Batch Ingredient Cost: <span class="font-extrabold text-slate-900 dark:text-white">${formatMoney(cRec.totalBatchCost)}</span>
               </div>
             </div>
 
@@ -1482,10 +1479,10 @@
           <div class="space-y-4 pt-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
               <div>
-                <span class="text-xs font-black uppercase tracking-wider text-emerald-500">Step 2 of 2</span>
+                <span class="text-xs font-black uppercase tracking-wider text-[#879B76]">Preparation</span>
                 <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
-                  <i class="fa-solid fa-fire-burner text-emerald-500"></i>
-                  <span>Chef Culinary Method (Swapped Ingredients Integrated Seamlessly)</span>
+                  <i class="fa-solid fa-fire-burner text-[#879B76]"></i>
+                  <span>Culinary Method & Substitution Integration</span>
                 </h3>
               </div>
               <div class="text-xs text-slate-500">

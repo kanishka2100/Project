@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FlavorShift AI | Intelligent Ingredient Substitution & Human Taste Validation Platform</title>
+  <title>FlavorShift AI — Smart Ingredient Substitution for Modern Kitchens</title>
   
   <!-- Google Fonts: Playfair Display (Headings), DM Sans (Body), Cormorant Garamond (Accent), JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,23 +82,23 @@
   <header class="glass-nav sticky top-0 z-40 px-4 lg:px-8 py-3.5 transition-colors">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
       
-      <!-- Brand Logo & HTV Badge -->
+      <!-- Brand Logo -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-500 flex items-center justify-center text-white shadow-md shadow-orange-500/20">
-          <i class="fa-solid fa-arrows-rotate text-lg"></i>
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#263D32] to-[#C87957] flex items-center justify-center text-white shadow-md">
+          <i class="fa-solid fa-arrows-rotate text-sm"></i>
         </div>
         <div>
           <div class="flex flex-wrap items-center gap-2">
-            <span class="font-heading font-black text-xl tracking-tight text-slate-900 dark:text-white">
-              Flavor<span class="text-cafe-orange">Shift</span> <span class="text-amber-500 font-mono text-sm px-1.5 py-0.5 rounded-lg bg-amber-500/10 border border-amber-500/30">AI</span>
+            <span class="font-heading font-black text-xl tracking-tight text-[#263D32] dark:text-[#FAF7F0]">
+              Flavor<span class="text-[#C87957]">Shift</span> <span class="text-[#879B76] font-mono text-sm px-1.5 py-0.5 rounded-lg bg-[#879B76]/10 border border-[#879B76]/30">AI</span>
             </span>
-            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#879B76]/15 text-[#263D32] dark:text-[#879B76] border border-[#879B76]/30 flex items-center gap-1">
               <i class="fa-solid fa-check-double text-[9px]"></i> HTV Verified
             </span>
-            <!-- Live AI Engine Connection Status Pill -->
-            <div id="ai-engine-status-pill" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 transition-all">
-              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-              <span class="font-bold">Checking AI Engine...</span>
+            <!-- AI Engine Status -->
+            <div id="ai-engine-status-pill" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[#C87957]/15 text-[#C87957] border border-[#C87957]/30 transition-all">
+              <span class="w-2 h-2 rounded-full bg-[#C87957] animate-pulse"></span>
+              <span class="font-bold">Connecting…</span>
             </div>
           </div>
         </div>
@@ -106,49 +106,25 @@
 
       <!-- Navigation Tabs -->
       <nav class="hidden md:flex items-center gap-1 lg:gap-2">
-        <button 
-          type="button" 
-          data-tab="swaplab"
-          class="nav-tab-btn active-nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
-        >
-          <i class="fa-solid fa-flask-vial text-amber-500"></i>
-          <span>AI Swap Lab</span>
+        <button type="button" data-tab="swaplab"
+          class="nav-tab-btn active-nav-tab px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#C87957] transition-all flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-flask-vial text-[#C87957]"></i> Swap Lab
         </button>
-
-        <button 
-          type="button" 
-          data-tab="explore"
-          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
-        >
-          <i class="fa-solid fa-utensils"></i>
-          <span>Explore Recipes</span>
+        <button type="button" data-tab="explore"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#C87957] transition-all flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-utensils"></i> Recipes
         </button>
-
-        <button 
-          type="button" 
-          data-tab="htv"
-          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
-        >
-          <i class="fa-solid fa-users-viewfinder text-emerald-500"></i>
-          <span>Human Taste Validation</span>
+        <button type="button" data-tab="htv"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#C87957] transition-all flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-users-viewfinder text-[#879B76]"></i> Taste Validation
         </button>
-
-        <button 
-          type="button" 
-          data-tab="dashboard"
-          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer"
-        >
-          <i class="fa-solid fa-chart-pie"></i>
-          <span>Kitchen Economics & Dashboard</span>
+        <button type="button" data-tab="dashboard"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#C87957] transition-all flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-chart-pie"></i> Kitchen Analytics
         </button>
-
-        <button 
-          type="button" 
-          data-tab="favorites"
-          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-cafe-orange dark:hover:text-amber-400 transition-all flex items-center gap-1.5 cursor-pointer relative"
-        >
-          <i class="fa-solid fa-heart text-rose-500"></i>
-          <span>Favorites</span>
+        <button type="button" data-tab="favorites"
+          class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-[#C87957] transition-all flex items-center gap-1.5 cursor-pointer relative">
+          <i class="fa-solid fa-heart text-rose-500"></i> Saved
           <span id="fav-count-badge" class="px-1.5 py-0.2 rounded-full text-[10px] font-black bg-rose-500 text-white ml-0.5">2</span>
         </button>
       </nav>
@@ -272,35 +248,35 @@
         <div class="relative z-10 max-w-3xl space-y-4">
           
           <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-black uppercase tracking-wider">
-            <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-            <span>FlavorShift AI Culinary Architecture</span>
+            <i class="fa-solid fa-wand-magic-sparkles text-[#C87957]"></i>
+            <span>Culinary Intelligence Architecture</span>
           </div>
 
           <h1 class="font-heading font-black text-3xl sm:text-4xl md:text-5xl leading-tight tracking-tight">
-            Never Compromise on Taste.<br>
-            <span class="text-amber-200">Swap Missing or Expensive Ingredients</span> with AI.
+            Flavour Perfection.<br>
+            <span class="text-[#E9DFC9]">Precision Ingredient Substitutions</span> Powered by AI.
           </h1>
 
           <p class="text-white/90 text-sm md:text-base leading-relaxed max-w-2xl font-medium">
-            Cooking Paneer Butter Masala without Fresh Cream? Or Truffle Pasta without expensive truffle oil? FlavorShift AI calculates the exact replacement ratio, models texture & flavor compatibility, and proves it with <strong>Human Taste Validation (HTV)</strong>.
+            Seamlessly substitute scarce or high-cost ingredients with molecularly calibrated alternatives. Every formulation preserves sensory texture, profile depth, and passes rigorous <strong>Human Taste Validation (HTV)</strong>.
           </p>
 
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
             <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
               <span class="block text-xl md:text-2xl font-black text-white">98.2%</span>
-              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Taste Similarity</span>
+              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Sensory Fidelity</span>
             </div>
             <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-              <span class="block text-xl md:text-2xl font-black text-amber-200">1-50 Covers</span>
-              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Person Scaling</span>
+              <span class="block text-xl md:text-2xl font-black text-[#E9DFC9]">1–50 Covers</span>
+              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Yield Scaling</span>
             </div>
             <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-              <span class="block text-xl md:text-2xl font-black text-white">40-65%</span>
-              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Ingredient Savings</span>
+              <span class="block text-xl md:text-2xl font-black text-white">40–65%</span>
+              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Cost Reduction</span>
             </div>
             <div class="bg-black/20 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-              <span class="block text-xl md:text-2xl font-black text-rose-200">-43% Kcal</span>
-              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Calorie Reducer</span>
+              <span class="block text-xl md:text-2xl font-black text-[#F2D5C4]">-43% Kcal</span>
+              <span class="text-[11px] text-white/80 font-bold uppercase tracking-wider">Calorie Optimization</span>
             </div>
           </div>
 
@@ -328,11 +304,11 @@
               id="sort-select"
               class="px-3.5 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cafe-orange shadow-sm cursor-pointer"
             >
-              <option value="popular">🔥 Most Popular & Searched</option>
-              <option value="cost-asc">💰 Lowest Food Cost ($ / Person)</option>
-              <option value="calories-asc">🥗 Lowest Calories (kcal / Person)</option>
-              <option value="margin-desc">📈 Highest Profit Margin (%)</option>
-              <option value="prep-asc">⚡ Fastest Kitchen Ticket (&lt;10m)</option>
+              <option value="popular">Most Popular</option>
+              <option value="cost-asc">Lowest Cost per Person (₹)</option>
+              <option value="calories-asc">Lowest Calorie Count (kcal)</option>
+              <option value="margin-desc">Highest Margin (%)</option>
+              <option value="prep-asc">Quickest Ticket Time</option>
             </select>
           </div>
         </div>
@@ -441,27 +417,27 @@
   <!-- ============================================== -->
   <!-- 5. GLOBAL FOOTER                               -->
   <!-- ============================================== -->
-  <footer class="relative z-10 mt-16 border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 py-8 px-4 lg:px-8 text-xs text-slate-500">
+  <footer class="relative z-10 mt-16 border-t border-[#E6DCcb] dark:border-[#385345] bg-[#FAF7F0]/80 dark:bg-[#1B2C24]/80 backdrop-blur-md py-8 px-4 lg:px-8 text-xs text-[#564E44] dark:text-[#D9D2C7]">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-3">
-        <div class="w-7 h-7 rounded-lg bg-cafe-orange flex items-center justify-center text-white font-black text-xs">
+        <div class="w-8 h-8 rounded-xl bg-[#263D32] text-white flex items-center justify-center font-bold text-xs tracking-wider shadow-sm">
           FS
         </div>
         <div>
-          <span class="font-bold text-slate-800 dark:text-white">FlavorShift AI</span>
-          <span class="block text-[11px] text-slate-400">AI Culinary Ingredient Substitution & Human Taste Validation Platform</span>
+          <span class="font-bold text-[#263D32] dark:text-[#FAF7F0]">FlavorShift AI</span>
+          <span class="block text-[11px] text-[#82786C] dark:text-[#879B76]">Intelligent Culinary Substitution & Sensory Analytics System</span>
         </div>
       </div>
 
       <div class="flex flex-wrap items-center gap-4 text-xs font-medium">
-        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-500"></i> Human Taste Validation (HTV)</span>
-        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-amber-500"></i> Exact Ratio & Quantity Calculator</span>
-        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-rose-500"></i> Texture & Flavor Match Matrix</span>
-        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-indigo-500"></i> No. of Persons Scaling</span>
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#879B76]"></i> Human Taste Validated (HTV)</span>
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#C87957]"></i> Stoichiometric Culinary Scaling</span>
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#879B76]"></i> Rheology & Viscosity Profiling</span>
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[#263D32] dark:text-[#879B76]"></i> Real-time Margin Economics</span>
       </div>
 
-      <div class="text-[11px] text-slate-400">
-        © 2026 FlavorShift AI • All rights reserved
+      <div class="text-[11px] text-[#82786C] dark:text-slate-400">
+        &copy; 2026 FlavorShift AI. Enterprise Culinary Technology.
       </div>
     </div>
   </footer>
