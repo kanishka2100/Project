@@ -39,7 +39,7 @@ const RECIPES_DATA = [
         badge: "HTV Verified Gold"
       },
       replacedItems: [
-        { original: "Commercial Dairy Fresh Heavy Cream (100ml)", replacedWith: "Soaked Cashew & Milk Velvet Puree (60g + 40g)", reason: "Saves ₹55 / $0.95 per portion; prevents gravy separation under heat", tasteMatch: "98%" },
+        { original: "Commercial Dairy Fresh Heavy Cream (100ml)", replacedWith: "Soaked Cashew & Milk Velvet Puree (60g + 40g)", reason: "Saves ₹80 per portion; prevents gravy separation under heat", tasteMatch: "98%" },
         { original: "Imported European Salted Butter", replacedWith: "Farm Fresh Desi Ghee & Clarified Butter Blend", reason: "Adds authentic rustic caramel aroma while cutting fat expenditure", tasteMatch: "99%" }
       ]
     },

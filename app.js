@@ -89,9 +89,15 @@
     }
   }
 
-  // Helper: Format Currency
+  // Helper: Format Currency (INR — 1 USD ≈ ₹84)
+  const USD_TO_INR = 84;
   function formatMoney(amount) {
-    return '$' + Number(amount).toFixed(2);
+    const inr = Number(amount) * USD_TO_INR;
+    // Show whole rupees; use compact notation for large values
+    if (inr >= 1000) {
+      return '₹' + Math.round(inr).toLocaleString('en-IN');
+    }
+    return '₹' + Math.round(inr);
   }
 
   // Helper: Calculate Gross Profit Margin %
@@ -122,7 +128,7 @@
         type: 'budget',
         badge: '💡 FlavorShift AI Swap Active',
         title: raw.budgetAlternative.title,
-        savings: raw.budgetAlternative.savingsPerPerson ? `$${raw.budgetAlternative.savingsPerPerson.toFixed(2)}/portion saved` : '',
+        savings: raw.budgetAlternative.savingsPerPerson ? `₹${Math.round(raw.budgetAlternative.savingsPerPerson * USD_TO_INR)}/portion saved` : '',
         percent: raw.budgetAlternative.savingsPercent,
         description: raw.budgetAlternative.description,
         items: raw.budgetAlternative.replacedItems
@@ -140,13 +146,13 @@
           return { ...ing, name: '50/50 Hass Avocado & Sweet Green Pea Mash', cost: 0.90, isSwapped: true, swapReason: 'Cuts avocado cost by 50%, keeps vivid emerald color' };
         }
         if (raw.id === 'smashed-avocado-toast' && ing.name.includes('Feta')) {
-          return { ...ing, name: 'Domestic Whipped Ricotta & Lemon Zest', cost: 0.35, isSwapped: true, swapReason: 'Fresh domestic cheese saving $0.50/portion' };
+          return { ...ing, name: 'Domestic Whipped Ricotta & Lemon Zest', cost: 0.35, isSwapped: true, swapReason: 'Fresh domestic cheese saving ₹42/portion' };
         }
         if (raw.id === 'golden-turmeric-oat-latte' && ing.name.includes('Turmeric')) {
           return { ...ing, name: 'Cold-Ground Organic Turmeric Root Powder', cost: 0.10, isSwapped: true, swapReason: 'Zero spoilage shelf-stable powder' };
         }
         if (raw.id === 'wild-mushroom-truffle-pasta' && (ing.name.includes('Truffle') || ing.name.includes('Chanterelle'))) {
-          return { ...ing, name: 'Steeped Porcini Mushroom Reduction + Brown Cremini', cost: 0.65, isSwapped: true, swapReason: 'Deep earth umami, saves $1.85/person over synthetic oil' };
+          return { ...ing, name: 'Steeped Porcini Mushroom Reduction + Brown Cremini', cost: 0.65, isSwapped: true, swapReason: 'Deep earth umami, saves ₹155/person over synthetic oil' };
         }
         if (raw.id === 'wild-mushroom-truffle-pasta' && ing.name.includes('Parmigiano')) {
           return { ...ing, name: 'Aged Domestic Grana Padano', cost: 0.25, isSwapped: true, swapReason: 'Identical sharp salty profile, saves 50%' };
@@ -2244,8 +2250,8 @@
         </div>
 
         <div class="flex items-center justify-between text-[11px] text-slate-400 border-t border-dashed border-slate-300 pt-3">
-          <span>Batch Cost: $${(recipe.costPerPerson * covers).toFixed(2)}</span>
-          <span>Savings: +$${((recipe.budgetAlternative ? recipe.budgetAlternative.savingsPerPerson : 0.95) * covers).toFixed(2)}</span>
+          <span>Batch Cost: ₹${Math.round(recipe.costPerPerson * covers * USD_TO_INR).toLocaleString('en-IN')}</span>
+          <span>Savings: +₹${Math.round(((recipe.budgetAlternative ? recipe.budgetAlternative.savingsPerPerson : 0.95) * covers) * USD_TO_INR).toLocaleString('en-IN')}</span>
         </div>
 
         <div class="flex gap-2 pt-2 font-sans">
