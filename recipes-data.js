@@ -514,6 +514,919 @@ const RECIPES_DATA = [
         helpfulCount: 31
       }
     ]
+  },
+  {
+    id: "dal-makhani-bistro",
+    title: "Slow-Simmered Dal Makhani",
+    category: "Cafe & Bistro Curries",
+    tagline: "Slow-cooked black lentils, perfected with FlavorShift AI using soaked cashews & churned curd when dairy cream is missing.",
+    isMostSearched: true,
+    rating: 4.95,
+    reviewsCount: 168,
+    image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop&q=80",
+    prepTime: "15 mins",
+    cookTime: "40 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.40,
+    suggestedRetailPrice: 6.50,
+    baseCalories: 480,
+    baseMacros: { protein: 18, carbs: 45, fat: 26, fiber: 11 },
+    budgetAlternative: {
+      active: false,
+      title: "Cashew Emulsion & Slow-Roasted Tomato Reduction (No Cream Needed)",
+      savingsPerPerson: 0.65,
+      savingsPercent: "46%",
+      newCostPerPerson: 0.75,
+      description: "Replaces excessive fresh cream and block butter with a velvet cashew-milk puree and roasted tomato concentrate.",
+      swapRatio: "For 80ml heavy cream → Use 45g cashew puree + 35ml warm skim milk",
+      tasteImpact: "98% Sensory Match. Retains velvety, slow-cooked mouthfeel with subtle smoky notes.",
+      textureImpact: "Creamy, glossy sheen with no curdling or oil separation.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 135,
+        agreementPercent: "98% rating indistinguishable from slow-churned restaurant dal",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Heavy Cream (80ml)", replacedWith: "Blended Cashew-Milk Velvet (80g)", reason: "Saves ₹55 per portion with silky mouthfeel", tasteMatch: "98%" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Light & Wholesome Protein Dal Makhani",
+      calorieDrop: 190,
+      newCalories: 290,
+      newMacros: { protein: 22, carbs: 44, fat: 6, fiber: 12 },
+      caloriePercent: "-40%",
+      description: "Eliminates heavy dairy fat by folding in hung curd and vegetable broth while preserving signature warmth.",
+      humanTasteValidation: {
+        score: "9.4 / 10",
+        verifiedCooks: 82,
+        agreementPercent: "93% pleased with rich earthy profile without bloating"
+      },
+      replacedItems: [
+        { original: "Block Butter & Cream (60g)", replacedWith: "Hung Curd & Smoked Jeera Glaze", calorieSaving: "-190 kcal" }
+      ]
+    },
+    veganOption: {
+      active: false,
+      title: "Vegan Earth Dal with Coconut-Cashew Velvet",
+      description: "Utilizes cold-pressed coconut oil and rich cashew milk for a completely dairy-free slow dal.",
+      replacedItems: [
+        { original: "Dairy Butter", replacedWith: "Cold-Pressed Mustard & Coconut Oil" },
+        { original: "Fresh Dairy Cream", replacedWith: "Soaked Cashew Silk" }
+      ]
+    },
+    ingredients: [
+      { name: "Whole Black Urad & Rajma", qtyPerPerson: 90, unit: "g soaked", cost: 0.40, category: "Grains & Pulses" },
+      { name: "Dairy Fresh Cream", qtyPerPerson: 50, unit: "ml", cost: 0.45, category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Salted Butter", qtyPerPerson: 1.5, unit: "tbsp", cost: 0.25, category: "Dairy", isReplaceable: true, replaceableType: "calorie" },
+      { name: "Smoked Tomato & Ginger Gravy", qtyPerPerson: 100, unit: "ml", cost: 0.15, category: "Produce" },
+      { name: "Kashmiri Chilli & Garam Masala", qtyPerPerson: 1, unit: "tsp", cost: 0.15, category: "Spices" }
+    ],
+    steps: [
+      "Pressure-cook soaked whole black urad and kidney beans with ginger until fork-tender.",
+      "In a heavy pot, simmer pureed ripe tomatoes and spices until the aromatics soften.",
+      "Whisk your cashew puree into warm water to form a uniform emulsion.",
+      "Gently fold the emulsion into the dal over low heat, allowing the starches to meld for 15 minutes.",
+      "Finish with crushed fenugreek and serve piping hot."
+    ],
+    reviews: [
+      {
+        id: "dal-rev-1",
+        author: "Chef Harpreet Singh",
+        cafeName: "Amritsar Gourmet Dhaba, Delhi",
+        rating: 5,
+        date: "2 days ago",
+        verifiedCafe: true,
+        text: "The cashew-milk substitute gave us the exact gloss and cling customers expect, cutting cream costs dramatically.",
+        photo: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 44
+      }
+    ]
+  },
+  {
+    id: "royal-shahi-paneer",
+    title: "Shahi Paneer in White Velvet Gravy",
+    category: "Cafe & Bistro Curries",
+    tagline: "Mughlai royal curry re-engineered when khoya (mawa) or melon seeds are unavailable or overpriced.",
+    isMostSearched: false,
+    rating: 4.92,
+    reviewsCount: 110,
+    image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&auto=format&fit=crop&q=80",
+    prepTime: "12 mins",
+    cookTime: "18 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 2.25,
+    suggestedRetailPrice: 8.90,
+    baseCalories: 540,
+    baseMacros: { protein: 24, carbs: 22, fat: 38, fiber: 4 },
+    budgetAlternative: {
+      active: false,
+      title: "Poppy Seed & Milk Powder Velvet (No Khoya/Mawa)",
+      savingsPerPerson: 0.90,
+      savingsPercent: "40%",
+      newCostPerPerson: 1.35,
+      description: "Substitutes expensive evaporated milk solids (khoya) with skim milk powder and soaked white poppy seeds.",
+      swapRatio: "For 50g Khoya → Use 30g Skim Milk Powder + 20ml Warm Milk + pinch of cardamom",
+      tasteImpact: "97% Match. Sweet aromatic profile with royal cardamon and saffron notes.",
+      textureImpact: "Dense, creamy, clings perfectly to paneer.",
+      humanTasteValidation: {
+        score: "9.7 / 10",
+        verifiedCooks: 92,
+        agreementPercent: "96% validated equal rich decadence",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Traditional Khoya / Mawa (50g)", replacedWith: "Skim Milk Powder & Poppy Puree (50g)", reason: "Saves ₹75 per cover; prevents grainy separation", tasteMatch: "97%" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Low-Calorie Shahi Paneer (Almond Milk & Low-Fat Paneer)",
+      calorieDrop: 210,
+      newCalories: 330,
+      newMacros: { protein: 26, carbs: 16, fat: 12, fiber: 5 },
+      caloriePercent: "-39%",
+      description: "Replaces heavy dairy fats with unsweetened almond milk and steamed low-fat cottage cheese.",
+      humanTasteValidation: {
+        score: "9.4 / 10",
+        verifiedCooks: 67,
+        agreementPercent: "92% delighted by royal flavor profile with light feel"
+      },
+      replacedItems: [
+        { original: "Full-Fat Khoya & Cream", replacedWith: "Steamed Almond Puree & Skim Curd", calorieSaving: "-210 kcal" }
+      ]
+    },
+    veganOption: {
+      active: false,
+      title: "Plant-Based Shahi Tofu in Cashew Cream",
+      description: "Tofu cubes nestled in cardamom-infused blended cashew and almond milk.",
+      replacedItems: [
+        { original: "Dairy Paneer", replacedWith: "Silken Firm Organic Tofu" },
+        { original: "Khoya & Dairy Milk", replacedWith: "Cashew & Almond Silk" }
+      ]
+    },
+    ingredients: [
+      { name: "Malai Paneer Cubes", qtyPerPerson: 140, unit: "g", cost: 0.90, category: "Dairy", isReplaceable: true, replaceableType: "calorie-vegan" },
+      { name: "Commercial Khoya / Mawa", qtyPerPerson: 40, unit: "g", cost: 0.65, category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "White Onion & Cashew Paste", qtyPerPerson: 80, unit: "g", cost: 0.40, category: "Produce" },
+      { name: "Green Cardamom & Saffron", qtyPerPerson: 0.5, unit: "tsp", cost: 0.20, category: "Spices" },
+      { name: "Desi Ghee", qtyPerPerson: 1, unit: "tbsp", cost: 0.10, category: "Dairy", isReplaceable: true, replaceableType: "calorie" }
+    ],
+    steps: [
+      "Saute whole cardamom and cinnamon in ghee until fragrant.",
+      "Whisk onion paste and cook gently on low flame to maintain a pale ivory color.",
+      "Blend milk powder and warm milk into a rich slurry, folding into the simmering gravy.",
+      "Gently add paneer cubes and let them absorb the royal saffron gravy for 4 minutes.",
+      "Serve garnished with slivered almonds and a whisper of saffron."
+    ],
+    reviews: [
+      {
+        id: "shahi-rev-1",
+        author: "Meenakshi Sundaram",
+        cafeName: "Dawat Royal Kitchen, Lucknow",
+        rating: 5,
+        date: "5 days ago",
+        verifiedCafe: true,
+        text: "The milk powder + poppy seed swap created the exact royal richness of khoya without any graininess.",
+        photo: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 39
+      }
+    ]
+  },
+  {
+    id: "punjabi-chole-bhature",
+    title: "Amritsari Pindi Chole Masala",
+    category: "Cafe & Bistro Curries",
+    tagline: "Robust spiced dark chickpeas, formulated with FlavorShift AI for when Anardana or Amla is out of stock.",
+    isMostSearched: true,
+    rating: 4.94,
+    reviewsCount: 155,
+    image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800&auto=format&fit=crop&q=80",
+    prepTime: "10 mins",
+    cookTime: "25 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Vegan"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 0.95,
+    suggestedRetailPrice: 5.20,
+    baseCalories: 410,
+    baseMacros: { protein: 16, carbs: 62, fat: 12, fiber: 14 },
+    budgetAlternative: {
+      active: false,
+      title: "Black Tea Steep & Tamarind Extract (No Pomegranate Seeds/Anardana)",
+      savingsPerPerson: 0.35,
+      savingsPercent: "37%",
+      newCostPerPerson: 0.60,
+      description: "Replaces costly dried pomegranate seeds (anardana) with steeped Assam black tea and tart tamarind pulp for signature dark color and acidity.",
+      swapRatio: "For 2 tsp Anardana → Use 1 tbsp Tamarind Extract + 50ml Steeped Dark Black Tea",
+      tasteImpact: "99% Sensory Match. Deep earthy tang with authentic rustic bitterness.",
+      textureImpact: "Dark, clinging masala sauce adhering evenly to chickpeas.",
+      humanTasteValidation: {
+        score: "9.9 / 10",
+        verifiedCooks: 118,
+        agreementPercent: "99% could not tell difference from Old Delhi street chole",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Dried Wild Anardana Powder (2 tsp)", replacedWith: "Tamarind Pulp & Assam Tea Reduction", reason: "Saves ₹30 per portion while giving identical dark rustic hue", tasteMatch: "99%" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Zero-Oil Roasted Spice Chole",
+      calorieDrop: 120,
+      newCalories: 290,
+      newMacros: { protein: 16, carbs: 58, fat: 2, fiber: 14 },
+      caloriePercent: "-29%",
+      description: "Roasted ground spices bloomed in chickpea cooking liquor with zero added oil or ghee.",
+      humanTasteValidation: {
+        score: "9.6 / 10",
+        verifiedCooks: 74,
+        agreementPercent: "95% found it deeply satisfying and digestible"
+      },
+      replacedItems: [
+        { original: "Refined Oil & Ghee (2 tbsp)", replacedWith: "Simmered Chickpea Aquafaba Glaze", calorieSaving: "-120 kcal" }
+      ]
+    },
+    veganOption: {
+      active: false,
+      title: "Naturally 100% Vegan Amritsari Chole",
+      description: "Naturally plant-based, simmered with whole spices, black salt, and ginger juliennes.",
+      replacedItems: []
+    },
+    ingredients: [
+      { name: "Boiled Kabuli Chickpeas", qtyPerPerson: 180, unit: "g", cost: 0.40, category: "Grains & Pulses" },
+      { name: "Dried Anardana (Pomegranate)", qtyPerPerson: 1.5, unit: "tsp", cost: 0.30, category: "Spices", isReplaceable: true, replaceableType: "budget" },
+      { name: "Chole Spice Blend & Kasuri Methi", qtyPerPerson: 1, unit: "tbsp", cost: 0.10, category: "Spices" },
+      { name: "Mustard Oil / Ghee", qtyPerPerson: 1, unit: "tbsp", cost: 0.10, category: "Produce", isReplaceable: true, replaceableType: "calorie" },
+      { name: "Fresh Ginger & Green Chillies", qtyPerPerson: 1, unit: "tbsp julienned", cost: 0.05, category: "Produce" }
+    ],
+    steps: [
+      "Simmer boiled chickpeas with steeped tea water and a bay leaf to impart the traditional dark hue.",
+      "Dry-roast coriander, cumin, black cardamom, and red chilli powder in a skillet.",
+      "Stir tamarind reduction and the roasted spices into the chickpeas, mashing slightly to thicken.",
+      "Pour a sizzling ginger-chilli tadka over the bubbling chole and cover for 2 minutes to trap aromas.",
+      "Serve with fluffy bhature or steamed basmati rice."
+    ],
+    reviews: [
+      {
+        id: "chole-rev-1",
+        author: "Kavita Narang",
+        cafeName: "Old Town Cafe, Chandigarh",
+        rating: 5,
+        date: "4 days ago",
+        verifiedCafe: true,
+        text: "The tea-tamarind substitute creates that quintessential dark, tangy Pindi flavor at a fraction of the cost of whole anardana.",
+        photo: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 57
+      }
+    ]
+  },
+  {
+    id: "hyderabadi-veg-biryani",
+    title: "Dum Pukht Hyderabadi Biryani",
+    category: "Cafe & Bistro Curries",
+    tagline: "Fragrant basmati layered with vegetables, optimized with FlavorShift AI when pure saffron or kewra is missing.",
+    isMostSearched: true,
+    rating: 4.97,
+    reviewsCount: 185,
+    image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80",
+    prepTime: "20 mins",
+    cookTime: "30 mins",
+    difficulty: "Hard",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.80,
+    suggestedRetailPrice: 7.80,
+    baseCalories: 520,
+    baseMacros: { protein: 12, carbs: 78, fat: 18, fiber: 8 },
+    budgetAlternative: {
+      active: false,
+      title: "Turmeric-Cardamom Essence & Rose Water (No Saffron)",
+      savingsPerPerson: 0.70,
+      savingsPercent: "39%",
+      newCostPerPerson: 1.10,
+      description: "Replaces astronomical ₹3,500/10g saffron threads with cold-pressed turmeric infusion, crushed green cardamom, and culinary rose hydrosol.",
+      swapRatio: "For 0.2g Saffron → Use 1/4 tsp Golden Turmeric + 1 tsp Rose Hydrosol + 2 crushed Cardamom pods",
+      tasteImpact: "98% Sensory Match. Captures the intoxicating floral aromatics and vibrant royal tint.",
+      textureImpact: "Individual grains stay slender, aromatic, and fluffy without discoloration.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 140,
+        agreementPercent: "97% rated the floral bouquet indistinguishable from saffron milk",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Pure Kashmir Mongra Saffron (0.2g)", replacedWith: "Cardamom-Rose Bloom & Organic Turmeric Infusion", reason: "Saves ₹60 per serving without chemical essence flavor", tasteMatch: "98%" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Light Dum Biryani with Cauliflower Rice Blend",
+      calorieDrop: 180,
+      newCalories: 340,
+      newMacros: { protein: 14, carbs: 52, fat: 8, fiber: 10 },
+      caloriePercent: "-35%",
+      description: "Combines 60% aged basmati with 40% steamed riced cauliflower and replaces deep-fried onions with air-crisped shallots.",
+      humanTasteValidation: {
+        score: "9.5 / 10",
+        verifiedCooks: 90,
+        agreementPercent: "94% felt completely full and energised without post-meal fatigue"
+      },
+      replacedItems: [
+        { original: "Fried Birista Onions & Ghee (3 tbsp)", replacedWith: "Air-Crisped Shallots & Vegetable Mist", calorieSaving: "-180 kcal" }
+      ]
+    },
+    veganOption: {
+      active: false,
+      title: "Plant-Based Dum Biryani with Coconut Milk Garnish",
+      description: "Dairy-free layering using cold-pressed virgin coconut oil and cashew curd.",
+      replacedItems: [
+        { original: "Dairy Ghee & Curd", replacedWith: "Coconut Milk & Cashew Yogurt" }
+      ]
+    },
+    ingredients: [
+      { name: "Aged Long-Grain Basmati Rice", qtyPerPerson: 90, unit: "g dry", cost: 0.45, category: "Grains & Pulses" },
+      { name: "Mixed Farm Vegetables (Carrot, Beans, Peas)", qtyPerPerson: 100, unit: "g", cost: 0.35, category: "Produce" },
+      { name: "Pure Saffron Strands", qtyPerPerson: 0.15, unit: "g", cost: 0.60, category: "Spices", isReplaceable: true, replaceableType: "budget" },
+      { name: "Desi Ghee & Fried Onions (Birista)", qtyPerPerson: 2, unit: "tbsp", cost: 0.30, category: "Dairy", isReplaceable: true, replaceableType: "calorie" },
+      { name: "Mint & Coriander Leaves", qtyPerPerson: 1, unit: "handful", cost: 0.10, category: "Herbs" }
+    ],
+    steps: [
+      "Par-boil soaked aged basmati with cloves, star anise, and cinnamon until 70% cooked; drain thoroughly.",
+      "Saute vegetables with spiced yogurt marinade in a heavy handi until fragrant.",
+      "Prepare your FlavorShift floral aroma swap: bloom turmeric and crushed cardamom in warm rose water.",
+      "Layer rice over spiced vegetables, drizzling the golden floral essence and mint leaves across the top.",
+      "Seal with dough or tight foil for 18 minutes on low heat (Dum) to allow gentle steam circulation.",
+      "Gently fluff rice with a flat spoon and serve with mint raita."
+    ],
+    reviews: [
+      {
+        id: "biryani-rev-1",
+        author: "Zainab Begum",
+        cafeName: "Nizam Heritage Kitchen, Hyderabad",
+        rating: 5,
+        date: "3 days ago",
+        verifiedCafe: true,
+        text: "The floral aroma bloom was remarkable. Diners praised the aromatic nuance while our banquet cost per portion dropped by nearly ₹60.",
+        photo: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 62
+      }
+    ]
+  },
+  {
+    id: "palak-paneer-velvet",
+    title: "Vibrant Garlic Palak Paneer",
+    category: "Cafe & Bistro Curries",
+    tagline: "Vivid emerald spinach curry, formulated with FlavorShift AI to prevent dull browning without baking soda.",
+    isMostSearched: false,
+    rating: 4.93,
+    reviewsCount: 118,
+    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80",
+    prepTime: "10 mins",
+    cookTime: "12 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.60,
+    suggestedRetailPrice: 6.90,
+    baseCalories: 430,
+    baseMacros: { protein: 21, carbs: 14, fat: 32, fiber: 7 },
+    budgetAlternative: {
+      active: false,
+      title: "Sweet Green Pea & Ice-Shocked Spinach Puree (No Heavy Cream)",
+      savingsPerPerson: 0.60,
+      savingsPercent: "38%",
+      newCostPerPerson: 1.00,
+      description: "Blanches spinach with sweet green peas and an immediate ice-bath shock, yielding a naturally sweet, emerald sauce that stays bright for hours.",
+      swapRatio: "For 50ml Fresh Cream → Use 40g Blanched Green Pea Mash + 10ml Warm Water",
+      tasteImpact: "98% Sensory Match. Natural sweetness balances spinach bitterness with zero cream required.",
+      textureImpact: "Silkier emulsion with natural pectin body and radiant chlorophyll color.",
+      humanTasteValidation: {
+        score: "9.7 / 10",
+        verifiedCooks: 104,
+        agreementPercent: "96% preferred the naturally sweet and vibrant finish",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Heavy Cream (50ml)", replacedWith: "Blanched Sweet Pea Puree", reason: "Maintains natural sweet green depth and saves ₹50 per plate", tasteMatch: "98%" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Clean Fit Palak Tofu Puree",
+      calorieDrop: 160,
+      newCalories: 270,
+      newMacros: { protein: 24, carbs: 12, fat: 14, fiber: 8 },
+      caloriePercent: "-37%",
+      description: "Uses air-fried high-protein organic tofu and skips finishing butter entirely.",
+      humanTasteValidation: {
+        score: "9.5 / 10",
+        verifiedCooks: 71,
+        agreementPercent: "93% loved the refreshing garlic-spinach profile"
+      },
+      replacedItems: [
+        { original: "Malai Paneer Cubes (140g)", replacedWith: "Firm Organic Tofu Cubes", calorieSaving: "-110 kcal" },
+        { original: "Cooking Butter (1 tbsp)", replacedWith: "Garlic Olive Mist", calorieSaving: "-50 kcal" }
+      ]
+    },
+    veganOption: {
+      active: false,
+      title: "100% Plant-Based Garlic Palak Tofu",
+      description: "Naturally vegan using organic firm tofu simmered in garlic-infused spinach sauce.",
+      replacedItems: [
+        { original: "Dairy Paneer", replacedWith: "Pressed Organic Tofu" }
+      ]
+    },
+    ingredients: [
+      { name: "Fresh Tender Spinach Leaves", qtyPerPerson: 200, unit: "g", cost: 0.40, category: "Produce" },
+      { name: "Malai Paneer Cubes", qtyPerPerson: 120, unit: "g", cost: 0.70, category: "Dairy", isReplaceable: true, replaceableType: "calorie-vegan" },
+      { name: "Fresh Cooking Cream", qtyPerPerson: 40, unit: "ml", cost: 0.35, category: "Dairy", isReplaceable: true, replaceableType: "budget" },
+      { name: "Garlic Cloves (Finely Minced)", qtyPerPerson: 4, unit: "cloves", cost: 0.05, category: "Produce" },
+      { name: "Cumin & Green Chillies", qtyPerPerson: 1, unit: "tsp", cost: 0.10, category: "Spices" }
+    ],
+    steps: [
+      "Blanch spinach leaves and green peas in boiling water for exactly 75 seconds, then plunge into ice water.",
+      "Puree into a silkily vibrant emerald green sauce.",
+      "Saute minced garlic and cumin in a pan until golden and fragrant.",
+      "Pour spinach-pea puree into pan, gently folding in paneer cubes over low heat.",
+      "Simmer for only 2 minutes to preserve vibrant color and nutrients; serve warm."
+    ],
+    reviews: [
+      {
+        id: "palak-rev-1",
+        author: "Ananya Deshmukh",
+        cafeName: "Green Leaf Cafe, Pune",
+        rating: 5,
+        date: "6 days ago",
+        verifiedCafe: true,
+        text: "The ice-shocked pea puree method keeps our palak looking radiant green under display heat lamps all evening.",
+        photo: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 41
+      }
+    ]
+  },
+  {
+    id: "kashmiri-dum-aloo",
+    title: "Kashmiri Shahi Dum Aloo",
+    category: "Cafe & Bistro Curries",
+    tagline: "Baby potatoes steeped in fennel & dry ginger gravy, perfected when Kashmiri degi mirch is scarce.",
+    isMostSearched: false,
+    rating: 4.89,
+    reviewsCount: 94,
+    image: "https://images.unsplash.com/photo-1546833998-877b37c2e5c4?w=800&auto=format&fit=crop&q=80",
+    prepTime: "15 mins",
+    cookTime: "25 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.10,
+    suggestedRetailPrice: 5.50,
+    baseCalories: 380,
+    baseMacros: { protein: 8, carbs: 54, fat: 15, fiber: 7 },
+    budgetAlternative: {
+      active: false,
+      title: "Beetroot-Paprika Infusion (No Costly Kashmiri Chillies)",
+      savingsPerPerson: 0.35,
+      savingsPercent: "32%",
+      newCostPerPerson: 0.75,
+      description: "Extracts deep crimson natural hue from grated beetroot water and sweet smoked paprika.",
+      swapRatio: "For 2 tbsp Kashmiri Chilli → Use 1 tbsp Paprika + 15ml Beetroot Liquor",
+      tasteImpact: "98% Sensory Match. Clean warmth with signature fennel-ginger foundation.",
+      textureImpact: "Silky curd-based gravy thoroughly permeating pierced potatoes.",
+      humanTasteValidation: {
+        score: "9.7 / 10",
+        verifiedCooks: 76,
+        agreementPercent: "95% found the crimson tone and mild warmth indistinguishable",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Kashmiri Whole Mirch", replacedWith: "Smoked Paprika & Beetroot Color Glaze", reason: "Saves ₹30 per portion without artificial red food coloring", tasteMatch: "98%" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Air-Crisped Baby Potato Dum Aloo",
+      calorieDrop: 140,
+      newCalories: 240,
+      newMacros: { protein: 9, carbs: 46, fat: 4, fiber: 7 },
+      caloriePercent: "-37%",
+      description: "Air-fries poked baby potatoes instead of deep oil frying, simmered in low-fat whisked curd.",
+      humanTasteValidation: {
+        score: "9.4 / 10",
+        verifiedCooks: 58,
+        agreementPercent: "91% praised the crisp outer skin and guilt-free sauce"
+      },
+      replacedItems: [
+        { original: "Deep-Frying Oil (3 tbsp)", replacedWith: "Air-Frying with Light Mustard Spray", calorieSaving: "-140 kcal" }
+      ]
+    },
+    veganOption: {
+      active: false,
+      title: "Cashew-Curd Kashmiri Dum Aloo",
+      description: "Dairy-free version using fermented cashew curd whipped with dry ginger and fennel.",
+      replacedItems: [
+        { original: "Dairy Yogurt", replacedWith: "Fermented Cashew Yogurt" }
+      ]
+    },
+    ingredients: [
+      { name: "Peeled Baby Potatoes (Pricked)", qtyPerPerson: 180, unit: "g", cost: 0.35, category: "Produce" },
+      { name: "Whisked Fresh Yogurt (Dahi)", qtyPerPerson: 100, unit: "g", cost: 0.30, category: "Dairy", isReplaceable: true, replaceableType: "vegan" },
+      { name: "Kashmiri Chilli & Fennel Powder (Saunf)", qtyPerPerson: 1.5, unit: "tbsp", cost: 0.25, category: "Spices", isReplaceable: true, replaceableType: "budget" },
+      { name: "Dry Ginger Powder (Sonth)", qtyPerPerson: 0.5, unit: "tsp", cost: 0.10, category: "Spices" },
+      { name: "Mustard Oil", qtyPerPerson: 1, unit: "tbsp", cost: 0.10, category: "Produce", isReplaceable: true, replaceableType: "calorie" }
+    ],
+    steps: [
+      "Prick baby potatoes thoroughly with a fork and air-fry or shallow roast until golden.",
+      "Whisk yogurt with fennel powder, dry ginger, and paprika-beetroot crimson infusion.",
+      "Heat mustard oil to smoking point, cool slightly, then stir in asafoetida and spices.",
+      "Gradually add the whisked yogurt mixture on low flame, stirring continuously to prevent splitting.",
+      "Add potatoes, seal with lid, and slow-cook on dum for 12 minutes to infuse flavours."
+    ],
+    reviews: [
+      {
+        id: "aloo-rev-1",
+        author: "Rahul Kaul",
+        cafeName: "Sheen Kashmiri Bistro, Jammu",
+        rating: 5,
+        date: "1 week ago",
+        verifiedCafe: true,
+        text: "The beetroot-paprika color method is pure culinary genius—brilliant ruby red color without synthetic dyes.",
+        photo: "https://images.unsplash.com/photo-1546833998-877b37c2e5c4?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 35
+      }
+    ]
+  },
+  {
+    id: "coastal-malabar-paneer",
+    title: "Malabar Coconut Curry with Paneer",
+    category: "Cafe & Bistro Curries",
+    tagline: "Fragrant Kerala curry, re-engineered when fresh grated coconut or coconut milk is unavailable.",
+    isMostSearched: false,
+    rating: 4.91,
+    reviewsCount: 102,
+    image: "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=800&auto=format&fit=crop&q=80",
+    prepTime: "12 mins",
+    cookTime: "15 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.70,
+    suggestedRetailPrice: 6.80,
+    baseCalories: 460,
+    baseMacros: { protein: 20, carbs: 18, fat: 35, fiber: 6 },
+    budgetAlternative: {
+      active: false,
+      title: "Desiccated Coconut Steep & Oat Milk Silk (No Canned Coconut Milk)",
+      savingsPerPerson: 0.65,
+      savingsPercent: "38%",
+      newCostPerPerson: 1.05,
+      description: "Steeps inexpensive dry bakery desiccated coconut in warm oat milk to extract fresh coconut creaminess without canned milk cost.",
+      swapRatio: "For 150ml canned coconut milk → Use 40g desiccated coconut blended with 110ml warm oat milk",
+      tasteImpact: "98% Sensory Match. Captures pristine tropical coconut aroma and sweetness.",
+      textureImpact: "Velvety, smooth, doesn't split under high tamarind acid.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 88,
+        agreementPercent: "97% couldn't differentiate from fresh Kerala first-press coconut milk",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Canned Coconut Milk (150ml)", replacedWith: "Steeped Desiccated Coconut & Oat Emulsion", reason: "Saves ₹55 per bowl; zero metallic can taste", tasteMatch: "98%" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Light Malabar Tofu Curry",
+      calorieDrop: 170,
+      newCalories: 290,
+      newMacros: { protein: 22, carbs: 16, fat: 15, fiber: 7 },
+      caloriePercent: "-37%",
+      description: "Utilizes organic firm tofu cubes in a lightened coconut-vegetable broth with curry leaves.",
+      humanTasteValidation: {
+        score: "9.5 / 10",
+        verifiedCooks: 64,
+        agreementPercent: "92% enjoyed the light, aromatic broth"
+      },
+      replacedItems: [
+        { original: "Full Fat Paneer & Rich Coconut Cream", replacedWith: "Light Coconut Broth & Seared Tofu", calorieSaving: "-170 kcal" }
+      ]
+    },
+    veganOption: {
+      active: false,
+      title: "Authentic Coastal Vegan Malabar Curry",
+      description: "Naturally plant-based when prepared with tofu or vegetable medley.",
+      replacedItems: [
+        { original: "Dairy Paneer", replacedWith: "Pressed Organic Tofu" }
+      ]
+    },
+    ingredients: [
+      { name: "Fresh Paneer or Tofu Cubes", qtyPerPerson: 130, unit: "g", cost: 0.75, category: "Dairy", isReplaceable: true, replaceableType: "calorie-vegan" },
+      { name: "Canned / Fresh Coconut Milk", qtyPerPerson: 140, unit: "ml", cost: 0.55, category: "Pantry", isReplaceable: true, replaceableType: "budget" },
+      { name: "Fresh Curry Leaves & Shallots", qtyPerPerson: 1, unit: "handful", cost: 0.15, category: "Produce" },
+      { name: "Mustard Seeds, Fenugreek & Kokum", qtyPerPerson: 1, unit: "tsp", cost: 0.15, category: "Spices" },
+      { name: "Coconut Oil", qtyPerPerson: 1, unit: "tbsp", cost: 0.10, category: "Produce", isReplaceable: true, replaceableType: "calorie" }
+    ],
+    steps: [
+      "Splutter mustard seeds and fenugreek in warm coconut oil with crisp curry leaves.",
+      "Saute sliced shallots and green chillies until translucent and sweet.",
+      "Blend steeped desiccated coconut and oat milk into a smooth ivory cream.",
+      "Add turmeric and kokum or tamarind water to develop the signature tangy profile.",
+      "Pour in the coconut emulsion, add paneer or tofu cubes, and simmer for 3 minutes before taking off flame."
+    ],
+    reviews: [
+      {
+        id: "malabar-rev-1",
+        author: "Siddharth Nair",
+        cafeName: "Backwater Coast Bistro, Kochi",
+        rating: 5,
+        date: "4 days ago",
+        verifiedCafe: true,
+        text: "The desiccated coconut steep technique gave our cafe the freshness of morning grated coconut without kitchen prep time.",
+        photo: "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 47
+      }
+    ]
+  },
+  {
+    id: "methi-matar-malai",
+    title: "Methi Matar Malai Royale",
+    category: "Cafe & Bistro Curries",
+    tagline: "Fenugreek and sweet green pea delicacy, formulated when dairy fresh malai is out of stock.",
+    isMostSearched: false,
+    rating: 4.88,
+    reviewsCount: 88,
+    image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&auto=format&fit=crop&q=80",
+    prepTime: "12 mins",
+    cookTime: "14 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.50,
+    suggestedRetailPrice: 6.20,
+    baseCalories: 450,
+    baseMacros: { protein: 14, carbs: 26, fat: 32, fiber: 8 },
+    budgetAlternative: {
+      active: false,
+      title: "Sunflower Seed & Milk Velvet (No Heavy Cream / Malai)",
+      savingsPerPerson: 0.55,
+      savingsPercent: "37%",
+      newCostPerPerson: 0.95,
+      description: "Replaces high-priced cashew paste and dairy malai with toasted sunflower seed puree and warm toned milk.",
+      swapRatio: "For 70g Cream → Use 40g Soaked Sunflower Seed Butter + 30ml Milk",
+      tasteImpact: "97% Sensory Match. Silky nutty finish perfectly balancing bitter fresh fenugreek.",
+      textureImpact: "Glossy ivory sauce coating each pea evenly.",
+      humanTasteValidation: {
+        score: "9.7 / 10",
+        verifiedCooks: 72,
+        agreementPercent: "95% found the balance of bitterness and sweetness flawless",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Fresh Dairy Malai / Cream (70g)", replacedWith: "Toasted Sunflower Seed Emulsion", reason: "Saves ₹45 per cover with zero heaviness", tasteMatch: "97%" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Slim Methi Matar with Greek Yogurt Silk",
+      calorieDrop: 170,
+      newCalories: 280,
+      newMacros: { protein: 16, carbs: 24, fat: 12, fiber: 9 },
+      caloriePercent: "-38%",
+      description: "Uses whisked strained curd and green pea puree instead of butter and heavy cream.",
+      humanTasteValidation: {
+        score: "9.4 / 10",
+        verifiedCooks: 56,
+        agreementPercent: "92% enjoyed the clean, herbal finish"
+      },
+      replacedItems: [
+        { original: "Heavy Cream (70g)", replacedWith: "Strained Greek Yogurt & Milk Velvet", calorieSaving: "-170 kcal" }
+      ]
+    },
+    veganOption: {
+      active: false,
+      title: "Vegan Methi Matar with Almond Cream",
+      description: "Fenugreek leaves and sweet peas folded into aromatic almond-cashew silk.",
+      replacedItems: [
+        { original: "Dairy Malai", replacedWith: "Almond-Cashew Emulsion" }
+      ]
+    },
+    ingredients: [
+      { name: "Fresh Fenugreek Leaves (Methi)", qtyPerPerson: 80, unit: "g chopped", cost: 0.25, category: "Herbs" },
+      { name: "Sweet Green Peas (Matar)", qtyPerPerson: 90, unit: "g", cost: 0.30, category: "Produce" },
+      { name: "Fresh Dairy Malai / Cream", qtyPerPerson: 60, unit: "g", cost: 0.55, category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Onion, Ginger & Green Chilli Puree", qtyPerPerson: 60, unit: "g", cost: 0.25, category: "Produce" },
+      { name: "Garam Masala & Green Cardamom", qtyPerPerson: 0.5, unit: "tsp", cost: 0.15, category: "Spices" }
+    ],
+    steps: [
+      "Saute chopped fenugreek leaves in a dry skillet with a pinch of salt to draw out excess bitterness.",
+      "Cook onion-ginger-cardamom paste gently until fragrant and translucent.",
+      "Whisk your sunflower seed puree or cream substitute into warm milk until micro-smooth.",
+      "Add boiled sweet green peas and the sauteed methi leaves into the aromatic base.",
+      "Gently incorporate the cream alternative on low flame, simmer for 3 minutes, and serve warm with rotis."
+    ],
+    reviews: [
+      {
+        id: "methi-rev-1",
+        author: "Pooja Chhabra",
+        cafeName: "Saffron Spices Bistro, Indore",
+        rating: 5,
+        date: "1 week ago",
+        verifiedCafe: true,
+        text: "The sunflower seed puree is a game-changer. Nutty, velvety, and cut our kitchen sauce prep cost by 37%.",
+        photo: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 38
+      }
+    ]
+  },
+  {
+    id: "kadai-paneer-bistro",
+    title: "Smoky Bistro Kadai Paneer",
+    category: "Cafe & Bistro Curries",
+    tagline: "Crunchy bell peppers & paneer tossed with freshly pounded coriander & dry red chillies.",
+    isMostSearched: true,
+    rating: 4.95,
+    reviewsCount: 160,
+    image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=800&auto=format&fit=crop&q=80",
+    prepTime: "10 mins",
+    cookTime: "15 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.85,
+    suggestedRetailPrice: 7.20,
+    baseCalories: 490,
+    baseMacros: { protein: 23, carbs: 19, fat: 36, fiber: 6 },
+    budgetAlternative: {
+      active: false,
+      title: "Toasted Coriander-Fennel Bloom & Tomato Reduction (No Costly Specialty Pastes)",
+      savingsPerPerson: 0.55,
+      savingsPercent: "30%",
+      newCostPerPerson: 1.30,
+      description: "Replaces commercial bottled kadai pastes with hand-crushed whole seeds bloomed in hot oil for instant aroma release.",
+      swapRatio: "For 2 tbsp jarred Kadai paste → Use 1 tbsp freshly roasted whole coriander & black pepper",
+      tasteImpact: "99% Sensory Match. Robust rustic aroma with crisp vegetable crunch.",
+      textureImpact: "Coating gravy that clings tightly to seared paneer cubes.",
+      humanTasteValidation: {
+        score: "9.9 / 10",
+        verifiedCooks: 130,
+        agreementPercent: "98% preferred the freshly crushed whole spice bloom",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Commercial Kadai Gravy Base", replacedWith: "Freshly Roasted Spice Bloom & Tomato Glaze", reason: "Saves ₹45 per cover while delivering fresh, smoky zest", tasteMatch: "99%" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Air-Seared Fit Kadai Paneer",
+      calorieDrop: 160,
+      newCalories: 330,
+      newMacros: { protein: 26, carbs: 16, fat: 18, fiber: 7 },
+      caloriePercent: "-33%",
+      description: "Air-sears paneer and peppers with 1 tsp cold-pressed oil, maintaining vegetable crunch and protein density.",
+      humanTasteValidation: {
+        score: "9.6 / 10",
+        verifiedCooks: 85,
+        agreementPercent: "94% loved the crisp texture without greasy aftertaste"
+      },
+      replacedItems: [
+        { original: "Deep Sauté Oil (2.5 tbsp)", replacedWith: "Air-Sear with Spice Mist", calorieSaving: "-160 kcal" }
+      ]
+    },
+    veganOption: {
+      active: false,
+      title: "100% Plant-Based Kadai Tofu",
+      description: "Firm tofu seared with bell peppers and whole cracked coriander.",
+      replacedItems: [
+        { original: "Dairy Paneer", replacedWith: "Firm Organic Tofu" }
+      ]
+    },
+    ingredients: [
+      { name: "Malai Paneer Cubes", qtyPerPerson: 150, unit: "g", cost: 0.90, category: "Dairy", isReplaceable: true, replaceableType: "calorie-vegan" },
+      { name: "Crisp Green & Red Bell Peppers", qtyPerPerson: 80, unit: "g diced", cost: 0.35, category: "Produce" },
+      { name: "Ripe Tomato & Onion Reduction", qtyPerPerson: 100, unit: "ml", cost: 0.30, category: "Produce" },
+      { name: "Kadai Masala (Cracked Coriander & Pepper)", qtyPerPerson: 1, unit: "tbsp", cost: 0.15, category: "Spices" },
+      { name: "Refined Oil or Ghee", qtyPerPerson: 1.5, unit: "tbsp", cost: 0.15, category: "Produce", isReplaceable: true, replaceableType: "calorie" }
+    ],
+    steps: [
+      "In a traditional iron wok (kadai), heat oil until lightly smoking.",
+      "Flash-sear diced onions and bell peppers for 90 seconds to retain crisp crunch.",
+      "Add freshly crushed coriander seeds, Kashmiri chillies, and ginger juliennes.",
+      "Pour in tomato reduction and toss paneer cubes briskly to coat without breaking.",
+      "Finish with fresh cilantro leaves and serve immediately with hot butter naan."
+    ],
+    reviews: [
+      {
+        id: "kadai-rev-1",
+        author: "Manish Rawat",
+        cafeName: "Flavours of Punjab, Gurugram",
+        rating: 5,
+        date: "2 days ago",
+        verifiedCafe: true,
+        text: "The freshly bloomed coriander spice swap brings out a restaurant-grade wok aroma that customers love.",
+        photo: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 51
+      }
+    ]
+  },
+  {
+    id: "masala-chai-bistro",
+    title: "Artisan Karak Masala Chai",
+    category: "Coffee & Drinks",
+    tagline: "Slow-brewed spiced milk tea, formulated with FlavorShift AI for when whole spices or full-cream milk are missing.",
+    isMostSearched: true,
+    rating: 4.98,
+    reviewsCount: 220,
+    image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&auto=format&fit=crop&q=80",
+    prepTime: "3 mins",
+    cookTime: "7 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 0.35,
+    suggestedRetailPrice: 2.20,
+    baseCalories: 140,
+    baseMacros: { protein: 4, carbs: 18, fat: 6, fiber: 0 },
+    budgetAlternative: {
+      active: false,
+      title: "Whole Spice Decoction & Toned Milk (No Costly Specialty Syrups)",
+      savingsPerPerson: 0.12,
+      savingsPercent: "34%",
+      newCostPerPerson: 0.23,
+      description: "Replaces commercial pre-mixed chai syrups with a concentrated ginger-cardamom-cinnamon boiled reduction and dairy-toned milk.",
+      swapRatio: "For 30ml Chai Syrup → Use 1 crushed green cardamom pod + slice of fresh ginger + 1 pinch cinnamon",
+      tasteImpact: "100% Sensory Match. Natural invigorating warmth without artificial sugary aftertaste.",
+      textureImpact: "Velvety, frothy top with creamy authentic mouthfeel.",
+      humanTasteValidation: {
+        score: "10 / 10",
+        verifiedCooks: 180,
+        agreementPercent: "99% preferred this fresh brew over processed chai concentrate",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Commercial Bottled Chai Syrup", replacedWith: "Fresh Ginger & Green Cardamom Simmer", reason: "Saves ₹10 per cup; completely natural flavor", tasteMatch: "100%" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Slim Spiced Chai with Stevia & Skim Milk",
+      calorieDrop: 80,
+      newCalories: 60,
+      newMacros: { protein: 4, carbs: 8, fat: 1, fiber: 0 },
+      caloriePercent: "-57%",
+      description: "Replaces granulated white sugar and full-fat buffalo milk with skim milk and natural stevia leaf extract.",
+      humanTasteValidation: {
+        score: "9.6 / 10",
+        verifiedCooks: 110,
+        agreementPercent: "95% delighted by warming spices without sugar crash"
+      },
+      replacedItems: [
+        { original: "Refined White Sugar (2 tsp)", replacedWith: "Natural Stevia Leaf Drops", calorieSaving: "-32 kcal" },
+        { original: "Full Fat Milk (100ml)", replacedWith: "Skimmed Milk", calorieSaving: "-48 kcal" }
+      ]
+    },
+    veganOption: {
+      active: false,
+      title: "Creamy Oat-Milk Masala Chai",
+      description: "Brewed with premium barista oat milk that foams and clings identically to dairy milk.",
+      replacedItems: [
+        { original: "Dairy Milk", replacedWith: "Barista Oat Milk" }
+      ]
+    },
+    ingredients: [
+      { name: "Strong Assam CTC Black Tea", qtyPerPerson: 1.5, unit: "tsp", cost: 0.10, category: "Pantry" },
+      { name: "Fresh Dairy Milk", qtyPerPerson: 100, unit: "ml", cost: 0.12, category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Fresh Ginger & Cardamom", qtyPerPerson: 1, unit: "crushed piece", cost: 0.08, category: "Produce" },
+      { name: "Cinnamon & Clove", qtyPerPerson: 0.5, unit: "pinch", cost: 0.03, category: "Spices" },
+      { name: "Raw Cane Sugar or Jaggery", qtyPerPerson: 1.5, unit: "tsp", cost: 0.02, category: "Sweetener", isReplaceable: true, replaceableType: "calorie" }
+    ],
+    steps: [
+      "Crush fresh ginger and cardamom pods in a mortar to release volatile aromatic oils.",
+      "Bring water to a rolling boil with the crushed spices and let steep for 2 minutes.",
+      "Add strong Assam CTC black tea and simmer for 60 seconds until a deep amber liquor forms.",
+      "Pour in fresh milk (or barista oat milk for vegan mode) and bring to a gentle frothing boil twice.",
+      "Strain through a fine sieve into an artisan clay kulhad or ceramic mug and serve steaming hot."
+    ],
+    reviews: [
+      {
+        id: "chai-rev-1",
+        author: "Tanvi Sharma",
+        cafeName: "Chai Story Cafe, New Delhi",
+        rating: 5,
+        date: "Yesterday",
+        verifiedCafe: true,
+        text: "The freshly crushed spice ratio completely elevated our daily orders. Zero need for expensive pre-made concentrates.",
+        photo: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 78
+      }
+    ]
   }
 ];
 
