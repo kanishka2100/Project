@@ -118,7 +118,7 @@ const RECIPES_DATA = [
         date: "3 days ago",
         verifiedCafe: true,
         text: "The taste & texture analysis is shockingly accurate. Cashew paste adds the exact same fatty sweetness as 30% dairy cream. This feature is a lifesaver for small restaurants.",
-        photo: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/slow-simmered-dal-makhani.jpg",
         helpfulCount: 39
       }
     ]
@@ -523,7 +523,7 @@ const RECIPES_DATA = [
     isMostSearched: true,
     rating: 4.95,
     reviewsCount: 168,
-    image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop&q=80",
+    image: "./assets/recipes/slow-simmered-dal-makhani.jpg",
     prepTime: "15 mins",
     cookTime: "40 mins",
     difficulty: "Medium",
@@ -602,7 +602,7 @@ const RECIPES_DATA = [
         date: "2 days ago",
         verifiedCafe: true,
         text: "The cashew-milk substitute gave us the exact gloss and cling customers expect, cutting cream costs dramatically.",
-        photo: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/slow-simmered-dal-makhani.jpg",
         helpfulCount: 44
       }
     ]
