@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FlavorShift AI | Intelligent Ingredient Substitution & Human Taste Validation Platform</title>
   
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Playfair Display (Headings), DM Sans (Body), Cormorant Garamond (Accent), JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
   
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -16,7 +16,7 @@
   <!-- Chart.js for 6-Axis Sensory Radar & Kitchen Analytics -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Tailwind CSS CDN with Custom Cafe Palette -->
+  <!-- Tailwind CSS CDN with Sophisticated Culinary Palette -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -24,22 +24,36 @@
       theme: {
         extend: {
           fontFamily: {
-            heading: ['Outfit', 'sans-serif'],
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            heading: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"DM Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            accent: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
+            // Sophisticated Food-Tech Culinary Palette
+            culinary: {
+              ivory: '#FAF7F0',
+              sage: '#879B76',
+              forest: '#263D32',
+              terracotta: '#C87957',
+              peach: '#F2D5C4',
+              beige: '#E9DFC9',
+              espresso: '#302820',
+              forestDark: '#1B2C24',
+              espressoDark: '#201A14',
+            },
             cafe: {
-              orange: '#ff6b35',
-              tangerine: '#f97316',
-              amber: '#f59e0b',
-              emerald: '#10b981',
-              rose: '#f43f5e',
-              purple: '#8b5cf6',
-              espresso: '#1f1d1a',
-              crema: '#fffbf5',
-              darkBg: '#0f1115',
-              darkCard: '#1c212a'
+              orange: '#C87957',     // Remapped to terracotta
+              tangerine: '#D68866',
+              amber: '#C87957',
+              emerald: '#879B76',    // Remapped to sage
+              rose: '#C87957',
+              purple: '#879B76',
+              espresso: '#302820',
+              crema: '#FAF7F0',      // Warm Ivory
+              darkBg: '#1B2C24',     // Deep Forest Noir
+              darkCard: '#243A30'
             }
           }
         }
@@ -50,7 +64,7 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="./styles.css">
 </head>
-<body class="bg-[#fffbf5] dark:bg-[#0f1115] text-[#1f1d1a] dark:text-[#f8fafc] min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-white relative overflow-x-hidden">
+<body class="bg-[#FAF7F0] dark:bg-[#1B2C24] text-[#302820] dark:text-[#FAF7F0] min-h-screen flex flex-col font-sans selection:bg-[#C87957] selection:text-white relative overflow-x-hidden">
 
   <!-- Interactive Food & Aroma Cursor Graphics Canvas -->
   <canvas id="food-cursor-canvas" class="fixed inset-0 pointer-events-none z-0 w-full h-full"></canvas>

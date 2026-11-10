@@ -1,62 +1,76 @@
-/* FlavorCraft Cafe OS - Vibrant Culinary Styling & Design System */
+/* FlavorShift AI — Premium Food-Tech Aesthetic & Design System */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap');
 
 :root {
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Outfit', system-ui, -apple-system, sans-serif;
+  /* Typography */
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-accent: 'Cormorant Garamond', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Vibrant Bright Cafe Daylight Palette */
-  --bg-primary: #fffbf5;
-  --bg-secondary: #fef5ea;
-  --bg-card: #ffffff;
-  --bg-card-hover: #fff8ef;
-  --border-color: #f1dfca;
-  --border-focus: #f97316;
+  /* Premium Culinary Palette (Daylight Mode) */
+  --color-ivory: #FAF7F0;
+  --color-sage: #879B76;
+  --color-forest: #263D32;
+  --color-terracotta: #C87957;
+  --color-peach: #F2D5C4;
+  --color-beige: #E9DFC9;
+  --color-espresso: #302820;
 
-  --text-primary: #1f1d1a;
-  --text-secondary: #635a50;
-  --text-muted: #9c9184;
+  /* Theme Surfaces */
+  --bg-primary: #FAF7F0;
+  --bg-secondary: #F2EDE2;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FDFCF9;
+  --border-color: #E6DCcb;
+  --border-focus: #C87957;
 
-  --accent-orange: #ff6b35;
-  --accent-amber: #f59e0b;
-  --accent-emerald: #10b981;
-  --accent-teal: #06b6d4;
-  --accent-rose: #f43f5e;
-  --accent-purple: #8b5cf6;
+  /* Text System */
+  --text-primary: #263D32;
+  --text-secondary: #564E44;
+  --text-muted: #82786C;
 
-  --shadow-sm: 0 2px 8px rgba(249, 115, 22, 0.08);
-  --shadow-md: 0 8px 24px rgba(249, 115, 22, 0.12);
-  --shadow-lg: 0 16px 36px rgba(249, 115, 22, 0.18);
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.6);
+  /* Culinary Accent Tokens */
+  --accent-orange: #C87957;
+  --accent-amber: #C87957;
+  --accent-emerald: #879B76;
+  --accent-teal: #879B76;
+  --accent-rose: #C87957;
+  --accent-purple: #879B76;
+
+  /* Shadows & Glassmorphism */
+  --shadow-sm: 0 2px 10px rgba(48, 40, 32, 0.05);
+  --shadow-md: 0 10px 28px rgba(48, 40, 32, 0.08);
+  --shadow-lg: 0 20px 45px rgba(38, 61, 50, 0.12);
+  --glass-bg: rgba(250, 247, 240, 0.88);
+  --glass-border: rgba(233, 223, 201, 0.7);
 }
 
-/* Dark Theme - Sleek Midnight Bistro Lounge */
+/* Midnight Forest Bistro (Dark Theme) */
 [data-theme="dark"] {
-  --bg-primary: #0f1115;
-  --bg-secondary: #171b22;
-  --bg-card: #1c212a;
-  --bg-card-hover: #232934;
-  --border-color: #2e3544;
-  --border-focus: #fb923c;
+  --bg-primary: #1B2C24;
+  --bg-secondary: #22372D;
+  --bg-card: #263D32;
+  --bg-card-hover: #2C4539;
+  --border-color: #385345;
+  --border-focus: #D68866;
 
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
+  --text-primary: #FAF7F0;
+  --text-secondary: #D9D2C7;
+  --text-muted: #9BB0A1;
 
-  --accent-orange: #fb923c;
-  --accent-amber: #fbbf24;
-  --accent-emerald: #34d399;
-  --accent-teal: #22d3ee;
-  --accent-rose: #fb7185;
-  --accent-purple: #a78bfa;
+  --accent-orange: #D68866;
+  --accent-amber: #D68866;
+  --accent-emerald: #9AB287;
+  --accent-teal: #9AB287;
+  --accent-rose: #D68866;
+  --accent-purple: #9AB287;
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.6);
-  --glass-bg: rgba(28, 33, 42, 0.85);
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.55);
+  --glass-bg: rgba(27, 44, 36, 0.88);
   --glass-border: rgba(255, 255, 255, 0.08);
 }
 
@@ -64,113 +78,138 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease;
+  transition: background-color 0.28s ease, border-color 0.28s ease, color 0.2s ease;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.5;
+  line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
+  font-weight: 700;
 }
 
-/* Bright Vibrant Gradients */
+.font-accent {
+  font-family: var(--font-accent);
+}
+
+/* ======================================================== */
+/* EDITORIAL CULINARY GRADIENTS                            */
+/* ======================================================== */
 .gradient-cafe-hero {
-  background: linear-gradient(135deg, #ff6b35 0%, #f59e0b 50%, #ec4899 100%);
+  background: linear-gradient(135deg, #263D32 0%, #304E3F 45%, #423024 100%);
+}
+
+.gradient-terracotta {
+  background: linear-gradient(135deg, #C87957 0%, #B86B4B 100%);
+}
+
+.gradient-sage {
+  background: linear-gradient(135deg, #879B76 0%, #6E825D 100%);
 }
 
 .gradient-citrus {
-  background: linear-gradient(135deg, #f59e0b 0%, #ff6b35 100%);
+  background: linear-gradient(135deg, #C87957 0%, #879B76 100%);
 }
 
 .gradient-emerald {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
-
-.gradient-berry {
-  background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-}
-
-.gradient-ocean {
-  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #879B76 0%, #263D32 100%);
 }
 
 .text-gradient-sunshine {
-  background: linear-gradient(135deg, #ff6b35 0%, #f59e0b 60%, #e11d48 100%);
+  background: linear-gradient(135deg, #263D32 0%, #C87957 70%, #879B76 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Custom Glass Cards */
+[data-theme="dark"] .text-gradient-sunshine {
+  background: linear-gradient(135deg, #FAF7F0 0%, #D68866 70%, #9AB287 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ======================================================== */
+/* LUXURY CULINARY CARDS & SURFACES                        */
+/* ======================================================== */
 .cafe-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 1.25rem;
+  border-radius: 1.5rem;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  backdrop-filter: blur(12px);
 }
 
 .cafe-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
   box-shadow: var(--shadow-md);
-  border-color: rgba(255, 107, 53, 0.4);
+  border-color: rgba(200, 121, 87, 0.45);
+}
+
+[data-theme="dark"] .cafe-card:hover {
+  border-color: rgba(214, 136, 102, 0.5);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
 }
 
 .glass-nav {
   background-color: var(--glass-bg);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
 }
 
 /* Badges */
 .badge-budget {
-  background: rgba(245, 158, 11, 0.15);
-  color: #d97706;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: rgba(200, 121, 87, 0.12);
+  color: #C87957;
+  border: 1px solid rgba(200, 121, 87, 0.3);
 }
 
 [data-theme="dark"] .badge-budget {
-  background: rgba(245, 158, 11, 0.22);
-  color: #fbbf24;
-  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(214, 136, 102, 0.2);
+  color: #F2D5C4;
+  border-color: rgba(214, 136, 102, 0.35);
 }
 
 .badge-calorie {
-  background: rgba(244, 63, 94, 0.15);
-  color: #e11d48;
-  border: 1px solid rgba(244, 63, 94, 0.3);
+  background: rgba(135, 155, 118, 0.15);
+  color: #556B47;
+  border: 1px solid rgba(135, 155, 118, 0.3);
 }
 
 [data-theme="dark"] .badge-calorie {
-  background: rgba(244, 63, 94, 0.22);
-  color: #fb7185;
-  border-color: rgba(244, 63, 94, 0.4);
+  background: rgba(154, 178, 135, 0.2);
+  color: #D4E2CC;
+  border-color: rgba(154, 178, 135, 0.35);
 }
 
 .badge-vegan {
-  background: rgba(16, 185, 129, 0.15);
-  color: #059669;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: rgba(38, 61, 50, 0.1);
+  color: #263D32;
+  border: 1px solid rgba(38, 61, 50, 0.25);
 }
 
 [data-theme="dark"] .badge-vegan {
-  background: rgba(16, 185, 129, 0.22);
-  color: #34d399;
-  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(135, 155, 118, 0.15);
+  color: #FAF7F0;
+  border-color: rgba(135, 155, 118, 0.3);
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
@@ -186,29 +225,13 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--accent-orange);
 }
 
-/* Custom Switch for Toggles */
-.toggle-checkbox:checked {
-  right: 0;
-  border-color: #10b981;
-}
-.toggle-checkbox:checked + .toggle-label {
-  background-color: #10b981;
-}
-
-/* Animations */
-@keyframes pulseSubtle {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-}
-
-.animate-pulse-subtle {
-  animation: pulseSubtle 3s infinite ease-in-out;
-}
-
+/* ======================================================== */
+/* SCROLL REVEAL & INTERACTION ANIMATIONS                  */
+/* ======================================================== */
 @keyframes slideUpFade {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(22px);
   }
   to {
     opacity: 1;
@@ -217,38 +240,44 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .animate-fade-up {
-  animation: slideUpFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Printable Kitchen POS Ticket Styling */
-@media print {
-  body * {
-    visibility: hidden;
-  }
-  #print-ticket-container, #print-ticket-container * {
-    visibility: visible;
-  }
-  #print-ticket-container {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    margin: 0;
-    padding: 15px;
-    background: white !important;
-    color: black !important;
-    font-family: monospace;
-  }
-  .no-print {
-    display: none !important;
-  }
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
 
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-/* Navigation & Filter Active States */
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+
+/* Image Zoom on Card Hover */
+.image-zoom-container {
+  overflow: hidden;
+  border-radius: 1.25rem;
+}
+
+.image-zoom-container img {
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cafe-card:hover .image-zoom-container img {
+  transform: scale(1.05);
+}
+
+/* Navigation Active Underline */
 .active-nav-tab {
-  color: #ff6b35 !important;
-  font-weight: 800 !important;
+  color: var(--accent-orange) !important;
+  font-weight: 700 !important;
   position: relative;
 }
 
@@ -256,39 +285,41 @@ h1, h2, h3, h4, h5, h6 {
   content: '';
   position: absolute;
   bottom: -4px;
-  left: 10%;
-  width: 80%;
-  height: 3px;
+  left: 15%;
+  width: 70%;
+  height: 2.5px;
   border-radius: 9999px;
-  background: linear-gradient(90deg, #ff6b35, #f59e0b);
+  background: var(--accent-orange);
+  box-shadow: 0 0 8px rgba(200, 121, 87, 0.4);
 }
 
-[data-theme="dark"] .active-nav-tab {
-  color: #fb923c !important;
-}
-
+/* Category & Diet Button Active Styles */
 .active-cat {
-  background: linear-gradient(135deg, #ff6b35 0%, #f59e0b 100%) !important;
-  color: #ffffff !important;
+  background: #C87957 !important;
+  color: #FFFFFF !important;
   border-color: transparent !important;
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3) !important;
+  box-shadow: 0 6px 16px rgba(200, 121, 87, 0.3) !important;
 }
 
 .active-diet {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-  color: #ffffff !important;
+  background: #263D32 !important;
+  color: #FAF7F0 !important;
   border-color: transparent !important;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 0 6px 16px rgba(38, 61, 50, 0.25) !important;
+}
+
+[data-theme="dark"] .active-diet {
+  background: #879B76 !important;
+  color: #1B2C24 !important;
 }
 
 /* Modal Backdrop Blur */
 #recipe-webx-modal {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-
-/* Enhanced Dashboard Styling */
+/* Dashboard KPI Card Styling */
 .dash-kpi-card {
   position: relative;
   overflow: hidden;
@@ -297,55 +328,34 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .dash-kpi-card:hover {
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 16px 32px rgba(249, 115, 22, 0.14);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(200, 121, 87, 0.35);
 }
 
-.glow-emerald {
-  box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
-}
-
-.glow-amber {
-  box-shadow: 0 0 25px rgba(245, 158, 11, 0.2);
-}
-
-.glow-rose {
-  box-shadow: 0 0 25px rgba(244, 63, 94, 0.2);
-}
-
-.glow-indigo {
-  box-shadow: 0 0 25px rgba(99, 102, 241, 0.2);
-}
-
+/* Live Pulse Dot (Forest / Sage Green) */
 .live-pulse-dot {
   width: 8px;
   height: 8px;
   border-radius: 9999px;
-  background-color: #10b981;
-  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-  animation: pulseGreen 2s infinite;
+  background-color: #879B76;
+  box-shadow: 0 0 0 0 rgba(135, 155, 118, 0.7);
+  animation: pulseGreen 2.2s infinite;
 }
 
 @keyframes pulseGreen {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    box-shadow: 0 0 0 0 rgba(135, 155, 118, 0.7);
   }
   70% {
     transform: scale(1);
-    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    box-shadow: 0 0 0 8px rgba(135, 155, 118, 0);
   }
   100% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    box-shadow: 0 0 0 0 rgba(135, 155, 118, 0);
   }
-}
-
-.shift-chip.active-shift {
-  background: linear-gradient(135deg, #ff6b35 0%, #f59e0b 100%) !important;
-  color: white !important;
-  border-color: transparent !important;
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35) !important;
 }
 
 /* Sensory Radar & Dashboard Chart Canvas */
@@ -360,43 +370,43 @@ h1, h2, h3, h4, h5, h6 {
 .ambient-glow {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(100px);
-  opacity: 0.45;
+  filter: blur(120px);
+  opacity: 0.35;
   pointer-events: none;
-  animation: floatOrb 18s ease-in-out infinite alternate;
+  animation: floatOrb 20s ease-in-out infinite alternate;
 }
 
 [data-theme="dark"] .ambient-glow {
-  opacity: 0.28;
-  filter: blur(120px);
+  opacity: 0.22;
+  filter: blur(140px);
 }
 
 .ambient-glow-orange {
   top: -8%;
   left: -5%;
-  width: 480px;
-  height: 480px;
-  background: radial-gradient(circle, #ff6b35 0%, #f59e0b 60%, transparent 80%);
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, #C87957 0%, #F2D5C4 55%, transparent 75%);
 }
 
 .ambient-glow-emerald {
-  top: 30%;
+  top: 35%;
   right: -8%;
-  width: 520px;
-  height: 520px;
-  background: radial-gradient(circle, #10b981 0%, #06b6d4 60%, transparent 80%);
-  animation-duration: 22s;
-  animation-delay: -5s;
+  width: 560px;
+  height: 560px;
+  background: radial-gradient(circle, #879B76 0%, #E9DFC9 55%, transparent 75%);
+  animation-duration: 24s;
+  animation-delay: -6s;
 }
 
 .ambient-glow-rose {
   bottom: 10%;
   left: 20%;
-  width: 460px;
-  height: 460px;
-  background: radial-gradient(circle, #f43f5e 0%, #8b5cf6 60%, transparent 80%);
-  animation-duration: 26s;
-  animation-delay: -10s;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, #F2D5C4 0%, #E9DFC9 55%, transparent 75%);
+  animation-duration: 28s;
+  animation-delay: -12s;
 }
 
 @keyframes floatOrb {
@@ -404,29 +414,14 @@ h1, h2, h3, h4, h5, h6 {
     transform: translate(0, 0) scale(1);
   }
   50% {
-    transform: translate(40px, 30px) scale(1.08);
+    transform: translate(35px, 25px) scale(1.06);
   }
   100% {
-    transform: translate(-30px, -20px) scale(0.95);
+    transform: translate(-25px, -15px) scale(0.96);
   }
 }
 
-/* Glass Card Enhanced Lighting */
-.cafe-card {
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease;
-  backdrop-filter: blur(12px);
-}
-
-.cafe-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 32px -8px rgba(249, 115, 22, 0.15), 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-[data-theme="dark"] .cafe-card:hover {
-  box-shadow: 0 16px 36px -8px rgba(249, 115, 22, 0.22), 0 0 0 1px rgba(245, 158, 11, 0.2);
-}
-
-/* Print Ticket Styling */
+/* Printable Kitchen POS Ticket Styling */
 @media print {
   body * {
     visibility: hidden;

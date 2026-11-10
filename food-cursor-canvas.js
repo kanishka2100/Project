@@ -1,6 +1,9 @@
-// FlavorShift AI — Interactive Food & Aroma Particle Canvas Engine
-// Renders physics-driven floating culinary ingredients and volatile aroma rings
-// that react dynamically to cursor movement, speed, and clicks.
+// FlavorShift AI — Editorial Culinary Background Canvas Engine
+// Features:
+// 1. Organic rising aroma steam trails (soft bezier curves undulating upward)
+// 2. Minimalist botanical silhouettes (delicate basil leaves, spice star anise, citrus wheel segments)
+// 3. Fluid cursor reaction (particles and steam waves gently swirl around cursor)
+// 4. Subtle click flavor ripples and ambient watercolor lighting
 
 (function () {
   'use strict';
@@ -8,99 +11,177 @@
   let canvas, ctx;
   let width, height;
   let particles = [];
+  let steamTrails = [];
   let aromaRipples = [];
+  let animId = null;
 
-  // Mouse & Touch Tracking
-  const mouse = {
+  // Reduced motion preference
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Cursor tracking with smoothed physics
+  const cursor = {
     x: -1000,
     y: -1000,
     targetX: -1000,
     targetY: -1000,
-    prevX: -1000,
-    prevY: -1000,
+    vx: 0,
+    vy: 0,
     speed: 0,
-    radius: 140,
-    isHovering: false
+    radius: 160,
+    active: false
   };
 
-  // Culinary Particle Archetypes
-  const FOOD_GLYPHS = ['🌿', '🌰', '🥑', '🧀', '🍄', '🍅', '🌶️', '🍋', '🧄', '🧈'];
-  const AROMA_COLORS_LIGHT = [
-    'rgba(255, 107, 53, 0.25)',  // Saffron Orange
-    'rgba(245, 158, 11, 0.25)',  // Golden Amber
-    'rgba(16, 185, 129, 0.22)',  // Basil Emerald
-    'rgba(244, 63, 94, 0.20)',   // Berry Rose
-    'rgba(139, 92, 246, 0.18)'   // Truffle Violet
-  ];
-  const AROMA_COLORS_DARK = [
-    'rgba(251, 146, 60, 0.35)',
-    'rgba(251, 191, 36, 0.35)',
-    'rgba(52, 211, 153, 0.30)',
-    'rgba(251, 113, 133, 0.28)',
-    'rgba(167, 139, 250, 0.25)'
-  ];
+  // Sophisticated Culinary Color Palette for Canvas
+  const PALETTE = {
+    sage: '#879B76',
+    forest: '#263D32',
+    terracotta: '#C87957',
+    peach: '#F2D5C4',
+    beige: '#E9DFC9',
+    espresso: '#302820',
+  };
 
-  class Particle {
+  // ========================================================
+  // 1. AROMA STEAM TRAILS (Soft bezier curves rising organically)
+  // ========================================================
+  class SteamTrail {
+    constructor(x) {
+      this.init(x);
+    }
+
+    init(x) {
+      this.baseX = x !== undefined ? x : Math.random() * width;
+      this.y = height + Math.random() * 80;
+      this.length = Math.random() * 220 + 260;
+      this.speed = Math.random() * 0.45 + 0.35;
+      this.frequency = Math.random() * 0.015 + 0.008;
+      this.amplitude = Math.random() * 35 + 20;
+      this.phase = Math.random() * Math.PI * 2;
+      this.width = Math.random() * 2.5 + 1.2;
+      this.opacity = Math.random() * 0.14 + 0.06;
+      this.deflectX = 0;
+    }
+
+    update() {
+      if (prefersReducedMotion) return;
+      this.y -= this.speed;
+      this.phase += this.frequency;
+
+      // Deflect around cursor
+      if (cursor.active) {
+        const dx = this.baseX - cursor.x;
+        const dy = (this.y - this.length * 0.5) - cursor.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < cursor.radius && dist > 1) {
+          const force = (cursor.radius - dist) / cursor.radius;
+          this.deflectX += (Math.sign(dx) * force * 15 - this.deflectX) * 0.08;
+        } else {
+          this.deflectX *= 0.95;
+        }
+      } else {
+        this.deflectX *= 0.95;
+      }
+
+      if (this.y + this.length < -50) {
+        this.init();
+      }
+    }
+
+    draw(ctx, isDark) {
+      ctx.save();
+      const currentX = this.baseX + this.deflectX;
+      
+      const grad = ctx.createLinearGradient(currentX, this.y, currentX, this.y - this.length);
+      const alpha = isDark ? this.opacity * 1.3 : this.opacity;
+      
+      if (isDark) {
+        grad.addColorStop(0, `rgba(242, 213, 196, 0)`);
+        grad.addColorStop(0.35, `rgba(242, 213, 196, ${alpha})`);
+        grad.addColorStop(0.7, `rgba(233, 223, 201, ${alpha * 0.7})`);
+        grad.addColorStop(1, `rgba(135, 155, 118, 0)`);
+      } else {
+        grad.addColorStop(0, `rgba(200, 121, 87, 0)`);
+        grad.addColorStop(0.35, `rgba(200, 121, 87, ${alpha})`);
+        grad.addColorStop(0.7, `rgba(233, 223, 201, ${alpha * 0.8})`);
+        grad.addColorStop(1, `rgba(135, 155, 118, 0)`);
+      }
+
+      ctx.beginPath();
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = this.width;
+      ctx.lineCap = 'round';
+
+      const startY = this.y;
+      const endY = this.y - this.length;
+
+      const cp1X = currentX + Math.sin(this.phase) * this.amplitude;
+      const cp1Y = startY - this.length * 0.35;
+      const cp2X = currentX - Math.sin(this.phase + 1.2) * (this.amplitude * 0.8);
+      const cp2Y = startY - this.length * 0.7;
+
+      ctx.moveTo(currentX, startY);
+      ctx.bezierCurveTo(cp1X, cp1Y, cp2X, cp2Y, currentX + Math.sin(this.phase * 0.7) * 15, endY);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+  }
+
+  // ========================================================
+  // 2. BOTANICAL INGREDIENT SILHOUETTES
+  // (Minimal vector basil leaves, anise stars, citrus segments)
+  // ========================================================
+  class BotanicalParticle {
     constructor() {
       this.reset(true);
     }
 
     reset(initial = false) {
       this.x = Math.random() * width;
-      this.y = initial ? Math.random() * height : height + 30;
-      this.size = Math.random() * 18 + 14; // Font size or circle radius
-      this.isGlyph = Math.random() > 0.45; // 55% food emojis, 45% aroma molecular rings
-      this.glyph = FOOD_GLYPHS[Math.floor(Math.random() * FOOD_GLYPHS.length)];
-      
-      // Drifting Physics
-      this.baseVx = (Math.random() - 0.5) * 0.4;
-      this.baseVy = -(Math.random() * 0.4 + 0.2); // Gentle upward convection drift
+      this.y = initial ? Math.random() * height : height + 40;
+      this.type = Math.floor(Math.random() * 4); // 0: Basil, 1: Star Anise, 2: Citrus Segment, 3: Peppercorn
+      this.size = Math.random() * 14 + 12;
+      this.scale = Math.random() * 0.4 + 0.7;
+
+      this.baseVx = (Math.random() - 0.5) * 0.25;
+      this.baseVy = -(Math.random() * 0.35 + 0.15);
       this.vx = this.baseVx;
       this.vy = this.baseVy;
 
-      // Rotation
       this.angle = Math.random() * Math.PI * 2;
-      this.vAngle = (Math.random() - 0.5) * 0.015;
+      this.angularSpeed = (Math.random() - 0.5) * 0.008;
 
-      // Pulse / Wave parameters
-      this.phase = Math.random() * Math.PI * 2;
-      this.pulseSpeed = Math.random() * 0.02 + 0.01;
-      this.opacity = Math.random() * 0.45 + 0.25;
-
-      this.colorIndex = Math.floor(Math.random() * AROMA_COLORS_LIGHT.length);
+      this.opacity = Math.random() * 0.22 + 0.18;
+      this.colorType = Math.floor(Math.random() * 3); // Sage, Terracotta, Beige
     }
 
-    update(isDark) {
-      // Natural floating wobble
-      this.phase += this.pulseSpeed;
-      this.x += this.vx + Math.sin(this.phase) * 0.3;
+    update() {
+      if (prefersReducedMotion) return;
+      this.x += this.vx;
       this.y += this.vy;
-      this.angle += this.vAngle;
+      this.angle += this.angularSpeed;
 
-      // Dampen velocity back to base convection
       this.vx += (this.baseVx - this.vx) * 0.04;
       this.vy += (this.baseVy - this.vy) * 0.04;
 
-      // Cursor Reaction (Magnetism & Repulsion Wave)
-      if (mouse.isHovering) {
-        const dx = this.x - mouse.x;
-        const dy = this.y - mouse.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+      // Cursor interaction
+      if (cursor.active) {
+        const dx = this.x - cursor.x;
+        const dy = this.y - cursor.y;
+        const dist = Math.hypot(dx, dy);
 
-        if (dist < mouse.radius && dist > 1) {
-          const force = (mouse.radius - dist) / mouse.radius;
+        if (dist < cursor.radius && dist > 1) {
+          const force = (cursor.radius - dist) / cursor.radius;
           const angle = Math.atan2(dy, dx);
-          
-          // Repel outward with velocity boost proportional to cursor speed
-          const push = force * (1.8 + mouse.speed * 0.08);
+          const push = force * (1.6 + cursor.speed * 0.06);
+
           this.vx += Math.cos(angle) * push;
           this.vy += Math.sin(angle) * push;
-          this.vAngle += (Math.random() - 0.5) * 0.08 * force;
+          this.angularSpeed += (Math.random() - 0.5) * 0.02 * force;
         }
       }
 
-      // Recycle when off-screen
-      if (this.y < -40 || this.x < -40 || this.x > width + 40) {
+      if (this.y < -50 || this.x < -60 || this.x > width + 60) {
         this.reset(false);
       }
     }
@@ -109,53 +190,93 @@
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.angle);
+      ctx.scale(this.scale, this.scale);
 
-      const colors = isDark ? AROMA_COLORS_DARK : AROMA_COLORS_LIGHT;
-      const baseColor = colors[this.colorIndex];
-
-      if (this.isGlyph) {
-        ctx.globalAlpha = isDark ? this.opacity * 0.85 : this.opacity * 0.7;
-        ctx.font = `${this.size}px "Segoe UI Emoji", "Apple Color Emoji", sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(this.glyph, 0, 0);
+      let strokeColor, fillColor;
+      if (this.colorType === 0) {
+        strokeColor = isDark ? 'rgba(154, 178, 135, 0.45)' : 'rgba(135, 155, 118, 0.40)';
+        fillColor = isDark ? 'rgba(154, 178, 135, 0.12)' : 'rgba(135, 155, 118, 0.10)';
+      } else if (this.colorType === 1) {
+        strokeColor = isDark ? 'rgba(214, 136, 102, 0.45)' : 'rgba(200, 121, 87, 0.38)';
+        fillColor = isDark ? 'rgba(214, 136, 102, 0.12)' : 'rgba(200, 121, 87, 0.09)';
       } else {
-        // Volatile Aroma Compound Molecular Ring
-        const ringRadius = this.size * 0.65;
-        ctx.globalAlpha = this.opacity * 0.8;
-        
-        // Outer glowing ring
+        strokeColor = isDark ? 'rgba(233, 223, 201, 0.40)' : 'rgba(233, 223, 201, 0.55)';
+        fillColor = isDark ? 'rgba(233, 223, 201, 0.08)' : 'rgba(233, 223, 201, 0.15)';
+      }
+
+      ctx.lineWidth = 1.3;
+      ctx.strokeStyle = strokeColor;
+      ctx.fillStyle = fillColor;
+
+      const s = this.size;
+
+      if (this.type === 0) {
+        // Minimalist Basil Leaf
         ctx.beginPath();
-        ctx.arc(0, 0, ringRadius, 0, Math.PI * 2);
-        ctx.strokeStyle = baseColor;
-        ctx.lineWidth = 1.5;
+        ctx.moveTo(0, -s);
+        ctx.bezierCurveTo(s * 0.7, -s * 0.4, s * 0.7, s * 0.5, 0, s);
+        ctx.bezierCurveTo(-s * 0.7, s * 0.5, -s * 0.7, -s * 0.4, 0, -s);
+        ctx.fill();
         ctx.stroke();
 
-        // Inner nucleus dot
+        // Central leaf vein
         ctx.beginPath();
-        ctx.arc(0, 0, ringRadius * 0.35, 0, Math.PI * 2);
-        ctx.fillStyle = baseColor;
+        ctx.moveTo(0, -s * 0.75);
+        ctx.lineTo(0, s * 0.75);
+        ctx.stroke();
+      } else if (this.type === 1) {
+        // Star Anise (6-pointed floral spice)
+        ctx.beginPath();
+        const rays = 6;
+        for (let i = 0; i < rays; i++) {
+          const rot = (i * Math.PI) / 3;
+          const rx = Math.cos(rot) * s;
+          const ry = Math.sin(rot) * s;
+          ctx.moveTo(0, 0);
+          ctx.lineTo(rx, ry);
+          ctx.arc(rx * 0.85, ry * 0.85, 2.5, 0, Math.PI * 2);
+        }
+        ctx.stroke();
+      } else if (this.type === 2) {
+        // Citrus Wheel Segment
+        ctx.beginPath();
+        ctx.arc(0, 0, s * 0.9, -0.6, 0.6);
+        ctx.lineTo(0, 0);
+        ctx.closePath();
         ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(0, 0, s * 0.65, -0.5, 0.5);
+        ctx.stroke();
+      } else {
+        // Delicate Coriander/Spice Seed
+        ctx.beginPath();
+        ctx.arc(0, 0, s * 0.35, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
       }
 
       ctx.restore();
     }
   }
 
-  // Click Aroma Ripple Wave
+  // ========================================================
+  // 3. CLICK AROMA RIPPLES (Culinary fragrance burst)
+  // ========================================================
   class AromaRipple {
     constructor(x, y) {
       this.x = x;
       this.y = y;
-      this.radius = 5;
-      this.maxRadius = 160;
-      this.opacity = 0.6;
-      this.growth = 4.5;
+      this.radius = 8;
+      this.maxRadius = 180;
+      this.opacity = 0.55;
+      this.growth = 4.2;
     }
 
     update() {
       this.radius += this.growth;
-      this.opacity *= 0.95;
+      this.opacity *= 0.94;
     }
 
     draw(ctx, isDark) {
@@ -164,10 +285,20 @@
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.strokeStyle = isDark
-        ? `rgba(251, 146, 60, ${this.opacity})`
-        : `rgba(255, 107, 53, ${this.opacity})`;
-      ctx.lineWidth = 2.5;
+        ? `rgba(214, 136, 102, ${this.opacity})`
+        : `rgba(200, 121, 87, ${this.opacity})`;
+      ctx.lineWidth = 1.8;
       ctx.stroke();
+
+      if (this.radius > 30) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius * 0.72, 0, Math.PI * 2);
+        ctx.strokeStyle = isDark
+          ? `rgba(154, 178, 135, ${this.opacity * 0.6})`
+          : `rgba(135, 155, 118, ${this.opacity * 0.6})`;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
       ctx.restore();
     }
   }
@@ -186,102 +317,123 @@
     resize();
     window.addEventListener('resize', resize, { passive: true });
 
-    // Populate particles based on screen width
-    const count = Math.min(Math.floor(width / 32), 48);
+    // Populate Steam Trails (spaced across width)
+    const steamCount = Math.max(4, Math.min(Math.floor(width / 220), 8));
+    steamTrails = [];
+    for (let i = 0; i < steamCount; i++) {
+      const stepX = (width / steamCount) * i + Math.random() * 50;
+      steamTrails.push(new SteamTrail(stepX));
+    }
+
+    // Populate Botanical Particles (tastefully sparse, non-distracting)
+    const botanicalCount = Math.max(8, Math.min(Math.floor(width / 60), 22));
     particles = [];
-    for (let i = 0; i < count; i++) {
-      particles.push(new Particle());
+    for (let i = 0; i < botanicalCount; i++) {
+      particles.push(new BotanicalParticle());
     }
 
     // Cursor tracking
     window.addEventListener('mousemove', (e) => {
-      mouse.isHovering = true;
-      mouse.targetX = e.clientX;
-      mouse.targetY = e.clientY;
+      cursor.active = true;
+      cursor.targetX = e.clientX;
+      cursor.targetY = e.clientY;
     }, { passive: true });
 
     window.addEventListener('mouseleave', () => {
-      mouse.isHovering = false;
+      cursor.active = false;
     });
 
-    // Touch support for tablets and mobile
+    // Touch support for tablets/mobile
     window.addEventListener('touchmove', (e) => {
       if (e.touches && e.touches[0]) {
-        mouse.isHovering = true;
-        mouse.targetX = e.touches[0].clientX;
-        mouse.targetY = e.touches[0].clientY;
+        cursor.active = true;
+        cursor.targetX = e.touches[0].clientX;
+        cursor.targetY = e.touches[0].clientY;
       }
     }, { passive: true });
 
     window.addEventListener('touchend', () => {
-      mouse.isHovering = false;
+      cursor.active = false;
     });
 
-    // Click flavor burst ripple
+    // Click culinary ripple
     window.addEventListener('pointerdown', (e) => {
       aromaRipples.push(new AromaRipple(e.clientX, e.clientY));
-      if (aromaRipples.length > 8) aromaRipples.shift();
+      if (aromaRipples.length > 6) aromaRipples.shift();
 
-      // Scatter nearby particles on click
+      // Gently nudge botanical particles
       particles.forEach(p => {
         const dx = p.x - e.clientX;
         const dy = p.y - e.clientY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 180 && dist > 1) {
+        const dist = Math.hypot(dx, dy);
+        if (dist < 200 && dist > 1) {
           const angle = Math.atan2(dy, dx);
-          p.vx += Math.cos(angle) * 7;
-          p.vy += Math.sin(angle) * 7;
+          p.vx += Math.cos(angle) * 5;
+          p.vy += Math.sin(angle) * 5;
         }
       });
     }, { passive: true });
 
-    requestAnimationFrame(renderLoop);
+    // Handle tab visibility to pause when inactive (0% battery drain)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (animId) cancelAnimationFrame(animId);
+        animId = null;
+      } else {
+        if (!animId) animId = requestAnimationFrame(render);
+      }
+    });
+
+    animId = requestAnimationFrame(render);
   }
 
-  function renderLoop() {
+  function render() {
     if (!ctx) return;
 
-    // Smooth cursor interpolation and speed calculation
-    if (mouse.prevX === -1000) {
-      mouse.x = mouse.targetX;
-      mouse.y = mouse.targetY;
-      mouse.prevX = mouse.x;
-      mouse.prevY = mouse.y;
+    // Smooth cursor interpolation
+    if (cursor.x === -1000) {
+      cursor.x = cursor.targetX;
+      cursor.y = cursor.targetY;
     } else {
-      mouse.x += (mouse.targetX - mouse.x) * 0.25;
-      mouse.y += (mouse.targetY - mouse.y) * 0.25;
-      const moveDist = Math.hypot(mouse.x - mouse.prevX, mouse.y - mouse.prevY);
-      mouse.speed = moveDist;
-      mouse.prevX = mouse.x;
-      mouse.prevY = mouse.y;
+      cursor.vx = (cursor.targetX - cursor.x) * 0.2;
+      cursor.vy = (cursor.targetY - cursor.y) * 0.2;
+      cursor.x += cursor.vx;
+      cursor.y += cursor.vy;
+      cursor.speed = Math.hypot(cursor.vx, cursor.vy);
     }
 
     ctx.clearRect(0, 0, width, height);
 
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
-    // Ambient Cursor Aroma Halo Light
-    if (mouse.isHovering && mouse.x > 0 && mouse.y > 0) {
+    // Ambient Ethereal Cursor Glow Halo
+    if (cursor.active && cursor.x > 0 && cursor.y > 0) {
       ctx.save();
-      const gradient = ctx.createRadialGradient(
-        mouse.x, mouse.y, 0,
-        mouse.x, mouse.y, mouse.radius * 1.3
+      const haloGrad = ctx.createRadialGradient(
+        cursor.x, cursor.y, 0,
+        cursor.x, cursor.y, cursor.radius * 1.4
       );
       if (isDark) {
-        gradient.addColorStop(0, 'rgba(251, 146, 60, 0.12)');
-        gradient.addColorStop(0.5, 'rgba(245, 158, 11, 0.05)');
-        gradient.addColorStop(1, 'rgba(15, 17, 21, 0)');
+        haloGrad.addColorStop(0, 'rgba(214, 136, 102, 0.08)');
+        haloGrad.addColorStop(0.5, 'rgba(154, 178, 135, 0.03)');
+        haloGrad.addColorStop(1, 'rgba(27, 44, 36, 0)');
       } else {
-        gradient.addColorStop(0, 'rgba(255, 107, 53, 0.10)');
-        gradient.addColorStop(0.5, 'rgba(245, 158, 11, 0.04)');
-        gradient.addColorStop(1, 'rgba(255, 251, 245, 0)');
+        haloGrad.addColorStop(0, 'rgba(200, 121, 87, 0.07)');
+        haloGrad.addColorStop(0.5, 'rgba(242, 213, 196, 0.03)');
+        haloGrad.addColorStop(1, 'rgba(250, 247, 240, 0)');
       }
-      ctx.fillStyle = gradient;
+      ctx.fillStyle = haloGrad;
       ctx.fillRect(0, 0, width, height);
       ctx.restore();
     }
 
-    // Draw and update aroma ripples
+    // 1. Render Steam Trails (Rising Background Layer)
+    for (let i = 0; i < steamTrails.length; i++) {
+      steamTrails[i].update();
+      steamTrails[i].draw(ctx, isDark);
+    }
+
+    // 2. Render Aroma Ripples (Click waves)
     for (let i = aromaRipples.length - 1; i >= 0; i--) {
       const ripple = aromaRipples[i];
       ripple.update();
@@ -291,14 +443,13 @@
       }
     }
 
-    // Draw particles
+    // 3. Render Botanical Particles (Minimal vector leaves & spice)
     for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
-      p.update(isDark);
-      p.draw(ctx, isDark);
+      particles[i].update();
+      particles[i].draw(ctx, isDark);
     }
 
-    requestAnimationFrame(renderLoop);
+    animId = requestAnimationFrame(render);
   }
 
   if (document.readyState === 'loading') {
