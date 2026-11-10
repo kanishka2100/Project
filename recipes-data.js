@@ -1344,7 +1344,7 @@ const RECIPES_DATA = [
     isMostSearched: true,
     rating: 4.98,
     reviewsCount: 220,
-    image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&auto=format&fit=crop&q=80",
+    image: "./assets/recipes/artisan-karak-masala-chai.jpg",
     prepTime: "3 mins",
     cookTime: "7 mins",
     difficulty: "Easy",
@@ -1423,7 +1423,7 @@ const RECIPES_DATA = [
         date: "Yesterday",
         verifiedCafe: true,
         text: "The freshly crushed spice ratio completely elevated our daily orders. Zero need for expensive pre-made concentrates.",
-        photo: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/artisan-karak-masala-chai.jpg",
         helpfulCount: 78
       }
     ]
