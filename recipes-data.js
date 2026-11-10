@@ -1071,7 +1071,7 @@ const RECIPES_DATA = [
     isMostSearched: false,
     rating: 4.91,
     reviewsCount: 102,
-    image: "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=800&auto=format&fit=crop&q=80",
+    image: "./assets/recipes/malabar-coconut-paneer-curry.jpg",
     prepTime: "12 mins",
     cookTime: "15 mins",
     difficulty: "Easy",
@@ -1149,7 +1149,7 @@ const RECIPES_DATA = [
         date: "4 days ago",
         verifiedCafe: true,
         text: "The desiccated coconut steep technique gave our cafe the freshness of morning grated coconut without kitchen prep time.",
-        photo: "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/malabar-coconut-paneer-curry.jpg",
         helpfulCount: 47
       }
     ]
