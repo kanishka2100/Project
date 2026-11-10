@@ -100,6 +100,55 @@
     return '₹' + Math.round(inr);
   }
 
+  // Helper: Compute market standard unit rates (₹/100g, ₹/litre, ₹/piece, etc.)
+  function getIngredientUnitRate(ing) {
+    if (ing.unitRateText) {
+      return ing.unitRateText;
+    }
+    const costInr = Number(ing.cost) * USD_TO_INR;
+    const qty = Number(ing.qtyPerPerson) || 1;
+    const unitLower = (ing.unit || '').toLowerCase();
+
+    // Grams -> ₹/100g
+    if (unitLower.includes('g ') || unitLower.endsWith('g') || unitLower.includes('gram')) {
+      const per100g = (costInr / qty) * 100;
+      return '₹' + Math.round(per100g) + '/100g';
+    }
+    // Millilitres / Litre -> ₹/Litre
+    if (unitLower.includes('ml') || unitLower.includes('litre') || unitLower.includes('liter')) {
+      const perLitre = (costInr / qty) * 1000;
+      return '₹' + Math.round(perLitre) + '/L';
+    }
+    // Pieces / slices / cloves / pinches / eggs
+    if (unitLower.includes('slice')) {
+      const perSlice = costInr / qty;
+      return '₹' + Math.round(perSlice) + '/slice';
+    }
+    if (unitLower.includes('clove')) {
+      const perClove = costInr / qty;
+      return '₹' + (Math.round(perClove * 10) / 10) + '/clove';
+    }
+    if (unitLower.includes('piece') || unitLower.includes('egg') || unitLower.includes('bread') || unitLower.includes('bun')) {
+      const perPiece = costInr / qty;
+      return '₹' + Math.round(perPiece) + '/piece';
+    }
+    if (unitLower.includes('teaspoon') || unitLower.includes('tsp')) {
+      const perTsp = costInr / qty;
+      return '₹' + (Math.round(perTsp * 10) / 10) + '/tsp';
+    }
+    if (unitLower.includes('tablespoon') || unitLower.includes('tbsp')) {
+      const perTbsp = costInr / qty;
+      return '₹' + Math.round(perTbsp) + '/tbsp';
+    }
+    if (unitLower.includes('cup')) {
+      const perCup = costInr / qty;
+      return '₹' + Math.round(perCup) + '/cup';
+    }
+    // Fallback: per piece or per unit
+    const perUnit = costInr / qty;
+    return '₹' + Math.round(perUnit) + '/unit';
+  }
+
   // Helper: Calculate Gross Profit Margin %
   function calcMargin(cost, price) {
     if (!price || price <= 0) return 0;
@@ -279,6 +328,8 @@
         ...ing,
         scaledQty: displayQty,
         displayUnit: displayUnit,
+        unitRateText: getIngredientUnitRate(ing),
+        costPerPerson: Number(ing.cost).toFixed(2),
         totalItemCost: (ing.cost * persons).toFixed(2)
       };
     });
@@ -1419,8 +1470,9 @@
                   <span>Ingredient Specification (${cRec.persons} ${cRec.persons === 1 ? 'Portion' : 'Portions'})</span>
                 </h3>
               </div>
-              <div class="text-xs text-slate-500">
-                Batch Ingredient Cost: <span class="font-extrabold text-slate-900 dark:text-white">${formatMoney(cRec.totalBatchCost)}</span>
+              <div class="text-right text-xs text-slate-500">
+                <div>Recipe Batch Cost: <span class="font-extrabold text-slate-900 dark:text-white">${formatMoney(cRec.totalBatchCost)}</span></div>
+                <div class="text-[11px] text-slate-400">Per Person Cost: <span class="font-bold text-emerald-600 dark:text-emerald-400">${formatMoney(cRec.costPerPerson)}/portion</span></div>
               </div>
             </div>
 
@@ -1460,12 +1512,15 @@
                     </div>
                   </div>
 
-                  <div class="text-right shrink-0">
+                  <div class="text-right shrink-0 space-y-0.5">
                     <div class="text-sm font-black text-amber-600 dark:text-amber-400">
                       ${ing.scaledQty} <span class="text-xs font-semibold text-slate-500">${ing.displayUnit}</span>
                     </div>
-                    <div class="text-[11px] text-slate-400">
-                      ${formatMoney(ing.totalItemCost)}
+                    <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700/60 text-[10px] font-bold text-slate-700 dark:text-slate-200">
+                      <span>Rate:</span> <span>${ing.unitRateText}</span>
+                    </div>
+                    <div class="text-[11px] text-slate-500 font-medium">
+                      <span class="font-bold text-slate-900 dark:text-white">${formatMoney(ing.totalItemCost)}</span> <span class="text-[10px] text-slate-400">(${formatMoney(ing.costPerPerson)}/pers)</span>
                     </div>
                   </div>
                 </div>
@@ -1764,10 +1819,14 @@
           <h4 style="margin: 0 0 6px; font-size: 13px; text-transform: uppercase;">1. Ingredients Required:</h4>
           ${cRec.ingredients.map(ing => `
             <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 3px;">
-              <span>[ ] ${ing.name}</span>
-              <span style="font-weight: bold;">${ing.scaledQty} ${ing.displayUnit}</span>
+              <span>[ ] ${ing.name} <small style="color: #555;">(${ing.unitRateText})</small></span>
+              <span style="font-weight: bold;">${ing.scaledQty} ${ing.displayUnit} — ${formatMoney(ing.totalItemCost)}</span>
             </div>
           `).join('')}
+          <div style="margin-top: 8px; padding-top: 6px; border-top: 1px dotted #ccc; display: flex; justify-content: space-between; font-size: 12px; font-weight: bold;">
+            <span>Total Recipe Cost: ${formatMoney(cRec.totalBatchCost)}</span>
+            <span>Per Person: ${formatMoney(cRec.costPerPerson)}</span>
+          </div>
         </div>
 
         <div>
