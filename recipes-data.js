@@ -1511,7 +1511,7 @@ const RECIPES_DATA = [
     isMostSearched: true,
     rating: 4.93,
     reviewsCount: 138,
-    image: "https://images.unsplash.com/photo-1621996346565-e3d5d6281724?w=800&auto=format&fit=crop&q=80",
+    image: "./assets/recipes/classic-penne-arrabbiata.jpg",
     prepTime: "8 mins",
     cookTime: "12 mins",
     difficulty: "Easy",
@@ -1574,7 +1574,7 @@ const RECIPES_DATA = [
         date: "3 days ago",
         verifiedCafe: true,
         text: "Using the starchy pasta water emulsification with reduced Roma tomatoes gives the sauce an authentic cling without needing butter or sugar.",
-        photo: "https://images.unsplash.com/photo-1621996346565-e3d5d6281724?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/classic-penne-arrabbiata.jpg",
         helpfulCount: 52
       }
     ]
