@@ -1885,7 +1885,7 @@ const RECIPES_DATA = [
     isMostSearched: true,
     rating: 4.98,
     reviewsCount: 184,
-    image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=800&auto=format&fit=crop&q=80",
+    image: "./assets/recipes/classic-italian-tiramisu.jpg",
     prepTime: "20 mins",
     cookTime: "0 mins",
     difficulty: "Medium",
@@ -1946,7 +1946,7 @@ const RECIPES_DATA = [
         date: "Yesterday",
         verifiedCafe: true,
         text: "The hung curd-malai velvet alternative has the exact mouth-cling of Lombardy mascarpone. A masterpiece for cafe margins!",
-        photo: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/classic-italian-tiramisu.jpg",
         helpfulCount: 76
       }
     ]
