@@ -1,4 +1,4 @@
-// FlavorShift AI - Intelligent Culinary Ingredient Substitution & Human Taste Validation Platform
+﻿// FlavorShift AI - Intelligent Culinary Ingredient Substitution & Human Taste Validation Platform
 // Core Application Engine
 
 (function () {
@@ -9,6 +9,10 @@
     activeTab: 'swaplab', // Default to flagship AI Swap Lab: 'swaplab', 'explore', 'htv', 'dashboard', 'slides', 'favorites'
     selectedSwapIndex: 0, // Currently active swap in Swap Lab (defaults to Fresh Cream)
     swapSearchQuery: '',  // Search query inside Swap Lab
+    universalCurrentIngredient: 'Fresh Cream', // Active universal ingredient
+    universalCurrentDishContext: 'General / All Dishes', // Context filter
+    universalAnalysisResult: null, // Holds latest UniversalIngredientEngine result
+    universalCompareMode: false, // Comparison view state
     selectedCategory: 'all',
     selectedDiet: 'all',
     selectedAllergies: new Set(),
@@ -519,13 +523,48 @@
   }
 
   // ========================================================
-  // RENDER: FLAVORSHIFT AI SWAP LAB (FLAGSHIP FEATURE)
+  // RENDER: FLAVORSHIFT AI SWAP LAB (UNIVERSAL INGREDIENT INTELLIGENCE)
   // ========================================================
   function renderSwapLabView() {
     const container = document.getElementById('swaplab-view-container');
     if (!container) return;
 
-    const activeSwap = FLAVORSHIFT_SWAP_DATABASE[state.selectedSwapIndex] || FLAVORSHIFT_SWAP_DATABASE[0];
+    const currentIng = state.universalCurrentIngredient || 'Fresh Cream';
+    const currentCtx = state.universalCurrentDishContext || 'General / All Dishes';
+    
+    // Analyze ingredient dynamically via Universal Engine
+    let result = null;
+    if (typeof UniversalIngredientEngine !== 'undefined') {
+      result = UniversalIngredientEngine.analyzeIngredient(currentIng, currentCtx);
+    } else {
+      result = {
+        status: 'recognized',
+        source: 'Legacy Swap DB',
+        ingredientName: currentIng,
+        category: 'Dairy',
+        icon: 'fa-solid fa-flask',
+        functions: ['Moisture', 'Fat'],
+        flavorProfile: 'Rich, creamy',
+        textureProfile: 'Velvety',
+        dishContext: currentCtx,
+        alternatives: [],
+        radar: [9.0, 9.0, 9.0, 9.0, 9.0, 9.0],
+        volatiles: ['esters']
+      };
+    }
+    state.universalAnalysisResult = result;
+
+    const dishContexts = [
+      'General / All Dishes',
+      'Curries & Gravies',
+      'Baking & Cakes',
+      'Pastas & Sauces',
+      'Tea & Beverages',
+      'Breakfast & Breads',
+      'Soups & Broths',
+      'Salads & Dressings',
+      'Stir-fry & Wok'
+    ];
 
     let html = `
       <div class="space-y-8 animate-fade-up max-w-6xl mx-auto">
@@ -534,28 +573,28 @@
         <div class="relative overflow-hidden rounded-3xl p-6 sm:p-10 gradient-cafe-hero text-white shadow-xl">
           <div class="relative z-10 max-w-3xl space-y-3">
             <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-black uppercase tracking-wider">
-              <i class="fa-solid fa-flask text-amber-300"></i>
-              <span>AI Substitution Engine</span>
+              <i class="fa-solid fa-atom text-amber-300"></i>
+              <span>Universal Ingredient Intelligence Engine</span>
             </div>
             
             <h2 class="font-heading font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-tight">
-              Missing an Ingredient?<br>
-              <span class="text-amber-200">Replace It Intelligently.</span>
+              Universal Ingredient Intelligence.<br>
+              <span class="text-amber-200">Replace Almost Any Food Ingredient.</span>
             </h2>
             
             <p class="text-white/90 text-sm sm:text-base leading-relaxed font-medium">
-              FlavorShift AI calculates exact substitution ratios, models flavour and texture compatibility, and validates every recommendation through <strong>Human Taste Testing (HTV)</strong>.
+              Search <strong>any culinary ingredient</strong> across dairy, proteins, vegetables, baking, spices, and international staples. FlavorShift AI models culinary functionality, recalculates recipe-aware ratios, and provides verified sensory matching.
             </p>
 
             <div class="flex flex-wrap items-center gap-3 pt-2 text-xs font-bold">
               <span class="bg-black/20 backdrop-blur px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5">
-                <i class="fa-solid fa-calculator text-amber-300"></i> Exact Quantity Ratios
+                <i class="fa-solid fa-cubes-stacked text-amber-300"></i> Universal Recognition
               </span>
               <span class="bg-black/20 backdrop-blur px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5">
-                <i class="fa-solid fa-chart-simple text-emerald-300"></i> Flavour & Texture Matrix
+                <i class="fa-solid fa-utensils text-emerald-300"></i> Recipe-Aware Rankings
               </span>
               <span class="bg-black/20 backdrop-blur px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5">
-                <i class="fa-solid fa-users-viewfinder text-rose-300"></i> Human Taste Validation
+                <i class="fa-solid fa-database text-sky-300"></i> Foodoscope & FlavorDB Architecture
               </span>
             </div>
           </div>
@@ -563,174 +602,389 @@
           <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
         </div>
 
-        <!-- Ingredient Selector -->
-        <div class="p-6 rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <!-- Universal Ingredient Search & Recipe-Aware Context Bar -->
+        <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 shadow-sm space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div>
-              <span class="text-xs font-black uppercase tracking-wider text-[#C87957]">Select Ingredient</span>
-              <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              <span class="text-xs font-black uppercase tracking-wider text-[#C87957]">Universal Intelligence Engine</span>
+              <h3 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
                 <i class="fa-solid fa-magnifying-glass text-[#C87957]"></i>
-                <span>Which ingredient is missing or too expensive?</span>
+                <span>Search Any Food Ingredient</span>
               </h3>
             </div>
-            <span class="text-xs text-slate-400">Select or search any ingredient to run AI analysis</span>
+            <span class="text-xs text-slate-500 font-medium">Accepts any edible food term + recipe context</span>
           </div>
 
-          <!-- In-menu Ingredient Search Panel -->
-          <div class="relative max-w-md">
-            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-            <input 
-              type="text" 
-              id="swaplab-search-input"
-              value="${state.swapSearchQuery || ''}"
-              placeholder="Search missing ingredients (e.g. Cream, Avocado, Truffle, Nuts)..." 
-              class="w-full pl-10 pr-9 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-amber-500 transition-all shadow-inner"
-            />
-            <button 
-              type="button" 
-              id="swaplab-search-clear-btn" 
-              class="${state.swapSearchQuery ? '' : 'hidden'} absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center text-[10px] transition-all cursor-pointer"
-              title="Clear search"
-            >
-              <i class="fa-solid fa-xmark"></i>
-            </button>
-          </div>
+          <!-- Search Bar + Context Dropdown + Submit Button -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+            <!-- Text Input (6 cols) -->
+            <div class="md:col-span-6 relative">
+              <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input 
+                type="text" 
+                id="universal-ingredient-input"
+                value="${state.swapSearchQuery !== undefined && state.swapSearchQuery !== '' ? state.swapSearchQuery : currentIng}"
+                placeholder="Search ANY ingredient (e.g. Milk, Paneer, Mushroom, Saffron, Miso, Gochujang, Flour)..." 
+                class="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition-all shadow-inner"
+              />
+              <button 
+                type="button" 
+                id="universal-search-clear-btn" 
+                class="${(state.swapSearchQuery || currentIng) ? '' : 'hidden'} absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center text-xs transition-all cursor-pointer"
+                title="Clear input"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
 
-          <!-- Quick Ingredient Selection Chips -->
-          <div id="swap-chips-container" class="flex flex-wrap gap-2.5 pt-1">
-            ${FLAVORSHIFT_SWAP_DATABASE.map((item, idx) => {
-              const q = (state.swapSearchQuery || '').toLowerCase();
-              const matchesTarget = item.targetIngredient.toLowerCase().includes(q);
-              const matchesDishes = item.commonInDishes.some(d => d.toLowerCase().includes(q));
-              const matchesAlts = item.alternatives.some(a => a.name.toLowerCase().includes(q));
-              const isVisible = !q || matchesTarget || matchesDishes || matchesAlts;
-              return `
-                <button 
-                  type="button" 
-                  data-swap-idx="${idx}"
-                  class="swap-select-chip px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold border transition-all cursor-pointer flex items-center gap-2 ${isVisible ? '' : 'hidden'} ${
-                    idx === state.selectedSwapIndex 
-                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white border-transparent shadow-md scale-105' 
-                      : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-400'
-                  }"
+            <!-- Recipe Context Selector (4 cols) -->
+            <div class="md:col-span-4 relative">
+              <label class="block text-[10px] font-black uppercase text-slate-400 mb-1 ml-1">Dish Context (Modifies Best Match)</label>
+              <div class="relative">
+                <i class="fa-solid fa-bowl-food absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-500 text-xs"></i>
+                <select 
+                  id="universal-dish-context-select"
+                  class="w-full pl-9 pr-8 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-amber-500 cursor-pointer appearance-none shadow-sm"
                 >
-                  <span>${idx === 0 ? '🥛' : idx === 1 ? '🧀' : idx === 2 ? '🥑' : idx === 3 ? '🍄' : '🥜'}</span>
-                  <span>${item.targetIngredient}</span>
-                  <span class="text-[10px] opacity-75 font-normal hidden md:inline">(${item.commonInDishes[0]})</span>
-                </button>
-              `;
-            }).join('')}
+                  ${dishContexts.map(ctx => `
+                    <option value="${ctx}" ${ctx === currentCtx ? 'selected' : ''}>${ctx}</option>
+                  `).join('')}
+                </select>
+                <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+              </div>
+            </div>
+
+            <!-- Analyze Button (2 cols) -->
+            <div class="md:col-span-2 flex items-end">
+              <button 
+                type="button" 
+                id="universal-analyze-btn"
+                class="w-full py-3 px-4 rounded-2xl text-xs sm:text-sm font-black bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
+              >
+                <i class="fa-solid fa-bolt"></i>
+                <span>Analyze</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Universal Category Chips -->
+          <div class="pt-2 border-t border-slate-100 dark:border-slate-700/60">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Quick Culinary Categories & Global Staples:</span>
+              <span class="text-[11px] text-amber-600 dark:text-amber-400 font-semibold">Click any to instant-test</span>
+            </div>
+            <div class="flex flex-wrap gap-2 max-h-36 overflow-y-auto pr-1">
+              ${(typeof UniversalIngredientEngine !== 'undefined' ? UniversalIngredientEngine.PRESET_SHOWCASE : []).map(item => {
+                const isActive = (currentIng.toLowerCase() === item.name.toLowerCase());
+                return `
+                  <button 
+                    type="button" 
+                    data-universal-chip="${item.name}"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
+                      isActive 
+                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white border-transparent shadow-sm scale-105' 
+                        : 'bg-slate-50 dark:bg-slate-900/80 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-400 hover:bg-amber-500/5'
+                    }"
+                  >
+                    <i class="${item.icon} text-[11px] ${isActive ? 'text-white' : 'text-amber-500'}"></i>
+                    <span>${item.name}</span>
+                    <span class="text-[9px] opacity-60 font-mono hidden sm:inline">(${item.category})</span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
           </div>
         </div>
 
-        <!-- AI Substitution Analysis Card -->
-        <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 shadow-lg space-y-6">
-          
-          <!-- Selected Ingredient Overview -->
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-5">
-            <div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="px-3 py-0.5 rounded-full text-xs font-black bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30">
-                  Target: ${activeSwap.targetIngredient}
-                </span>
-                <span class="text-xs text-slate-400 font-semibold">
-                  Common In: ${activeSwap.commonInDishes.join(', ')}
-                </span>
-              </div>
-              <h3 class="text-2xl font-black text-slate-900 dark:text-white">
-                AI Alternatives for "${activeSwap.targetIngredient}"
+        <!-- RESULTS CONTAINER -->
+        <div id="universal-results-container">
+    `;
+
+    // Render Result Content
+    if (result.status === 'invalid') {
+      html += `
+          <div class="p-8 sm:p-12 rounded-3xl bg-rose-50/80 dark:bg-rose-950/20 border-2 border-rose-300 dark:border-rose-900 text-center space-y-4 animate-fade-up">
+            <div class="w-16 h-16 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto text-2xl shadow-inner">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            
+            <div class="max-w-xl mx-auto space-y-2">
+              <h3 class="text-xl sm:text-2xl font-black text-rose-900 dark:text-rose-300">
+                Ingredient Unrecognized
               </h3>
-              <p class="text-xs text-slate-500 mt-1">
-                Why swap: <span class="text-rose-500 font-bold">${activeSwap.reasonForSwap}</span>
+              <p class="text-sm font-semibold text-rose-700 dark:text-rose-300/90 leading-relaxed">
+                "${result.message}"
+              </p>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed pt-2">
+                ${result.suggestion}
               </p>
             </div>
 
-            <!-- HTV Gold Badge -->
-            <div class="flex items-center gap-2 p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 shrink-0">
-              <i class="fa-solid fa-award text-emerald-500 text-2xl"></i>
+            <div class="pt-4 flex flex-wrap items-center justify-center gap-3">
+              <button 
+                type="button" 
+                id="try-another-ingredient-btn"
+                class="px-5 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-md cursor-pointer flex items-center gap-2"
+              >
+                <i class="fa-solid fa-arrow-rotate-left"></i>
+                <span>Try Another Ingredient</span>
+              </button>
+              <button 
+                type="button" 
+                data-universal-chip="Milk"
+                class="px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-500 text-xs font-bold transition-all cursor-pointer"
+              >
+                Test "Milk"
+              </button>
+              <button 
+                type="button" 
+                data-universal-chip="Paneer"
+                class="px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-500 text-xs font-bold transition-all cursor-pointer"
+              >
+                Test "Paneer"
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      `;
+      container.innerHTML = html;
+      attachUniversalSwapLabEvents(container);
+      return;
+    }
+
+    // Recognized Ingredient Results Display
+    const alts = result.alternatives || [];
+    const topAlt = alts[0] || { name: 'Culinary Equivalent' };
+
+    html += `
+        <!-- Active Substitution Overview Card -->
+        <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 shadow-lg space-y-6">
+          
+          <!-- Target Ingredient Header & Provenance Badge -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-5">
+            <div class="space-y-1.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="px-3 py-1 rounded-full text-xs font-black bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 flex items-center gap-1.5">
+                  <i class="${result.icon || 'fa-solid fa-utensils'} text-[11px]"></i>
+                  <span>Target: ${result.ingredientName}</span>
+                </span>
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-700/60 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600">
+                  Category: ${result.category}
+                </span>
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30">
+                  Dish Context: ${result.dishContext}
+                </span>
+              </div>
+
+              <h3 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white pt-1">
+                Intelligent Alternatives for "${result.ingredientName}"
+              </h3>
+              
+              <p class="text-xs text-slate-500 font-medium leading-relaxed">
+                <strong>Culinary Functions:</strong> ${(result.functions || []).map(f => `<span class="inline-block bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded text-[10px] font-bold text-slate-700 dark:text-slate-300 mr-1">${f}</span>`).join('')}
+                &bull; <strong>Taste Baseline:</strong> ${result.flavorProfile || 'Savory culinary baseline'}
+              </p>
+            </div>
+
+            <!-- Real Data / AI Fallback Transparent Badge -->
+            <div class="flex items-center gap-3 p-3.5 rounded-2xl ${result.isFallback ? 'bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60' : 'bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60'} shrink-0">
+              <i class="fa-solid ${result.isFallback ? 'fa-wand-magic-sparkles text-amber-500' : 'fa-database text-emerald-500'} text-2xl"></i>
               <div>
-                <span class="block text-xs font-black text-emerald-700 dark:text-emerald-300">Human Taste Validated</span>
-                <span class="text-[11px] text-slate-500 font-medium">97.8% blind-taste consistency</span>
+                <span class="block text-xs font-black ${result.isFallback ? 'text-amber-800 dark:text-amber-300' : 'text-emerald-800 dark:text-emerald-300'}">
+                  ${result.isFallback ? 'AI Modular Fallback Engine' : 'Foodoscope RecipeDB & FlavorDB'}
+                </span>
+                <span class="text-[11px] text-slate-500 font-medium">
+                  ${result.isFallback ? 'Algorithmic Functional Synthesis' : 'Verified Molecular Flavor Ontology'}
+                </span>
               </div>
             </div>
           </div>
 
-          <!-- 3 AI Alternative Cards -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            ${activeSwap.alternatives.map((alt, i) => {
+          <!-- Toolbar: Compare Alternatives & Try Another -->
+          <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 dark:bg-slate-900/60 p-3.5 rounded-2xl border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-300">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Found ${alts.length} Ranked Alternatives for "${result.ingredientName}"</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button 
+                type="button" 
+                id="toggle-compare-mode-btn"
+                class="px-3.5 py-1.5 rounded-xl text-xs font-bold border ${state.universalCompareMode ? 'bg-indigo-600 text-white border-transparent' : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-indigo-400'} transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+              >
+                <i class="fa-solid fa-code-compare"></i>
+                <span>${state.universalCompareMode ? 'Exit Comparison' : 'Compare Alternatives'}</span>
+              </button>
+              <button 
+                type="button" 
+                id="try-another-ingredient-btn"
+                class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-400 transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+              >
+                <i class="fa-solid fa-arrow-rotate-left"></i>
+                <span>Try Another Ingredient</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- COMPARISON MATRIX VIEW (IF TOGGLED) -->
+          ${state.universalCompareMode ? `
+            <div class="overflow-x-auto p-4 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-900/50 shadow-inner animate-fade-up">
+              <h4 class="text-sm font-black text-slate-900 dark:text-white mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-table-columns text-indigo-500"></i>
+                <span>Side-by-Side Comparison Matrix for "${result.ingredientName}"</span>
+              </h4>
+              <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase tracking-wider text-slate-400">
+                    <th class="py-2.5 px-3">Alternative</th>
+                    <th class="py-2.5 px-3">Score & Method</th>
+                    <th class="py-2.5 px-3">Exact Ratio</th>
+                    <th class="py-2.5 px-3">Taste Impact</th>
+                    <th class="py-2.5 px-3">Texture & Finish</th>
+                    <th class="py-2.5 px-3">Dietary & Allergens</th>
+                    <th class="py-2.5 px-3">Cost Reality</th>
+                    <th class="py-2.5 px-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                  ${alts.map((alt) => `
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                      <td class="py-3 px-3 font-black text-slate-900 dark:text-white">
+                        ${alt.name}
+                        <span class="block text-[10px] font-normal text-amber-500">${alt.type}</span>
+                      </td>
+                      <td class="py-3 px-3">
+                        <span class="font-black text-emerald-600 dark:text-emerald-400">${alt.tasteScore}</span>
+                        <span class="block text-[10px] text-slate-400">${alt.calcMethod || 'Functional parity'}</span>
+                      </td>
+                      <td class="py-3 px-3 font-mono font-medium text-slate-700 dark:text-slate-300">${alt.ratio}</td>
+                      <td class="py-3 px-3 text-slate-600 dark:text-slate-300 max-w-[200px] leading-tight">${alt.tasteDesc}</td>
+                      <td class="py-3 px-3 text-slate-600 dark:text-slate-300 max-w-[200px] leading-tight">${alt.textureDesc}</td>
+                      <td class="py-3 px-3">
+                        <div class="flex flex-wrap gap-1">
+                          ${(alt.dietary || []).map(d => `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300">${d}</span>`).join('')}
+                          ${(alt.allergens || ['None']).map(a => `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${a === 'None' ? 'bg-slate-100 dark:bg-slate-800 text-slate-500' : 'bg-rose-500/15 text-rose-700 dark:text-rose-300'}">${a === 'None' ? 'No Allergens' : a}</span>`).join('')}
+                        </div>
+                      </td>
+                      <td class="py-3 px-3 font-semibold text-slate-700 dark:text-slate-300">${alt.costChange}</td>
+                      <td class="py-3 px-3 text-right">
+                        <button 
+                          type="button" 
+                          data-select-alt="${alt.name}"
+                          class="px-2.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-[11px] transition-all cursor-pointer shadow-sm"
+                        >
+                          Select
+                        </button>
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          ` : ''}
+
+          <!-- 3 to 5 Ranked Substitute Cards -->
+          <div class="grid grid-cols-1 ${alts.length === 2 ? 'md:grid-cols-2' : alts.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'} gap-6">
+            ${alts.map((alt, i) => {
               const badgeBg = i === 0 
                 ? 'from-amber-500 to-orange-500 text-white' 
                 : i === 1 
                   ? 'from-emerald-500 to-teal-500 text-white' 
-                  : 'from-rose-500 to-pink-500 text-white';
+                  : i === 2
+                    ? 'from-blue-500 to-indigo-500 text-white'
+                    : 'from-purple-500 to-pink-500 text-white';
 
               return `
-                <div class="cafe-card p-6 bg-slate-50/70 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 rounded-3xl flex flex-col justify-between space-y-4">
+                <div class="cafe-card p-6 bg-slate-50/70 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/80 rounded-3xl flex flex-col justify-between space-y-4 hover:border-amber-400 transition-all shadow-sm">
                   <div>
-                    <!-- Badge -->
-                    <span class="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-gradient-to-r ${badgeBg} shadow-sm inline-block mb-3">
-                      ${alt.type}
-                    </span>
+                    <!-- Rank & Strategy Badge -->
+                    <div class="flex items-center justify-between mb-3">
+                      <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-gradient-to-r ${badgeBg} shadow-sm inline-block">
+                        Rank #${i + 1}: ${alt.type}
+                      </span>
+                      <span class="text-xs font-black text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                        <i class="fa-solid fa-gauge-high"></i> ${alt.tasteScore}
+                      </span>
+                    </div>
 
                     <h4 class="text-lg font-black text-slate-900 dark:text-white mb-2 leading-tight">
                       ${alt.name}
                     </h4>
 
-                    <!-- Exact Ratio Box (User Requirement 1) -->
-                    <div class="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mb-4">
+                    <!-- Exact Replacement Ratio Box -->
+                    <div class="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mb-3 space-y-1">
                       <span class="block text-[10px] font-black uppercase text-amber-500 tracking-wider">Exact Replacement Ratio:</span>
-                      <span class="text-xs font-bold text-slate-900 dark:text-white mt-0.5 block leading-relaxed">
+                      <span class="text-xs font-bold text-slate-900 dark:text-white block leading-relaxed font-mono">
                         ${alt.ratio}
+                      </span>
+                      <span class="block text-[10px] text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-700/60">
+                        <strong>Method:</strong> ${alt.calcMethod || 'Calculated via functional density equivalence'}
                       </span>
                     </div>
 
-                    <!-- Taste & Texture Impact Matrix (User Requirement 2 & 3) -->
-                    <div class="space-y-3 text-xs">
+                    <!-- Why it Works / Taste & Texture Matrix -->
+                    <div class="space-y-2.5 text-xs">
                       <div>
-                        <div class="flex items-center justify-between font-bold mb-1">
-                          <span class="text-slate-600 dark:text-slate-300 flex items-center gap-1">
-                            <i class="fa-solid fa-face-smile text-amber-500"></i> Taste Compatibility:
-                          </span>
-                          <span class="font-black text-amber-600 dark:text-amber-400">${alt.tasteScore}</span>
-                        </div>
+                        <span class="font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1 mb-0.5">
+                          <i class="fa-solid fa-circle-question text-amber-500 text-[10px]"></i> Why It Works:
+                        </span>
                         <p class="text-[11px] text-slate-500 leading-relaxed font-medium">
-                          ${alt.tasteDesc}
+                          ${alt.contextNotes && alt.contextNotes[result.dishContext] ? alt.contextNotes[result.dishContext] : alt.tasteDesc}
                         </p>
                       </div>
 
                       <div class="pt-2 border-t border-slate-200/60 dark:border-slate-800">
-                        <span class="font-bold text-slate-600 dark:text-slate-300 block mb-0.5 flex items-center gap-1">
-                          <i class="fa-solid fa-water text-indigo-500"></i> Texture & Consistency:
+                        <span class="font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1 mb-0.5">
+                          <i class="fa-solid fa-water text-indigo-500 text-[10px]"></i> Texture Difference:
                         </span>
                         <p class="text-[11px] text-slate-500 leading-relaxed font-medium">
                           ${alt.textureDesc}
                         </p>
                       </div>
 
-                      <!-- Cost & Calorie Impact -->
-                      <div class="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] font-bold">
-                        <span class="text-emerald-600 dark:text-emerald-400">${alt.costChange}</span>
-                        <span class="text-rose-500">${alt.calChange}</span>
+                      <!-- Best Dishes -->
+                      <div class="pt-2 border-t border-slate-200/60 dark:border-slate-800">
+                        <span class="font-bold text-slate-600 dark:text-slate-300 block text-[10px] uppercase text-slate-400 mb-1">Best Dishes:</span>
+                        <div class="flex flex-wrap gap-1">
+                          ${(alt.bestDishes || ['Everyday Cooking']).map(d => `
+                            <span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300">${d}</span>
+                          `).join('')}
+                        </div>
+                      </div>
+
+                      <!-- Dietary & Allergen Warnings -->
+                      <div class="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex flex-wrap gap-1">
+                        ${(alt.dietary || []).map(tag => `
+                          <span class="px-2 py-0.5 rounded-md text-[9px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
+                            ${tag}
+                          </span>
+                        `).join('')}
+                        ${(alt.allergens && alt.allergens.length && alt.allergens[0] !== 'None') ? alt.allergens.map(a => `
+                          <span class="px-2 py-0.5 rounded-md text-[9px] font-bold bg-rose-500/15 text-rose-700 dark:text-rose-400">
+                            <i class="fa-solid fa-triangle-exclamation text-[8px]"></i> ${a}
+                          </span>
+                        `).join('') : '<span class="px-2 py-0.5 rounded-md text-[9px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-400">No Major Allergens</span>'}
+                      </div>
+
+                      <!-- Cost Difference -->
+                      <div class="pt-2 border-t border-slate-200/60 dark:border-slate-800 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                        <i class="fa-solid fa-tag text-[10px]"></i>
+                        <span>${alt.costChange}</span>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Human Taste Validation Score & Action (User Requirement 4) -->
+                  <!-- Action Button -->
                   <div class="pt-3 border-t border-slate-200 dark:border-slate-700 space-y-2">
-                    <div class="flex items-center justify-between text-xs">
-                      <span class="text-slate-400 font-bold">HTV Taste Score:</span>
-                      <span class="font-black text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-                        <i class="fa-solid fa-star text-amber-400"></i> ${alt.htvScore}
-                      </span>
-                    </div>
-
                     <button 
                       type="button" 
-                      data-test-recipe="${activeSwap.targetIngredient === 'Fresh Cream' ? 'paneer-butter-masala' : activeSwap.targetIngredient === 'Mascarpone Cheese' ? 'basque-burnt-cheesecake' : activeSwap.targetIngredient === 'Hass Avocado' ? 'smashed-avocado-toast' : 'wild-mushroom-truffle-pasta'}"
+                      data-select-alt="${alt.name}"
                       class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white transition-all cursor-pointer shadow-sm flex items-center justify-center gap-1.5"
                     >
-                      <i class="fa-solid fa-kitchen-set"></i>
-                      <span>Cook Recipe with this Alternative</span>
+                      <i class="fa-solid fa-check"></i>
+                      <span>Select Alternative</span>
                     </button>
                   </div>
                 </div>
@@ -738,25 +992,25 @@
             }).join('')}
           </div>
 
-          <!-- Flagship 6-Axis Sensory Radar & FlavorGraph Volatiles Analysis -->
+          <!-- 6-Axis Sensory Radar & FlavorGraph Volatiles Analysis -->
           <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             
             <!-- Radar Chart Container (7 cols) -->
             <div class="lg:col-span-7 p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3">
               <div class="flex items-center justify-between">
                 <div>
-                  <span class="text-[11px] font-black uppercase text-[#C87957] tracking-wider">Sensory Physics Model</span>
+                  <span class="text-[11px] font-black uppercase text-[#C87957] tracking-wider">Sensory Rheology Model</span>
                   <h4 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
                     <i class="fa-solid fa-chart-pie text-[#C87957]"></i>
-                    <span>6-Axis Sensory & Texture Radar</span>
+                    <span>6-Axis Sensory & Functional Matrix</span>
                   </h4>
                 </div>
                 <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30">
-                  ONNX Engine Sub-2ms
+                  ${result.isFallback ? 'Heuristic Model' : 'Verified Sensory Radar'}
                 </span>
               </div>
               <p class="text-xs text-slate-500">
-                Visualizing how <span class="font-bold text-amber-500">${activeSwap.alternatives[0].name}</span> replicates the viscosity, mouthfeel, and thermal stability of standard <span class="font-bold text-rose-500">${activeSwap.targetIngredient}</span>.
+                Modeling how <span class="font-bold text-amber-500">${topAlt.name}</span> mirrors the viscosity, moisture balance, and thermal behavior of benchmark <span class="font-bold text-rose-500">${result.ingredientName}</span>.
               </p>
               
               <div class="h-64 sm:h-72 w-full relative">
@@ -767,48 +1021,33 @@
             <!-- Molecular Aroma & Volatiles Pairing Card (5 cols) -->
             <div class="lg:col-span-5 p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-4">
               <div>
-                <span class="text-[11px] font-black uppercase text-indigo-500 tracking-wider">FlavorGraph Volatile Compounds</span>
+                <span class="text-[11px] font-black uppercase text-indigo-500 tracking-wider">Foodoscope FlavorDB Pairing</span>
                 <h4 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
                   <i class="fa-solid fa-atom text-indigo-500"></i>
-                  <span>Molecular Aroma Parity</span>
+                  <span>Aroma Compounds & Volatiles</span>
                 </h4>
-              </div>
-
-              <!-- Match Gauge -->
-              <div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-                <div class="flex items-center justify-between mb-1">
-                  <span class="text-xs font-bold text-slate-600 dark:text-slate-300">Chemical Aroma Similarity</span>
-                  <span class="text-sm font-black text-emerald-600 dark:text-emerald-400">98.2% Parity</span>
-                </div>
-                <div class="w-full bg-slate-200 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                  <div class="bg-gradient-to-r from-amber-500 to-emerald-500 h-full rounded-full" style="width: 98.2%"></div>
-                </div>
               </div>
 
               <!-- Shared Volatiles Tags -->
               <div>
-                <span class="block text-[11px] font-bold text-slate-500 mb-2">Shared Volatile Aroma Molecules:</span>
+                <span class="block text-[11px] font-bold text-slate-500 mb-2">Key Identified Volatile Aroma Compounds:</span>
                 <div class="flex flex-wrap gap-1.5">
-                  <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
-                    🔬 δ-lactones (creamy)
-                  </span>
-                  <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
-                    🧈 acetoin (buttery note)
-                  </span>
-                  <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800">
-                    🌰 benzaldehyde (nutty warmth)
-                  </span>
+                  ${(result.volatiles || ['esters', 'terpenes', 'organic acids']).map(v => `
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
+                      <i class="fa-solid fa-flask-vial text-[10px]"></i> ${v}
+                    </span>
+                  `).join('')}
                 </div>
               </div>
 
-              <!-- Culinary Thermal Stability -->
+              <!-- Thermal & Cooking Behavior Advice -->
               <div class="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60 space-y-1">
                 <div class="flex items-center gap-1.5 text-xs font-black text-emerald-700 dark:text-emerald-400">
-                  <i class="fa-solid fa-shield-halved"></i>
-                  <span>Simmer Safety: Zero Curdling Risk</span>
+                  <i class="fa-solid fa-kitchen-set"></i>
+                  <span>Chef Cooking Tip for ${result.dishContext}:</span>
                 </div>
                 <p class="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  Emulsion remains stable up to 98°C. For maximum sheen, whisk warm milk in two stages before folding off-heat.
+                  ${topAlt.contextNotes && topAlt.contextNotes[result.dishContext] ? topAlt.contextNotes[result.dishContext] : `When cooking in ${result.dishContext}, incorporate ${topAlt.name} according to the specified ratio (${topAlt.ratio}) for optimal moisture and texture.`}
                 </p>
               </div>
             </div>
@@ -818,91 +1057,115 @@
         </div>
 
       </div>
-    `;
+    </div>
+  `;
 
-    container.innerHTML = html;
+  container.innerHTML = html;
 
-    // Render Flagship 6-Axis Sensory Radar Chart
-    setTimeout(() => {
-      const radarScores = activeSwap.targetIngredient === 'Fresh Cream' ? [9.2, 9.5, 9.1, 9.4, 9.8, 9.6] :
-        activeSwap.targetIngredient === 'Mascarpone Cheese' ? [9.4, 9.6, 9.5, 9.1, 9.3, 9.5] :
-        activeSwap.targetIngredient === 'Hass Avocado' ? [9.0, 8.8, 9.2, 8.9, 9.7, 9.1] :
-        activeSwap.targetIngredient === 'Parmesan Cheese' ? [9.3, 9.1, 9.4, 8.8, 9.6, 9.5] :
-        [9.1, 9.4, 9.0, 9.2, 9.5, 9.3];
+  // Render Radar Chart with active ingredient sensory physics
+  setTimeout(() => {
+    const radarScores = result.radar || [9.2, 9.4, 9.1, 8.8, 9.5, 9.3];
+    renderSensoryRadarChart(
+      'sensory-radar-canvas',
+      result.ingredientName,
+      topAlt.name,
+      radarScores
+    );
+  }, 20);
 
-      renderSensoryRadarChart(
-        'sensory-radar-canvas',
-        activeSwap.targetIngredient,
-        activeSwap.alternatives[0].name,
-        radarScores
-      );
-    }, 20);
+  // Attach all user interactions
+  attachUniversalSwapLabEvents(container);
+}
 
-    // Attach SwapLab in-menu search listener
-    const swapSearchInput = container.querySelector('#swaplab-search-input');
-    const swapSearchClear = container.querySelector('#swaplab-search-clear-btn');
+// Event Handlers for Universal Swap Lab
+function attachUniversalSwapLabEvents(container) {
+  const searchInput = container.querySelector('#universal-ingredient-input');
+  const searchClear = container.querySelector('#universal-search-clear-btn');
+  const dishSelect = container.querySelector('#universal-dish-context-select');
+  const analyzeBtn = container.querySelector('#universal-analyze-btn');
 
-    swapSearchInput?.addEventListener('input', (e) => {
-      state.swapSearchQuery = e.target.value.trim();
-      const q = state.swapSearchQuery.toLowerCase();
-      
-      if (swapSearchClear) {
-        if (state.swapSearchQuery) {
-          swapSearchClear.classList.remove('hidden');
-        } else {
-          swapSearchClear.classList.add('hidden');
-        }
+  // Trigger search on Enter key
+  searchInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      executeUniversalSearch();
+    }
+  });
+
+  searchInput?.addEventListener('input', (e) => {
+    state.swapSearchQuery = e.target.value;
+    if (searchClear) {
+      if (e.target.value) {
+        searchClear.classList.remove('hidden');
+      } else {
+        searchClear.classList.add('hidden');
       }
+    }
+  });
 
-      container.querySelectorAll('.swap-select-chip').forEach(btn => {
-        const idx = parseInt(btn.getAttribute('data-swap-idx'), 10);
-        const item = FLAVORSHIFT_SWAP_DATABASE[idx];
-        if (!item) return;
+  searchClear?.addEventListener('click', () => {
+    state.swapSearchQuery = '';
+    if (searchInput) {
+      searchInput.value = '';
+      searchInput.focus();
+    }
+    searchClear.classList.add('hidden');
+  });
 
-        const matchesTarget = item.targetIngredient.toLowerCase().includes(q);
-        const matchesDishes = item.commonInDishes.some(d => d.toLowerCase().includes(q));
-        const matchesAlts = item.alternatives.some(a => a.name.toLowerCase().includes(q));
+  dishSelect?.addEventListener('change', (e) => {
+    state.universalCurrentDishContext = e.target.value;
+    renderSwapLabView();
+  });
 
-        if (!q || matchesTarget || matchesDishes || matchesAlts) {
-          btn.classList.remove('hidden');
-        } else {
-          btn.classList.add('hidden');
-        }
-      });
-    });
+  analyzeBtn?.addEventListener('click', () => {
+    executeUniversalSearch();
+  });
 
-    swapSearchClear?.addEventListener('click', () => {
-      state.swapSearchQuery = '';
-      if (swapSearchInput) {
-        swapSearchInput.value = '';
-        swapSearchInput.focus();
-      }
-      swapSearchClear.classList.add('hidden');
-      container.querySelectorAll('.swap-select-chip').forEach(btn => {
-        btn.classList.remove('hidden');
-      });
-    });
-
-    // Attach chip selection listeners
-    container.querySelectorAll('.swap-select-chip').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.selectedSwapIndex = parseInt(btn.getAttribute('data-swap-idx'), 10);
-        renderSwapLabView();
-      });
-    });
-
-    container.querySelectorAll('[data-test-recipe]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const rId = btn.getAttribute('data-test-recipe');
-        openRecipeModal(rId);
-        // Pre-activate budget mode to showcase alternative
-        if (state.recipeStates[rId]) {
-          state.recipeStates[rId].budgetMode = true;
-          renderModalContent();
-        }
-      });
-    });
+  function executeUniversalSearch() {
+    const val = searchInput ? searchInput.value.trim() : '';
+    if (!val) return;
+    state.universalCurrentIngredient = val;
+    state.swapSearchQuery = val;
+    renderSwapLabView();
   }
+
+  // Quick Category / Ingredient Showcase Chips
+  container.querySelectorAll('[data-universal-chip]').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const name = chip.getAttribute('data-universal-chip');
+      state.universalCurrentIngredient = name;
+      state.swapSearchQuery = name;
+      renderSwapLabView();
+    });
+  });
+
+  // Try Another Ingredient Button
+  container.querySelectorAll('#try-another-ingredient-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.universalCurrentIngredient = '';
+      state.swapSearchQuery = '';
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+      }
+      renderSwapLabView();
+    });
+  });
+
+  // Toggle Compare Alternatives Matrix
+  const compareBtn = container.querySelector('#toggle-compare-mode-btn');
+  compareBtn?.addEventListener('click', () => {
+    state.universalCompareMode = !state.universalCompareMode;
+    renderSwapLabView();
+  });
+
+  // Select Alternative Button
+  container.querySelectorAll('[data-select-alt]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const altName = btn.getAttribute('data-select-alt');
+      showNotification(`Selected "${altName}" as substitute for ${state.universalCurrentIngredient}!`, 'success');
+    });
+  });
+}
 
   // ========================================================
   // RENDER: HUMAN TASTE VALIDATION (HTV) COMMUNITY HUB
