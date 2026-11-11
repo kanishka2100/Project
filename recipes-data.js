@@ -1427,6 +1427,455 @@ const RECIPES_DATA = [
         helpfulCount: 78
       }
     ]
+  },
+  {
+    id: "tandoori-garlic-butter-naan",
+    title: "Tandoori Garlic Butter Naan",
+    category: "Breads & Naan",
+    tagline: "Restaurant-grade charred garlic naan with bubbly blisters, optimized for home kitchens without a tandoor.",
+    isMostSearched: true,
+    rating: 4.97,
+    reviewsCount: 165,
+    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80",
+    prepTime: "25 mins",
+    cookTime: "5 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 0.45,
+    suggestedRetailPrice: 2.20,
+    baseCalories: 290,
+    baseMacros: { protein: 8, carbs: 48, fat: 9, fiber: 2 },
+    budgetAlternative: {
+      active: false,
+      title: "Desi Ghee & Clarified Butter Blend (No High-Cost Butter Spoilage)",
+      savingsPerPerson: 0.15,
+      savingsPercent: "33%",
+      newCostPerPerson: 0.30,
+      description: "When commercial dairy butter runs out or proves too costly, FlavorShift AI uses a fragrant browned ghee wash that delivers deeper caramelized flavor.",
+      swapRatio: "For every 20g Butter → Use 15g Desi Ghee brushed while piping hot",
+      tasteImpact: "High Sensory Match. Authentic rustic aroma with crisp, golden bubbles.",
+      textureImpact: "Soft, pillowy interior with crisp tandoori blistered crust.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 112,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Table Butter (20g)", replacedWith: "Farmhouse Desi Ghee Wash", reason: "Prevents sogginess, enhances tandoor aroma", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Whole-Wheat Multigrain Naan (Yogurt Leavened)",
+      calorieSaving: "-75 kcal",
+      newCalories: 215,
+      newMacros: { protein: 10, carbs: 36, fat: 4, fiber: 5 },
+      description: "Replaces 60% refined all-purpose flour (maida) with fine-milled whole wheat and probiotic curd for easy digestion."
+    },
+    ingredients: [
+      { name: "Fine All-Purpose Flour (Maida)", qtyPerPerson: 100, unit: "g flour", cost: 0.12, category: "Bakery", isReplaceable: true, replaceableType: "calorie" },
+      { name: "Fresh Curd / Greek Yogurt (for leavening)", qtyPerPerson: 35, unit: "g curd", cost: 0.08, category: "Dairy" },
+      { name: "Warm Milk or Water", qtyPerPerson: 40, unit: "ml liquid", cost: 0.04, category: "Dairy" },
+      { name: "Fresh Minced Garlic & Coriander", qtyPerPerson: 15, unit: "g fresh", cost: 0.06, category: "Produce" },
+      { name: "Salted Table Butter", qtyPerPerson: 20, unit: "g butter", cost: 0.12, category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Baking Powder & Nigella Seeds (Kalonji)", qtyPerPerson: 0.5, unit: "tsp blend", cost: 0.03, category: "Spices" }
+    ],
+    steps: [
+      "Knead flour with yogurt, pinch of baking powder, and warm milk until a soft, elastic dough forms; rest for 20 minutes under a damp cloth.",
+      "Divide into balls and stretch into classic teardrop shape; press minced garlic and kalonji seeds onto the top surface.",
+      "Brush the underside lightly with water and slap onto an inverted smoking-hot cast-iron tawa until bubbles form.",
+      "Flip the tawa upside down directly over high gas flame for 30 seconds to get signature tandoori leopard char blisters.",
+      "Brush generously with melted garlic butter or FlavorShift ghee wash and serve piping hot."
+    ],
+    reviews: [
+      {
+        id: "naan-rev-1",
+        author: "Chef Harpreet Singh",
+        cafeName: "Dhaba Craft, Amritsar",
+        rating: 5,
+        date: "2 days ago",
+        verifiedCafe: true,
+        text: "The inverted tawa technique with garlic-ghee brushing gives the exact restaurant clay oven texture without requiring commercial tandoor equipment.",
+        photo: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 64
+      }
+    ]
+  },
+  {
+    id: "classic-penne-arrabbiata",
+    title: "Classic Italian Penne all'Arrabbiata",
+    category: "Pastas & Italian",
+    tagline: "Vibrant Roman pasta in a fiery garlic, San Marzano tomato, and extra-virgin olive oil emulsion.",
+    isMostSearched: true,
+    rating: 4.93,
+    reviewsCount: 138,
+    image: "https://images.unsplash.com/photo-1621996346565-e3d5d6281724?w=800&auto=format&fit=crop&q=80",
+    prepTime: "8 mins",
+    cookTime: "12 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Vegan"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.35,
+    suggestedRetailPrice: 6.50,
+    baseCalories: 430,
+    baseMacros: { protein: 14, carbs: 68, fat: 12, fiber: 6 },
+    budgetAlternative: {
+      active: false,
+      title: "Roma Plum Tomato Puree + Sundried Tomato Paste (No Imported Canned Tomatoes)",
+      savingsPerPerson: 0.55,
+      savingsPercent: "40%",
+      newCostPerPerson: 0.80,
+      description: "When imported Italian San Marzano canned tomatoes are too expensive, FlavorShift AI blends concentrated fresh Roma tomatoes with caramelized garlic oil.",
+      swapRatio: "For 150g San Marzano Canned Tomatoes → Use 120g Ripe Roma puree + 1 tsp tomato concentrate paste",
+      tasteImpact: "High Sensory Match. Robust tangy sweetness with balanced heat.",
+      textureImpact: "Silky emulsified sauce that coats each ribbed penne tube flawlessly.",
+      humanTasteValidation: {
+        score: "9.7 / 10",
+        verifiedCooks: 94,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported San Marzano Canned Tomatoes", replacedWith: "Slow-reduced Local Roma Tomato Reduction", reason: "Saves ₹45/portion; identical natural umami", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Durum Wheat & Zucchini Ribbon Penne",
+      calorieSaving: "-140 kcal",
+      newCalories: 290,
+      newMacros: { protein: 12, carbs: 44, fat: 7, fiber: 8 },
+      description: "Blends 50% al dente durum wheat penne with 50% spiralized zucchini ribbons for rich volume with half the starch."
+    },
+    ingredients: [
+      { name: "Bronze-Cut Durum Wheat Penne", qtyPerPerson: 90, unit: "g dry pasta", cost: 0.40, category: "Grains" },
+      { name: "Crushed Ripe Roma Tomatoes", qtyPerPerson: 160, unit: "g ripe tomatoes", cost: 0.35, category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Extra Virgin Olive Oil", qtyPerPerson: 1.5, unit: "tablespoons", cost: 0.30, category: "Pantry" },
+      { name: "Fresh Garlic Cloves (sliced)", qtyPerPerson: 3, unit: "cloves", cost: 0.10, category: "Produce" },
+      { name: "Dried Red Pepper Flakes (Peperoncino)", qtyPerPerson: 0.75, unit: "tsp flakes", cost: 0.05, category: "Spices" },
+      { name: "Fresh Sweet Italian Basil", qtyPerPerson: 5, unit: "fresh leaves", cost: 0.10, category: "Herbs" },
+      { name: "Sea Salt & Freshly Cracked Black Pepper", qtyPerPerson: 0.5, unit: "tsp blend", cost: 0.05, category: "Spices" }
+    ],
+    steps: [
+      "Bring heavily salted water to a rolling boil; cook penne until perfectly al dente (1 minute under package directions).",
+      "In a wide skillet, gently heat extra virgin olive oil with thinly sliced garlic and crushed chili flakes until fragrant and pale golden.",
+      "Pour in crushed tomato puree and simmer gently for 8 minutes until sauce thickens and oil begins to shimmer.",
+      "Transfer penne directly into the sauce along with 1/4 cup starchy pasta cooking water; toss vigorously to create a glossy emulsion.",
+      "Tear fresh sweet basil over the pasta, finish with a drizzle of raw olive oil, and serve hot."
+    ],
+    reviews: [
+      {
+        id: "penne-rev-1",
+        author: "Marco Rossi",
+        cafeName: "Bistro Trattoria, Bengaluru",
+        rating: 5,
+        date: "3 days ago",
+        verifiedCafe: true,
+        text: "Using the starchy pasta water emulsification with reduced Roma tomatoes gives the sauce an authentic cling without needing butter or sugar.",
+        photo: "https://images.unsplash.com/photo-1621996346565-e3d5d6281724?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 52
+      }
+    ]
+  },
+  {
+    id: "hakka-street-style-noodles",
+    title: "Chili-Garlic Veg Hakka Noodles",
+    category: "Noodles & Wok",
+    tagline: "High-heat wok-tossed noodles with shredded crunchy vegetables, toasted garlic, and dark scallion oil.",
+    isMostSearched: true,
+    rating: 4.95,
+    reviewsCount: 148,
+    image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800&auto=format&fit=crop&q=80",
+    prepTime: "12 mins",
+    cookTime: "6 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Vegan"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 0.85,
+    suggestedRetailPrice: 4.80,
+    baseCalories: 380,
+    baseMacros: { protein: 11, carbs: 62, fat: 10, fiber: 5 },
+    budgetAlternative: {
+      active: false,
+      title: "Toasted Sesame & Mustard Oil Bloom (No Expensive Chili-Crunch Oil)",
+      savingsPerPerson: 0.30,
+      savingsPercent: "35%",
+      newCostPerPerson: 0.55,
+      description: "Creates an aromatic wok-seasoned base using whole crushed garlic and toasted sesame oil that delivers authentic charred street flavor.",
+      swapRatio: "Replace imported chili crisp oil with 1 tbsp neutral cooking oil bloomed with dry red chilies and garlic",
+      tasteImpact: "High Sensory Match. Smoky, savory, and satisfying wok-hei aromatics.",
+      textureImpact: "Springy noodles that stay separate and firm without becoming clumped.",
+      humanTasteValidation: {
+        score: "9.7 / 10",
+        verifiedCooks: 105,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Chili Crisp Oil", replacedWith: "In-house Garlic Scallion Bloom Oil", reason: "Saves ₹25 per plate with intense wok aroma", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "50/50 Hakka Noodles & Sliced Cabbage Slaw",
+      calorieSaving: "-120 kcal",
+      newCalories: 260,
+      newMacros: { protein: 9, carbs: 42, fat: 6, fiber: 7 },
+      description: "Doubles the finely shredded green cabbage and bell pepper volume to deliver high-satiety crunch with reduced carbohydrate density."
+    },
+    ingredients: [
+      { name: "Hakka Eggless Wheat Noodles", qtyPerPerson: 90, unit: "g dry noodles", cost: 0.30, category: "Grains" },
+      { name: "Crisp Green Bell Peppers & Cabbage", qtyPerPerson: 80, unit: "g shredded", cost: 0.20, category: "Produce" },
+      { name: "Fresh Garlic & Ginger (finely minced)", qtyPerPerson: 20, unit: "g fresh", cost: 0.10, category: "Produce" },
+      { name: "Naturally Brewed Dark Soy Sauce", qtyPerPerson: 1, unit: "tablespoon", cost: 0.08, category: "Pantry" },
+      { name: "Chili-Garlic Paste & Rice Vinegar", qtyPerPerson: 1, unit: "tablespoon blend", cost: 0.07, category: "Pantry" },
+      { name: "Cold-Pressed Sesame & Wok Oil", qtyPerPerson: 1, unit: "tablespoon", cost: 0.07, category: "Pantry", isReplaceable: true, replaceableType: "budget" },
+      { name: "Spring Onion Greens (Scallions)", qtyPerPerson: 15, unit: "g chopped", cost: 0.03, category: "Produce" }
+    ],
+    steps: [
+      "Boil noodles in salted water until 85% done; immediately drain, rinse with cold water, and toss with a few drops of oil to stop cooking.",
+      "Get a carbon-steel wok or heavy skillet smoking hot; swirl in wok oil until shimmering.",
+      "Add minced ginger, garlic, and sliced green chilies; stir-fry vigorously for 20 seconds without burning.",
+      "Toss in shredded cabbage, carrots, and bell peppers on highest flame for 90 seconds to maintain blistered, crunchy snap.",
+      "Drop in cooled noodles, drizzle dark soy sauce and chili-garlic paste around the rim of the wok, and toss rapidly for 2 minutes.",
+      "Finish with fresh spring onion greens and a crack of black pepper before plating immediately."
+    ],
+    reviews: [
+      {
+        id: "noodles-rev-1",
+        author: "Chef Vikram Nair",
+        cafeName: "Wok & Roll Bistro, Pune",
+        rating: 5,
+        date: "Yesterday",
+        verifiedCafe: true,
+        text: "The high-heat toss and cold-water rinse technique makes every strand springy with zero clumpiness. Customer favorite!",
+        photo: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 71
+      }
+    ]
+  },
+  {
+    id: "crispy-mysore-masala-dosa",
+    title: "Crispy Golden Mysore Masala Dosa",
+    category: "South Indian",
+    tagline: "Traditional fermented rice-lentil crepe smeared with spicy red garlic chutney and spiced potato masala.",
+    isMostSearched: true,
+    rating: 4.98,
+    reviewsCount: 195,
+    image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80",
+    prepTime: "15 mins",
+    cookTime: "5 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 0.65,
+    suggestedRetailPrice: 3.80,
+    baseCalories: 340,
+    baseMacros: { protein: 9, carbs: 54, fat: 10, fiber: 6 },
+    budgetAlternative: {
+      active: false,
+      title: "Cold-Pressed Sesame Oil Roast (Dairy-Free & Budget Saver)",
+      savingsPerPerson: 0.20,
+      savingsPercent: "30%",
+      newCostPerPerson: 0.45,
+      description: "When clarified butter (ghee) is costly or when vegan preferences are desired, FlavorShift AI uses authentic cold-pressed sesame gingelly oil for an ultra-crisp golden crust.",
+      swapRatio: "For 15g Ghee → Use 12g cold-pressed gingelly sesame oil brushed around edges",
+      tasteImpact: "High Sensory Match. Deep roasted nutty aroma with paper-crisp shatter.",
+      textureImpact: "Extra crisp golden bottom with tender, fluffy inner lace.",
+      humanTasteValidation: {
+        score: "9.9 / 10",
+        verifiedCooks: 142,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Desi Ghee (for roasting)", replacedWith: "Cold-Pressed Gingelly Sesame Oil", reason: "Delivers traditional temple-style aroma at half the fat expenditure", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Sprouted Moong & Oats Masala Dosa (Pesarattu-Style)",
+      calorieSaving: "-110 kcal",
+      newCalories: 230,
+      newMacros: { protein: 14, carbs: 34, fat: 5, fiber: 8 },
+      description: "Swaps white rice batter for slow-fermented whole sprouted green gram and rolled oats for low glycemic index and high dietary protein."
+    },
+    ingredients: [
+      { name: "Fermented Dosa Batter (Rice & Urad Dal)", qtyPerPerson: 120, unit: "ml batter", cost: 0.20, category: "Grains" },
+      { name: "Spiced Potato Mash (Aloo Bhaji with Mustard Seeds)", qtyPerPerson: 80, unit: "g potato filling", cost: 0.15, category: "Produce" },
+      { name: "Mysore Fiery Red Garlic-Byadgi Chutney", qtyPerPerson: 20, unit: "g red chutney", cost: 0.10, category: "Spices" },
+      { name: "Desi Ghee or Cold-Pressed Sesame Oil", qtyPerPerson: 15, unit: "ml roast oil", cost: 0.12, category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Fresh Coconut & Green Chili Chutney", qtyPerPerson: 40, unit: "g side chutney", cost: 0.08, category: "Produce" }
+    ],
+    steps: [
+      "Heat a seasoned heavy cast-iron tawa until water droplets sizzle and evaporate immediately; wipe lightly with half an onion.",
+      "Pour a ladle of fermented batter into the center and spiral outwards into a thin, even circle.",
+      "Drizzle melted ghee (or FlavorShift cold-pressed sesame oil) around the outer perimeter and center.",
+      "When the surface turns golden-amber, smear a tablespoon of fiery Mysore red garlic paste across the entire dosa surface.",
+      "Spoon spiced potato bhaji in the center, fold into a crisp cylinder or envelope, and serve with fresh coconut chutney."
+    ],
+    reviews: [
+      {
+        id: "dosa-rev-1",
+        author: "Kavitha Raman",
+        cafeName: "Dakshin Tiffin Room, Chennai",
+        rating: 5,
+        date: "Yesterday",
+        verifiedCafe: true,
+        text: "The sesame oil alternative creates an even crunchier crust than ghee and gives that unmistakable nostalgic aroma. Brilliant calculation!",
+        photo: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 88
+      }
+    ]
+  },
+  {
+    id: "steamed-soft-idli-sambar",
+    title: "Melt-in-Mouth Steamed Idli & Udupi Sambar",
+    category: "South Indian",
+    tagline: "Cloud-soft fermented steamed rice cakes served with aromatic lentil-vegetable Udupi sambar.",
+    isMostSearched: false,
+    rating: 4.94,
+    reviewsCount: 124,
+    image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800&auto=format&fit=crop&q=80",
+    prepTime: "10 mins",
+    cookTime: "12 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 0.55,
+    suggestedRetailPrice: 3.20,
+    baseCalories: 260,
+    baseMacros: { protein: 9, carbs: 50, fat: 2, fiber: 6 },
+    budgetAlternative: {
+      active: false,
+      title: "In-House Roasted Sambar Spice Masala (No Stale Store Powder)",
+      savingsPerPerson: 0.15,
+      savingsPercent: "27%",
+      newCostPerPerson: 0.40,
+      description: "Blooms whole coriander, fenugreek, and chana dal in seconds to give Udupi temple-style aroma without branded packaged powders.",
+      swapRatio: "1.5 tsp roasted coriander-fenugreek blend replaces commercial sambar masala packet",
+      tasteImpact: "High Sensory Match. Complex, comforting sweet-tangy lentil broth.",
+      textureImpact: "Featherlight, pillow-soft idlis that absorb sambar completely.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 82,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Branded Packaged Sambar Powder", replacedWith: "Freshly Roasted Spice Masala Bloom", reason: "Zero preservatives, 3x volatile aroma", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Quinoa & Foxtail Millet Steamed Idli",
+      calorieSaving: "-70 kcal",
+      newCalories: 190,
+      newMacros: { protein: 11, carbs: 32, fat: 2, fiber: 7 },
+      description: "Replaces 50% white idli rice with fiber-dense foxtail millet and organic quinoa for prolonged sustained energy."
+    },
+    ingredients: [
+      { name: "Steamed Idli Cakes (Fermented Batter)", qtyPerPerson: 3, unit: "steamed idlis", cost: 0.25, category: "Grains" },
+      { name: "Toor Dal & Drumstick Sambar Broth", qtyPerPerson: 180, unit: "ml sambar", cost: 0.18, category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Fresh Grated Coconut Chutney with Mustard Tadka", qtyPerPerson: 40, unit: "g side chutney", cost: 0.08, category: "Produce" },
+      { name: "Fresh Curry Leaves & Asafoetida (Hing)", qtyPerPerson: 0.5, unit: "tsp blend", cost: 0.04, category: "Spices" }
+    ],
+    steps: [
+      "Lightly grease idli plates with oil; fill molds 3/4th with aerated fermented batter.",
+      "Steam over high pressure for 10 minutes until a toothpick inserted into center comes out clean; rest 2 minutes before un-molding.",
+      "In a saucepan, simmer cooked toor dal with drumstick, shallots, tamarind pulp, and freshly roasted sambar spices.",
+      "Temper with mustard seeds, dried red chilies, hing, and fresh curry leaves in hot oil.",
+      "Float idlis directly in deep sambar bowl and top with fresh cilantro and a dab of cold coconut chutney."
+    ],
+    reviews: [
+      {
+        id: "idli-rev-1",
+        author: "Siddharth Menon",
+        cafeName: "Madras Cafe, Bangalore",
+        rating: 5,
+        date: "3 days ago",
+        verifiedCafe: true,
+        text: "The freshly bloomed sambar spices make all the difference. Super soft idlis that soak in every drop of flavor.",
+        photo: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 46
+      }
+    ]
+  },
+  {
+    id: "wood-fired-margherita-pizza",
+    title: "Artisanal Margherita Pizza",
+    category: "Pastas & Italian",
+    tagline: "Crisp leopard-spotted Italian crust with crushed San Marzano tomatoes, fresh mozzarella, and sweet basil.",
+    isMostSearched: true,
+    rating: 4.96,
+    reviewsCount: 172,
+    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&auto=format&fit=crop&q=80",
+    prepTime: "20 mins",
+    cookTime: "8 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.60,
+    suggestedRetailPrice: 8.50,
+    baseCalories: 580,
+    baseMacros: { protein: 24, carbs: 72, fat: 22, fiber: 4 },
+    budgetAlternative: {
+      active: false,
+      title: "Fresh Strained Paneer & Domestic Mozzarella Melt (No High-Import Dairy Markup)",
+      savingsPerPerson: 0.60,
+      savingsPercent: "37%",
+      newCostPerPerson: 1.00,
+      description: "When imported Italian buffalo mozzarella is unavailable or expensive, blends fresh domestic mozzarella with mild strained curd for equal stringy stretch and milky sweetness.",
+      swapRatio: "70g Domestic Mozzarella + 20g Strained Fresh Cottage Cheese replaces 90g imported Fior di Latte",
+      tasteImpact: "High Sensory Match. Creamy, milky stretch with balanced acidic tomato bite.",
+      textureImpact: "Gooey melted cheese pull with blistered, airy sourdough crust.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 118,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Italian Buffalo Mozzarella", replacedWith: "Domestic Low-Moisture Mozzarella & Cottage Curd Blend", reason: "Prevents soggy crust and saves ₹60/pie", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Thin-Crust Whole Wheat & Cauliflower Crust Pizza",
+      calorieSaving: "-190 kcal",
+      newCalories: 390,
+      newMacros: { protein: 22, carbs: 46, fat: 12, fiber: 8 },
+      description: "Bakes a crisp, ultra-thin crust enriched with finely grated cauliflower and whole wheat flour."
+    },
+    ingredients: [
+      { name: "Slow-Fermented Neapolitan Pizza Dough", qtyPerPerson: 180, unit: "g dough ball", cost: 0.40, category: "Bakery" },
+      { name: "Crushed Plum Tomato Reduction", qtyPerPerson: 70, unit: "g sauce", cost: 0.25, category: "Produce" },
+      { name: "Fresh Mozzarella / Fior di Latte", qtyPerPerson: 90, unit: "g sliced cheese", cost: 0.65, category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Extra Virgin Olive Oil", qtyPerPerson: 1, unit: "tablespoon", cost: 0.18, category: "Pantry" },
+      { name: "Fresh Genovese Sweet Basil & Sea Salt", qtyPerPerson: 6, unit: "fresh leaves", cost: 0.12, category: "Herbs" }
+    ],
+    steps: [
+      "Preheat oven with pizza stone or heavy cast-iron pan to maximum heat (250°C / 480°F) for 40 minutes.",
+      "Gently stretch fermented dough from center outwards onto semolina-dusted board, keeping a puffy outer rim (cornicione).",
+      "Spoon crushed plum tomato sauce thinly over dough; arrange torn fresh mozzarella pieces evenly.",
+      "Slide onto smoking-hot stone/pan; bake 6 to 8 minutes until cheese is bubbling and crust develops charred leopard blisters.",
+      "Remove from heat, scatter fresh basil leaves, drizzle with extra virgin olive oil, and slice immediately."
+    ],
+    reviews: [
+      {
+        id: "pizza-rev-1",
+        author: "Chef Antonio L.",
+        cafeName: "Napoli Bistro, Mumbai",
+        rating: 5,
+        date: "2 days ago",
+        verifiedCafe: true,
+        text: "The domestic mozzarella blend completely solves the watery crust issue common with home ovens. Fantastic rise on the crust!",
+        photo: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 92
+      }
+    ]
   }
 ];
 
