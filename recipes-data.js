@@ -1876,6 +1876,1123 @@ const RECIPES_DATA = [
         helpfulCount: 92
       }
     ]
+  },
+  {
+    id: "classic-italian-tiramisu",
+    title: "Artisanal Espresso Tiramisu",
+    category: "Bakery & Desserts",
+    tagline: "Airy espresso-soaked savoiardi ladyfingers layered with velvety mascarpone sabayon and dusted dark cocoa.",
+    isMostSearched: true,
+    rating: 4.98,
+    reviewsCount: 184,
+    image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=800&auto=format&fit=crop&q=80",
+    prepTime: "20 mins",
+    cookTime: "0 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.85,
+    suggestedRetailPrice: 7.50,
+    baseCalories: 420,
+    baseMacros: { protein: 8, carbs: 42, fat: 26, fiber: 2 },
+    budgetAlternative: {
+      active: false,
+      title: "Hung Curd & Double-Cottage Cream Velvet (No Costly Imported Mascarpone)",
+      savingsPerPerson: 0.85,
+      savingsPercent: "46%",
+      newCostPerPerson: 1.00,
+      description: "When imported Italian mascarpone is too expensive, FlavorShift AI blends ultra-smooth hung curd with fresh malai cream and vanilla bean.",
+      swapRatio: "For 100g Mascarpone → Use 60g Strained Hung Curd + 40g Fresh Malai Cream whisked silky",
+      tasteImpact: "High Sensory Match. Velvety, milky richness with gentle clean sweetness.",
+      textureImpact: "Micro-smooth, stable mousse consistency that holds sharp cafe slice edges.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 115,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Italian Mascarpone Cheese", replacedWith: "Farmhouse Hung Curd & Velvet Malai Puree", reason: "Cuts dessert expenditure by 46% without curdling", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Skinny Greek Yogurt & Espresso Cloud Parfait",
+      calorieSaving: "-180 kcal",
+      newCalories: 240,
+      newMacros: { protein: 15, carbs: 28, fat: 8, fiber: 2 },
+      description: "Uses non-fat whipped Greek yogurt sweetened with organic monkfruit extract and whole wheat sponge."
+    },
+    ingredients: [
+      { name: "Crisp Italian Ladyfingers (Savoiardi)", qtyPerPerson: 4, unit: "biscuits", cost: 0.40, category: "Bakery" },
+      { name: "Velvety Mascarpone Cheese", qtyPerPerson: 90, unit: "g cheese", cost: 0.90, category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Fresh Double Espresso Shot", qtyPerPerson: 50, unit: "ml fresh brew", cost: 0.25, category: "Pantry" },
+      { name: "Pure Vanilla Bean Extract & Sugar", qtyPerPerson: 1, unit: "tsp blend", cost: 0.15, category: "Sweetener", isReplaceable: true, replaceableType: "calorie" },
+      { name: "Dutch Processed 100% Dark Cocoa Powder", qtyPerPerson: 1, unit: "tsp dusting", cost: 0.15, category: "Pantry" }
+    ],
+    steps: [
+      "Brew intense dark roast espresso and let cool to room temperature in a shallow dipping bowl.",
+      "In a chilled bowl, whisk mascarpone (or FlavorShift hung curd-malai cream) with vanilla and sweetening until glossy soft peaks form.",
+      "Quickly dip ladyfingers into espresso for 1 second per side; arrange as a snug foundation layer in serving cup.",
+      "Pipe or spoon half of the velvet cream over the biscuits; repeat with a second soaked layer.",
+      "Chill for minimum 2 hours to set; dust heavily with Dutch dark cocoa powder before serving."
+    ],
+    reviews: [
+      {
+        id: "tiramisu-rev-1",
+        author: "Camilla Bernardi",
+        cafeName: "Espresso & Dolce, Milan & New Delhi",
+        rating: 5,
+        date: "Yesterday",
+        verifiedCafe: true,
+        text: "The hung curd-malai velvet alternative has the exact mouth-cling of Lombardy mascarpone. A masterpiece for cafe margins!",
+        photo: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 76
+      }
+    ]
+  },
+  {
+    id: "warm-dark-chocolate-lava-cake",
+    title: "Molten Dark Chocolate Lava Cake",
+    category: "Bakery & Desserts",
+    tagline: "Individual warm chocolate sponge with a luscious flowing molten ganache center.",
+    isMostSearched: true,
+    rating: 4.99,
+    reviewsCount: 210,
+    image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80",
+    prepTime: "12 mins",
+    cookTime: "10 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.40,
+    suggestedRetailPrice: 6.80,
+    baseCalories: 490,
+    baseMacros: { protein: 7, carbs: 54, fat: 28, fiber: 4 },
+    budgetAlternative: {
+      active: false,
+      title: "Single-Origin Domestic 70% Cocoa Melt (No High-Duty Belgian Couverture)",
+      savingsPerPerson: 0.50,
+      savingsPercent: "35%",
+      newCostPerPerson: 0.90,
+      description: "Employs high-fat domestic Indian single-origin cocoa mass blended with cold-pressed coconut butter for an ultra-glossy river of lava.",
+      swapRatio: "For 60g Imported Couverture → Use 45g Cocoa mass + 15g butter blend",
+      tasteImpact: "High Sensory Match. Intense bittersweet dark cocoa profile with zero waxy feel.",
+      textureImpact: "Tender cake walls with warm, free-flowing silky chocolate center.",
+      humanTasteValidation: {
+        score: "9.9 / 10",
+        verifiedCooks: 130,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Belgian 70% Dark Couverture", replacedWith: "South Indian Single-Origin Artisanal Dark Cocoa Mass", reason: "Saves ₹42/cake with deeper fruity terroir notes", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Avocado & Dark Cocoa Clean Molten Pot",
+      calorieSaving: "-190 kcal",
+      newCalories: 300,
+      newMacros: { protein: 8, carbs: 32, fat: 16, fiber: 8 },
+      description: "Replaces 60% butter with velvety Hass avocado puree and organic allulose sweetener for guilt-free indulgence."
+    },
+    ingredients: [
+      { name: "70% Dark Chocolate Callets", qtyPerPerson: 60, unit: "g chocolate", cost: 0.65, category: "Bakery", isReplaceable: true, replaceableType: "budget" },
+      { name: "Unsalted Dairy Table Butter", qtyPerPerson: 35, unit: "g butter", cost: 0.35, category: "Dairy", isReplaceable: true, replaceableType: "calorie-vegan" },
+      { name: "Whole Egg or Flax-Emulsion", qtyPerPerson: 1, unit: "egg / emulsion", cost: 0.15, category: "Dairy", isReplaceable: true, replaceableType: "vegan" },
+      { name: "Fine All-Purpose Flour", qtyPerPerson: 20, unit: "g flour", cost: 0.05, category: "Bakery" },
+      { name: "Raw Cane Sugar & Sea Salt", qtyPerPerson: 25, unit: "g blend", cost: 0.10, category: "Sweetener" },
+      { name: "Tahitian Vanilla Extract", qtyPerPerson: 0.5, unit: "tsp", cost: 0.10, category: "Pantry" }
+    ],
+    steps: [
+      "Melt dark chocolate and butter together gently over a bain-marie (hot water bath) until silky and glossy.",
+      "Whisk egg and cane sugar in a bowl until pale and frothy.",
+      "Fold melted chocolate mixture into the egg froth; gently sift in flour and a pinch of flaky salt.",
+      "Pour batter into a buttered, cocoa-dusted ramekin up to 3/4 full.",
+      "Bake at 200°C (395°F) for exactly 9–10 minutes until the edges are firm but center jiggles gently.",
+      "Invert immediately onto a dessert plate, dust with powdered sugar, and serve with fresh berries."
+    ],
+    reviews: [
+      {
+        id: "lava-rev-1",
+        author: "Chef Rohan Sen",
+        cafeName: "The Chocolate Box, Kolkata",
+        rating: 5,
+        date: "3 days ago",
+        verifiedCafe: true,
+        text: "The exact 9-minute bake time yields a picture-perfect molten core every single time. One of our top 3 profit items.",
+        photo: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 89
+      }
+    ]
+  },
+  {
+    id: "vanilla-bean-panna-cotta",
+    title: "Vanilla Bean Panna Cotta with Berry Coulis",
+    category: "Bakery & Desserts",
+    tagline: "Silky, delicate chilled Italian cream custard infused with Madagascar vanilla bean and tart raspberry glaze.",
+    isMostSearched: false,
+    rating: 4.92,
+    reviewsCount: 98,
+    image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=800&auto=format&fit=crop&q=80",
+    prepTime: "10 mins",
+    cookTime: "5 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.20,
+    suggestedRetailPrice: 5.50,
+    baseCalories: 320,
+    baseMacros: { protein: 5, carbs: 26, fat: 22, fiber: 2 },
+    budgetAlternative: {
+      active: false,
+      title: "Thick Whole Milk & Coconut Milk Silk (No High-Cost Whipping Cream)",
+      savingsPerPerson: 0.45,
+      savingsPercent: "37%",
+      newCostPerPerson: 0.75,
+      description: "Combines reduced whole farmhouse milk with coconut milk for the same luxurious mouth-coating wobble at reduced dairy expense.",
+      swapRatio: "For 100ml Heavy Cream → Use 60ml Whole Milk + 40ml Coconut Milk",
+      tasteImpact: "High Sensory Match. Clean floral vanilla profile with tropical undertones.",
+      textureImpact: "Gentle, delicate wobble that melts instantly on the palate.",
+      humanTasteValidation: {
+        score: "9.7 / 10",
+        verifiedCooks: 78,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported 35% Dairy Whipping Cream", replacedWith: "Farmhouse Full-Cream & Coconut Milk Infusion", reason: "Prevents heavy dairy aftertaste while cutting costs", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Almond Milk & Agar-Agar Light Wobble",
+      calorieSaving: "-170 kcal",
+      newCalories: 150,
+      newMacros: { protein: 4, carbs: 14, fat: 8, fiber: 3 },
+      description: "Uses unsweetened vanilla almond milk set with plant-based agar-agar for an ultra-clean 150-calorie dessert."
+    },
+    ingredients: [
+      { name: "Fresh Dairy Whipping Cream", qtyPerPerson: 100, unit: "ml cream", cost: 0.55, category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Whole Farmhouse Milk", qtyPerPerson: 50, unit: "ml milk", cost: 0.15, category: "Dairy" },
+      { name: "Plant-Based Agar-Agar or Gelatin", qtyPerPerson: 2, unit: "g setting agent", cost: 0.15, category: "Pantry" },
+      { name: "Madagascar Vanilla Pod Seeds", qtyPerPerson: 0.5, unit: "pod seeds", cost: 0.15, category: "Spices" },
+      { name: "Wild Raspberry & Strawberry Reduction", qtyPerPerson: 35, unit: "g coulis", cost: 0.20, category: "Produce" }
+    ],
+    steps: [
+      "Simmer cream, milk, scraped vanilla seeds, and sugar in a saucepan over gentle heat for 3 minutes without boiling.",
+      "Sprinkle agar-agar flakes into the warm liquid, whisking thoroughly for 90 seconds until completely dissolved.",
+      "Pour through a fine mesh strainer into small glass jars or dariole molds.",
+      "Refrigerate for minimum 3 hours until gently set with signature panna cotta wobble.",
+      "Top with fresh tart berry coulis and fresh mint leaves right before serving."
+    ],
+    reviews: [
+      {
+        id: "panna-rev-1",
+        author: "Elena Rostova",
+        cafeName: "Cafe Bellini, Goa",
+        rating: 5,
+        date: "4 days ago",
+        verifiedCafe: true,
+        text: "The coconut-milk blend gives it such a fresh, modern lightness. Guests rave about the melt-in-mouth texture.",
+        photo: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 54
+      }
+    ]
+  },
+  {
+    id: "gulab-jamun-cheesecake-fusion",
+    title: "Gulab Jamun Saffron Cheesecake",
+    category: "Bakery & Desserts",
+    tagline: "East-meets-west cafe fusion pairing cardamom graham cracker crust with saffron cream and embedded mini gulab jamuns.",
+    isMostSearched: true,
+    rating: 4.97,
+    reviewsCount: 168,
+    image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=800&auto=format&fit=crop&q=80",
+    prepTime: "25 mins",
+    cookTime: "30 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.65,
+    suggestedRetailPrice: 7.20,
+    baseCalories: 460,
+    baseMacros: { protein: 9, carbs: 52, fat: 24, fiber: 2 },
+    budgetAlternative: {
+      active: false,
+      title: "Chenna (Fresh Cottage Curd) & Cream Cheese Blend (No 100% Imported Cheese)",
+      savingsPerPerson: 0.70,
+      savingsPercent: "42%",
+      newCostPerPerson: 0.95,
+      description: "Combines freshly curdled warm cow milk chenna with cream cheese to replicate Philadelphia richness at domestic milk prices.",
+      swapRatio: "50g Whipped Soft Chenna + 40g Cream Cheese replaces 90g imported cream cheese",
+      tasteImpact: "High Sensory Match. Subtle sweet lactic curd with saffron and rose water notes.",
+      textureImpact: "Dense, creamy, velvet sliceability that holds embedded gulab jamuns firmly.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 110,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Philadelphia Cream Cheese", replacedWith: "Whipped Fresh Soft Chenna Curd", reason: "Prevents heavy dense aftertaste and saves ₹58/portion", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Hung Greek Yogurt & Stevia Baked Pot",
+      calorieSaving: "-160 kcal",
+      newCalories: 300,
+      newMacros: { protein: 14, carbs: 36, fat: 12, fiber: 3 },
+      description: "Bakes strained high-protein Greek yogurt with crushed digestive biscuits and sugar-free rose essence."
+    },
+    ingredients: [
+      { name: "Cream Cheese / Soft Chenna Blend", qtyPerPerson: 90, unit: "g cheese curd", cost: 0.70, category: "Dairy", isReplaceable: true, replaceableType: "budget" },
+      { name: "Mini Soft Gulab Jamuns (drained)", qtyPerPerson: 2, unit: "pieces", cost: 0.35, category: "Bakery" },
+      { name: "Crushed Graham Crackers / Digestive Biscuits", qtyPerPerson: 35, unit: "g crumbs", cost: 0.20, category: "Bakery" },
+      { name: "Kashmiri Saffron & Green Cardamom Powder", qtyPerPerson: 0.5, unit: "tsp blend", cost: 0.25, category: "Spices" },
+      { name: "Melted Butter (for crust binding)", qtyPerPerson: 15, unit: "g butter", cost: 0.15, category: "Dairy" }
+    ],
+    steps: [
+      "Mix crushed digestive biscuits with melted butter and cardamom; press tightly into base of springform pan or mold.",
+      "Whisk cream cheese and whipped chenna with sugar, saffron milk infusion, and a splash of rose water until micro-smooth.",
+      "Pour half the cheese batter over the crust; arrange drained mini gulab jamuns evenly across the surface.",
+      "Cover with remaining batter, smooth the top, and bake in a water bath at 160°C (320°F) for 35 minutes until just set.",
+      "Chill overnight in refrigerator; slice cleanly and garnish with slivered pistachios and dried rose petals."
+    ],
+    reviews: [
+      {
+        id: "fusion-rev-1",
+        author: "Chef Meera Kapoor",
+        cafeName: "Saffron & Sage Bistro, Chandigarh",
+        rating: 5,
+        date: "2 days ago",
+        verifiedCafe: true,
+        text: "The chenna blend gives it a lighter, cleaner finish than heavy cream cheese alone. It sells out before 4 PM every day!",
+        photo: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 81
+      }
+    ]
+  },
+  {
+    id: "fudgy-avocado-chocolate-brownie",
+    title: "Double Dark Chocolate Fudgy Brownie",
+    category: "Bakery & Desserts",
+    tagline: "Decadent crinkle-top chocolate brownie with fudgy gooey centers and roasted walnut chunks.",
+    isMostSearched: false,
+    rating: 4.94,
+    reviewsCount: 112,
+    image: "https://images.unsplash.com/photo-1607920591413-4ec007e70023?w=800&auto=format&fit=crop&q=80",
+    prepTime: "15 mins",
+    cookTime: "22 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.10,
+    suggestedRetailPrice: 4.80,
+    baseCalories: 380,
+    baseMacros: { protein: 6, carbs: 46, fat: 20, fiber: 4 },
+    budgetAlternative: {
+      active: false,
+      title: "Toasted Sunflower Seeds & Cocoa Butter (No High-Cost Imported Walnuts)",
+      savingsPerPerson: 0.35,
+      savingsPercent: "32%",
+      newCostPerPerson: 0.75,
+      description: "When imported California walnuts are too expensive, uses toasted salted pumpkin and sunflower seeds for equal nutty crunch.",
+      swapRatio: "25g Toasted Sunflower & Pumpkin seed mix replaces 25g walnuts",
+      tasteImpact: "High Sensory Match. Deep roasted crunch with intense bittersweet cocoa.",
+      textureImpact: "Chewy edges with gooey, fudgy center and crisp, papery crinkle crust.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 92,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported California Walnuts (25g)", replacedWith: "Toasted Roasted Sunflower & Pumpkin Seeds", reason: "Allergen-friendly crunch that saves ₹28 per brownie slice", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Skinny Sweet Potato & Dark Cocoa Brownie",
+      calorieSaving: "-150 kcal",
+      newCalories: 230,
+      newMacros: { protein: 7, carbs: 32, fat: 9, fiber: 6 },
+      description: "Uses pureed steamed sweet potato to replace 70% butter and refined flour for moist, dense fudge texture."
+    },
+    ingredients: [
+      { name: "55% Semi-Sweet Dark Chocolate", qtyPerPerson: 50, unit: "g chocolate", cost: 0.45, category: "Bakery" },
+      { name: "Pure Dairy Table Butter", qtyPerPerson: 30, unit: "g butter", cost: 0.25, category: "Dairy", isReplaceable: true, replaceableType: "calorie" },
+      { name: "Brown Cane Sugar & Vanilla", qtyPerPerson: 30, unit: "g blend", cost: 0.15, category: "Sweetener" },
+      { name: "Unbleached Pastry Flour", qtyPerPerson: 25, unit: "g flour", cost: 0.08, category: "Bakery" },
+      { name: "Roughly Chopped Walnuts or Seeds", qtyPerPerson: 20, unit: "g nuts", cost: 0.17, category: "Pantry", isReplaceable: true, replaceableType: "budget" }
+    ],
+    steps: [
+      "Melt dark chocolate and butter together until silky smooth; let cool slightly.",
+      "Whisk eggs (or yogurt substitute) with brown sugar vigorously for 3 minutes until pale and frothy.",
+      "Gently fold melted chocolate into the whipped eggs; fold in flour and cocoa powder with a spatula.",
+      "Stir in chopped walnuts or toasted seeds, reserving a few for the top.",
+      "Pour into parchment-lined pan; bake at 175°C (350°F) for 22 minutes until a toothpick has moist crumbs.",
+      "Cool completely before slicing into clean cafe squares."
+    ],
+    reviews: [
+      {
+        id: "brownie-rev-1",
+        author: "Karan Mehta",
+        cafeName: "Bean & Batter Bakery, Delhi",
+        rating: 5,
+        date: "5 days ago",
+        verifiedCafe: true,
+        text: "The crinkle top and dense fudge texture are phenomenal. Customers love pairing it with our flat whites.",
+        photo: "https://images.unsplash.com/photo-1607920591413-4ec007e70023?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 68
+      }
+    ]
+  },
+  {
+    id: "quinoa-avocado-superfood-bowl",
+    title: "Mediterranean Quinoa & Avocado Power Bowl",
+    category: "Diet Conscious",
+    tagline: "Nutrient-packed clean bowl featuring fluffy quinoa, crisp cucumbers, ripe avocado, chickpeas, and lemon tahini dressing.",
+    isMostSearched: true,
+    rating: 4.96,
+    reviewsCount: 145,
+    image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80",
+    prepTime: "12 mins",
+    cookTime: "15 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.55,
+    suggestedRetailPrice: 6.80,
+    baseCalories: 380,
+    baseMacros: { protein: 16, carbs: 48, fat: 15, fiber: 11 },
+    budgetAlternative: {
+      active: false,
+      title: "Broken Wheat (Dalia) & White Sesame Drizzle (No High-Import Quinoa)",
+      savingsPerPerson: 0.60,
+      savingsPercent: "38%",
+      newCostPerPerson: 0.95,
+      description: "Swaps imported organic quinoa with roasted nutty domestic broken wheat dalia and homemade sesame tahini for identical mouthfeel.",
+      swapRatio: "70g Steamed Dalia replaces 70g cooked quinoa",
+      tasteImpact: "High Sensory Match. Earthy, nutty grains with vibrant citrus-herb dressing.",
+      textureImpact: "Fluffy, hearty grain base with crisp vegetable snap and creamy avocado.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 104,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported South American Quinoa", replacedWith: "Slow-Steamed Roasted Broken Wheat (Dalia)", reason: "Saves ₹50/bowl; high sustained satiety", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Cauliflower Rice & Cucumber Shred Slaw Base",
+      calorieSaving: "-130 kcal",
+      newCalories: 250,
+      newMacros: { protein: 12, carbs: 22, fat: 12, fiber: 10 },
+      description: "Replaces half the grains with fresh riced cauliflower for an ultra-low carbohydrate macro profile."
+    },
+    ingredients: [
+      { name: "Fluffy Steamed White Quinoa", qtyPerPerson: 80, unit: "g cooked grains", cost: 0.50, category: "Grains", isReplaceable: true, replaceableType: "budget" },
+      { name: "Sliced Hass Avocado", qtyPerPerson: 50, unit: "g fresh avocado", cost: 0.45, category: "Produce" },
+      { name: "Spiced Boiled Chickpeas (Kabuli Chana)", qtyPerPerson: 60, unit: "g legumes", cost: 0.20, category: "Produce" },
+      { name: "Cherry Tomatoes & Persian Cucumber", qtyPerPerson: 70, unit: "g fresh dice", cost: 0.20, category: "Produce" },
+      { name: "Lemon Tahini & Extra Virgin Olive Oil Dressing", qtyPerPerson: 25, unit: "ml dressing", cost: 0.20, category: "Pantry" }
+    ],
+    steps: [
+      "Rinse quinoa thoroughly to remove saponins; cook in seasoned vegetable broth until translucent and fluffy.",
+      "Toss boiled chickpeas with smoked paprika, cumin, and sea salt in a hot dry pan for 2 minutes to crisp the skin.",
+      "Assemble grain foundation in a wide stoneware salad bowl.",
+      "Arrange sliced avocado, cherry tomato halves, diced cucumber, and spiced chickpeas in clean color-blocked sections.",
+      "Whisk fresh lemon juice, tahini, minced garlic, and cold water into a silky dressing; drizzle liberally over bowl before serving."
+    ],
+    reviews: [
+      {
+        id: "bowl-rev-1",
+        author: "Tara Singhania",
+        cafeName: "Pure & Raw Kitchen, Mumbai",
+        rating: 5,
+        date: "2 days ago",
+        verifiedCafe: true,
+        text: "The lemon-tahini dressing ties every single component together. Outstanding clean macros for fitness clients.",
+        photo: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 73
+      }
+    ]
+  },
+  {
+    id: "grilled-tofu-edamame-buddha-bowl",
+    title: "Sesame-Ginger Tofu Buddha Bowl",
+    category: "Diet Conscious",
+    tagline: "Clean plant-protein bowl with crispy pan-seared organic tofu, steamed edamame, purple cabbage, and toasted sesame glaze.",
+    isMostSearched: false,
+    rating: 4.93,
+    reviewsCount: 118,
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&auto=format&fit=crop&q=80",
+    prepTime: "15 mins",
+    cookTime: "10 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.45,
+    suggestedRetailPrice: 6.50,
+    baseCalories: 340,
+    baseMacros: { protein: 22, carbs: 32, fat: 14, fiber: 9 },
+    budgetAlternative: {
+      active: false,
+      title: "Sprouted Green Moong & Roasted Peanut Crunch (No Expensive Edamame)",
+      savingsPerPerson: 0.50,
+      savingsPercent: "34%",
+      newCostPerPerson: 0.95,
+      description: "When frozen Japanese edamame is high cost, substitutes tender steamed sprouted whole moong beans and crushed roasted peanuts.",
+      swapRatio: "50g Sprouted Moong replaces 50g Edamame beans",
+      tasteImpact: "High Sensory Match. Fresh, earthy legume sweetness with savory garlic crunch.",
+      textureImpact: "Crisp outer tofu shell with tender, chewy protein and fresh raw vegetables.",
+      humanTasteValidation: {
+        score: "9.7 / 10",
+        verifiedCooks: 86,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Frozen Edamame Beans", replacedWith: "Steamed Fresh Sprouted Moong", reason: "Saves ₹40/bowl while providing equal plant protein", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Air-Fried Tofu & Zucchini Noodle Base",
+      calorieSaving: "-110 kcal",
+      newCalories: 230,
+      newMacros: { protein: 20, carbs: 16, fat: 10, fiber: 8 },
+      description: "Air-fries the marinated tofu without oil and swaps rice for crisp raw zucchini ribbons."
+    },
+    ingredients: [
+      { name: "Organic Firm Pressed Tofu Cubes", qtyPerPerson: 120, unit: "g tofu", cost: 0.55, category: "Produce" },
+      { name: "Steamed Edamame / Sprouted Beans", qtyPerPerson: 50, unit: "g legumes", cost: 0.35, category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Shredded Purple Cabbage & Carrots", qtyPerPerson: 80, unit: "g vegetables", cost: 0.20, category: "Produce" },
+      { name: "Tamari Soy & Grated Ginger Glaze", qtyPerPerson: 20, unit: "ml sauce", cost: 0.15, category: "Pantry" },
+      { name: "Toasted White & Black Sesame Seeds", qtyPerPerson: 1, unit: "tsp garnish", cost: 0.10, category: "Pantry" },
+      { name: "Steamed Brown Jasmine Rice", qtyPerPerson: 70, unit: "g cooked rice", cost: 0.10, category: "Grains" }
+    ],
+    steps: [
+      "Press tofu with paper towels to extract moisture; toss cubes in tamari, garlic powder, and cornstarch.",
+      "Sear in a hot skillet with a teaspoon of oil for 7 minutes, turning until all sides are deep golden and crisp.",
+      "Steam edamame or sprouted moong with sea salt for 3 minutes until tender-crisp.",
+      "Lay warm brown rice in a bowl, arranging crisp tofu, purple cabbage, and edamame around the perimeter.",
+      "Drizzle with sesame-ginger dressing and sprinkle with toasted sesame seeds and sliced scallions."
+    ],
+    reviews: [
+      {
+        id: "tofu-rev-1",
+        author: "Devika Rao",
+        cafeName: "Zen Vitality Cafe, Hyderabad",
+        rating: 5,
+        date: "Yesterday",
+        verifiedCafe: true,
+        text: "The cornstarch crust makes the tofu outrageously crunchy without deep-frying. Excellent nutritional profile.",
+        photo: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 62
+      }
+    ]
+  },
+  {
+    id: "greek-tzatziki-grain-salad",
+    title: "Chilled Greek Tzatziki & Lentil Salad",
+    category: "Diet Conscious",
+    tagline: "Cooling cafe salad of brown lentils, crisp bell peppers, and homemade cucumber-garlic Greek yogurt dressing.",
+    isMostSearched: false,
+    rating: 4.91,
+    reviewsCount: 92,
+    image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=800&auto=format&fit=crop&q=80",
+    prepTime: "10 mins",
+    cookTime: "10 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.15,
+    suggestedRetailPrice: 5.20,
+    baseCalories: 290,
+    baseMacros: { protein: 18, carbs: 38, fat: 8, fiber: 10 },
+    budgetAlternative: {
+      active: false,
+      title: "Desi Brown Masoor & Strained Dahi Tzatziki (No Imported Puy Lentils)",
+      savingsPerPerson: 0.40,
+      savingsPercent: "35%",
+      newCostPerPerson: 0.75,
+      description: "Replaces imported French green lentils with domestic whole brown masoor dal cooked al dente.",
+      swapRatio: "80g Whole Brown Masoor replaces 80g imported lentils",
+      tasteImpact: "High Sensory Match. Earthy, savory lentils balanced by tart cucumber-dill yogurt.",
+      textureImpact: "Firm, non-mushy lentil bite with refreshing cooling creaminess.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 75,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported French Green Lentils", replacedWith: "Farm Fresh Whole Brown Masoor", reason: "Zero mushiness, saves ₹35/portion", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Low-Fat Cucumber & Fresh Mint Dressing",
+      calorieSaving: "-70 kcal",
+      newCalories: 220,
+      newMacros: { protein: 16, carbs: 32, fat: 3, fiber: 10 },
+      description: "Prepares tzatziki using 0% fat strained yogurt with fresh mint and grated English cucumber."
+    },
+    ingredients: [
+      { name: "Al Dente Whole Brown Lentils", qtyPerPerson: 90, unit: "g cooked lentils", cost: 0.30, category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Strained Greek Yogurt (Tzatziki Base)", qtyPerPerson: 80, unit: "g yogurt", cost: 0.40, category: "Dairy" },
+      { name: "English Cucumber (grated & squeezed)", qtyPerPerson: 50, unit: "g cucumber", cost: 0.15, category: "Produce" },
+      { name: "Extra Virgin Olive Oil & Lemon Juice", qtyPerPerson: 15, unit: "ml blend", cost: 0.15, category: "Pantry" },
+      { name: "Fresh Dill, Minced Garlic & Sea Salt", qtyPerPerson: 1, unit: "tsp blend", cost: 0.15, category: "Herbs" }
+    ],
+    steps: [
+      "Cook whole lentils in water with a bay leaf until tender but still holding their shape (do not overcook); chill thoroughly.",
+      "Grate English cucumber, toss with a pinch of salt, and squeeze tightly in cheesecloth to extract excess liquid.",
+      "Stir squeezed cucumber into thick Greek yogurt with minced garlic, fresh chopped dill, lemon juice, and olive oil.",
+      "Toss chilled lentils with diced red onions, bell peppers, and half of the tzatziki sauce.",
+      "Transfer to salad bowl, dollop remaining tzatziki over the top, and finish with a crack of black pepper."
+    ],
+    reviews: [
+      {
+        id: "tzatziki-rev-1",
+        author: "Arjun Verma",
+        cafeName: "Olive & Herb Eatery, Delhi",
+        rating: 5,
+        date: "6 days ago",
+        verifiedCafe: true,
+        text: "The lentil-tzatziki combination is hearty, refreshing, and deeply satisfying. Perfect lunch prep item.",
+        photo: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 43
+      }
+    ]
+  },
+  {
+    id: "spinach-paneer-protein-wrap",
+    title: "Vibrant Spinach & Grilled Paneer Wrap",
+    category: "Diet Conscious",
+    tagline: "Whole-wheat flatbread wrap stuffed with tandoori-spiced grilled paneer strips, baby spinach, and mint-yogurt chutney.",
+    isMostSearched: true,
+    rating: 4.95,
+    reviewsCount: 132,
+    image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80",
+    prepTime: "10 mins",
+    cookTime: "8 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.25,
+    suggestedRetailPrice: 5.50,
+    baseCalories: 360,
+    baseMacros: { protein: 20, carbs: 36, fat: 16, fiber: 6 },
+    budgetAlternative: {
+      active: false,
+      title: "Desi Tawa-Grilled Tofu & Paneer Mix (Cost & Saturated Fat Cutter)",
+      savingsPerPerson: 0.40,
+      savingsPercent: "32%",
+      newCostPerPerson: 0.85,
+      description: "Blends 50% firm organic tofu with 50% fresh paneer to maintain bouncy bite while cutting dairy fat expenditure.",
+      swapRatio: "50g Tofu + 50g Paneer replaces 100g pure paneer",
+      tasteImpact: "High Sensory Match. Smoky tandoori spices mask tofu, delivering pure paneer flavor.",
+      textureImpact: "Firm, succulent grilled bites wrapped in warm, toasted flatbread.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 96,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "100% Full-Fat Malai Paneer", replacedWith: "50/50 Tawa Grilled Paneer & Firm Tofu Blend", reason: "Saves ₹32/wrap with superior protein-to-fat balance", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Low-Carb Lettuce & Roti Wrap",
+      calorieSaving: "-110 kcal",
+      newCalories: 250,
+      newMacros: { protein: 21, carbs: 18, fat: 11, fiber: 7 },
+      description: "Swaps white tortilla for thin whole-wheat phulka rolled in crisp romaine lettuce leaves."
+    },
+    ingredients: [
+      { name: "Fresh Malai Paneer or Tofu Strips", qtyPerPerson: 100, unit: "g strips", cost: 0.60, category: "Dairy", isReplaceable: true, replaceableType: "budget" },
+      { name: "Whole Wheat Roti / Tortilla Wrap", qtyPerPerson: 1, unit: "wrap", cost: 0.25, category: "Bakery" },
+      { name: "Fresh Baby Spinach & Sliced Bell Peppers", qtyPerPerson: 60, unit: "g vegetables", cost: 0.18, category: "Produce" },
+      { name: "Spicy Mint & Coriander Greek Yogurt Chutney", qtyPerPerson: 30, unit: "g sauce", cost: 0.12, category: "Dairy" },
+      { name: "Tandoori Tikka Spices & Lemon Juice", qtyPerPerson: 1, unit: "tsp blend", cost: 0.10, category: "Spices" }
+    ],
+    steps: [
+      "Toss paneer or paneer-tofu strips in tandoori spices, lemon juice, and a drop of mustard oil; sear in a cast-iron skillet for 4 minutes until charred.",
+      "Warm the whole wheat roti on dry tawa for 20 seconds per side until pliable.",
+      "Spread mint-coriander yogurt chutney down the center of the warm wrap.",
+      "Layer fresh washed baby spinach leaves, grilled paneer strips, and crunchy sliced onions.",
+      "Tightly fold bottom upward, roll into a snug cylinder, cut diagonally, and serve wrapped in parchment paper."
+    ],
+    reviews: [
+      {
+        id: "wrap-rev-1",
+        author: "Pooja Malhotra",
+        cafeName: "FitBytes Cafe, Gurgaon",
+        rating: 5,
+        date: "Yesterday",
+        verifiedCafe: true,
+        text: "The tofu-paneer blend absorbs the tandoori char so well nobody can distinguish it. Our number one fitness order!",
+        photo: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 77
+      }
+    ]
+  },
+  {
+    id: "zesty-kale-roasted-chickpea-salad",
+    title: "Crunchy Garlic Kale & Chickpea Caesar",
+    category: "Diet Conscious",
+    tagline: "Massaged curly kale tossed with crispy garlic-roasted chickpeas, shaved Parmesan, and creamy cashew Caesar dressing.",
+    isMostSearched: false,
+    rating: 4.90,
+    reviewsCount: 88,
+    image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=800&auto=format&fit=crop&q=80",
+    prepTime: "12 mins",
+    cookTime: "15 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.30,
+    suggestedRetailPrice: 5.80,
+    baseCalories: 310,
+    baseMacros: { protein: 14, carbs: 32, fat: 15, fiber: 9 },
+    budgetAlternative: {
+      active: false,
+      title: "Baby Spinach & Roasted Moong Crunch (No Imported Curly Kale)",
+      savingsPerPerson: 0.45,
+      savingsPercent: "35%",
+      newCostPerPerson: 0.85,
+      description: "When organic imported kale is out of stock, uses crisp fresh baby palak and spiced roasted lentils for identical hearty texture.",
+      swapRatio: "80g Baby Spinach replaces 80g massaged kale",
+      tasteImpact: "High Sensory Match. Tangy, savory garlic Caesar punch with zero bitterness.",
+      textureImpact: "Tender, hearty greens with crunchy roasted chickpea croutons.",
+      humanTasteValidation: {
+        score: "9.7 / 10",
+        verifiedCooks: 72,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Organic Curly Kale", replacedWith: "Farm Fresh Crisp Baby Palak", reason: "Zero bitterness, saves ₹40/salad", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Light Lemon-Mustard Vinaigrette Toss",
+      calorieSaving: "-110 kcal",
+      newCalories: 200,
+      newMacros: { protein: 11, carbs: 26, fat: 6, fiber: 9 },
+      description: "Replaces creamy cashew dressing with a light Dijon mustard, lemon juice, and apple cider vinegar emulsion."
+    },
+    ingredients: [
+      { name: "Fresh Curly Kale (stemmed & chopped)", qtyPerPerson: 90, unit: "g fresh greens", cost: 0.50, category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Oven-Roasted Crunchy Chickpeas", qtyPerPerson: 50, unit: "g croutons", cost: 0.25, category: "Produce" },
+      { name: "Silky Cashew & Garlic Caesar Dressing", qtyPerPerson: 30, unit: "ml dressing", cost: 0.30, category: "Pantry" },
+      { name: "Shaved Aged Vegetarian Parmesan or Nutritional Yeast", qtyPerPerson: 15, unit: "g cheese", cost: 0.15, category: "Dairy" },
+      { name: "Fresh Lemon Juice & Extra Virgin Olive Oil", qtyPerPerson: 10, unit: "ml blend", cost: 0.10, category: "Pantry" }
+    ],
+    steps: [
+      "Remove tough center stems from kale leaves; tear into bite-sized pieces.",
+      "Drizzle with 1/2 tsp olive oil and a pinch of salt; massage firmly with fingers for 90 seconds until leaves turn dark emerald and silky tender.",
+      "Toss cooked chickpeas with olive oil, garlic powder, and paprika; bake at 200°C for 18 minutes until shatter-crisp.",
+      "Pour creamy cashew Caesar dressing over the massaged kale; toss thoroughly to coat every leaf.",
+      "Garnish with hot crunchy chickpea croutons and shaved cheese before serving."
+    ],
+    reviews: [
+      {
+        id: "kale-rev-1",
+        author: "Dr. Alistair Grant",
+        cafeName: "The Nutrition Lab, London & Mumbai",
+        rating: 5,
+        date: "4 days ago",
+        verifiedCafe: true,
+        text: "The chickpea crouton concept is phenomenal for gluten-free customers. Crunchy, garlic-rich, and super clean.",
+        photo: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 51
+      }
+    ]
+  },
+  {
+    id: "classic-shakshuka-poached-eggs",
+    title: "Artisanal Skillet Shakshuka",
+    category: "Breakfast & Morning",
+    tagline: "North African skillet eggs gently poached in a spiced bell pepper, ripe tomato, and cumin reduction.",
+    isMostSearched: true,
+    rating: 4.97,
+    reviewsCount: 156,
+    image: "https://images.unsplash.com/photo-1590412200988-a436970781fa?w=800&auto=format&fit=crop&q=80",
+    prepTime: "8 mins",
+    cookTime: "14 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.35,
+    suggestedRetailPrice: 6.20,
+    baseCalories: 340,
+    baseMacros: { protein: 18, carbs: 22, fat: 20, fiber: 5 },
+    budgetAlternative: {
+      active: false,
+      title: "Desi Roma Puree & Cottage Cheese Crumbles (No Imported Feta Markup)",
+      savingsPerPerson: 0.45,
+      savingsPercent: "33%",
+      newCostPerPerson: 0.90,
+      description: "Replaces high-priced Greek imported feta with freshly crumbled salted paneer and slow-simmered local Roma tomatoes.",
+      swapRatio: "30g Crumbled Paneer + lemon zest replaces 30g imported feta",
+      tasteImpact: "High Sensory Match. Savory cumin-spiced warmth with creamy yolk richness.",
+      textureImpact: "Runny golden egg yolks swimming in thick, chunky spiced tomato gravy.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 112,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Greek Barrel Feta (30g)", replacedWith: "Crumbled Farmhouse Paneer with Lemon Salt", reason: "Prevents excessive saltiness while saving ₹38/portion", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Egg White & Roasted Pepper Skillet",
+      calorieSaving: "-110 kcal",
+      newCalories: 230,
+      newMacros: { protein: 22, carbs: 18, fat: 8, fiber: 5 },
+      description: "Uses 1 whole egg + 2 egg whites poached in rich vegetable reduction for high protein and low dietary cholesterol."
+    },
+    ingredients: [
+      { name: "Farm Fresh Large Free-Range Eggs", qtyPerPerson: 2, unit: "eggs", cost: 0.40, category: "Produce" },
+      { name: "Crushed Ripe Roma Tomatoes & Bell Peppers", qtyPerPerson: 180, unit: "g spiced base", cost: 0.40, category: "Produce" },
+      { name: "Extra Virgin Olive Oil", qtyPerPerson: 1, unit: "tablespoon", cost: 0.18, category: "Pantry" },
+      { name: "Smoked Paprika, Cumin & Ground Coriander", qtyPerPerson: 1, unit: "tsp blend", cost: 0.12, category: "Spices" },
+      { name: "Crumbled Feta or Farmhouse Paneer", qtyPerPerson: 30, unit: "g cheese", cost: 0.25, category: "Dairy", isReplaceable: true, replaceableType: "budget" }
+    ],
+    steps: [
+      "In a small cast-iron skillet, heat olive oil; sauté diced onions and red bell peppers until soft and lightly caramelized.",
+      "Add minced garlic, cumin, and smoked paprika, stirring for 45 seconds until aromatic.",
+      "Pour in crushed tomatoes; simmer for 8 minutes until sauce is thick and saucy.",
+      "Use the back of a spoon to create two wells in the simmering sauce; crack an egg gently into each well.",
+      "Cover skillet and cook over low heat for 5–6 minutes until whites are just set and yolks remain runny.",
+      "Garnish with crumbled feta or paneer, fresh cilantro, and serve sizzling hot with toasted sourdough."
+    ],
+    reviews: [
+      {
+        id: "shakshuka-rev-1",
+        author: "Chef Zaid Mansoor",
+        cafeName: "Levant Morning Cafe, Bangalore",
+        rating: 5,
+        date: "Yesterday",
+        verifiedCafe: true,
+        text: "The cast-iron skillet presentation keeps the shakshuka sizzling right until the customer's table. High margin staple!",
+        photo: "https://images.unsplash.com/photo-1590412200988-a436970781fa?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 94
+      }
+    ]
+  },
+  {
+    id: "overnight-chia-berry-pudding",
+    title: "Almond Milk Chia & Wild Berry Parfait",
+    category: "Breakfast & Morning",
+    tagline: "Slow-hydrated organic black chia seeds steeped in vanilla almond milk, layered with fresh berry compote and granola.",
+    isMostSearched: false,
+    rating: 4.93,
+    reviewsCount: 104,
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
+    prepTime: "5 mins",
+    cookTime: "0 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan", "Dairy-Free"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.10,
+    suggestedRetailPrice: 4.80,
+    baseCalories: 260,
+    baseMacros: { protein: 8, carbs: 34, fat: 11, fiber: 12 },
+    budgetAlternative: {
+      active: false,
+      title: "Fresh Toned Milk & Basil Seeds (Sabja) Silk (No High-Import Chia)",
+      savingsPerPerson: 0.40,
+      savingsPercent: "36%",
+      newCostPerPerson: 0.70,
+      description: "When imported chia seeds are high cost, uses sweet basil seeds (sabja) which hydrate in 15 minutes with cooling Ayurvedic properties.",
+      swapRatio: "25g Sabja seeds replaces 25g Chia seeds",
+      tasteImpact: "High Sensory Match. Subtle floral vanilla creaminess with popping texture.",
+      textureImpact: "Delicate jelly pearls suspended in chilled aromatic milk.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 84,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Organic Chia Seeds", replacedWith: "Cooling Sweet Basil Seeds (Sabja)", reason: "Hydrates 4x faster and saves ₹32 per jar", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Stevia & Unsweetened Coconut Water Gel",
+      calorieSaving: "-100 kcal",
+      newCalories: 160,
+      newMacros: { protein: 5, carbs: 18, fat: 8, fiber: 11 },
+      description: "Hydrates seeds in tender coconut water with zero added cane sugars for clean electrolyte hydration."
+    },
+    ingredients: [
+      { name: "Organic Black Chia Seeds", qtyPerPerson: 25, unit: "g seeds", cost: 0.40, category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Unsweetened Vanilla Almond Milk", qtyPerPerson: 120, unit: "ml plant milk", cost: 0.30, category: "Dairy" },
+      { name: "Wild Blackberry & Blueberry Compote", qtyPerPerson: 40, unit: "g compote", cost: 0.25, category: "Produce" },
+      { name: "Toasted Rolled Oats Granola", qtyPerPerson: 20, unit: "g crunch", cost: 0.15, category: "Grains" }
+    ],
+    steps: [
+      "Whisk chia seeds into vanilla almond milk with a drop of pure maple syrup; stir again after 5 minutes to prevent clumping.",
+      "Cover and chill overnight (or minimum 4 hours) in glass jars until thick, pudding-like consistency develops.",
+      "Spoon wild berry compote at the bottom of serving tumbler.",
+      "Layer chilled chia pudding over the berries.",
+      "Crown with toasted crunchy granola and sliced fresh strawberries right before service."
+    ],
+    reviews: [
+      {
+        id: "chia-rev-1",
+        author: "Natasha Roy",
+        cafeName: "The Morning Spot, Mumbai",
+        rating: 5,
+        date: "3 days ago",
+        verifiedCafe: true,
+        text: "Zero cook-time item that we prep in 50-jar batches every evening. Customers love the grab-and-go convenience.",
+        photo: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 65
+      }
+    ]
+  },
+  {
+    id: "fluffy-buttermilk-pancakes",
+    title: "Fluffy Golden Buttermilk Pancakes",
+    category: "Breakfast & Morning",
+    tagline: "Thick, cloud-like diner pancakes served with melted cultured butter and warm amber maple syrup.",
+    isMostSearched: true,
+    rating: 4.96,
+    reviewsCount: 178,
+    image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&auto=format&fit=crop&q=80",
+    prepTime: "10 mins",
+    cookTime: "8 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 0.95,
+    suggestedRetailPrice: 4.90,
+    baseCalories: 390,
+    baseMacros: { protein: 10, carbs: 62, fat: 12, fiber: 2 },
+    budgetAlternative: {
+      active: false,
+      title: "Fresh Milk & Lemon Curdle Leaven (No Specialty Buttermilk Buying)",
+      savingsPerPerson: 0.25,
+      savingsPercent: "26%",
+      newCostPerPerson: 0.70,
+      description: "When commercial cultured buttermilk is missing, adds 1 tbsp fresh lemon juice to warm whole milk for instant lactic lift.",
+      swapRatio: "120ml Milk + 1 tsp lemon juice replaces 120ml packaged buttermilk",
+      tasteImpact: "High Sensory Match. Sweet, buttery vanilla aroma with gentle tang.",
+      textureImpact: "Extra fluffy, 1-inch tall pancakes that soak syrup effortlessly.",
+      humanTasteValidation: {
+        score: "9.9 / 10",
+        verifiedCooks: 122,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Commercial Cultured Buttermilk Carton", replacedWith: "Farm Fresh Milk & Lemon Curdle Brew", reason: "Zero kitchen spoilage, saves ₹20 per stack", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Oat Flour & Banana Protein Pancakes",
+      calorieSaving: "-130 kcal",
+      newCalories: 260,
+      newMacros: { protein: 14, carbs: 42, fat: 5, fiber: 6 },
+      description: "Blends rolled oats with ripe banana and egg whites for naturally sweetened morning protein."
+    },
+    ingredients: [
+      { name: "Unbleached Pastry Flour", qtyPerPerson: 80, unit: "g flour", cost: 0.20, category: "Bakery" },
+      { name: "Fresh Milk & Lemon Curdle / Buttermilk", qtyPerPerson: 120, unit: "ml liquid", cost: 0.25, category: "Dairy", isReplaceable: true, replaceableType: "budget" },
+      { name: "Farm Fresh Egg", qtyPerPerson: 1, unit: "egg", cost: 0.15, category: "Produce" },
+      { name: "Melted Table Butter & Baking Powder", qtyPerPerson: 15, unit: "g blend", cost: 0.15, category: "Dairy" },
+      { name: "Warm Maple Syrup & Fresh Berries", qtyPerPerson: 30, unit: "ml drizzle", cost: 0.20, category: "Sweetener" }
+    ],
+    steps: [
+      "Whisk flour, baking powder, a pinch of baking soda, and sugar in a large bowl.",
+      "In a separate bowl, whisk buttermilk (or milk-lemon curdle), egg, and melted butter.",
+      "Gently combine wet and dry ingredients with a fork; leave batter lumpy and let rest for 6 minutes (do not over-mix).",
+      "Ladle onto a medium-hot buttered griddle; cook until bubbles form on top and burst.",
+      "Flip gently and cook for 90 seconds until golden brown on both sides.",
+      "Stack high, crown with butter pat, and pour warm maple syrup over the top."
+    ],
+    reviews: [
+      {
+        id: "pancakes-rev-1",
+        author: "Chef Emily Vance",
+        cafeName: "Morning Maple Diner, Chicago",
+        rating: 5,
+        date: "2 days ago",
+        verifiedCafe: true,
+        text: "The resting step creates immense steam pockets. Tallest and fluffiest pancakes we've ever served.",
+        photo: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 82
+      }
+    ]
+  },
+  {
+    id: "mumbai-street-kanda-poha",
+    title: "Rustic Mumbai Kanda Batata Poha",
+    category: "Breakfast & Morning",
+    tagline: "Light, fluffy flattened rice tempered with mustard seeds, crunchy peanuts, turmeric, and fresh lime juice.",
+    isMostSearched: true,
+    rating: 4.95,
+    reviewsCount: 160,
+    image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80",
+    prepTime: "8 mins",
+    cookTime: "8 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 0.40,
+    suggestedRetailPrice: 2.20,
+    baseCalories: 270,
+    baseMacros: { protein: 7, carbs: 46, fat: 7, fiber: 4 },
+    budgetAlternative: {
+      active: false,
+      title: "Toasted Roasted Chana Dal (No Expensive Nut Oil)",
+      savingsPerPerson: 0.12,
+      savingsPercent: "30%",
+      newCostPerPerson: 0.28,
+      description: "When raw peanuts are costly or when nut-free allergen requests occur, uses golden roasted chana dal for equal crunchy pop.",
+      swapRatio: "15g Roasted Chana replaces 15g raw peanuts",
+      tasteImpact: "High Sensory Match. Golden turmeric aromatics with tangy lemon finish.",
+      textureImpact: "Featherlight, non-sticky rice flakes with crispy savory tempering.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 110,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Raw Shelled Peanuts", replacedWith: "Roasted Split Bengal Gram (Chana Dal)", reason: "Nut-free allergen safety and 30% lower ingredient cost", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "50/50 Red Rice Poha & Steamed Green Peas",
+      calorieSaving: "-60 kcal",
+      newCalories: 210,
+      newMacros: { protein: 8, carbs: 36, fat: 4, fiber: 6 },
+      description: "Uses unpolished red rice flakes and double sweet peas for low glycemic index."
+    },
+    ingredients: [
+      { name: "Thick Flattened Rice (Jada Poha)", qtyPerPerson: 80, unit: "g dry flakes", cost: 0.15, category: "Grains" },
+      { name: "Finely Chopped Red Onions & Potatoes", qtyPerPerson: 60, unit: "g produce", cost: 0.10, category: "Produce" },
+      { name: "Raw Peanuts or Roasted Gram", qtyPerPerson: 15, unit: "g nuts/gram", cost: 0.05, category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Mustard Seeds, Curry Leaves & Green Chilies", qtyPerPerson: 1, unit: "tsp tadka", cost: 0.05, category: "Spices" },
+      { name: "Fresh Coriander, Fresh Coconut & Lime Juice", qtyPerPerson: 15, unit: "g garnish", cost: 0.05, category: "Produce" }
+    ],
+    steps: [
+      "Rinse thick poha gently in a colander under running water for 30 seconds; drain well and let rest for 5 minutes (it will absorb water and become soft).",
+      "Heat oil in a kadai; fry peanuts until golden and crunchy, remove and set aside.",
+      "In the same oil, add mustard seeds, green chilies, and fresh curry leaves until they crackle.",
+      "Add finely diced potatoes and onions with turmeric powder; sauté covered over low flame until potatoes are fork-tender.",
+      "Gently fluff softened poha with a fork; fold into the kadai with salt and sugar; steam covered for 2 minutes.",
+      "Squeeze fresh lime juice, top with fried peanuts, fresh grated coconut, and chopped coriander."
+    ],
+    reviews: [
+      {
+        id: "poha-rev-1",
+        author: "Sunita Gokhale",
+        cafeName: "Katta Morning Cafe, Pune",
+        rating: 5,
+        date: "Yesterday",
+        verifiedCafe: true,
+        text: "The quick colander rinse keeps every single grain separate without turning soggy or clumping together. Perfect texture!",
+        photo: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 79
+      }
+    ]
+  },
+  {
+    id: "classic-french-omelette-sourdough",
+    title: "Classic French Herb Omelette & Sourdough",
+    category: "Breakfast & Morning",
+    tagline: "Silky, custardy French rolled omelette infused with fresh tarragon and chives, served alongside buttered sourdough.",
+    isMostSearched: false,
+    rating: 4.94,
+    reviewsCount: 110,
+    image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&auto=format&fit=crop&q=80",
+    prepTime: "5 mins",
+    cookTime: "3 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    baseCostPerPerson: 1.15,
+    suggestedRetailPrice: 5.80,
+    baseCalories: 330,
+    baseMacros: { protein: 19, carbs: 18, fat: 21, fiber: 2 },
+    budgetAlternative: {
+      active: false,
+      title: "Desi Ghee Glaze & Local Farm Eggs (No French Butter Cost)",
+      savingsPerPerson: 0.35,
+      savingsPercent: "30%",
+      newCostPerPerson: 0.80,
+      description: "Replaces imported European churned butter with aromatic domestic clarified butter for a rich golden sheen.",
+      swapRatio: "15g Desi Ghee replaces 20g imported European butter",
+      tasteImpact: "High Sensory Match. Velvety, melt-in-mouth egg custard with savory chives.",
+      textureImpact: "Pale yellow exterior with soft, creamy scrambled interior core.",
+      humanTasteValidation: {
+        score: "9.8 / 10",
+        verifiedCooks: 88,
+        agreementPercent: "Validated in kitchen taste trials",
+        badge: "HTV Verified Gold"
+      },
+      replacedItems: [
+        { original: "Imported Normandy European Cultured Butter", replacedWith: "Farmhouse Clarified Desi Ghee", reason: "Prevents browning and cuts fat cost by 30%", tasteMatch: "High Parity" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "2-White 1-Whole Egg Light Roll",
+      calorieSaving: "-90 kcal",
+      newCalories: 240,
+      newMacros: { protein: 21, carbs: 18, fat: 10, fiber: 2 },
+      description: "Combines 2 egg whites with 1 yolk whisked with sparkling water for high volume and reduced dietary lipids."
+    },
+    ingredients: [
+      { name: "Farm Fresh Free-Range Eggs", qtyPerPerson: 3, unit: "eggs", cost: 0.50, category: "Produce" },
+      { name: "Unsalted Churned Table Butter", qtyPerPerson: 20, unit: "g butter", cost: 0.20, category: "Dairy", isReplaceable: true, replaceableType: "budget" },
+      { name: "Fresh Chives, Parsley & Chervil", qtyPerPerson: 1, unit: "tablespoon herbs", cost: 0.15, category: "Herbs" },
+      { name: "Toasted Artisanal Sourdough Slice", qtyPerPerson: 1, unit: "slice", cost: 0.25, category: "Bakery" },
+      { name: "Flaky Sea Salt & White Pepper", qtyPerPerson: 0.5, unit: "tsp blend", cost: 0.05, category: "Spices" }
+    ],
+    steps: [
+      "Crack eggs into a bowl; whisk thoroughly with a fork until whites and yolks are completely uniform with zero streaks.",
+      "Heat a non-stick 8-inch skillet over medium heat; melt butter until foaming without turning brown.",
+      "Pour eggs in; immediately shake pan vigorously with one hand while stirring rapidly in small circles with a silicone spatula.",
+      "When curds are creamy and barely set, smooth the surface and pull pan off heat.",
+      "Tilt pan and roll the omelette into a neat cigar shape onto a warm plate.",
+      "Brush top with a dab of butter for shine, scatter fresh chives, and serve with toasted sourdough."
+    ],
+    reviews: [
+      {
+        id: "omelette-rev-1",
+        author: "Chef Pierre Blanc",
+        cafeName: "Bistro Matin, Mumbai",
+        rating: 5,
+        date: "3 days ago",
+        verifiedCafe: true,
+        text: "The rapid circular stirring technique produces a breathtaking velvety core with zero browning. Pure culinary elegance.",
+        photo: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600&auto=format&fit=crop&q=80",
+        helpfulCount: 61
+      }
+    ]
   }
 ];
 
