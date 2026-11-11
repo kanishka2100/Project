@@ -231,12 +231,12 @@ const RECIPES_DATA = [
   {
     id: "wild-mushroom-truffle-pasta",
     title: "Truffle-Style Wild Mushroom Fettuccine",
-    category: "Pastas & Mains",
+    category: "Pastas & Italian",
     tagline: "Gourmet cafe pasta with rich umami, engineered for fast cafe ticket times without costly truffle oil.",
     isMostSearched: true,
     rating: 4.9,
     reviewsCount: 51,
-    image: "https://images.unsplash.com/photo-1750943041213-db8328856b48?w=800&auto=format&fit=crop&q=80",
+    image: "./assets/recipes/wild-mushroom-truffle-pasta.jpg",
     prepTime: "10 mins",
     cookTime: "12 mins",
     difficulty: "Medium",
@@ -324,7 +324,7 @@ const RECIPES_DATA = [
         date: "5 days ago",
         verifiedCafe: true,
         text: "The Porcini reduction budget swap is genius. Our customers couldn't tell the difference from $5 truffle oil, and our food cost margin skyrocketed from 67% to 83%!",
-        photo: "https://images.unsplash.com/photo-1621996346565-e3d5d6281005?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/wild-mushroom-truffle-pasta.jpg",
         helpfulCount: 47
       }
     ]
