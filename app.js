@@ -2808,55 +2808,6 @@
       });
     });
 
-    document.querySelectorAll('.diet-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.diet-pill').forEach(p => p.classList.remove('active-diet'));
-        btn.classList.add('active-diet');
-        state.selectedDiet = btn.getAttribute('data-diet');
-        showNotification('Diet Filter Applied', `Showing recipes matching: ${state.selectedDiet === 'all' ? 'All Diets' : state.selectedDiet}`, 'success');
-        renderExploreGrid();
-      });
-    });
-
-    // Allergy Filter Event Listeners
-    const clearAllergiesBtn = document.getElementById('clear-allergies-btn');
-    document.querySelectorAll('.allergy-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const allergy = btn.getAttribute('data-allergy');
-        if (state.selectedAllergies.has(allergy)) {
-          state.selectedAllergies.delete(allergy);
-          btn.classList.remove('bg-rose-500', 'text-white', 'border-rose-600');
-          btn.classList.add('bg-slate-50', 'dark:bg-slate-800/80', 'text-slate-600', 'dark:text-slate-300');
-          showNotification('Allergy Filter Updated', `Allowed ${allergy} ingredients in recipes.`, 'warning');
-        } else {
-          state.selectedAllergies.add(allergy);
-          btn.classList.remove('bg-slate-50', 'dark:bg-slate-800/80', 'text-slate-600', 'dark:text-slate-300');
-          btn.classList.add('bg-rose-500', 'text-white', 'border-rose-600');
-          showNotification('Allergy Filter Applied', `Excluding all recipes containing ${allergy}.`, 'success');
-        }
-
-        if (clearAllergiesBtn) {
-          if (state.selectedAllergies.size > 0) {
-            clearAllergiesBtn.classList.remove('hidden');
-          } else {
-            clearAllergiesBtn.classList.add('hidden');
-          }
-        }
-        renderExploreGrid();
-      });
-    });
-
-    clearAllergiesBtn?.addEventListener('click', () => {
-      state.selectedAllergies.clear();
-      document.querySelectorAll('.allergy-pill').forEach(btn => {
-        btn.classList.remove('bg-rose-500', 'text-white', 'border-rose-600');
-        btn.classList.add('bg-slate-50', 'dark:bg-slate-800/80', 'text-slate-600', 'dark:text-slate-300');
-      });
-      clearAllergiesBtn.classList.add('hidden');
-      showNotification('Allergy Filters Cleared', 'All allergy exclusions have been reset.', 'success');
-      renderExploreGrid();
-    });
-
     const sortSelect = document.getElementById('sort-select');
     sortSelect?.addEventListener('change', (e) => {
       state.sortOption = e.target.value;
