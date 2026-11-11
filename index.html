@@ -185,7 +185,7 @@
   <header class="glass-nav sticky top-0 z-40 px-4 lg:px-8 py-3.5 transition-colors border-b border-beige-200/80 dark:border-forest-700/60 bg-ivory/85 dark:bg-[#181410]/85 backdrop-blur-md">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
       
-      <!-- Brand Logo & HTV Badge -->
+      <!-- Brand Logo -->
       <div class="flex items-center gap-3">
         <a href="#swaplab" data-tab="swaplab" class="nav-brand-link flex items-center gap-3 group">
           <div class="w-11 h-11 rounded-2xl bg-forest text-ivory dark:bg-forest-600 flex items-center justify-center shadow-md shadow-forest/20 group-hover:scale-105 transition-transform duration-300">
@@ -196,11 +196,8 @@
               <span class="font-heading font-black text-xl sm:text-2xl tracking-tight text-forest dark:text-ivory">
                 Flavor<span class="text-terracotta font-serif italic">Shift</span> <span class="text-sage-600 dark:text-sage-300 font-mono text-[11px] px-2 py-0.5 rounded-lg bg-sage-50 dark:bg-sage-900/40 border border-sage-200 dark:border-sage-700">AI</span>
               </span>
-              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-sage-100/80 dark:bg-sage-900/50 text-forest-700 dark:text-sage-300 border border-sage-300/60 dark:border-sage-600 flex items-center gap-1.5 shadow-sm">
-                <span class="live-pulse-dot"></span> HTV Gold
-              </span>
             </div>
-            <span class="text-[11px] text-stone-500 dark:text-stone-400 block font-accent italic">Intelligent Food Chemistry & Taste Validation</span>
+            <span class="text-[11px] text-stone-500 dark:text-stone-400 block font-accent italic">Culinary Ingredient Swaps & Portion Scaling</span>
           </div>
         </a>
       </div>
@@ -231,7 +228,7 @@
           class="nav-tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer"
         >
           <i class="fa-solid fa-users-viewfinder text-sage-600 dark:text-sage-400"></i>
-          <span>Human Taste Validation</span>
+          <span>Tasting Log</span>
         </button>
 
         <button 
@@ -259,7 +256,7 @@
         >
           <i class="fa-solid fa-heart text-terracotta"></i>
           <span>Favorites</span>
-          <span id="fav-count-badge" class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-terracotta text-white ml-0.5">2</span>
+          <span id="fav-count-badge" class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-terracotta text-white ml-0.5">0</span>
         </button>
       </nav>
 
@@ -315,7 +312,7 @@
       </button>
       <button type="button" data-tab="htv" class="nav-tab-btn py-1 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-users-viewfinder mb-0.5 text-sage-600"></i>
-        <span>HTV Taste</span>
+        <span>Tasting</span>
       </button>
       <button type="button" data-tab="dashboard" class="nav-tab-btn py-1 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-chart-pie mb-0.5 text-terracotta"></i>
@@ -382,7 +379,7 @@
         <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=120&auto=format&fit=crop&q=80" alt="Makhani" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Paneer Butter Masala</span>
-          <span class="text-[10px] text-terracotta font-semibold">✨ Cashew Velvet (98% Match)</span>
+          <span class="text-[10px] text-terracotta font-semibold">✨ Cashew & Milk Emulsion</span>
         </div>
       </div>
       <!-- Dish 2: Avocado Toast -->
@@ -390,7 +387,7 @@
         <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=120&auto=format&fit=crop&q=80" alt="Avocado Toast" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Smashed Avocado Toast</span>
-          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🥑 Green Pea Silk (-43% Cost)</span>
+          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🥑 Green Pea & Avocado Mash</span>
         </div>
       </div>
       <!-- Dish 3: Truffle Fettuccine -->
@@ -398,7 +395,7 @@
         <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=120&auto=format&fit=crop&q=80" alt="Truffle Fettuccine" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Wild Mushroom Fettuccine</span>
-          <span class="text-[10px] text-stone-600 dark:text-stone-300 font-semibold">🍄 Porcini Broth (-56% Cost)</span>
+          <span class="text-[10px] text-stone-600 dark:text-stone-300 font-semibold">🍄 Steeped Porcini Reduction</span>
         </div>
       </div>
       <!-- Dish 4: Basque Cheesecake -->
@@ -406,7 +403,7 @@
         <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=120&auto=format&fit=crop&q=80" alt="Basque Cheesecake" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">San Sebastian Basque Cake</span>
-          <span class="text-[10px] text-terracotta font-semibold">🍰 Hung Curd Blend (-55% Cost)</span>
+          <span class="text-[10px] text-terracotta font-semibold">🍰 Hung Curd & Cream Cheese</span>
         </div>
       </div>
       <!-- Dish 5: Sourdough Pizza -->
@@ -414,7 +411,7 @@
         <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=120&auto=format&fit=crop&q=80" alt="Neapolitan Pizza" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Neapolitan Sourdough Pizza</span>
-          <span class="text-[10px] text-terracotta font-semibold">🍕 Buffalo Melt Blend (-46% Cost)</span>
+          <span class="text-[10px] text-terracotta font-semibold">🍕 Mozzarella & Ricotta Melt</span>
         </div>
       </div>
       <!-- Dish 6: Falafel Glow Bowl -->
@@ -422,7 +419,7 @@
         <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=120&auto=format&fit=crop&q=80" alt="Falafel Bowl" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Crispy Herb Falafel Bowl</span>
-          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🧆 Sesame-Sunflower Silk</span>
+          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🧆 Sesame & Sunflower Silk</span>
         </div>
       </div>
       <!-- Dish 7: Chocolate Lava Souffle -->
@@ -430,7 +427,7 @@
         <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=120&auto=format&fit=crop&q=80" alt="Molten Lava" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Belgian Chocolate Soufflé</span>
-          <span class="text-[10px] text-terracotta font-semibold">🍫 Dutch Cacao Fudge (-50% Cost)</span>
+          <span class="text-[10px] text-terracotta font-semibold">🍫 Dutch Cocoa & Brown Butter</span>
         </div>
       </div>
       <!-- Dish 8: Matcha Cloud -->
@@ -438,7 +435,7 @@
         <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=120&auto=format&fit=crop&q=80" alt="Matcha Cloud" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Kyoto Matcha Cold Cloud</span>
-          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🍵 Green Pepita Silk Foam</span>
+          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🍵 Toasted Pepita Silk Foam</span>
         </div>
       </div>
 
@@ -447,28 +444,28 @@
         <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=120&auto=format&fit=crop&q=80" alt="Makhani" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Paneer Butter Masala</span>
-          <span class="text-[10px] text-terracotta font-semibold">✨ Cashew Velvet (98% Match)</span>
+          <span class="text-[10px] text-terracotta font-semibold">✨ Cashew & Milk Emulsion</span>
         </div>
       </div>
       <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
         <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=120&auto=format&fit=crop&q=80" alt="Avocado Toast" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Smashed Avocado Toast</span>
-          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🥑 Green Pea Silk (-43% Cost)</span>
+          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🥑 Green Pea & Avocado Mash</span>
         </div>
       </div>
       <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
         <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=120&auto=format&fit=crop&q=80" alt="Truffle Fettuccine" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Wild Mushroom Fettuccine</span>
-          <span class="text-[10px] text-stone-600 dark:text-stone-300 font-semibold">🍄 Porcini Broth (-56% Cost)</span>
+          <span class="text-[10px] text-stone-600 dark:text-stone-300 font-semibold">🍄 Steeped Porcini Reduction</span>
         </div>
       </div>
       <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
         <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=120&auto=format&fit=crop&q=80" alt="Basque Cheesecake" class="w-10 h-10 rounded-xl object-cover shadow-sm">
         <div>
           <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">San Sebastian Basque Cake</span>
-          <span class="text-[10px] text-terracotta font-semibold">🍰 Hung Curd Blend (-55% Cost)</span>
+          <span class="text-[10px] text-terracotta font-semibold">🍰 Hung Curd & Cream Cheese</span>
         </div>
       </div>
     </div>
@@ -555,20 +552,20 @@
         </div>
         <div>
           <span class="font-heading font-bold text-base text-forest dark:text-ivory">Flavor<span class="text-terracotta italic font-serif">Shift</span> AI</span>
-          <span class="block text-[11px] text-stone-500 dark:text-stone-400 font-accent italic">Intelligent Food Chemistry & Human Taste Validation Platform</span>
+          <span class="block text-[11px] text-stone-500 dark:text-stone-400 font-accent italic">Culinary Ingredient Substitution & Tasting Log Tool</span>
         </div>
       </div>
 
       <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-medium">
-        <span class="flex items-center gap-1.5 text-sage-700 dark:text-sage-400"><i class="fa-solid fa-check-double text-terracotta"></i> 98.2% Human Taste Validation (HTV)</span>
-        <span class="flex items-center gap-1.5 text-forest-700 dark:text-sage-300"><i class="fa-solid fa-calculator text-sage-600"></i> Exact Gram & Person Scaling</span>
-        <span class="flex items-center gap-1.5 text-terracotta"><i class="fa-solid fa-chart-line"></i> 40-65% Wholesale Savings</span>
-        <span class="flex items-center gap-1.5 text-sage-600 dark:text-sage-400"><i class="fa-solid fa-leaf"></i> Zero-Compromise Calorie Reducer</span>
+        <span class="flex items-center gap-1.5 text-sage-700 dark:text-sage-400"><i class="fa-solid fa-clipboard-check text-terracotta"></i> Local Kitchen Tasting Log</span>
+        <span class="flex items-center gap-1.5 text-forest-700 dark:text-sage-300"><i class="fa-solid fa-calculator text-sage-600"></i> Ingredient & Portion Scaling</span>
+        <span class="flex items-center gap-1.5 text-terracotta"><i class="fa-solid fa-chart-line"></i> Interactive Cost Calculator</span>
+        <span class="flex items-center gap-1.5 text-sage-600 dark:text-sage-400"><i class="fa-solid fa-leaf"></i> Lighter & Plant-Based Options</span>
       </div>
 
       <div class="text-[11px] text-stone-400 text-center md:text-right">
         <span>© 2026 FlavorShift AI</span>
-        <span class="block text-[10px] text-stone-400/80 mt-0.5">Empowering Chefs, Cafes & Culinary Creators</span>
+        <span class="block text-[10px] text-stone-400/80 mt-0.5">Culinary Recipe & Substitution Companion</span>
       </div>
     </div>
   </footer>

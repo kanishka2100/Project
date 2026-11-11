@@ -11,7 +11,7 @@
     selectedCategory: 'all',
     selectedDiet: 'all',
     searchQuery: '',
-    sortOption: 'popular',
+    sortOption: 'default',
     activePantryIngredients: new Set(JSON.parse(localStorage.getItem('flavorshift_pantry') || '[]')),
     favorites: new Set(JSON.parse(localStorage.getItem('flavorshift_favs') || '["paneer-butter-masala", "wild-mushroom-truffle-pasta", "artisan-margherita-sourdough-pizza"]')),
     theme: localStorage.getItem('flavorshift_theme') || 'light',
@@ -36,14 +36,17 @@
     // Currently open recipe in modal
     activeRecipeId: null,
     
-    // Dashboard Covers Calculator
+    // Dashboard Covers Calculator (user-supplied pricing inputs; no invented numbers)
     dashboardCovers: 50,
     dashboardSelectedRecipeId: 'paneer-butter-masala',
+    dashBaseCost: '',
+    dashAltCost: '',
+    dashRetailPrice: '',
     
-    // User-submitted HTV taste reviews
+    // User-submitted taste reviews (persisted locally)
     customReviews: JSON.parse(localStorage.getItem('flavorshift_reviews') || '{}'),
     
-    // User-submitted HTV validation tests
+    // User-submitted kitchen validation tests (persisted locally)
     htvSubmissions: JSON.parse(localStorage.getItem('flavorshift_htv_submissions') || '[]')
   };
 
@@ -90,9 +93,9 @@
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (themeBtn) {
       if (theme === 'dark') {
-        themeBtn.innerHTML = `<i class="fa-solid fa-sun text-amber-400"></i><span class="hidden sm:inline font-medium text-xs">Light</span>`;
+        themeBtn.innerHTML = `<i class="fa-solid fa-sun text-terracotta"></i><span class="hidden sm:inline font-medium text-xs">Light</span>`;
       } else {
-        themeBtn.innerHTML = `<i class="fa-solid fa-moon text-indigo-500"></i><span class="hidden sm:inline font-medium text-xs">Dark</span>`;
+        themeBtn.innerHTML = `<i class="fa-solid fa-moon text-forest"></i><span class="hidden sm:inline font-medium text-xs">Dark</span>`;
       }
     }
   }
@@ -147,11 +150,11 @@
     // Update active scene buttons
     document.querySelectorAll('[data-video-scene]').forEach(btn => {
       if (btn.getAttribute('data-video-scene') === sceneKey) {
-        btn.classList.add('bg-terracotta', 'text-white', 'border-terracotta');
-        btn.classList.remove('bg-black/40', 'text-white/80', 'border-white/20');
+        btn.classList.add('bg-terracotta', 'text-white', 'border-terracotta', 'shadow-md');
+        btn.classList.remove('bg-black/30', 'text-beige/80', 'border-beige-200/20', 'hover:bg-black/50');
       } else {
-        btn.classList.remove('bg-terracotta', 'text-white', 'border-terracotta');
-        btn.classList.add('bg-black/40', 'text-white/80', 'border-white/20');
+        btn.classList.remove('bg-terracotta', 'text-white', 'border-terracotta', 'shadow-md');
+        btn.classList.add('bg-black/30', 'text-beige/80', 'border-beige-200/20', 'hover:bg-black/50');
       }
     });
   }
@@ -161,7 +164,7 @@
     return '$' + Number(amount).toFixed(2);
   }
 
-  // Helper: Calculate Gross Profit Margin %
+  // Helper: Calculate Gross Profit Margin % from user inputs
   function calcMargin(cost, price) {
     if (!price || price <= 0) return 0;
     return Math.round(((price - cost) / price) * 100);
@@ -175,142 +178,128 @@
     const rState = state.recipeStates[recipeId] || { persons: 1, budgetMode: false, calorieMode: false, veganMode: false };
     const persons = rState.persons || 1;
 
-    let costPerPerson = raw.baseCostPerPerson;
-    let caloriesPerPerson = raw.baseCalories;
-    let macros = { ...raw.baseMacros };
     let ingredients = raw.ingredients.map(ing => ({ ...ing }));
     let steps = [...raw.steps];
     let appliedSwaps = [];
 
-    // Apply Budget Saver Swap
+    // Apply Budget-Friendly Culinary Swap
     if (rState.budgetMode && raw.budgetAlternative) {
-      costPerPerson = raw.budgetAlternative.newCostPerPerson;
       appliedSwaps.push({
         type: 'budget',
-        badge: '💡 FlavorShift AI Swap Active',
+        badge: '💡 Pantry / Budget Swap Active',
         title: raw.budgetAlternative.title,
-        savings: raw.budgetAlternative.savingsPerPerson ? `$${raw.budgetAlternative.savingsPerPerson.toFixed(2)}/portion saved` : '',
-        percent: raw.budgetAlternative.savingsPercent,
         description: raw.budgetAlternative.description,
         items: raw.budgetAlternative.replacedItems
       });
 
-      // Update ingredients list
       ingredients = ingredients.map(ing => {
         if (raw.id === 'paneer-butter-masala' && ing.name.includes('Cream')) {
-          return { ...ing, name: 'Soaked Cashew & Warm Milk Velvet Puree (60/40)', cost: 0.30, isSwapped: true, swapReason: '98% Taste Match: Cashew emulsion provides identical creamy gloss, saves 55%' };
+          return { ...ing, name: 'Soaked Cashew & Warm Milk Velvet Puree (60/40)', isSwapped: true, swapReason: 'Cashew emulsion provides creamy gloss without fresh dairy cream' };
         }
         if (raw.id === 'paneer-butter-masala' && ing.name.includes('Butter')) {
-          return { ...ing, name: 'Desi Ghee & Clarified Butter Blend', cost: 0.15, isSwapped: true, swapReason: 'Authentic caramel aroma, zero wastage' };
+          return { ...ing, name: 'Clarified Butter / Desi Ghee Blend', isSwapped: true, swapReason: 'Adds nutty aroma with longer shelf stability' };
         }
         if (raw.id === 'smashed-avocado-toast' && ing.name.includes('Avocado')) {
-          return { ...ing, name: '50/50 Hass Avocado & Sweet Green Pea Mash', cost: 0.90, isSwapped: true, swapReason: 'Cuts avocado cost by 50%, keeps vivid emerald color' };
+          return { ...ing, name: 'Equal-Part Hass Avocado & Sweet Green Pea Mash', isSwapped: true, swapReason: 'Stretches avocado yield while preserving bright green color' };
         }
         if (raw.id === 'smashed-avocado-toast' && ing.name.includes('Feta')) {
-          return { ...ing, name: 'Domestic Whipped Ricotta & Lemon Zest', cost: 0.35, isSwapped: true, swapReason: 'Fresh domestic cheese saving $0.50/portion' };
+          return { ...ing, name: 'Whipped Domestic Ricotta & Lemon Zest', isSwapped: true, swapReason: 'Soft fresh cheese with clean tangy contrast' };
         }
         if (raw.id === 'golden-turmeric-oat-latte' && ing.name.includes('Turmeric')) {
-          return { ...ing, name: 'Cold-Ground Organic Turmeric Root Powder', cost: 0.10, isSwapped: true, swapReason: 'Zero spoilage shelf-stable powder' };
+          return { ...ing, name: 'Ground Organic Turmeric Root Powder', isSwapped: true, swapReason: 'Shelf-stable powder eliminates fresh root spoilage and prep grating' };
         }
         if (raw.id === 'wild-mushroom-truffle-pasta' && (ing.name.includes('Truffle') || ing.name.includes('Chanterelle'))) {
-          return { ...ing, name: 'Steeped Porcini Mushroom Reduction + Brown Cremini', cost: 0.65, isSwapped: true, swapReason: 'Deep earth umami, saves $1.85/person over synthetic oil' };
+          return { ...ing, name: 'Steeped Porcini Mushroom Reduction + Brown Cremini', isSwapped: true, swapReason: 'Deep savory umami broth replaces synthetic truffle oil' };
         }
         if (raw.id === 'wild-mushroom-truffle-pasta' && ing.name.includes('Parmigiano')) {
-          return { ...ing, name: 'Aged Domestic Grana Padano', cost: 0.25, isSwapped: true, swapReason: 'Identical sharp salty profile, saves 50%' };
+          return { ...ing, name: 'Aged Domestic Grana Padano', isSwapped: true, swapReason: 'Similar sharp salty umami profile' };
         }
         if (raw.id === 'basque-burnt-cheesecake' && ing.name.includes('Cream Cheese')) {
-          return { ...ing, name: 'Hung Curd & Farmhouse Cream Cheese (50/50)', cost: 0.85, isSwapped: true, swapReason: 'Saves 55% with enhanced lactic tang' };
+          return { ...ing, name: 'Hung Curd & Farmhouse Cream Cheese (Equal Blend)', isSwapped: true, swapReason: 'Blends house-strained curd for lighter texture and lactic tang' };
         }
         if (raw.id === 'mediterranean-falafel-bowl' && ing.name.includes('Tahini')) {
-          return { ...ing, name: 'Toasted Sesame & Sunflower Silk Dressing', cost: 0.35, isSwapped: true, swapReason: 'Velvety nutty drizzle saving 39%' };
+          return { ...ing, name: 'Toasted Sesame & Sunflower Seed Dressing', isSwapped: true, swapReason: 'Creamy toasted seed emulsion replaces jarred tahini' };
         }
         if (raw.id === 'artisan-margherita-sourdough-pizza' && ing.name.includes('Mozzarella')) {
-          return { ...ing, name: 'Domestic Whole Milk Mozzarella & Ricotta Melt', cost: 0.95, isSwapped: true, swapReason: 'Stretchy golden blisters with zero soggy center' };
+          return { ...ing, name: 'Domestic Whole Milk Mozzarella & Ricotta Melt', isSwapped: true, swapReason: 'Blistered melt with less watery center pooling' };
         }
         if (raw.id === 'dark-chocolate-lava-souffle' && ing.name.includes('Chocolate')) {
-          return { ...ing, name: 'Dutch Dark Cocoa & Espresso Brown Butter Silk', cost: 0.60, isSwapped: true, swapReason: 'Volcanic molten flow, saves 50%' };
+          return { ...ing, name: 'Dutch Dark Cocoa & Espresso Brown Butter Silk', isSwapped: true, swapReason: 'Deep cacao batter made from pantry cocoa powder' };
         }
         if (raw.id === 'matcha-pistachio-cloud-latte' && ing.name.includes('Pistachio')) {
-          return { ...ing, name: 'Toasted Green Pepita Silk & Almond Foam', cost: 0.35, isSwapped: true, swapReason: 'Pastel green microfoam at 45% savings' };
+          return { ...ing, name: 'Toasted Green Pepita Silk & Almond Foam', isSwapped: true, swapReason: 'Pastel green seed butter cold foam with nutty finish' };
         }
         return ing;
       });
 
-      // Update recipe cooking steps with budget technique
       if (raw.id === 'paneer-butter-masala') {
-        steps[2] = "Prepare FlavorShift AI Cashew Velvet: Blend 60g soaked cashews with 40g warm milk until silky smooth. Fold into the spiced tomato gravy over gentle heat; it forms an ultra-stable emulsion that will not split.";
+        steps[2] = "Prepare Cashew Velvet: Blend soaked cashews with warm milk (60/40) until silky smooth. Fold into the spiced tomato gravy over gentle heat.";
       } else if (raw.id === 'smashed-avocado-toast') {
-        steps[1] = "In a cafe prep bowl, blend steamed sweet green peas (50%) with ripe avocado (50%), lemon juice, and flaky sea salt until vibrant green and velvety.";
+        steps[1] = "In a prep bowl, blend steamed sweet green peas with equal parts ripe avocado, lemon juice, and flaky sea salt until bright green and smooth.";
         steps[5] = "Scatter whipped domestic ricotta crumbles, sliced radishes, and crushed red pepper flakes over the top.";
       } else if (raw.id === 'wild-mushroom-truffle-pasta') {
-        steps[2] = "Sear brown cremini mushrooms in butter until deeply browned, deglazing with concentrated steeped porcini mushroom broth.";
+        steps[2] = "Sear brown cremini mushrooms in butter until deeply browned, deglazing with steeped porcini mushroom broth.";
         steps[6] = "Twirl onto plate, spooning the porcini mushroom brown butter sauce over pasta and dusting with aged Grana Padano.";
       }
     }
 
-    // Apply Calorie Cutter Alternative
+    // Apply Lighter Culinary Swap
     if (rState.calorieMode && raw.calorieAlternative) {
-      caloriesPerPerson = raw.calorieAlternative.newCalories;
-      macros = { ...raw.calorieAlternative.newMacros };
       appliedSwaps.push({
         type: 'calorie',
-        badge: '🥗 Calorie Cutter Active',
+        badge: '🥗 Lighter Swap Active',
         title: raw.calorieAlternative.title,
-        savings: raw.calorieAlternative.calorieDrop + ' kcal drop',
-        percent: raw.calorieAlternative.caloriePercent,
         description: raw.calorieAlternative.description,
         items: raw.calorieAlternative.replacedItems
       });
 
-      // Update ingredients list for low-calorie version
       ingredients = ingredients.map(ing => {
         if (raw.id === 'paneer-butter-masala' && ing.name.includes('Cream')) {
-          return { ...ing, name: 'Silky Greek Yogurt & Silken Tofu Puree', cost: 0.25, isLowCalorie: true, calSaved: '-160 kcal' };
+          return { ...ing, name: 'Silky Greek Yogurt & Silken Tofu Puree', isLowCalorie: true };
         }
         if (raw.id === 'paneer-butter-masala' && ing.name.includes('Paneer')) {
-          return { ...ing, name: 'Air-Crisped Low-Fat Paneer Cubes (29g Protein)', cost: 0.80, isLowCalorie: true, calSaved: '-80 kcal' };
+          return { ...ing, name: 'Air-Crisped Low-Fat Paneer Cubes', isLowCalorie: true };
         }
-        if (raw.id === 'paneer-butter-masala' && ing.name.includes('Butter')) {
-          return { ...ing, name: '1 tsp Cold-Pressed Oil & Tomato Glaze', cost: 0.05, isLowCalorie: true, calSaved: '-80 kcal' };
+        if (raw.id === 'paneer-butter-masala' && (ing.name.includes('Butter') || ing.name.includes('Ghee'))) {
+          return { ...ing, name: '1 tsp Cold-Pressed Oil & Tomato Glaze', isLowCalorie: true };
         }
         if (raw.id === 'smashed-avocado-toast' && ing.name.includes('Sourdough')) {
-          return { ...ing, name: 'Thin Seeded Sourdough Crispbread', cost: 0.55, isLowCalorie: true, calSaved: '-85 kcal' };
+          return { ...ing, name: 'Thin Seeded Sourdough Crispbread', isLowCalorie: true };
         }
         if (raw.id === 'smashed-avocado-toast' && ing.name.includes('Egg')) {
-          return { ...ing, name: 'Poached Egg White Cloud (Double)', cost: 0.35, isLowCalorie: true, calSaved: '-35 kcal' };
+          return { ...ing, name: 'Poached Egg White Cloud', isLowCalorie: true };
         }
         if (raw.id === 'smashed-avocado-toast' && ing.name.includes('Olive Oil')) {
-          return { ...ing, name: 'Citrus-Herb Fresh Mist (0 cal)', cost: 0.05, isLowCalorie: true, calSaved: '-75 kcal' };
+          return { ...ing, name: 'Fresh Meyer Lemon & Herb Spritz', isLowCalorie: true };
         }
         if (raw.id === 'golden-turmeric-oat-latte' && ing.name.includes('Oat Milk')) {
-          return { ...ing, name: 'Unsweetened Creamy Almond Milk', cost: 0.70, isLowCalorie: true, calSaved: '-80 kcal' };
+          return { ...ing, name: 'Unsweetened Creamy Almond Milk', isLowCalorie: true };
         }
-        if (raw.id === 'wild-mushroom-truffle-pasta' && ing.name.includes('Heavy Whipping Cream')) {
-          return { ...ing, name: 'Steamed Cauliflower & Light Cashew Cream', cost: 0.60, isLowCalorie: true, calSaved: '-190 kcal' };
+        if (raw.id === 'wild-mushroom-truffle-pasta' && (ing.name.includes('Heavy Whipping Cream') || ing.name.includes('Cream'))) {
+          return { ...ing, name: 'Steamed Cauliflower & Light Cashew Cream', isLowCalorie: true };
         }
         if (raw.id === 'basque-burnt-cheesecake' && ing.name.includes('Sugar')) {
-          return { ...ing, name: 'Monkfruit Allulose Baker Blend (0 Sugar)', cost: 0.50, isLowCalorie: true, calSaved: '-120 kcal' };
+          return { ...ing, name: 'Monkfruit Allulose Baker Blend', isLowCalorie: true };
         }
         return ing;
       });
 
-      // Update instructions with low-calorie culinary technique
       if (raw.id === 'paneer-butter-masala') {
-        steps[2] = "Whisk cold strained Greek yogurt with pureed silken tofu off the flame before gently swirling into the tomato base to retain smooth velvet body without excess fat.";
+        steps[2] = "Whisk cold strained Greek yogurt with pureed silken tofu off the flame before gently swirling into the tomato base to preserve smooth velvet body.";
       } else if (raw.id === 'smashed-avocado-toast') {
-        steps[0] = "Toast the thin seeded sourdough crispbread dry until ultra-crisp without butter.";
+        steps[0] = "Toast the thin seeded sourdough crispbread dry until crisp without butter.";
         steps[2] = "Poach egg whites gently for 2 minutes to create a light protein cloud.";
-        steps[6] = "Spritz with fresh Meyer lemon herb mist instead of heavy oil. Garnish with flaky salt.";
+        steps[6] = "Spritz with fresh Meyer lemon herb mist instead of oil drizzle. Garnish with flaky salt.";
       } else if (raw.id === 'wild-mushroom-truffle-pasta') {
-        steps[3] = "Pour in the silky steamed cauliflower-garlic puree; simmer 2 mins to thicken naturally without heavy cream.";
+        steps[3] = "Pour in the steamed cauliflower-garlic puree; simmer 2 minutes to thicken naturally without heavy cream.";
       }
     }
 
-    // Apply Vegan Option
+    // Apply Plant-Based Swap (runs after other swaps to guarantee dairy/egg ingredients are replaced)
     if (rState.veganMode && raw.veganOption) {
       appliedSwaps.push({
         type: 'vegan',
-        badge: '🌱 100% Plant-Based Active',
+        badge: '🌱 Plant-Based Active',
         title: raw.veganOption.title,
         description: raw.veganOption.description,
         items: raw.veganOption.replacedItems
@@ -318,16 +307,25 @@
 
       ingredients = ingredients.map(ing => {
         if (raw.id === 'paneer-butter-masala' && ing.name.includes('Paneer')) {
-          return { ...ing, name: 'Pressed Organic Turmeric Tofu Cubes', cost: 0.70, isVegan: true };
+          return { ...ing, name: 'Pressed Organic Turmeric Tofu Cubes', isVegan: true };
         }
-        if (raw.id === 'paneer-butter-masala' && ing.name.includes('Cream')) {
-          return { ...ing, name: 'Coconut-Cashew Silk Emulsion', cost: 0.35, isVegan: true };
+        if (raw.id === 'paneer-butter-masala' && (ing.name.includes('Cream') || ing.name.includes('Yogurt') || ing.name.includes('Milk'))) {
+          return { ...ing, name: 'Coconut-Cashew Silk Emulsion', isVegan: true };
         }
-        if (ing.name.includes('Feta') || ing.name.includes('Cream Cheese') || ing.name.includes('Parmigiano') || ing.name.includes('Mozzarella')) {
-          return { ...ing, name: 'Artisanal Herb Tofu-Feta / Cashew Melt', cost: 0.60, isVegan: true };
+        if (raw.id === 'paneer-butter-masala' && (ing.name.includes('Butter') || ing.name.includes('Ghee'))) {
+          return { ...ing, name: 'Neutral Cold-Pressed Plant Oil', isVegan: true };
+        }
+        if (raw.id === 'paneer-butter-masala' && ing.name.includes('Honey')) {
+          return { ...ing, name: 'Raw Jaggery / Maple Syrup', isVegan: true };
+        }
+        if (ing.name.includes('Feta') || ing.name.includes('Cream Cheese') || ing.name.includes('Ricotta') || ing.name.includes('Parmigiano') || ing.name.includes('Grana') || ing.name.includes('Mozzarella') || ing.name.includes('Curd')) {
+          return { ...ing, name: 'Artisanal Herb Tofu-Feta / Cashew Melt', isVegan: true };
+        }
+        if (ing.name.includes('Butter') && !ing.name.includes('Pistachio') && !ing.name.includes('Pepita')) {
+          return { ...ing, name: 'Cold-Pressed Coconut / Plant Oil', isVegan: true };
         }
         if (ing.name.includes('Egg')) {
-          return { ...ing, name: 'Smoked Paprika Marinated Tofu Steak', cost: 0.40, isVegan: true };
+          return { ...ing, name: 'Smoked Paprika Tofu / Whipped Aquafaba', isVegan: true };
         }
         return ing;
       });
@@ -351,37 +349,25 @@
       return {
         ...ing,
         scaledQty: displayQty,
-        displayUnit: displayUnit,
-        totalItemCost: (ing.cost * persons).toFixed(2)
+        displayUnit: displayUnit
       };
     });
 
-    const totalBatchCost = (costPerPerson * persons).toFixed(2);
-    const suggestedRetailTotal = (raw.suggestedRetailPrice * persons).toFixed(2);
-    const totalBatchProfit = (suggestedRetailTotal - totalBatchCost).toFixed(2);
-    const marginPercent = calcMargin(costPerPerson, raw.suggestedRetailPrice);
-    const totalBatchCalories = caloriesPerPerson * persons;
-
     const localUserReviews = state.customReviews[recipeId] || [];
     const allReviews = [...(raw.reviews || []), ...localUserReviews];
+    const avgUserRating = allReviews.length > 0
+      ? (allReviews.reduce((sum, rev) => sum + Number(rev.rating || 5), 0) / allReviews.length).toFixed(1)
+      : null;
 
     return {
       ...raw,
       persons,
       rState,
-      costPerPerson: costPerPerson.toFixed(2),
-      totalBatchCost,
-      suggestedRetailPrice: raw.suggestedRetailPrice.toFixed(2),
-      suggestedRetailTotal,
-      totalBatchProfit,
-      marginPercent,
-      caloriesPerPerson,
-      totalBatchCalories,
-      macros,
       ingredients: scaledIngredients,
       steps,
       appliedSwaps,
-      allReviews
+      allReviews,
+      avgUserRating
     };
   }
 
@@ -415,42 +401,42 @@
             <div class="lg:col-span-7 space-y-4">
               <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ivory/15 backdrop-blur-md text-[11px] font-bold tracking-wider text-beige uppercase border border-ivory/20">
                 <i class="fa-solid fa-wand-magic-sparkles text-terracotta"></i>
-                <span>Artisanal Flavor Chemistry & AI Calibration</span>
+                <span>Culinary Substitution & Recipe Scaling Studio</span>
               </div>
               
               <h1 class="font-heading font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.15]">
-                Never Compromise on Taste.<br>
-                <span class="text-terracotta font-serif italic">Intelligent Substitution</span> Meets Human Palate.
+                Adapt Recipes Thoughtfully.<br>
+                <span class="text-terracotta font-serif italic">Practical Substitutions</span> Built for Real Kitchens.
               </h1>
               
               <p class="text-ivory/85 text-sm sm:text-base leading-relaxed font-normal max-w-2xl font-sans">
-                Out of fresh dairy cream for <strong>Paneer Butter Masala</strong>? Missing imported porcini for wild mushroom pasta? FlavorShift AI computes molecular flavor affinities, generates precise kitchen gram ratios, and validates sensory fidelity through double-blind <strong>Human Taste Validation (HTV)</strong> panels.
+                Out of fresh dairy cream for <strong>Paneer Butter Masala</strong>? Replacing truffle oil in wild mushroom pasta? Explore curated ingredient ratios, texture and heat notes, per-person scaling, and a local tasting log to record your kitchen results.
               </p>
 
-              <!-- 4 Value Pillar Counters -->
+              <!-- 4 Factual Feature Summary Cards -->
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 text-center">
                 <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15 shadow-sm">
-                  <span class="block text-2xl font-black text-ivory font-heading">98.2%</span>
-                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Taste Similarity</span>
+                  <span class="block text-xl font-black text-ivory font-heading">${RECIPES_DATA.length} Dishes</span>
+                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Recipe Catalog</span>
                 </div>
                 <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15 shadow-sm">
-                  <span class="block text-2xl font-black text-terracotta font-heading">1-50 Covers</span>
-                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Gram Precision</span>
+                  <span class="block text-xl font-black text-terracotta font-heading">${FLAVORSHIFT_SWAP_DATABASE.length} Profiles</span>
+                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Swap Ratios</span>
                 </div>
                 <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15 shadow-sm">
-                  <span class="block text-2xl font-black text-sage-300 font-heading">40-65%</span>
-                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Margin Savings</span>
+                  <span class="block text-xl font-black text-sage-300 font-heading">1+ Covers</span>
+                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Batch Scaling</span>
                 </div>
                 <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15 shadow-sm">
-                  <span class="block text-2xl font-black text-peach font-heading">-45% Kcal</span>
-                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Zero Sacrifice</span>
+                  <span class="block text-xl font-black text-peach font-heading">Local Log</span>
+                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Tasting Notes</span>
                 </div>
               </div>
 
               <!-- Quick Action CTAs -->
               <div class="pt-3 flex flex-wrap items-center gap-3">
                 <button type="button" data-hero-action="explore" class="terracotta-btn px-5 py-3 rounded-2xl text-xs font-bold flex items-center gap-2 cursor-pointer shadow-md">
-                  <span>Explore 9 Validated Dishes</span>
+                  <span>Explore ${RECIPES_DATA.length} Catalog Dishes</span>
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
                 <a href="#ai-swaplab-stage" class="px-5 py-3 rounded-2xl text-xs font-bold flex items-center gap-2 cursor-pointer bg-ivory/15 hover:bg-ivory/25 text-ivory border border-ivory/30 backdrop-blur-sm transition-all rounded-2xl">
@@ -459,10 +445,10 @@
                 </a>
               </div>
 
-              <!-- Sizzle Video Reel Switcher Buttons -->
+              <!-- Culinary Video Loop Switcher Buttons -->
               <div class="pt-2 flex flex-wrap items-center gap-2 text-xs">
                 <span class="font-bold text-beige/80 mr-1 flex items-center gap-1.5 text-[11px]">
-                  <span class="live-pulse-dot"></span> Sizzle Cam:
+                  <i class="fa-solid fa-film text-terracotta"></i> Video Scene:
                 </span>
                 <button type="button" data-video-scene="sizzle" class="px-3 py-1.5 rounded-xl font-bold border transition-all cursor-pointer text-xs ${state.currentVideoScene === 'sizzle' ? 'bg-terracotta text-white border-terracotta shadow-md' : 'bg-black/30 text-beige/80 border-beige-200/20 hover:bg-black/50'}">
                   🔥 Flambé & Sauté
@@ -477,7 +463,7 @@
 
             </div>
 
-            <!-- Live Video Showcase Player Card -->
+            <!-- Ambient Video Player Card -->
             <div class="lg:col-span-5 relative rounded-3xl overflow-hidden shadow-2xl border-2 border-beige-200/30 bg-black/40 group aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3]">
               <video 
                 id="hero-sizzle-video" 
@@ -494,14 +480,14 @@
 
               <div class="absolute top-3 left-3 flex items-center gap-2">
                 <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-black/60 backdrop-blur-md text-beige border border-beige-200/20 flex items-center gap-1.5">
-                  <span class="live-pulse-dot"></span> Live Culinary Sizzle
+                  <i class="fa-solid fa-video text-terracotta"></i> Culinary Video Loop
                 </span>
               </div>
 
               <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
                 <span class="font-bold flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-xl text-beige">
                   <i class="fa-solid fa-kitchen-set text-terracotta"></i>
-                  <span>Test Kitchen Stream</span>
+                  <span>Kitchen Ambience</span>
                 </span>
                 
                 <div class="flex items-center gap-2">
@@ -529,10 +515,10 @@
               The Culinary Dilemma
             </span>
             <h2 class="font-heading font-black text-2xl sm:text-3xl text-forest dark:text-ivory">
-              Why Kitchens Are Forced to Compromise
+              Why Kitchens Are Forced to Adapt
             </h2>
             <p class="text-stone-500 dark:text-stone-400 text-xs sm:text-sm font-accent italic">
-              Three systemic bottlenecks threaten culinary margins and menu consistency across modern cafes and bistros.
+              Three practical challenges make reliable ingredient substitution guidance essential during prep.
             </p>
           </div>
 
@@ -542,12 +528,12 @@
               <div class="w-12 h-12 rounded-2xl bg-peach/50 dark:bg-stone-800 text-terracotta flex items-center justify-center text-xl shadow-xs">
                 <i class="fa-solid fa-truck-ramp-box"></i>
               </div>
-              <h3 class="font-heading font-bold text-lg text-forest dark:text-ivory">1. Supply Volatility & Stockouts</h3>
+              <h3 class="font-heading font-bold text-lg text-forest dark:text-ivory">1. Stockouts & Supply Swings</h3>
               <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                When fresh heavy cream curdles in transit, avocado prices surge 300%, or imported truffle oil is delayed, kitchens scramble with blind, untested substitutions that alter flavor.
+                When fresh heavy cream curdles in transit, ripe avocados run out, or specialty truffle oil is delayed, cooks often have to improvise substitutions mid-prep.
               </p>
               <div class="pt-2 text-[11px] font-semibold text-terracotta flex items-center gap-1">
-                <i class="fa-solid fa-shield-halved"></i> Solved: Instant culinary parity alternatives
+                <i class="fa-solid fa-shield-halved"></i> Structured ratio alternatives on hand
               </div>
             </div>
 
@@ -556,12 +542,12 @@
               <div class="w-12 h-12 rounded-2xl bg-sage-100 dark:bg-stone-800 text-sage-600 dark:text-sage-300 flex items-center justify-center text-xl shadow-xs">
                 <i class="fa-solid fa-leaf"></i>
               </div>
-              <h3 class="font-heading font-bold text-lg text-forest dark:text-ivory">2. Allergen & Vegan Pivots</h3>
+              <h3 class="font-heading font-bold text-lg text-forest dark:text-ivory">2. Dietary & Plant-Based Pivots</h3>
               <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                Formulating dairy-free or gluten-free variants usually results in runny texture, bland mouthfeel, or chalky separation when heated over commercial stovetops.
+                Replacing dairy cream or cheese without technique adjustments can cause thin sauces, dull flavor, or splitting under high stove heat.
               </p>
               <div class="pt-2 text-[11px] font-semibold text-sage-600 dark:text-sage-400 flex items-center gap-1">
-                <i class="fa-solid fa-check"></i> Solved: Emulsion-stable plant fats & seed silks
+                <i class="fa-solid fa-check"></i> Heat-handling notes for seed & nut emulsions
               </div>
             </div>
 
@@ -570,30 +556,30 @@
               <div class="w-12 h-12 rounded-2xl bg-beige/50 dark:bg-stone-800 text-forest flex items-center justify-center text-xl shadow-xs">
                 <i class="fa-solid fa-chart-line-down"></i>
               </div>
-              <h3 class="font-heading font-bold text-lg text-forest dark:text-ivory">3. Escalating Food Costs</h3>
+              <h3 class="font-heading font-bold text-lg text-forest dark:text-ivory">3. Food Cost Pressure</h3>
               <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                Gourmet ingredients eat up to 48% of dish ticket value. Chef-tested substitutions cut ingredient expense by 40-65% without customers perceiving any decline in luxury.
+                Imported cheeses, truffle oils, and pine nuts squeeze margins for small kitchens. Flexible domestic swaps help teams plan around ingredient costs using their own supplier numbers.
               </p>
               <div class="pt-2 text-[11px] font-semibold text-forest dark:text-sage-300 flex items-center gap-1">
-                <i class="fa-solid fa-arrow-trend-up"></i> Solved: 68-78% gross margin expansion
+                <i class="fa-solid fa-calculator"></i> Calculate margins with your own costs
               </div>
             </div>
           </div>
         </section>
 
         <!-- ============================================== -->
-        <!-- SECTION 3: HOW IT WORKS (THE 4-PILLAR PIPELINE)-->
+        <!-- SECTION 3: HOW IT WORKS (4-STEP WORKFLOW)      -->
         <!-- ============================================== -->
         <section class="space-y-6 reveal-on-scroll">
           <div class="text-center max-w-2xl mx-auto space-y-2">
             <span class="text-xs font-bold uppercase tracking-wider text-sage-600 font-mono">
-              The Scientific Method
+              Kitchen Workflow
             </span>
             <h2 class="font-heading font-black text-2xl sm:text-3xl text-forest dark:text-ivory">
-              How FlavorShift AI Calibrates Swaps
+              How FlavorShift Works
             </h2>
             <p class="text-stone-500 dark:text-stone-400 text-xs sm:text-sm font-accent italic">
-              From molecular volatile aroma mapping to double-blind triangle palate tests.
+              From selecting a missing ingredient to printing a scaled prep sheet and logging your tasting notes.
             </p>
           </div>
 
@@ -602,36 +588,36 @@
             <!-- Step 1 -->
             <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl space-y-2 relative">
               <span class="text-2xl font-black text-terracotta/40 font-heading">01</span>
-              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Target & Texture Role</h4>
+              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Identify Culinary Role</h4>
               <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
-                Identify whether the ingredient serves as a fat emulsion, umami enhancer, binding agent, or aromatic carrier.
+                See whether the missing ingredient acts as a fat emulsion, thickening base, umami enhancer, or cheese melt.
               </p>
             </div>
 
             <!-- Step 2 -->
             <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl space-y-2 relative">
               <span class="text-2xl font-black text-sage-500/40 font-heading">02</span>
-              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Aroma Molecule Matrix</h4>
+              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Compare Swap Options</h4>
               <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
-                Algorithmically scan volatile terpenes, lactones, and glutamates to find culinary candidates with overlapping aroma profiles.
+                Review curated culinary alternatives with taste profiles and stovetop emulsion handling guidance.
               </p>
             </div>
 
             <!-- Step 3 -->
             <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl space-y-2 relative">
               <span class="text-2xl font-black text-forest-400/40 font-heading">03</span>
-              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Exact Ratio Engine</h4>
+              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Scale Kitchen Ratios</h4>
               <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
-                Calculate water-to-fat rebalancing ratios (e.g. 100g cream ➔ 60g soaked cashews + 40g water + 0.5g lemon juice).
+                Apply replacement proportions (such as 60g soaked cashews + 40g warm milk per 100g cream) across any headcount.
               </p>
             </div>
 
             <!-- Step 4 -->
             <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl space-y-2 relative">
               <span class="text-2xl font-black text-terracotta/40 font-heading">04</span>
-              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">HTV Palate Validation</h4>
+              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Record Tasting Notes</h4>
               <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
-                Tasted by certified line chefs and consumer test panels in triangle trials to certify taste, mouthfeel, and thermal stability.
+                Cook the adapted dish on your own stove and save personal ratings and texture observations in your browser log.
               </p>
             </div>
 
@@ -639,7 +625,7 @@
         </section>
 
         <!-- ============================================== -->
-        <!-- SECTION 4: THE INTERACTIVE AI SWAP LAB STAGE   -->
+        <!-- SECTION 4: THE INTERACTIVE SWAP LAB STAGE      -->
         <!-- ============================================== -->
         <section id="ai-swaplab-stage" class="space-y-6 reveal-on-scroll">
           
@@ -650,10 +636,10 @@
                 <span class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono">Step 1: Choose Ingredient to Swap</span>
                 <h3 class="text-xl sm:text-2xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2 mt-0.5">
                   <i class="fa-solid fa-fire text-terracotta text-lg"></i>
-                  <span>What's Missing or Too Costly in Your Kitchen Right Now?</span>
+                  <span>What's Missing or Out of Stock in Your Kitchen Right Now?</span>
                 </h3>
               </div>
-              <span class="text-xs text-stone-500 font-accent italic">Click any ingredient below to trigger FlavorShift AI</span>
+              <span class="text-xs text-stone-500 font-accent italic">Select an ingredient below to view curated swap options</span>
             </div>
 
             <!-- Quick Ingredient Selection Chips with Food Photography -->
@@ -683,7 +669,7 @@
             </div>
           </div>
 
-          <!-- Step 2: AI Substitution Analysis & Photographic Comparison -->
+          <!-- Step 2: Culinary Substitution Analysis & Photographic Comparison -->
           <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-xl space-y-6">
             
             <!-- Selected Ingredient & Dish Side-by-Side Visual Banner -->
@@ -700,11 +686,11 @@
                 </div>
 
                 <h3 class="text-2xl sm:text-3xl font-black font-heading text-forest dark:text-ivory leading-tight">
-                  AI Predicted Alternatives for <span class="text-terracotta font-serif italic">"${activeSwap.targetIngredient}"</span>
+                  Curated Alternatives for <span class="text-terracotta font-serif italic">"${activeSwap.targetIngredient}"</span>
                 </h3>
                 
                 <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-sans leading-relaxed">
-                  Culinary Friction: <span class="text-terracotta font-semibold">${activeSwap.reasonForSwap}</span>
+                  Kitchen Context: <span class="text-terracotta font-semibold">${activeSwap.reasonForSwap}</span>
                 </p>
               </div>
 
@@ -731,7 +717,7 @@
 
             </div>
 
-            <!-- 3 AI Alternative Cards with Food Photography -->
+            <!-- Alternative Cards with Food Photography -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               ${activeSwap.alternatives.map((alt, i) => {
                 const badgeColor = i === 0 
@@ -749,9 +735,6 @@
                         <span class="absolute top-2 left-2 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${badgeColor} shadow-md">
                           ${alt.type}
                         </span>
-                        <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-lg text-[11px] font-black bg-black/75 text-beige backdrop-blur">
-                          ${alt.tasteScore}
-                        </span>
                       </div>
 
                       <h4 class="text-base sm:text-lg font-bold font-heading text-forest dark:text-ivory mb-2 leading-snug">
@@ -760,21 +743,18 @@
 
                       <!-- Exact Ratio Box -->
                       <div class="p-3 rounded-2xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 mb-3 shadow-xs">
-                        <span class="block text-[10px] font-bold uppercase text-terracotta tracking-wider font-mono">Exact Replacement Ratio:</span>
+                        <span class="block text-[10px] font-bold uppercase text-terracotta tracking-wider font-mono">Kitchen Conversion Ratio:</span>
                         <span class="text-xs font-bold text-forest dark:text-ivory mt-0.5 block leading-relaxed font-mono">
                           ${alt.ratio}
                         </span>
                       </div>
 
-                      <!-- Taste & Texture Impact Matrix -->
+                      <!-- Taste & Texture Qualitative Notes -->
                       <div class="space-y-2.5 text-xs">
                         <div>
-                          <div class="flex items-center justify-between font-semibold mb-0.5">
-                            <span class="text-stone-600 dark:text-stone-300 flex items-center gap-1">
-                              <i class="fa-solid fa-face-smile text-terracotta"></i> Taste Compatibility:
-                            </span>
-                            <span class="font-bold text-terracotta">${alt.tasteScore}</span>
-                          </div>
+                          <span class="text-stone-600 dark:text-stone-300 font-semibold flex items-center gap-1 mb-0.5">
+                            <i class="fa-solid fa-face-smile text-terracotta"></i> Flavor Notes:
+                          </span>
                           <p class="text-[11px] text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
                             ${alt.tasteDesc}
                           </p>
@@ -782,38 +762,36 @@
 
                         <div class="pt-2 border-t border-beige-200/80 dark:border-stone-800">
                           <span class="font-semibold text-stone-600 dark:text-stone-300 block mb-0.5 flex items-center gap-1">
-                            <i class="fa-solid fa-water text-sage-600"></i> Texture & Mouthfeel:
+                            <i class="fa-solid fa-water text-sage-600"></i> Texture & Handling:
                           </span>
                           <p class="text-[11px] text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
                             ${alt.textureDesc}
                           </p>
                         </div>
-
-                        <!-- Cost & Calorie Impact -->
-                        <div class="pt-2 border-t border-beige-200/80 dark:border-stone-800 flex items-center justify-between text-[11px] font-semibold">
-                          <span class="text-sage-700 dark:text-sage-300 bg-sage-50 dark:bg-stone-900 px-2 py-0.5 rounded-md border border-sage-200 dark:border-stone-700">${alt.costChange}</span>
-                          <span class="text-terracotta bg-peach/40 dark:bg-stone-900 px-2 py-0.5 rounded-md border border-peach dark:border-stone-700">${alt.calChange}</span>
-                        </div>
                       </div>
                     </div>
 
-                    <!-- Human Taste Validation Score & Action -->
-                    <div class="pt-3 border-t border-beige-200 dark:border-stone-800 space-y-2">
-                      <div class="flex items-center justify-between text-xs">
-                        <span class="text-stone-400 font-medium">HTV Taste Score:</span>
-                        <span class="font-bold text-sage-700 dark:text-sage-300 flex items-center gap-1 font-mono">
-                          <i class="fa-solid fa-star text-terracotta"></i> ${alt.htvScore}
-                        </span>
-                      </div>
-
-                      <button 
-                        type="button" 
-                        data-test-recipe="${activeSwap.targetRecipeId || 'paneer-butter-masala'}"
-                        class="w-full py-2.5 px-3 rounded-xl text-xs font-bold forest-btn transition-all cursor-pointer shadow-md flex items-center justify-center gap-1.5"
-                      >
-                        <i class="fa-solid fa-fire-burner text-terracotta"></i>
-                        <span>Apply Swap to Full Recipe</span>
-                      </button>
+                    <!-- Action -->
+                    <div class="pt-3 border-t border-beige-200 dark:border-stone-800">
+                      ${activeSwap.targetRecipeId ? `
+                        <button 
+                          type="button" 
+                          data-test-recipe="${activeSwap.targetRecipeId}"
+                          class="w-full py-2.5 px-3 rounded-xl text-xs font-bold forest-btn transition-all cursor-pointer shadow-md flex items-center justify-center gap-1.5"
+                        >
+                          <i class="fa-solid fa-fire-burner text-terracotta"></i>
+                          <span>Open Recipe with Swap</span>
+                        </button>
+                      ` : `
+                        <button 
+                          type="button" 
+                          data-hero-action="explore"
+                          class="w-full py-2.5 px-3 rounded-xl text-xs font-bold forest-btn transition-all cursor-pointer shadow-md flex items-center justify-center gap-1.5"
+                        >
+                          <i class="fa-solid fa-utensils text-terracotta"></i>
+                          <span>Browse Recipe Catalog</span>
+                        </button>
+                      `}
                     </div>
                   </div>
                 `;
@@ -830,13 +808,13 @@
         <section class="space-y-6 reveal-on-scroll">
           <div class="text-center max-w-2xl mx-auto space-y-2">
             <span class="text-xs font-bold uppercase tracking-wider text-forest dark:text-sage-400 font-mono">
-              Comprehensive Platform
+              Comprehensive Toolkit
             </span>
             <h2 class="font-heading font-black text-2xl sm:text-3xl text-forest dark:text-ivory">
-              Complete Food-Tech Operating Suite
+              Culinary Planning & Testing Suite
             </h2>
             <p class="text-stone-500 dark:text-stone-400 text-xs sm:text-sm font-accent italic">
-              From line scaling to wholesale margin management and pitch presentations.
+              Recipe scaling, customizable batch pricing, and personal kitchen tasting logs.
             </p>
           </div>
 
@@ -849,7 +827,7 @@
                 </div>
                 <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Recipe Catalog & Scaler</h4>
                 <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                  9 chef-developed dishes with dynamic person count scaling (1-50 covers) and 1-click budget, vegan, or calorie toggles.
+                  ${RECIPES_DATA.length} dishes with dynamic person count scaling and 1-click budget, lighter, or plant-based toggles.
                 </p>
               </div>
               <button type="button" data-hero-action="explore" class="sage-btn w-full py-2 px-3 rounded-xl text-xs font-bold text-center cursor-pointer">
@@ -857,19 +835,19 @@
               </button>
             </div>
 
-            <!-- Feature 2: HTV Validation -->
+            <!-- Feature 2: Tasting Log -->
             <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-3xl flex flex-col justify-between space-y-4">
               <div class="space-y-3">
                 <div class="w-12 h-12 rounded-2xl bg-sage-100 text-sage-700 flex items-center justify-center text-xl shadow-xs">
                   <i class="fa-solid fa-users-viewfinder"></i>
                 </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Human Taste Hub</h4>
+                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Kitchen Tasting Log</h4>
                 <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                  Palate review test logs, sensory triangular scoring, and a community test kitchen submission form.
+                  Record your own cooking trial feedback, texture observations, and ratings directly in browser storage.
                 </p>
               </div>
               <button type="button" data-hero-action="htv" class="sage-btn w-full py-2 px-3 rounded-xl text-xs font-bold text-center cursor-pointer">
-                View Palate Tests →
+                Open Tasting Log →
               </button>
             </div>
 
@@ -879,13 +857,13 @@
                 <div class="w-12 h-12 rounded-2xl bg-peach/40 text-terracotta flex items-center justify-center text-xl shadow-xs">
                   <i class="fa-solid fa-chart-pie"></i>
                 </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Cost & Margin Engine</h4>
+                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Cost & Margin Calculator</h4>
                 <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                  Simulate savings on 50 to 500 covers, visualize gross margin expansion, and analyze monthly food cost reductions.
+                  Enter your own supplier costs and menu price across 5–200 covers to compute batch totals and margins.
                 </p>
               </div>
               <button type="button" data-hero-action="dashboard" class="sage-btn w-full py-2 px-3 rounded-xl text-xs font-bold text-center cursor-pointer">
-                Launch Simulator →
+                Launch Calculator →
               </button>
             </div>
 
@@ -895,12 +873,12 @@
                 <div class="w-12 h-12 rounded-2xl bg-beige text-espresso flex items-center justify-center text-xl shadow-xs">
                   <i class="fa-solid fa-receipt text-terracotta"></i>
                 </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">POS Thermal Tickets</h4>
+                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Printable Prep Tickets</h4>
                 <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                  Instantly format and print calibrated ingredient prep sheets with exact gram scales ready to hang on the chef's line.
+                  Format and print scaled ingredient checklists and adapted cooking steps for prep stations.
                 </p>
               </div>
-              <button type="button" onclick="printKitchenTicket('paneer-butter-masala')" class="sage-btn w-full py-2 px-3 rounded-xl text-xs font-bold text-center cursor-pointer">
+              <button type="button" data-print-sample="paneer-butter-masala" class="sage-btn w-full py-2 px-3 rounded-xl text-xs font-bold text-center cursor-pointer">
                 Print Sample Ticket →
               </button>
             </div>
@@ -914,13 +892,13 @@
         <section class="editorial-card p-8 sm:p-12 rounded-3xl bg-forest dark:bg-[#1A2620] text-ivory text-center space-y-6 reveal-on-scroll relative overflow-hidden">
           <div class="max-w-2xl mx-auto space-y-3 relative z-10">
             <span class="text-xs font-bold uppercase tracking-wider text-beige/80 font-mono">
-              Ready to Upgrade Your Kitchen?
+              Ready to Cook & Adapt?
             </span>
             <h2 class="font-heading font-black text-2xl sm:text-4xl text-ivory leading-tight">
-              Transform Your Menus with AI Flavor Precision
+              Try a Substitution in Your Own Kitchen
             </h2>
             <p class="text-ivory/85 text-xs sm:text-sm font-sans leading-relaxed">
-              Experience zero compromise between food costs and culinary artistry. Start by exploring our 9 calibrated dishes or testing missing ingredients right now.
+              Browse all ${RECIPES_DATA.length} dishes, adjust serving counts, print prep tickets, and record your own tasting notes.
             </p>
             <div class="pt-3 flex flex-wrap items-center justify-center gap-3">
               <button type="button" data-hero-action="explore" class="terracotta-btn px-6 py-3.5 rounded-2xl text-xs font-bold cursor-pointer shadow-md">
@@ -928,7 +906,7 @@
                 <i class="fa-solid fa-arrow-right ml-1"></i>
               </button>
               <button type="button" data-hero-action="htv" class="px-6 py-3.5 rounded-2xl text-xs font-bold bg-ivory/15 hover:bg-ivory/25 text-ivory border border-ivory/30 backdrop-blur cursor-pointer transition-all">
-                <span>Submit Taste Panel Review</span>
+                <span>Log Kitchen Notes</span>
               </button>
             </div>
           </div>
@@ -957,6 +935,12 @@
           state.recipeStates[rId].budgetMode = true;
           renderModalContent();
         }
+      });
+    });
+
+    container.querySelectorAll('[data-print-sample]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        printKitchenTicket(btn.getAttribute('data-print-sample'));
       });
     });
 
@@ -1017,20 +1001,20 @@
       <div class="space-y-8 animate-fade-up">
 
         <!-- Dynamic Explore Banner -->
-        <div class="relative rounded-3xl overflow-hidden bg-forest dark:bg-[#1A2620] text-ivory border border-beige-200/20 shadow-xl p-8 md:p-12 text-white shadow-xl">
+        <div class="relative rounded-3xl overflow-hidden bg-forest dark:bg-[#1A2620] text-ivory border border-beige-200/20 shadow-xl p-8 md:p-12">
           <div class="relative z-10 max-w-3xl space-y-4">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-black uppercase tracking-wider">
-              <i class="fa-solid fa-utensils text-amber-300"></i>
-              <span>Artisan Cafe & Cloud Kitchen Menu</span>
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ivory/15 backdrop-blur-md text-xs font-bold uppercase tracking-wider text-beige">
+              <i class="fa-solid fa-utensils text-terracotta"></i>
+              <span>Culinary Recipe Library</span>
             </div>
 
-            <h1 class="font-heading font-black text-3xl sm:text-4xl md:text-5xl leading-tight tracking-tight">
+            <h1 class="font-heading font-black text-3xl sm:text-4xl md:text-5xl leading-tight tracking-tight text-ivory">
               Culinary Recipe Library.<br>
-              <span class="text-amber-200">Scale Persons & Trigger Swaps</span> Live.
+              <span class="text-terracotta font-serif italic">Scale Portions & Toggle Swaps</span> Live.
             </h1>
 
-            <p class="text-white/90 text-sm md:text-base leading-relaxed font-medium">
-              Every dish features exact gram-level measurements scaled by person count (1 to 50 covers), tested AI substitutions for missing or expensive ingredients, and verified human taste scores.
+            <p class="text-ivory/85 text-sm md:text-base leading-relaxed font-normal">
+              Each dish supports dynamic per-person quantity scaling, culinary ingredient swaps for out-of-stock or dietary preferences, and printable prep sheets.
             </p>
           </div>
 
@@ -1045,7 +1029,7 @@
               <input 
                 type="text" 
                 id="search-input"
-                placeholder="Search recipes, missing ingredients (Cream, Truffle, Avocado, Cocoa)..." 
+                placeholder="Search recipes or ingredients (Cream, Truffle, Avocado, Cocoa)..." 
                 class="w-full pl-11 pr-4 py-3 rounded-2xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-xs sm:text-sm font-medium text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta shadow-sm transition-all"
               >
             </div>
@@ -1054,35 +1038,34 @@
               <span class="text-xs font-bold text-stone-400 hidden sm:inline">Sort by:</span>
               <select 
                 id="sort-select"
-                class="px-3.5 py-3 rounded-2xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-xs font-bold text-espresso dark:text-slate-200 focus:outline-none focus:border-terracotta shadow-sm cursor-pointer"
+                class="px-3.5 py-3 rounded-2xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-xs font-bold text-espresso dark:text-stone-200 focus:outline-none focus:border-terracotta shadow-sm cursor-pointer"
               >
-                <option value="popular">🔥 Most Popular & Searched</option>
-                <option value="cost-asc">💰 Lowest Food Cost ($ / Person)</option>
-                <option value="calories-asc">🥗 Lowest Calories (kcal / Person)</option>
-                <option value="margin-desc">📈 Highest Profit Margin (%)</option>
-                <option value="prep-asc">⚡ Fastest Kitchen Ticket (&lt;10m)</option>
+                <option value="default">🍽️ Featured Catalog Order</option>
+                <option value="title-asc">🔤 Alphabetical (A–Z)</option>
+                <option value="prep-asc">⚡ Quickest Prep Time</option>
+                <option value="ingredients-asc">🧺 Fewest Ingredients</option>
               </select>
             </div>
           </div>
 
           <!-- Category Pills -->
           <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            <button type="button" data-category="all" class="cat-pill active-cat px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-slate-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
-              All Menus (9)
+            <button type="button" data-category="all" class="cat-pill active-cat px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+              All Menus (${RECIPES_DATA.length})
             </button>
-            <button type="button" data-category="Cafe & Bistro Curries" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-slate-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Cafe & Bistro Curries" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🍛 Indian Curries & Makhani
             </button>
-            <button type="button" data-category="Brunch & Toast" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-slate-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Brunch & Toast" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🥑 Brunch, Toast & Bowls
             </button>
-            <button type="button" data-category="Pastas & Mains" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-slate-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Pastas & Mains" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🍝 Pastas & Sourdough Pizza
             </button>
-            <button type="button" data-category="Bakery & Desserts" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-slate-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Bakery & Desserts" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🍰 Bakery & Soufflé
             </button>
-            <button type="button" data-category="Coffee & Drinks" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-slate-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Coffee & Drinks" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               ☕ Artisan Coffee & Matcha
             </button>
           </div>
@@ -1090,16 +1073,16 @@
           <!-- Diet Focus Pills -->
           <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
             <span class="font-bold text-stone-400 shrink-0 mr-1">Diet Focus:</span>
-            <button type="button" data-diet="all" class="diet-pill active-diet px-3 py-1.5 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all">
+            <button type="button" data-diet="all" class="diet-pill active-diet px-3 py-1.5 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-sage-500 cursor-pointer transition-all">
               All Diets
             </button>
-            <button type="button" data-diet="Vegetarian" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all flex items-center gap-1">
+            <button type="button" data-diet="Vegetarian" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-sage-500 cursor-pointer transition-all flex items-center gap-1">
               <i class="fa-solid fa-seedling text-sage-600"></i> Vegetarian
             </button>
-            <button type="button" data-diet="Vegan" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all flex items-center gap-1">
-              <i class="fa-solid fa-leaf text-sage-600"></i> 100% Vegan
+            <button type="button" data-diet="Vegan" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-sage-500 cursor-pointer transition-all flex items-center gap-1">
+              <i class="fa-solid fa-leaf text-sage-600"></i> Vegan Option
             </button>
-            <button type="button" data-diet="Gluten-Free" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-slate-300 hover:border-emerald-500 cursor-pointer transition-all">
+            <button type="button" data-diet="Gluten-Free" class="diet-pill px-3 py-1.5 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-sage-500 cursor-pointer transition-all">
               🌾 Gluten-Free
             </button>
           </div>
@@ -1111,8 +1094,8 @@
             <span id="recipes-count-display" class="text-xs font-black uppercase tracking-wider text-stone-500">
               Showing Recipes
             </span>
-            <span class="text-xs text-sage-700 dark:text-sage-400 dark:text-emerald-400 font-bold flex items-center gap-1">
-              <i class="fa-solid fa-check-double"></i> All Swaps Backed by Human Taste Validation (HTV)
+            <span class="text-xs text-sage-700 dark:text-sage-400 font-bold flex items-center gap-1">
+              <i class="fa-solid fa-kitchen-set"></i> Toggle swap modes on any card to preview changes
             </span>
           </div>
 
@@ -1269,15 +1252,9 @@
     });
 
     filtered.sort((a, b) => {
-      if (state.sortOption === 'popular') return b.rating - a.rating;
-      if (state.sortOption === 'cost-asc') return a.baseCostPerPerson - b.baseCostPerPerson;
-      if (state.sortOption === 'calories-asc') return a.baseCalories - b.baseCalories;
-      if (state.sortOption === 'margin-desc') {
-        return calcMargin(b.baseCostPerPerson, b.suggestedRetailPrice) - calcMargin(a.baseCostPerPerson, a.suggestedRetailPrice);
-      }
-      if (state.sortOption === 'prep-asc') {
-        return parseInt(a.prepTime) - parseInt(b.prepTime);
-      }
+      if (state.sortOption === 'title-asc') return a.title.localeCompare(b.title);
+      if (state.sortOption === 'prep-asc') return parseInt(a.prepTime, 10) - parseInt(b.prepTime, 10);
+      if (state.sortOption === 'ingredients-asc') return a.ingredients.length - b.ingredients.length;
       return 0;
     });
 
@@ -1290,22 +1267,11 @@
     filtered.forEach(recipe => {
       const isFav = state.favorites.has(recipe.id);
       const rState = state.recipeStates[recipe.id] || { persons: 1, budgetMode: false, calorieMode: false, veganMode: false };
-      const persons = rState.persons || 1;
-
-      // Calculate cost based on active toggle
-      let activeCost = recipe.baseCostPerPerson;
-      if (rState.budgetMode && recipe.budgetAlternative) {
-        activeCost = recipe.budgetAlternative.newCostPerPerson;
-      }
-      let activeCalories = recipe.baseCalories;
-      if (rState.calorieMode && recipe.calorieAlternative) {
-        activeCalories = recipe.calorieAlternative.newCalories;
-      }
-
-      const margin = calcMargin(activeCost, recipe.suggestedRetailPrice);
+      const localReviews = state.customReviews[recipe.id] || [];
+      const extraIngredients = recipe.ingredients.length - 5;
 
       html += `
-        <div class="cafe-card group flex flex-col justify-between overflow-hidden bg-white/95 dark:bg-[#1f1a16]/90 border border-beige-200/80 dark:border-stone-800/80 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300">
+        <div class="editorial-card group flex flex-col justify-between overflow-hidden bg-white/95 dark:bg-[#1f1a16]/90 border border-beige-200/80 dark:border-stone-800/80 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-300">
           
           <div>
             <!-- Image Container -->
@@ -1322,11 +1288,6 @@
                 <span class="px-2.5 py-1 rounded-full text-xs font-black bg-white/95 text-espresso dark:bg-[#181410]/95 dark:text-ivory backdrop-blur shadow-sm">
                   ${recipe.category}
                 </span>
-                ${recipe.isMostSearched ? `
-                  <span class="px-2.5 py-1 rounded-full text-xs font-black terracotta-btn text-white shadow-sm flex items-center gap-1">
-                    <i class="fa-solid fa-fire text-amber-200"></i> Top Pick
-                  </span>
-                ` : ''}
               </div>
 
               <button 
@@ -1340,12 +1301,12 @@
 
               <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs font-semibold">
                 <div class="flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-xl">
-                  <i class="fa-solid fa-star text-amber-400"></i>
-                  <span class="font-bold">${recipe.rating}</span>
-                  <span class="text-white/70">(${recipe.reviewsCount} tests)</span>
+                  <i class="fa-solid fa-layer-group text-terracotta"></i>
+                  <span>${recipe.difficulty}</span>
+                  ${localReviews.length > 0 ? `<span class="text-white/80">• ${localReviews.length} note${localReviews.length > 1 ? 's' : ''}</span>` : ''}
                 </div>
                 <div class="flex items-center gap-1 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-xl">
-                  <i class="fa-regular fa-clock text-amber-300"></i>
+                  <i class="fa-regular fa-clock text-peach"></i>
                   <span>${recipe.prepTime}</span>
                 </div>
               </div>
@@ -1370,7 +1331,7 @@
                     ${ing.icon || '🌿'}
                   </span>
                 `).join('')}
-                <span class="text-[10px] text-stone-400">+${recipe.ingredients.length - 5} more</span>
+                ${extraIngredients > 0 ? `<span class="text-[10px] text-stone-400">+${extraIngredients} more</span>` : ''}
               </div>
 
               <!-- Quick Swaps Bar -->
@@ -1381,13 +1342,13 @@
                   data-recipe-id="${recipe.id}"
                   class="px-2.5 py-1 rounded-lg text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1 ${
                     rState.budgetMode 
-                      ? 'bg-terracotta text-white border-amber-600 shadow-sm' 
-                      : 'bg-peach/30 dark:bg-amber-950/40 text-terracotta dark:text-amber-300 border-peach dark:border-amber-800 hover:bg-peach/60'
+                      ? 'bg-terracotta text-white border-terracotta shadow-sm' 
+                      : 'bg-peach/30 dark:bg-stone-900 text-terracotta border-peach dark:border-stone-700 hover:bg-peach/60'
                   }"
-                  title="Toggle AI Budget Alternative"
+                  title="Toggle Pantry / Budget Alternative"
                 >
                   <i class="fa-solid fa-arrows-rotate"></i>
-                  <span>Swap: ${recipe.budgetAlternative.savingsPercent}</span>
+                  <span>Budget Swap</span>
                 </button>
 
                 <button 
@@ -1399,10 +1360,10 @@
                       ? 'bg-rose-500 text-white border-rose-600 shadow-sm' 
                       : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800 hover:bg-rose-100'
                   }"
-                  title="Toggle Calorie Cutter Mode"
+                  title="Toggle Lighter Ingredient Swap"
                 >
                   <i class="fa-solid fa-fire-flame-simple"></i>
-                  <span>${recipe.calorieAlternative.caloriePercent}</span>
+                  <span>Lighter Swap</span>
                 </button>
 
                 ${recipe.veganOption ? `
@@ -1412,13 +1373,13 @@
                     data-recipe-id="${recipe.id}"
                     class="px-2.5 py-1 rounded-lg text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1 ${
                       rState.veganMode 
-                        ? 'bg-forest-600 text-white border-emerald-700 shadow-sm' 
-                        : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100'
+                        ? 'bg-forest-600 text-white border-forest shadow-sm' 
+                        : 'bg-sage-50 dark:bg-stone-900 text-sage-700 dark:text-sage-300 border-sage-200 dark:border-stone-700 hover:bg-sage-100'
                     }"
                     title="Toggle Plant-Based Option"
                   >
                     <i class="fa-solid fa-leaf"></i>
-                    <span>Vegan</span>
+                    <span>Plant-Based</span>
                   </button>
                 ` : ''}
               </div>
@@ -1430,26 +1391,26 @@
           <div class="p-5 pt-0">
             <div class="grid grid-cols-3 gap-2 py-2 px-3 rounded-2xl bg-ivory dark:bg-stone-900 text-center mb-3 border border-beige-100 dark:border-stone-800/60">
               <div>
-                <span class="block text-[10px] text-stone-400 uppercase font-bold tracking-wider">Food Cost</span>
-                <span class="text-sm font-black text-forest dark:text-ivory">${formatMoney(activeCost)}</span>
-                <span class="block text-[10px] text-stone-400">/ person</span>
+                <span class="block text-[10px] text-stone-400 uppercase font-bold tracking-wider">Prep / Cook</span>
+                <span class="text-xs font-black text-forest dark:text-ivory">${recipe.prepTime}</span>
+                <span class="block text-[10px] text-stone-400">+ ${recipe.cookTime}</span>
               </div>
               <div>
-                <span class="block text-[10px] text-stone-400 uppercase font-bold tracking-wider">Menu Price</span>
-                <span class="text-sm font-black text-sage-700 dark:text-sage-400 dark:text-emerald-400">${formatMoney(recipe.suggestedRetailPrice)}</span>
-                <span class="block text-[10px] text-sage-700 dark:text-sage-400 font-bold">${margin}% Margin</span>
+                <span class="block text-[10px] text-stone-400 uppercase font-bold tracking-wider">Ingredients</span>
+                <span class="text-sm font-black text-sage-700 dark:text-sage-400">${recipe.ingredients.length}</span>
+                <span class="block text-[10px] text-stone-400">items</span>
               </div>
               <div>
-                <span class="block text-[10px] text-stone-400 uppercase font-bold tracking-wider">Calories</span>
-                <span class="text-sm font-black text-rose-500">${activeCalories}</span>
-                <span class="block text-[10px] text-stone-400">kcal</span>
+                <span class="block text-[10px] text-stone-400 uppercase font-bold tracking-wider">Skill</span>
+                <span class="text-xs font-black text-terracotta">${recipe.difficulty}</span>
+                <span class="block text-[10px] text-stone-400">${rState.budgetMode || rState.calorieMode || rState.veganMode ? 'Swap Active' : 'Standard'}</span>
               </div>
             </div>
 
             <button 
               type="button"
               data-open-recipe="${recipe.id}"
-              class="w-full py-3 px-4 rounded-2xl font-bold text-xs forest-btn text-white hover:scale-[1.01] text-white shadow-md hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
+              class="w-full py-3 px-4 rounded-2xl font-bold text-xs forest-btn text-white hover:scale-[1.01] shadow-md hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>View Ingredients & Whole Recipe</span>
               <i class="fa-solid fa-arrow-right text-xs"></i>
@@ -1515,185 +1476,166 @@
   }
 
   // ========================================================
-  // RENDER: HUMAN TASTE VALIDATION (HTV) HUB
+  // RENDER: KITCHEN TASTING LOG (HTV) HUB
   // ========================================================
   function renderHtvView() {
     const container = document.getElementById('htv-view-container');
     if (!container) return;
 
+    const submissions = state.htvSubmissions || [];
+
     let html = `
       <div class="space-y-8 animate-fade-up max-w-5xl mx-auto">
         
-        <!-- HTV Header -->
+        <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-beige-200 dark:border-stone-800 pb-5">
           <div>
             <div class="flex items-center gap-2 mb-1.5">
-              <span class="px-3 py-0.5 rounded-full text-xs font-black bg-forest/15 text-sage-700 dark:text-sage-400 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5 shadow-xs">
-                <span class="live-pulse-dot"></span> HTV Community Protocol
+              <span class="px-3 py-0.5 rounded-full text-xs font-black bg-sage-100 dark:bg-sage-900/40 text-forest dark:text-sage-300 border border-sage-300/60 dark:border-sage-700 flex items-center gap-1.5 shadow-xs">
+                <i class="fa-solid fa-clipboard-list text-terracotta"></i> Local Kitchen Log
               </span>
-              <span class="text-xs text-stone-400 font-semibold">Empirical Taste Verification</span>
+              <span class="text-xs text-stone-400 font-semibold">Personal Taste & Texture Notes</span>
             </div>
             <h2 class="text-2xl md:text-3xl font-black text-forest dark:text-ivory">
-              Validating AI Recommendations in Real Kitchens
+              Record Substitutions in Your Own Kitchen
             </h2>
             <p class="text-xs text-stone-500 mt-1">
-              AI models fat emulsion, sweetness & aroma compounds; verified chefs and home cooks test and rate blind taste consistency.
+              Log how a swap behaves on your stove—sauce emulsion, seasoning balance, and feedback saved directly in your browser.
             </p>
           </div>
 
           <button 
             type="button" 
             id="htv-open-submit-modal"
-            class="px-4 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-md flex items-center gap-2 cursor-pointer self-start md:self-auto transition-transform hover:scale-105"
+            class="px-4 py-2.5 rounded-xl text-xs font-bold forest-btn text-white shadow-md flex items-center gap-2 cursor-pointer self-start md:self-auto transition-transform hover:scale-105"
           >
             <i class="fa-solid fa-clipboard-check"></i>
-            <span>Submit Kitchen Validation Test</span>
+            <span>Log Kitchen Tasting Test</span>
           </button>
         </div>
 
-        <!-- 3 Empirical Trust Metrics -->
+        <!-- 3 Factual Status Cards (No Invented Statistics) -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div class="p-6 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 text-center shadow-sm">
-            <span class="text-4xl font-black text-sage-600 font-heading">98.2%</span>
-            <span class="block text-xs font-bold text-stone-700 dark:text-slate-300 mt-1.5">Blind Taste Indistinguishability</span>
-            <span class="block text-[11px] text-stone-400 mt-0.5">98 in 100 diners could not tell the ingredient was swapped</span>
+            <span class="text-4xl font-black text-sage-600 font-heading">${submissions.length}</span>
+            <span class="block text-xs font-bold text-stone-700 dark:text-stone-300 mt-1.5">Your Logged Kitchen Trials</span>
+            <span class="block text-[11px] text-stone-400 mt-0.5">Entries saved in this browser</span>
           </div>
 
           <div class="p-6 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 text-center shadow-sm">
-            <span class="text-4xl font-black text-terracotta font-heading">580+</span>
-            <span class="block text-xs font-bold text-stone-700 dark:text-slate-300 mt-1.5">Kitchen Trials Completed</span>
-            <span class="block text-[11px] text-stone-400 mt-0.5">Across cloud kitchens, cafes, and home stoves</span>
+            <span class="text-4xl font-black text-terracotta font-heading">${RECIPES_DATA.length}</span>
+            <span class="block text-xs font-bold text-stone-700 dark:text-stone-300 mt-1.5">Catalog Dishes Available</span>
+            <span class="block text-[11px] text-stone-400 mt-0.5">All ready for personal tasting notes</span>
           </div>
 
           <div class="p-6 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 text-center shadow-sm">
-            <span class="text-4xl font-black text-rose-500 font-heading">0%</span>
-            <span class="block text-xs font-bold text-stone-700 dark:text-slate-300 mt-1.5">Quality Compromise</span>
-            <span class="block text-[11px] text-stone-400 mt-0.5">Only alternatives scoring ≥90% are accepted into database</span>
+            <span class="text-2xl sm:text-3xl font-black text-forest dark:text-ivory font-heading">Local Only</span>
+            <span class="block text-xs font-bold text-stone-700 dark:text-stone-300 mt-2">Browser Storage</span>
+            <span class="block text-[11px] text-stone-400 mt-0.5">No unverified public ratings included</span>
           </div>
         </div>
 
         <!-- Interactive Submission Drawer / Form -->
-        <div id="htv-submission-box" class="hidden p-6 rounded-3xl bg-peach/30/80 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800 space-y-4 shadow-lg">
+        <div id="htv-submission-box" class="hidden p-6 rounded-3xl bg-peach/30 dark:bg-stone-900 border border-terracotta/40 dark:border-stone-700 space-y-4 shadow-lg">
           <div class="flex items-center justify-between">
             <h4 class="font-black text-base text-forest dark:text-ivory flex items-center gap-2">
               <i class="fa-solid fa-flask-vial text-terracotta"></i>
-              <span>Submit Your Own Kitchen Taste Validation</span>
+              <span>Log Your Kitchen Taste Observations</span>
             </h4>
-            <button type="button" id="close-htv-form-btn" class="w-8 h-8 rounded-full bg-slate-200 dark:bg-[#1f1a16] text-stone-700 dark:text-slate-300 flex items-center justify-center font-bold">
+            <button type="button" id="close-htv-form-btn" class="w-8 h-8 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 flex items-center justify-center font-bold cursor-pointer">
               <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
             <div>
-              <label class="block font-bold text-stone-700 dark:text-slate-300 mb-1">Your Name / Title</label>
-              <input type="text" id="htv-input-author" placeholder="e.g. Chef Vikram / Baker" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#181410] border border-slate-300 dark:border-stone-800">
+              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Name / Role</label>
+              <input type="text" id="htv-input-author" placeholder="e.g. Home Cook / Chef" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800">
             </div>
             <div>
-              <label class="block font-bold text-stone-700 dark:text-slate-300 mb-1">Kitchen / Cafe & City</label>
-              <input type="text" id="htv-input-kitchen" placeholder="e.g. Olive Cafe, Delhi" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#181410] border border-slate-300 dark:border-stone-800">
+              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Kitchen / Location (Optional)</label>
+              <input type="text" id="htv-input-kitchen" placeholder="e.g. Home Kitchen" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800">
             </div>
             <div>
-              <label class="block font-bold text-stone-700 dark:text-slate-300 mb-1">Recipe Tested</label>
-              <select id="htv-input-recipe" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#181410] border border-slate-300 dark:border-stone-800 font-bold">
+              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Recipe Tested</label>
+              <select id="htv-input-recipe" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-bold">
                 ${RECIPES_DATA.map(r => `<option value="${r.title}">${r.title}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Tasting Rating</label>
+              <select id="htv-input-rating" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-bold">
+                <option value="5">★★★★★ (5 - Worked very well)</option>
+                <option value="4">★★★★☆ (4 - Good texture & taste)</option>
+                <option value="3">★★★☆☆ (3 - Minor differences)</option>
+                <option value="2">★★☆☆☆ (2 - Needs adjustment)</option>
+                <option value="1">★☆☆☆☆ (1 - Did not work)</option>
               </select>
             </div>
           </div>
 
           <div class="text-xs">
-            <label class="block font-bold text-stone-700 dark:text-slate-300 mb-1">Test Observations & Patrons Reaction</label>
-            <textarea id="htv-input-comment" rows="3" placeholder="Share how the substitute held up under cooking heat, sauce emulsion, and diner feedback..." class="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#181410] border border-slate-300 dark:border-stone-800"></textarea>
+            <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Cooking & Taste Notes</label>
+            <textarea id="htv-input-comment" rows="3" placeholder="Share how the substitute handled cooking heat, texture, and flavor..." class="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800"></textarea>
           </div>
 
-          <button type="button" id="htv-save-submission-btn" class="px-5 py-2.5 rounded-xl text-xs font-black bg-gradient-to-r from-amber-500 to-flame text-white shadow-md cursor-pointer">
-            Publish Kitchen Validation
+          <button type="button" id="htv-save-submission-btn" class="px-5 py-2.5 rounded-xl text-xs font-black terracotta-btn text-white shadow-md cursor-pointer">
+            Save Kitchen Log
           </button>
         </div>
 
-        <!-- Verified Kitchen Feedback Feed -->
+        <!-- User-Submitted Kitchen Feedback Feed -->
         <div class="space-y-4">
-          <h3 class="text-xl font-black text-forest dark:text-ivory flex items-center gap-2">
-            <i class="fa-solid fa-comments text-terracotta"></i>
-            <span>Verified Cook Feedback & Kitchen Validation Tests</span>
-          </h3>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            ${[
-              {
-                dish: "Paneer Butter Masala (Cashew Velvet)",
-                author: "Chef Vikram M.",
-                kitchen: "Saffron Cloud Kitchen, Gurugram",
-                rating: 5,
-                comment: "Saved our Saturday rush! Cashew paste emulsion is naturally thick, glossy, and never splits like commercial dairy cream.",
-                photo: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=80"
-              },
-              {
-                dish: "Neapolitan Sourdough Pizza (Mozzarella-Ricotta)",
-                author: "Chef Paolo R.",
-                kitchen: "Bella Luna Trattoria, Chicago",
-                rating: 5,
-                comment: "Stopped the soggy center entirely! Blending whole milk mozzarella with ricotta gives an authentic stretchy blistered crust at 46% lower cost.",
-                photo: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&auto=format&fit=crop&q=80"
-              },
-              {
-                dish: "Basque Cheesecake (Hung Curd Swap)",
-                author: "Chef Claire B.",
-                kitchen: "Montreal Bakery Studio",
-                rating: 5,
-                comment: "50/50 hung curd cut our cream cheese cost in half and gave the molten center an authentic San Sebastian lactic tang.",
-                photo: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&auto=format&fit=crop&q=80"
-              },
-              {
-                dish: "Wild Mushroom Fettuccine (Porcini Reduction)",
-                author: "Liam K.",
-                kitchen: "Artisan Wood & Fork, Portland",
-                rating: 5,
-                comment: "Zero synthetic chemical perfume. Dried porcini broth reduction gave a far more sophisticated earthy umami than overpriced truffle oil.",
-                photo: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&auto=format&fit=crop&q=80"
-              },
-              {
-                dish: "Smashed Avocado Toast (Sweet Green Pea Mash)",
-                author: "Marco D.",
-                kitchen: "Daily Grind Bistro, Austin",
-                rating: 5,
-                comment: "50% pea blend kept the toast bright green until table service without turning brown, cutting our avocado bill by 43%.",
-                photo: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600&auto=format&fit=crop&q=80"
-              },
-              {
-                dish: "Matcha Cold Foam (Pepita Silk)",
-                author: "Barista Jin T.",
-                kitchen: "Kissa Cloud Studio, Seattle",
-                rating: 5,
-                comment: "The toasted green pumpkin seed foam looks identical to pistachio butter and stays suspended for 15 minutes. Huge hit with patrons!",
-                photo: "https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop&q=80"
-              },
-              ...state.htvSubmissions
-            ].map(item => `
-              <div class="cafe-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between">
-                <div>
-                  <div class="h-36 rounded-2xl overflow-hidden mb-3 relative">
-                    <img src="${item.photo || 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=80'}" alt="Dish" class="w-full h-full object-cover">
-                    <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-black/60 text-white backdrop-blur">
-                      ${item.dish}
-                    </span>
-                    <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-lg text-xs font-black bg-terracotta text-white">
-                      ${'★'.repeat(item.rating || 5)}
-                    </span>
-                  </div>
-
-                  <p class="text-xs text-stone-700 dark:text-slate-300 leading-relaxed font-medium mb-3">
-                    "${item.comment}"
-                  </p>
-                </div>
-                
-                <div class="flex items-center justify-between pt-2 border-t border-beige-100 dark:border-stone-800/60 text-[11px] text-stone-400">
-                  <span class="font-bold text-stone-600 dark:text-slate-300">${item.author} • ${item.kitchen}</span>
-                  <span class="text-sage-600 font-bold flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> HTV Validated</span>
-                </div>
-              </div>
-            `).join('')}
+          <div class="flex items-center justify-between">
+            <h3 class="text-xl font-black text-forest dark:text-ivory flex items-center gap-2">
+              <i class="fa-solid fa-comments text-terracotta"></i>
+              <span>Saved Kitchen Tasting Entries (${submissions.length})</span>
+            </h3>
+            ${submissions.length > 0 ? `
+              <button type="button" id="htv-clear-submissions-btn" class="text-xs font-semibold text-stone-500 hover:text-terracotta cursor-pointer">
+                Clear Log
+              </button>
+            ` : ''}
           </div>
+
+          ${submissions.length === 0 ? `
+            <div class="p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 text-center space-y-3 shadow-sm">
+              <div class="inline-flex w-12 h-12 rounded-2xl bg-sage-100 dark:bg-stone-800 text-sage-700 dark:text-sage-300 items-center justify-center text-xl">
+                <i class="fa-regular fa-clipboard"></i>
+              </div>
+              <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">No Kitchen Trials Logged Yet</h4>
+              <p class="text-xs text-stone-500 max-w-md mx-auto leading-relaxed">
+                This log only displays notes you actually enter—no pre-filled or synthetic reviews are shown. Click "Log Kitchen Tasting Test" above after testing a recipe swap.
+              </p>
+            </div>
+          ` : `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              ${submissions.map(item => `
+                <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div class="h-36 rounded-2xl overflow-hidden mb-3 relative">
+                      <img src="${item.photo || RECIPES_DATA[0].image}" alt="Dish" class="w-full h-full object-cover">
+                      <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-black/60 text-white backdrop-blur">
+                        ${item.dish}
+                      </span>
+                      <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-lg text-xs font-black bg-terracotta text-white">
+                        ${'★'.repeat(item.rating || 5)}${'☆'.repeat(5 - (item.rating || 5))}
+                      </span>
+                    </div>
+
+                    <p class="text-xs text-stone-700 dark:text-stone-300 leading-relaxed font-medium mb-3">
+                      "${item.comment}"
+                    </p>
+                  </div>
+                  
+                  <div class="flex items-center justify-between pt-2 border-t border-beige-100 dark:border-stone-800/60 text-[11px] text-stone-400">
+                    <span class="font-bold text-stone-600 dark:text-stone-300">${item.author} • ${item.kitchen}</span>
+                    <span class="text-sage-600 font-semibold">${item.date || 'Saved locally'}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `}
         </div>
 
       </div>
@@ -1711,10 +1653,17 @@
       submitBox?.classList.add('hidden');
     });
 
+    document.getElementById('htv-clear-submissions-btn')?.addEventListener('click', () => {
+      state.htvSubmissions = [];
+      localStorage.setItem('flavorshift_htv_submissions', '[]');
+      renderHtvView();
+    });
+
     document.getElementById('htv-save-submission-btn')?.addEventListener('click', () => {
-      const author = document.getElementById('htv-input-author').value.trim() || 'Verified Cook';
-      const kitchen = document.getElementById('htv-input-kitchen').value.trim() || 'Artisan Cafe Kitchen';
+      const author = document.getElementById('htv-input-author').value.trim() || 'Home / Line Cook';
+      const kitchen = document.getElementById('htv-input-kitchen').value.trim() || 'Home Kitchen';
       const dish = document.getElementById('htv-input-recipe').value;
+      const rating = parseInt(document.getElementById('htv-input-rating').value, 10) || 5;
       const comment = document.getElementById('htv-input-comment').value.trim();
 
       if (!comment) {
@@ -1722,13 +1671,16 @@
         return;
       }
 
+      const matched = RECIPES_DATA.find(r => r.title === dish);
+
       state.htvSubmissions.unshift({
         dish,
         author,
         kitchen,
-        rating: 5,
+        rating,
         comment,
-        photo: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=80'
+        date: new Date().toLocaleDateString(),
+        photo: matched ? matched.image : RECIPES_DATA[0].image
       });
 
       localStorage.setItem('flavorshift_htv_submissions', JSON.stringify(state.htvSubmissions));
@@ -1737,60 +1689,72 @@
   }
 
   // ========================================================
-  // RENDER: CAFE COST & MARGIN DASHBOARD
+  // RENDER: CAFE COST & MARGIN CALCULATOR
   // ========================================================
   function renderDashboardView() {
     const container = document.getElementById('dashboard-view-container');
     if (!container) return;
 
     const totalRecipes = RECIPES_DATA.length;
-    let avgMargin = 0;
-    let totalBaseCost = 0;
-    let totalRetail = 0;
-    RECIPES_DATA.forEach(r => {
-      avgMargin += calcMargin(r.baseCostPerPerson, r.suggestedRetailPrice);
-      totalBaseCost += r.baseCostPerPerson;
-      totalRetail += r.suggestedRetailPrice;
-    });
-    avgMargin = Math.round(avgMargin / totalRecipes);
+    const totalSwaps = FLAVORSHIFT_SWAP_DATABASE.length;
+    const customRevCount = Object.values(state.customReviews).reduce((acc, list) => acc + list.length, 0);
+    const totalNotesCount = state.htvSubmissions.length + customRevCount;
 
     const selectedCoverRecipe = getComputedRecipe(state.dashboardSelectedRecipeId) || getComputedRecipe('paneer-butter-masala');
-    const coversCount = state.dashboardCovers;
-    const coverFoodCost = (selectedCoverRecipe.costPerPerson * coversCount).toFixed(2);
-    const coverRevenue = (selectedCoverRecipe.suggestedRetailPrice * coversCount).toFixed(2);
-    const coverProfit = (coverRevenue - coverFoodCost).toFixed(2);
-    const shiftSavings = (selectedCoverRecipe.budgetAlternative.savingsPerPerson * coversCount).toFixed(2);
+
+    function computeDashMetrics() {
+      const covers = state.dashboardCovers;
+      const baseCost = parseFloat(state.dashBaseCost);
+      const altCost = parseFloat(state.dashAltCost);
+      const retail = parseFloat(state.dashRetailPrice);
+
+      const validBase = !isNaN(baseCost) && baseCost >= 0 ? baseCost : null;
+      const validAlt = !isNaN(altCost) && altCost >= 0 ? altCost : null;
+      const validRetail = !isNaN(retail) && retail > 0 ? retail : null;
+
+      const baseTotal = validBase !== null ? formatMoney(validBase * covers) : 'Enter cost';
+      const altTotal = validAlt !== null ? formatMoney(validAlt * covers) : 'Enter alt cost';
+      const diffTotal = (validBase !== null && validAlt !== null)
+        ? ((validBase - validAlt) * covers >= 0 ? '+' : '-') + formatMoney(Math.abs((validBase - validAlt) * covers))
+        : '—';
+      const altMargin = (validAlt !== null && validRetail !== null)
+        ? `${calcMargin(validAlt, validRetail)}% margin`
+        : (validBase !== null && validRetail !== null ? `${calcMargin(validBase, validRetail)}% base margin` : 'Enter menu price');
+
+      const revenueTotal = validRetail !== null ? formatMoney(validRetail * covers) : '—';
+
+      return { baseTotal, altTotal, diffTotal, altMargin, revenueTotal, covers };
+    }
+
+    const m = computeDashMetrics();
 
     let html = `
       <div class="space-y-8 animate-fade-up">
         
-        <div class="relative overflow-hidden rounded-3xl p-6 md:p-8 bg-gradient-to-r from-slate-900 via-slate-800 to-amber-950 text-white shadow-xl border border-slate-700">
+        <div class="relative overflow-hidden rounded-3xl p-6 md:p-8 bg-forest dark:bg-[#1A2620] text-ivory shadow-xl border border-beige-200/20">
           <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div class="space-y-2">
               <div class="flex flex-wrap items-center gap-2.5">
-                <span class="px-3 py-1 rounded-full text-xs font-black bg-terracotta/20 text-amber-300 border border-amber-500/40 flex items-center gap-1.5 shadow-sm">
-                  <span class="live-pulse-dot"></span>
-                  <span>FlavorShift AI Culinary Financial Suite</span>
-                </span>
-                <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
-                  Commercial Kitchen Operations
+                <span class="px-3 py-1 rounded-full text-xs font-black bg-ivory/15 text-beige border border-beige-200/30 flex items-center gap-1.5 shadow-sm">
+                  <i class="fa-solid fa-calculator text-terracotta"></i>
+                  <span>User-Driven Cost & Margin Calculator</span>
                 </span>
               </div>
 
-              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black font-heading tracking-tight text-white">
-                Food Cost Savings & Profit Center
+              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black font-heading tracking-tight text-ivory">
+                Kitchen Batch Cost & Margin Simulator
               </h2>
-              <p class="text-slate-300 text-xs sm:text-sm max-w-2xl font-medium leading-relaxed">
-                Track how smart ingredient swaps protect your restaurant margins against wholesale inflation without customer complaints.
+              <p class="text-ivory/80 text-xs sm:text-sm max-w-2xl font-medium leading-relaxed">
+                Enter your own supplier costs per portion and menu price to calculate batch totals and gross margins across 5–200 covers.
               </p>
             </div>
 
             <div class="flex flex-wrap items-center gap-2.5 shrink-0">
-              <button type="button" id="dash-quick-pantry-btn" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur transition-all cursor-pointer flex items-center gap-2 shadow-sm">
-                <i class="fa-solid fa-boxes-stacked text-amber-400"></i>
+              <button type="button" id="dash-quick-pantry-btn" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-ivory border border-white/20 backdrop-blur transition-all cursor-pointer flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-boxes-stacked text-terracotta"></i>
                 <span>Pantry Stock</span>
               </button>
-              <button type="button" id="dash-launch-slides-btn" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500 to-flame text-white shadow-lg transition-all cursor-pointer flex items-center gap-2">
+              <button type="button" id="dash-launch-slides-btn" class="px-4 py-2.5 rounded-xl text-xs font-bold terracotta-btn text-white shadow-lg transition-all cursor-pointer flex items-center gap-2">
                 <i class="fa-solid fa-lightbulb"></i>
                 <span>Design Thinking Deck</span>
               </button>
@@ -1798,85 +1762,83 @@
           </div>
         </div>
 
-        <!-- 4 KPI Cards -->
+        <!-- 4 Factual Summary Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between">
+          <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between rounded-3xl">
             <div>
               <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Gross Profit Margin</span>
+                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Catalog Recipes</span>
                 <span class="w-10 h-10 rounded-2xl bg-forest/15 text-sage-700 dark:text-sage-400 flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-chart-pie"></i>
+                  <i class="fa-solid fa-utensils"></i>
                 </span>
               </div>
-              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">${avgMargin}%</span>
+              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">${totalRecipes}</span>
             </div>
             <div class="pt-3 border-t border-beige-100 dark:border-stone-800">
-              <span class="text-[11px] text-sage-700 dark:text-sage-400 font-bold flex items-center gap-1">
-                <i class="fa-solid fa-arrow-trend-up"></i> +14.8% above industry average
-              </span>
+              <span class="text-[11px] text-sage-700 dark:text-sage-400 font-bold">Dishes available in menu library</span>
             </div>
           </div>
 
-          <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between">
+          <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between rounded-3xl">
             <div>
               <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Monthly Swaps Saved</span>
+                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Swap Profiles</span>
                 <span class="w-10 h-10 rounded-2xl bg-terracotta/15 text-terracotta flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-piggy-bank"></i>
+                  <i class="fa-solid fa-flask-vial"></i>
                 </span>
               </div>
-              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">$1,420<span class="text-sm font-semibold text-stone-400">/mo</span></span>
+              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">${totalSwaps}</span>
             </div>
             <div class="pt-3 border-t border-beige-100 dark:border-stone-800">
-              <span class="text-[11px] text-terracotta font-bold">Paneer & Pasta Cream Swaps: +$680</span>
+              <span class="text-[11px] text-terracotta font-bold">Target ingredients in Swap Lab</span>
             </div>
           </div>
 
-          <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between">
+          <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between rounded-3xl">
             <div>
               <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Fit-Bistro Uptake</span>
-                <span class="w-10 h-10 rounded-2xl bg-rose-500/15 text-rose-600 flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-fire"></i>
+                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Saved Notes</span>
+                <span class="w-10 h-10 rounded-2xl bg-sage-100 dark:bg-stone-800 text-sage-700 dark:text-sage-300 flex items-center justify-center font-bold">
+                  <i class="fa-solid fa-clipboard-list"></i>
                 </span>
               </div>
-              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">+42.5%</span>
+              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">${totalNotesCount}</span>
             </div>
             <div class="pt-3 border-t border-beige-100 dark:border-stone-800">
-              <span class="text-[11px] text-rose-600 font-bold">Low-Calorie orders surging</span>
+              <span class="text-[11px] text-stone-500 font-bold">User notes stored in browser</span>
             </div>
           </div>
 
-          <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between">
+          <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between rounded-3xl">
             <div>
               <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">HTV Agreement Rate</span>
-                <span class="w-10 h-10 rounded-2xl bg-indigo-500/15 text-indigo-600 flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-award"></i>
+                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Slider Range</span>
+                <span class="w-10 h-10 rounded-2xl bg-peach/50 text-terracotta flex items-center justify-center font-bold">
+                  <i class="fa-solid fa-sliders"></i>
                 </span>
               </div>
-              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">98.2%</span>
+              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">5–200</span>
             </div>
             <div class="pt-3 border-t border-beige-100 dark:border-stone-800">
-              <span class="text-[11px] text-indigo-500 font-bold">580+ kitchen validations</span>
+              <span class="text-[11px] text-stone-500 font-bold">Covers supported in calculator below</span>
             </div>
           </div>
         </div>
 
-        <!-- Shift Scaler -->
+        <!-- Interactive Calculator -->
         <div class="p-6 md:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-6">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <span class="text-xs font-black uppercase tracking-wider text-terracotta">Live Kitchen Prep Tool</span>
+              <span class="text-xs font-black uppercase tracking-wider text-terracotta">Kitchen Batch Calculator</span>
               <h3 class="text-xl font-black text-forest dark:text-ivory flex items-center gap-2">
                 <i class="fa-solid fa-calculator text-terracotta"></i>
-                <span>Daily Shift Covers Batch Scaler & Revenue Simulator</span>
+                <span>Custom Covers Cost & Margin Simulator</span>
               </h3>
-              <p class="text-xs text-stone-500">Simulate wholesale ingredient cost and profits across guest counts</p>
+              <p class="text-xs text-stone-500">Calculations update strictly from the values you enter below (zero pre-filled mock prices)</p>
             </div>
 
             <div class="flex items-center gap-2">
-              <select id="dash-cover-recipe-select" class="px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 dark:border-stone-800 bg-ivory dark:bg-[#181410] font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer shadow-sm">
+              <select id="dash-cover-recipe-select" class="px-3.5 py-2.5 text-xs rounded-xl border border-beige-200 dark:border-stone-800 bg-ivory dark:bg-[#181410] font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer shadow-sm">
                 ${RECIPES_DATA.map(r => `
                   <option value="${r.id}" ${r.id === state.dashboardSelectedRecipeId ? 'selected' : ''}>
                     ${r.title}
@@ -1886,11 +1848,27 @@
             </div>
           </div>
 
+          <!-- User Pricing Inputs -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+            <div>
+              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Standard Cost / Portion ($)</label>
+              <input type="number" step="0.01" min="0" id="dash-base-cost-input" value="${state.dashBaseCost}" placeholder="e.g. 2.50" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
+            </div>
+            <div>
+              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Swapped Cost / Portion ($)</label>
+              <input type="number" step="0.01" min="0" id="dash-alt-cost-input" value="${state.dashAltCost}" placeholder="e.g. 1.75" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
+            </div>
+            <div>
+              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Menu Price / Portion ($)</label>
+              <input type="number" step="0.01" min="0" id="dash-retail-price-input" value="${state.dashRetailPrice}" placeholder="e.g. 9.00" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
+            </div>
+          </div>
+
           <div class="p-5 rounded-2xl bg-ivory dark:bg-[#181410]/60 border border-beige-200 dark:border-stone-800 space-y-4">
             <div class="flex items-center justify-between">
-              <span class="text-sm font-bold text-stone-700 dark:text-slate-300">Target Shift Covers:</span>
+              <span class="text-sm font-bold text-stone-700 dark:text-stone-300">Target Shift Covers (${selectedCoverRecipe.title}):</span>
               <span class="text-2xl font-black text-terracotta font-heading" id="dash-covers-display">
-                ${state.dashboardCovers} Persons
+                ${m.covers} Persons
               </span>
             </div>
             
@@ -1901,33 +1879,33 @@
               max="200" 
               step="5" 
               value="${state.dashboardCovers}"
-              class="w-full accent-flame cursor-pointer"
+              class="w-full accent-terracotta cursor-pointer"
             >
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-            <div class="p-5 rounded-2xl bg-peach/30 dark:bg-amber-950/30 border border-peach dark:border-amber-900">
-              <span class="block text-xs text-amber-800 dark:text-amber-300 font-bold uppercase">Wholesale Cost</span>
-              <span class="text-2xl font-black text-forest dark:text-ivory my-1">${formatMoney(coverFoodCost)}</span>
-              <span class="block text-xs text-stone-500">${formatMoney(selectedCoverRecipe.costPerPerson)}/cover</span>
+            <div class="p-5 rounded-2xl bg-peach/30 dark:bg-stone-900 border border-peach dark:border-stone-800">
+              <span class="block text-xs text-terracotta font-bold uppercase">Standard Batch Cost</span>
+              <span id="dash-out-base-total" class="block text-2xl font-black text-forest dark:text-ivory my-1">${m.baseTotal}</span>
+              <span class="block text-xs text-stone-500">Based on your standard cost</span>
             </div>
 
-            <div class="p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900">
-              <span class="block text-xs text-emerald-800 dark:text-emerald-300 font-bold uppercase">Gross Revenue</span>
-              <span class="text-2xl font-black text-sage-700 dark:text-sage-400 dark:text-emerald-400 my-1">${formatMoney(coverRevenue)}</span>
-              <span class="block text-xs text-sage-700 dark:text-sage-400 font-bold">${formatMoney(selectedCoverRecipe.suggestedRetailPrice)} ticket</span>
+            <div class="p-5 rounded-2xl bg-sage-50 dark:bg-stone-900 border border-sage-200 dark:border-stone-800">
+              <span class="block text-xs text-sage-700 dark:text-sage-300 font-bold uppercase">Swapped Batch Cost</span>
+              <span id="dash-out-alt-total" class="block text-2xl font-black text-forest dark:text-ivory my-1">${m.altTotal}</span>
+              <span class="block text-xs text-stone-500">Based on your alt cost</span>
             </div>
 
-            <div class="p-5 rounded-2xl bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900">
-              <span class="block text-xs text-indigo-800 dark:text-indigo-300 font-bold uppercase">Kitchen Profit</span>
-              <span class="text-2xl font-black text-indigo-600 dark:text-indigo-400 my-1">${formatMoney(coverProfit)}</span>
-              <span class="block text-xs text-indigo-600 font-bold">${selectedCoverRecipe.marginPercent}% margin</span>
+            <div class="p-5 rounded-2xl bg-beige/40 dark:bg-stone-900 border border-beige-300 dark:border-stone-800">
+              <span class="block text-xs text-espresso dark:text-beige font-bold uppercase">Gross Revenue</span>
+              <span id="dash-out-revenue" class="block text-2xl font-black text-forest dark:text-ivory my-1">${m.revenueTotal}</span>
+              <span id="dash-out-margin" class="block text-xs text-sage-700 dark:text-sage-400 font-bold">${m.altMargin}</span>
             </div>
 
-            <div class="p-5 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900">
-              <span class="block text-xs text-rose-800 dark:text-rose-300 font-bold uppercase">Shift Swap Savings</span>
-              <span class="text-2xl font-black text-rose-600 dark:text-rose-400 my-1">+$${shiftSavings}</span>
-              <span class="block text-xs text-rose-600 font-bold">Via AI Alternative</span>
+            <div class="p-5 rounded-2xl bg-peach/40 dark:bg-stone-900 border border-terracotta/30 dark:border-stone-800">
+              <span class="block text-xs text-terracotta font-bold uppercase">Net Cost Difference</span>
+              <span id="dash-out-savings" class="block text-2xl font-black text-terracotta my-1">${m.diffTotal}</span>
+              <span class="block text-xs text-stone-500">Across selected covers</span>
             </div>
           </div>
         </div>
@@ -1936,6 +1914,17 @@
     `;
 
     container.innerHTML = html;
+
+    function refreshDashNumbers() {
+      const updated = computeDashMetrics();
+      const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setTxt('dash-covers-display', `${updated.covers} Persons`);
+      setTxt('dash-out-base-total', updated.baseTotal);
+      setTxt('dash-out-alt-total', updated.altTotal);
+      setTxt('dash-out-revenue', updated.revenueTotal);
+      setTxt('dash-out-margin', updated.altMargin);
+      setTxt('dash-out-savings', updated.diffTotal);
+    }
 
     document.getElementById('dash-quick-pantry-btn')?.addEventListener('click', () => {
       switchTab('explore');
@@ -1951,14 +1940,25 @@
       renderDashboardView();
     });
 
+    document.getElementById('dash-base-cost-input')?.addEventListener('input', (e) => {
+      state.dashBaseCost = e.target.value;
+      refreshDashNumbers();
+    });
+
+    document.getElementById('dash-alt-cost-input')?.addEventListener('input', (e) => {
+      state.dashAltCost = e.target.value;
+      refreshDashNumbers();
+    });
+
+    document.getElementById('dash-retail-price-input')?.addEventListener('input', (e) => {
+      state.dashRetailPrice = e.target.value;
+      refreshDashNumbers();
+    });
+
     const coverSlider = document.getElementById('dash-covers-slider');
     coverSlider?.addEventListener('input', (e) => {
       state.dashboardCovers = parseInt(e.target.value, 10);
-      document.getElementById('dash-covers-display').textContent = `${state.dashboardCovers} Persons`;
-    });
-
-    coverSlider?.addEventListener('change', () => {
-      renderDashboardView();
+      refreshDashNumbers();
     });
   }
 
@@ -1977,28 +1977,28 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-beige-200 dark:border-stone-800 pb-4">
           <div>
             <div class="flex items-center gap-2 mb-1">
-              <span class="px-3 py-0.5 rounded-full text-xs font-black bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/30">
+              <span class="px-3 py-0.5 rounded-full text-xs font-black bg-peach/40 text-terracotta border border-terracotta/30">
                 Design Thinking Deck
               </span>
-              <span class="text-xs text-stone-400 font-semibold">FlavorShift AI Innovation Process</span>
+              <span class="text-xs text-stone-400 font-semibold">FlavorShift Product Workflow</span>
             </div>
             <h2 class="text-2xl md:text-3xl font-black text-forest dark:text-ivory">
               Designing FlavorShift AI
             </h2>
             <p class="text-xs text-stone-500">
-              5-Stage Design Thinking process tackling missing ingredient substitution, conversion ratios & Human Taste Validation.
+              5-Stage Design Thinking overview covering culinary substitution workflows and local user feedback.
             </p>
           </div>
 
           <div class="flex items-center gap-2">
-            <button type="button" id="slide-prev-btn" class="w-10 h-10 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 hover:border-terracotta flex items-center justify-center font-bold text-stone-700 dark:text-slate-300 transition-all cursor-pointer ${state.currentSlideIndex === 0 ? 'opacity-40 cursor-not-allowed' : ''}" ${state.currentSlideIndex === 0 ? 'disabled' : ''}>
+            <button type="button" id="slide-prev-btn" class="w-10 h-10 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 hover:border-terracotta flex items-center justify-center font-bold text-stone-700 dark:text-stone-300 transition-all cursor-pointer ${state.currentSlideIndex === 0 ? 'opacity-40 cursor-not-allowed' : ''}" ${state.currentSlideIndex === 0 ? 'disabled' : ''}>
               <i class="fa-solid fa-chevron-left"></i>
             </button>
-            <button type="button" id="slide-autoplay-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${state.slideAutoplay ? 'bg-terracotta text-white' : 'bg-white dark:bg-[#1f1a16] border-beige-200 dark:border-stone-800 text-stone-700 dark:text-slate-300'}">
+            <button type="button" id="slide-autoplay-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${state.slideAutoplay ? 'bg-terracotta text-white' : 'bg-white dark:bg-[#1f1a16] border-beige-200 dark:border-stone-800 text-stone-700 dark:text-stone-300'}">
               <i class="fa-solid ${state.slideAutoplay ? 'fa-pause' : 'fa-play'}"></i>
               <span>${state.slideAutoplay ? 'Pause' : 'Autoplay'}</span>
             </button>
-            <button type="button" id="slide-next-btn" class="w-10 h-10 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 hover:border-terracotta flex items-center justify-center font-bold text-stone-700 dark:text-slate-300 transition-all cursor-pointer ${state.currentSlideIndex === totalSlides - 1 ? 'opacity-40 cursor-not-allowed' : ''}" ${state.currentSlideIndex === totalSlides - 1 ? 'disabled' : ''}>
+            <button type="button" id="slide-next-btn" class="w-10 h-10 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 hover:border-terracotta flex items-center justify-center font-bold text-stone-700 dark:text-stone-300 transition-all cursor-pointer ${state.currentSlideIndex === totalSlides - 1 ? 'opacity-40 cursor-not-allowed' : ''}" ${state.currentSlideIndex === totalSlides - 1 ? 'disabled' : ''}>
               <i class="fa-solid fa-chevron-right"></i>
             </button>
           </div>
@@ -2006,16 +2006,16 @@
 
         <div class="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
           ${DESIGN_THINKING_SLIDES.map((s, idx) => `
-            <button type="button" data-jump-slide="${idx}" class="px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border ${idx === state.currentSlideIndex ? 'bg-slate-900 dark:bg-white text-white dark:text-forest border-transparent shadow-sm' : 'bg-white dark:bg-[#1f1a16] text-stone-600 dark:text-stone-400 border-beige-200 dark:border-stone-800'}">
+            <button type="button" data-jump-slide="${idx}" class="px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border ${idx === state.currentSlideIndex ? 'bg-forest dark:bg-ivory text-ivory dark:text-forest border-transparent shadow-sm' : 'bg-white dark:bg-[#1f1a16] text-stone-600 dark:text-stone-400 border-beige-200 dark:border-stone-800'}">
               ${s.stage}
             </button>
           `).join('')}
         </div>
 
-        <div class="cafe-card bg-white dark:bg-[#1f1a16]/95 border border-beige-200 dark:border-stone-800 rounded-3xl p-6 md:p-10 shadow-xl relative min-h-[460px] flex flex-col justify-between">
+        <div class="editorial-card bg-white dark:bg-[#1f1a16]/95 border border-beige-200 dark:border-stone-800 rounded-3xl p-6 md:p-10 shadow-xl relative min-h-[460px] flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4">
-              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-flame text-white shadow-sm">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider terracotta-btn text-white shadow-sm">
                 ${currentSlide.badge}
               </span>
               <span class="text-xs font-black text-stone-400">
@@ -2026,7 +2026,7 @@
             <h3 class="text-2xl md:text-3xl font-black text-forest dark:text-ivory mb-2 leading-tight">
               ${currentSlide.title}
             </h3>
-            <p class="text-stone-500 dark:text-slate-300 text-sm mb-8 leading-relaxed max-w-3xl">
+            <p class="text-stone-500 dark:text-stone-300 text-sm mb-8 leading-relaxed max-w-3xl">
               ${currentSlide.subtitle}
             </p>
 
@@ -2037,7 +2037,7 @@
                     <i class="fa-solid fa-circle-check text-terracotta text-xs"></i>
                     <span>${pt.title}</span>
                   </div>
-                  <p class="text-xs text-stone-600 dark:text-slate-300 leading-relaxed font-medium">
+                  <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-medium">
                     ${pt.desc}
                   </p>
                 </div>
@@ -2053,7 +2053,7 @@
 
             <div class="flex items-center gap-1.5">
               ${DESIGN_THINKING_SLIDES.map((_, i) => `
-                <span data-jump-slide="${i}" class="w-3 h-3 rounded-full transition-all cursor-pointer ${i === state.currentSlideIndex ? 'bg-terracotta w-6' : 'bg-slate-300 dark:bg-stone-800'}"></span>
+                <span data-jump-slide="${i}" class="w-3 h-3 rounded-full transition-all cursor-pointer ${i === state.currentSlideIndex ? 'bg-terracotta w-6' : 'bg-beige-300 dark:bg-stone-800'}"></span>
               `).join('')}
             </div>
           </div>
@@ -2139,13 +2139,13 @@
         <div class="flex items-center justify-between border-b border-beige-200 dark:border-stone-800 pb-4">
           <div>
             <h2 class="text-2xl font-black text-forest dark:text-ivory">Saved Recipes (${favList.length})</h2>
-            <p class="text-xs text-stone-500">Quick-access recipes with FlavorShift AI alternatives</p>
+            <p class="text-xs text-stone-500">Quick-access recipes with culinary swap options</p>
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           ${favList.map(recipe => `
-            <div class="cafe-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-3xl flex flex-col justify-between">
+            <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-3xl flex flex-col justify-between">
               <div>
                 <div class="h-44 rounded-2xl overflow-hidden mb-3 relative">
                   <img src="${recipe.image}" alt="${recipe.title}" class="w-full h-full object-cover">
@@ -2161,7 +2161,7 @@
               </div>
 
               <div class="pt-3 border-t border-beige-100 dark:border-stone-800 flex items-center justify-between">
-                <span class="font-black text-forest dark:text-ivory">${formatMoney(recipe.baseCostPerPerson)}/person</span>
+                <span class="font-bold text-xs text-stone-600 dark:text-stone-300">${recipe.prepTime} • ${recipe.ingredients.length} ingredients</span>
                 <button type="button" data-open-recipe="${recipe.id}" class="px-4 py-2 rounded-xl text-xs font-bold bg-terracotta text-white hover:bg-terracotta-600 transition-all cursor-pointer">
                   Open Recipe
                 </button>
@@ -2230,11 +2230,11 @@
         <!-- Modal Top Bar -->
         <div class="sticky top-0 z-30 bg-white/95 dark:bg-[#181410]/95 backdrop-blur border-b border-beige-200 dark:border-stone-800 px-6 py-4 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-terracotta/15 text-terracotta dark:text-amber-400 border border-amber-500/30">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-terracotta/15 text-terracotta dark:text-amber-400 border border-terracotta/30">
               ${cRec.category}
             </span>
-            <span class="text-xs text-sage-700 dark:text-sage-400 dark:text-emerald-400 font-bold flex items-center gap-1">
-              <i class="fa-solid fa-check-double"></i> HTV Validated (${cRec.rating} ★)
+            <span class="text-xs text-sage-700 dark:text-sage-400 font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-kitchen-set"></i> ${cRec.difficulty} • ${cRec.prepTime} prep${cRec.allReviews.length > 0 ? ` • ${cRec.allReviews.length} note${cRec.allReviews.length === 1 ? '' : 's'}` : ''}
             </span>
           </div>
           
@@ -2275,16 +2275,10 @@
           <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
             <div class="md:col-span-5 h-64 md:h-72 rounded-3xl overflow-hidden shadow-lg relative">
               <img src="${cRec.image}" alt="${cRec.title}" class="w-full h-full object-cover">
-              ${cRec.isMostSearched ? `
-                <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-black terracotta-btn text-white shadow-lg flex items-center gap-1.5">
-                  <i class="fa-solid fa-fire text-amber-200"></i> Top Pick
-                </span>
-              ` : ''}
               <div class="absolute bottom-3 left-3 right-3 bg-black/60 backdrop-blur-md rounded-2xl p-2.5 text-white flex items-center justify-between text-xs">
                 <div class="flex items-center gap-1.5">
-                  <i class="fa-solid fa-star text-amber-400"></i>
-                  <span class="font-bold text-sm">${cRec.rating}</span>
-                  <span class="text-white/70">(${cRec.allReviews.length} reviews)</span>
+                  <i class="fa-solid fa-star text-terracotta"></i>
+                  <span class="font-bold text-xs">${cRec.avgUserRating ? `${cRec.avgUserRating} ★ (${cRec.allReviews.length} user)` : 'No user ratings yet'}</span>
                 </div>
                 <div class="flex items-center gap-2">
                   <span><i class="fa-regular fa-clock mr-1"></i>${cRec.prepTime}</span>
@@ -2314,26 +2308,26 @@
                 </div>
               </div>
 
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-peach/30/70 dark:bg-amber-950/20 border border-peach dark:border-amber-900/50">
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-peach/30 dark:bg-stone-900/60 border border-beige-200 dark:border-stone-800">
                 <div>
-                  <span class="block text-[10px] text-amber-800 dark:text-amber-300 font-bold uppercase tracking-wider">Batch Cost</span>
-                  <span class="text-lg font-black text-forest dark:text-ivory">${formatMoney(cRec.totalBatchCost)}</span>
-                  <span class="block text-[11px] text-stone-500">${formatMoney(cRec.costPerPerson)}/person</span>
+                  <span class="block text-[10px] text-stone-500 dark:text-stone-400 font-bold uppercase tracking-wider">Prep Time</span>
+                  <span class="text-lg font-black text-forest dark:text-ivory">${cRec.prepTime}</span>
+                  <span class="block text-[11px] text-stone-500 dark:text-stone-400">Active prep</span>
                 </div>
                 <div>
-                  <span class="block text-[10px] text-amber-800 dark:text-amber-300 font-bold uppercase tracking-wider">Menu Retail</span>
-                  <span class="text-lg font-black text-sage-700 dark:text-sage-400 dark:text-emerald-400">${formatMoney(cRec.suggestedRetailTotal)}</span>
-                  <span class="block text-[11px] text-sage-700 dark:text-sage-400">${formatMoney(cRec.suggestedRetailPrice)}/person</span>
+                  <span class="block text-[10px] text-stone-500 dark:text-stone-400 font-bold uppercase tracking-wider">Cook Time</span>
+                  <span class="text-lg font-black text-terracotta">${cRec.cookTime}</span>
+                  <span class="block text-[11px] text-stone-500 dark:text-stone-400">${cRec.difficulty}</span>
                 </div>
                 <div>
-                  <span class="block text-[10px] text-amber-800 dark:text-amber-300 font-bold uppercase tracking-wider">Gross Profit</span>
-                  <span class="text-lg font-black text-forest dark:text-ivory">${formatMoney(cRec.totalBatchProfit)}</span>
-                  <span class="block text-[11px] text-sage-700 dark:text-sage-400 font-bold">${cRec.marginPercent}% Margin</span>
+                  <span class="block text-[10px] text-stone-500 dark:text-stone-400 font-bold uppercase tracking-wider">Batch Size</span>
+                  <span class="text-lg font-black text-forest dark:text-ivory">${cRec.persons} ${cRec.persons === 1 ? 'cover' : 'covers'}</span>
+                  <span class="block text-[11px] text-stone-500 dark:text-stone-400">Scaled live</span>
                 </div>
                 <div>
-                  <span class="block text-[10px] text-amber-800 dark:text-amber-300 font-bold uppercase tracking-wider">Total Calories</span>
-                  <span class="text-lg font-black text-rose-500">${cRec.totalBatchCalories}</span>
-                  <span class="block text-[11px] text-stone-500">${cRec.caloriesPerPerson} kcal/pers</span>
+                  <span class="block text-[10px] text-stone-500 dark:text-stone-400 font-bold uppercase tracking-wider">Ingredients</span>
+                  <span class="text-lg font-black text-sage-700 dark:text-sage-400">${cRec.ingredients.length} items</span>
+                  <span class="block text-[11px] text-stone-500 dark:text-stone-400">${cRec.appliedSwaps.length} active swap${cRec.appliedSwaps.length === 1 ? '' : 's'}</span>
                 </div>
               </div>
             </div>
@@ -2373,32 +2367,26 @@
                   id="toggle-budget-mode"
                   class="px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
                     rState.budgetMode 
-                      ? 'bg-terracotta text-white border-amber-600 shadow-sm' 
+                      ? 'bg-terracotta text-white border-terracotta shadow-sm' 
                       : 'bg-white dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-stone-700 dark:text-slate-300 hover:border-terracotta'
                   }"
                 >
-                  <i class="fa-solid fa-arrows-rotate ${rState.budgetMode ? 'text-amber-200' : 'text-terracotta'}"></i>
-                  <span>💡 FlavorShift AI Swap</span>
-                  <span class="text-[10px] px-1.5 py-0.5 rounded-full ${rState.budgetMode ? 'bg-amber-700 text-white' : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'} font-black">
-                    ${cRec.budgetAlternative.savingsPercent}
-                  </span>
+                  <i class="fa-solid fa-arrows-rotate ${rState.budgetMode ? 'text-peach' : 'text-terracotta'}"></i>
+                  <span>💡 Budget Swap</span>
                 </button>
 
-                <!-- Toggle 2: Calorie Cutter Alternative -->
+                <!-- Toggle 2: Lighter Ingredient Alternative -->
                 <button 
                   type="button"
                   id="toggle-calorie-mode"
                   class="px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
                     rState.calorieMode 
-                      ? 'bg-rose-500 text-white border-rose-600 shadow-sm' 
-                      : 'bg-white dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-stone-700 dark:text-slate-300 hover:border-rose-400'
+                      ? 'bg-sage-600 text-white border-sage-700 shadow-sm' 
+                      : 'bg-white dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-stone-700 dark:text-slate-300 hover:border-sage-500'
                   }"
                 >
-                  <i class="fa-solid fa-fire-flame-simple ${rState.calorieMode ? 'text-rose-200' : 'text-rose-500'}"></i>
-                  <span>🥗 Calorie Cutter Mode</span>
-                  <span class="text-[10px] px-1.5 py-0.5 rounded-full ${rState.calorieMode ? 'bg-rose-700 text-white' : 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'} font-black">
-                    ${cRec.calorieAlternative.caloriePercent}
-                  </span>
+                  <i class="fa-solid fa-feather-pointed ${rState.calorieMode ? 'text-beige-100' : 'text-sage-600'}"></i>
+                  <span>🥗 Lighter Swap</span>
                 </button>
 
                 <!-- Toggle 3: Vegan Option -->
@@ -2408,12 +2396,12 @@
                     id="toggle-vegan-mode"
                     class="px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
                       rState.veganMode 
-                        ? 'bg-forest-600 text-white border-emerald-700 shadow-sm' 
-                        : 'bg-white dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-stone-700 dark:text-slate-300 hover:border-emerald-400'
+                        ? 'bg-forest text-white border-forest shadow-sm' 
+                        : 'bg-white dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-stone-700 dark:text-slate-300 hover:border-forest'
                     }"
                   >
-                    <i class="fa-solid fa-leaf ${rState.veganMode ? 'text-emerald-200' : 'text-sage-600'}"></i>
-                    <span>🌱 100% Plant-Based</span>
+                    <i class="fa-solid fa-leaf ${rState.veganMode ? 'text-sage-200' : 'text-sage-600'}"></i>
+                    <span>🌱 Plant-Based</span>
                   </button>
                 ` : ''}
               </div>
@@ -2426,20 +2414,13 @@
                 ${cRec.appliedSwaps.map(sw => `
                   <div class="p-3 rounded-xl text-xs ${
                     sw.type === 'budget' 
-                      ? 'bg-amber-100/70 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200 border border-amber-300 dark:border-amber-800' 
-                      : 'bg-rose-100/70 text-rose-900 dark:bg-rose-950/40 dark:text-rose-200 border border-rose-300 dark:border-rose-800'
+                      ? 'bg-peach/40 text-espresso dark:bg-amber-950/40 dark:text-amber-200 border border-terracotta/40' 
+                      : 'bg-sage-100/70 text-forest dark:bg-emerald-950/40 dark:text-emerald-200 border border-sage-400/50'
                   } flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                       <span class="font-black mr-2">${sw.badge}:</span>
                       <span>${sw.description}</span>
                     </div>
-                    ${sw.savings ? `
-                      <span class="px-2 py-0.5 rounded font-black whitespace-nowrap ${
-                        sw.type === 'budget' ? 'bg-amber-600 text-white' : 'bg-rose-600 text-white'
-                      }">
-                        ${sw.savings}
-                      </span>
-                    ` : ''}
                   </div>
                 `).join('')}
               </div>
@@ -2460,7 +2441,7 @@
                 </h3>
               </div>
               <div class="text-xs text-stone-500">
-                Total Ingredient Cost: <span class="font-extrabold text-forest dark:text-ivory">${formatMoney(cRec.totalBatchCost)}</span>
+                Scaled automatically for <span class="font-extrabold text-forest dark:text-ivory">${cRec.persons} ${cRec.persons === 1 ? 'cover' : 'covers'}</span>
               </div>
             </div>
 
@@ -2489,11 +2470,6 @@
                           💡 ${ing.swapReason}
                         </div>
                       ` : ''}
-                      ${ing.calSaved ? `
-                        <div class="text-[11px] text-rose-600 dark:text-rose-400 font-bold">
-                          🥗 Low-Calorie Swap (${ing.calSaved})
-                        </div>
-                      ` : ''}
                       <div class="text-[11px] text-stone-400">
                         Category: ${ing.category}
                       </div>
@@ -2503,9 +2479,6 @@
                   <div class="text-right shrink-0">
                     <div class="text-sm font-black text-terracotta dark:text-amber-400">
                       ${ing.scaledQty} <span class="text-xs font-semibold text-stone-500">${ing.displayUnit}</span>
-                    </div>
-                    <div class="text-[11px] text-stone-400">
-                      ${formatMoney(ing.totalItemCost)}
                     </div>
                   </div>
                 </div>
@@ -2533,7 +2506,7 @@
             <div class="space-y-3">
               ${cRec.steps.map((step, idx) => `
                 <div class="p-4 rounded-2xl bg-white dark:bg-[#1f1a16]/90 border border-beige-200 dark:border-stone-800/80 shadow-sm flex items-start gap-4">
-                  <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 to-flame text-white font-black text-sm flex items-center justify-center shrink-0 shadow-sm">
+                  <span class="w-8 h-8 rounded-xl terracotta-btn text-white font-black text-sm flex items-center justify-center shrink-0 shadow-sm">
                     ${idx + 1}
                   </span>
                   <div class="flex-1 text-sm text-espresso dark:text-slate-200 leading-relaxed font-medium">
@@ -2544,47 +2517,15 @@
             </div>
           </div>
 
-          <!-- Nutrition & Calorie Breakdown -->
-          <div class="p-6 rounded-2xl bg-ivory dark:bg-[#1f1a16]/50 border border-beige-200 dark:border-stone-800 space-y-4">
-            <div class="flex items-center justify-between">
-              <h4 class="font-bold text-forest dark:text-ivory flex items-center gap-2">
-                <i class="fa-solid fa-chart-pie text-rose-500"></i>
-                <span>Nutritional Profile & Macro Tracker (Per Person)</span>
-              </h4>
-              <span class="text-xs font-bold px-2.5 py-1 rounded-md bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300">
-                ${cRec.caloriesPerPerson} kcal / serving
-              </span>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-              <div class="p-3 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800">
-                <span class="block text-[11px] text-stone-400 font-bold uppercase">Protein</span>
-                <span class="text-lg font-black text-forest dark:text-ivory">${cRec.macros.protein}g</span>
-              </div>
-              <div class="p-3 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800">
-                <span class="block text-[11px] text-stone-400 font-bold uppercase">Carbs</span>
-                <span class="text-lg font-black text-forest dark:text-ivory">${cRec.macros.carbs}g</span>
-              </div>
-              <div class="p-3 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800">
-                <span class="block text-[11px] text-stone-400 font-bold uppercase">Healthy Fats</span>
-                <span class="text-lg font-black text-forest dark:text-ivory">${cRec.macros.fat}g</span>
-              </div>
-              <div class="p-3 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800">
-                <span class="block text-[11px] text-stone-400 font-bold uppercase">Fiber</span>
-                <span class="text-lg font-black text-forest dark:text-ivory">${cRec.macros.fiber}g</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Human Taste Validation & Reviews -->
+          <!-- Kitchen Tasting Notes & Local Feedback -->
           <div class="space-y-6 pt-4 border-t border-beige-200 dark:border-stone-800">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h4 class="text-lg font-black text-forest dark:text-ivory flex items-center gap-2">
-                  <i class="fa-solid fa-award text-sage-600"></i>
-                  <span>Human Taste Validation & Community Feedback (${cRec.allReviews.length})</span>
+                  <i class="fa-solid fa-clipboard-check text-sage-600"></i>
+                  <span>Kitchen Tasting Notes & Feedback (${cRec.allReviews.length})</span>
                 </h4>
-                <p class="text-xs text-stone-500">Real feedback from verified cooks & restaurant patrons</p>
+                <p class="text-xs text-stone-500">Notes recorded locally in this browser for recipe testing</p>
               </div>
 
               <button 
@@ -2593,88 +2534,94 @@
                 class="px-4 py-2 rounded-xl text-xs font-bold bg-terracotta hover:bg-terracotta-600 text-white shadow-sm flex items-center gap-1.5 transition-all cursor-pointer self-start sm:self-auto"
               >
                 <i class="fa-solid fa-pen-to-square"></i>
-                <span>Submit Taste Validation Test</span>
+                <span>Add Tasting Note</span>
               </button>
             </div>
 
             <!-- Review Submission Form -->
-            <div id="write-review-form-container" class="hidden p-5 rounded-2xl bg-peach/30/60 dark:bg-amber-950/20 border border-peach dark:border-amber-900/60 space-y-4">
-              <h5 class="font-bold text-sm text-forest dark:text-ivory">Submit Kitchen Validation Test</h5>
+            <div id="write-review-form-container" class="hidden p-5 rounded-2xl bg-peach/30 dark:bg-amber-950/20 border border-peach dark:border-amber-900/60 space-y-4">
+              <h5 class="font-bold text-sm text-forest dark:text-ivory">Add Kitchen Tasting Note</h5>
               
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-xs font-bold text-stone-600 dark:text-slate-300 mb-1">Your Name / Title</label>
-                  <input type="text" id="review-author" placeholder="e.g. Chef / Home Cook" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-stone-800 bg-white dark:bg-[#181410] focus:outline-none focus:border-terracotta">
+                  <label class="block text-xs font-bold text-stone-600 dark:text-slate-300 mb-1">Your Name / Role</label>
+                  <input type="text" id="review-author" placeholder="e.g. Chef / Home Cook" class="w-full px-3 py-2 text-xs rounded-xl border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#181410] focus:outline-none focus:border-terracotta">
                 </div>
                 <div>
-                  <label class="block text-xs font-bold text-stone-600 dark:text-slate-300 mb-1">Kitchen / Restaurant Name & City</label>
-                  <input type="text" id="review-cafename" placeholder="e.g. Saffron Bistro, Delhi" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-stone-800 bg-white dark:bg-[#181410] focus:outline-none focus:border-terracotta">
+                  <label class="block text-xs font-bold text-stone-600 dark:text-slate-300 mb-1">Kitchen / Location</label>
+                  <input type="text" id="review-cafename" placeholder="e.g. Test Kitchen / Home Bistro" class="w-full px-3 py-2 text-xs rounded-xl border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#181410] focus:outline-none focus:border-terracotta">
                 </div>
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-stone-600 dark:text-slate-300 mb-1">Taste Similarity Rating</label>
-                <select id="review-rating" class="px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-stone-800 bg-white dark:bg-[#181410] focus:outline-none focus:border-terracotta">
-                  <option value="5">★★★★★ (5 Stars - Taste & Texture 100% Indistinguishable)</option>
-                  <option value="4">★★★★☆ (4 Stars - Great Taste with Minor Variation)</option>
+                <label class="block text-xs font-bold text-stone-600 dark:text-slate-300 mb-1">Taste & Texture Rating</label>
+                <select id="review-rating" class="px-3 py-2 text-xs rounded-xl border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#181410] focus:outline-none focus:border-terracotta">
+                  <option value="5">★★★★★ (5 Stars - Great Taste & Texture)</option>
+                  <option value="4">★★★★☆ (4 Stars - Good with Minor Variation)</option>
                   <option value="3">★★★☆☆ (3 Stars - Acceptable Alternative)</option>
                 </select>
               </div>
 
               <div>
-                <label class="block text-xs font-bold text-stone-600 dark:text-slate-300 mb-1">Cooking Experience & Taste Feedback</label>
-                <textarea id="review-text" rows="3" placeholder="How did the alternative perform in your kitchen? Did guests notice any difference in taste or texture?" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-stone-800 bg-white dark:bg-[#181410] focus:outline-none focus:border-terracotta"></textarea>
+                <label class="block text-xs font-bold text-stone-600 dark:text-slate-300 mb-1">Cooking Experience & Taste Notes</label>
+                <textarea id="review-text" rows="3" placeholder="How did the swap behave in your kitchen? Note any texture, aroma, or seasoning adjustments." class="w-full px-3 py-2 text-xs rounded-xl border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#181410] focus:outline-none focus:border-terracotta"></textarea>
               </div>
 
               <div class="flex items-center gap-2">
                 <button type="button" id="submit-review-btn" class="px-4 py-2 rounded-xl text-xs font-bold bg-terracotta hover:bg-terracotta-600 text-white cursor-pointer shadow-sm">
-                  Publish Validation Test
+                  Save Tasting Note
                 </button>
-                <button type="button" id="cancel-review-btn" class="px-3 py-2 rounded-xl text-xs font-medium text-stone-500 hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer">
+                <button type="button" id="cancel-review-btn" class="px-3 py-2 rounded-xl text-xs font-medium text-stone-500 hover:bg-beige-100 dark:hover:bg-stone-800 cursor-pointer">
                   Cancel
                 </button>
               </div>
             </div>
 
             <!-- Review Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              ${cRec.allReviews.map(rev => `
-                <div class="p-4 rounded-2xl bg-white dark:bg-[#1f1a16]/80 border border-beige-200 dark:border-stone-800/80 shadow-sm flex flex-col justify-between">
-                  <div>
-                    <div class="flex items-center justify-between mb-2">
-                      <div>
-                        <div class="font-bold text-sm text-forest dark:text-ivory flex items-center gap-1.5">
-                          <span>${rev.author}</span>
-                          <span class="text-[10px] font-black px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-                            HTV Verified
-                          </span>
+            ${cRec.allReviews.length === 0 ? `
+              <div class="p-6 rounded-2xl bg-ivory dark:bg-[#1f1a16]/60 border border-dashed border-beige-200 dark:border-stone-800 text-center text-xs text-stone-500 dark:text-stone-400">
+                No tasting notes saved for this dish yet. Use <strong>Add Tasting Note</strong> above to record your own kitchen test.
+              </div>
+            ` : `
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                ${cRec.allReviews.map(rev => `
+                  <div class="p-4 rounded-2xl bg-white dark:bg-[#1f1a16]/80 border border-beige-200 dark:border-stone-800/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <div class="flex items-center justify-between mb-2">
+                        <div>
+                          <div class="font-bold text-sm text-forest dark:text-ivory flex items-center gap-1.5">
+                            <span>${rev.author}</span>
+                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sage-100 text-forest dark:bg-emerald-950 dark:text-emerald-300">
+                              Local Note
+                            </span>
+                          </div>
+                          <div class="text-[11px] text-stone-500">
+                            ${rev.cafeName} • ${rev.date || 'Recent'}
+                          </div>
                         </div>
-                        <div class="text-[11px] text-stone-500">
-                          ${rev.cafeName} • ${rev.date || 'Recent'}
+
+                        <div class="text-terracotta text-xs font-bold">
+                          ${'★'.repeat(rev.rating)}${'☆'.repeat(5 - rev.rating)}
                         </div>
                       </div>
 
-                      <div class="text-amber-400 text-xs font-bold">
-                        ${'★'.repeat(rev.rating)}${'☆'.repeat(5 - rev.rating)}
-                      </div>
+                      <p class="text-xs text-stone-600 dark:text-slate-300 leading-relaxed mb-3">
+                        "${rev.text}"
+                      </p>
                     </div>
 
-                    <p class="text-xs text-stone-600 dark:text-slate-300 leading-relaxed mb-3">
-                      "${rev.text}"
-                    </p>
+                    ${rev.photo ? `
+                      <div class="h-28 rounded-xl overflow-hidden mt-2 relative">
+                        <img src="${rev.photo}" alt="Dish" class="w-full h-full object-cover">
+                        <span class="absolute bottom-1 right-2 text-[10px] bg-black/60 text-white px-2 py-0.5 rounded backdrop-blur">
+                          Dish Reference
+                        </span>
+                      </div>
+                    ` : ''}
                   </div>
-
-                  ${rev.photo ? `
-                    <div class="h-28 rounded-xl overflow-hidden mt-2 relative">
-                      <img src="${rev.photo}" alt="Dish" class="w-full h-full object-cover">
-                      <span class="absolute bottom-1 right-2 text-[10px] bg-black/60 text-white px-2 py-0.5 rounded backdrop-blur">
-                        Live Plate Photo
-                      </span>
-                    </div>
-                  ` : ''}
-                </div>
-              `).join('')}
-            </div>
+                `).join('')}
+              </div>
+            `}
 
           </div>
 
@@ -2751,13 +2698,13 @@
     });
 
     submitReviewBtn?.addEventListener('click', () => {
-      const author = document.getElementById('review-author').value.trim() || 'Verified Cook';
+      const author = document.getElementById('review-author').value.trim() || 'Home / Line Cook';
       const cafeName = document.getElementById('review-cafename').value.trim() || 'Home / Bistro Kitchen';
       const rating = parseInt(document.getElementById('review-rating').value, 10) || 5;
       const text = document.getElementById('review-text').value.trim();
 
       if (!text) {
-        alert('Please share your cooking and taste experience.');
+        alert('Please share your cooking and taste notes.');
         return;
       }
 
@@ -2766,12 +2713,11 @@
       }
 
       state.customReviews[recipeId].unshift({
-        id: 'htv-' + Date.now(),
+        id: 'note-' + Date.now(),
         author,
         cafeName,
         rating,
         date: 'Just now',
-        verifiedCafe: true,
         text,
         photo: cRec.image
       });
@@ -2790,14 +2736,15 @@
         <div style="text-align: center; border-bottom: 2px dashed #000; padding-bottom: 10px; margin-bottom: 12px;">
           <h2 style="margin: 0; font-size: 18px; text-transform: uppercase;">FLAVORSHIFT AI</h2>
           <p style="margin: 3px 0 0; font-size: 12px;">KITCHEN RECIPE PREP TICKET</p>
-          <p style="margin: 3px 0 0; font-size: 11px;">Covers: ${cRec.persons} Person(s) | HTV Validated</p>
+          <p style="margin: 3px 0 0; font-size: 11px;">Covers: ${cRec.persons} Person(s) | Scaled Prep Sheet</p>
         </div>
 
         <div style="margin-bottom: 12px;">
           <h3 style="margin: 0; font-size: 16px;">${cRec.title.toUpperCase()}</h3>
           <p style="margin: 2px 0; font-size: 11px;">Category: ${cRec.category} | Prep: ${cRec.prepTime}</p>
-          ${cRec.rState.budgetMode ? '<p style="margin: 2px 0; font-weight: bold;">[!] FLAVORSHIFT AI INGREDIENT ALTERNATIVE ACTIVE</p>' : ''}
-          ${cRec.rState.calorieMode ? '<p style="margin: 2px 0; font-weight: bold;">[!] LOW-CALORIE FIT BISTRO FORMULA ACTIVE</p>' : ''}
+          ${cRec.rState.budgetMode ? '<p style="margin: 2px 0; font-weight: bold;">[!] BUDGET INGREDIENT SWAP ACTIVE</p>' : ''}
+          ${cRec.rState.calorieMode ? '<p style="margin: 2px 0; font-weight: bold;">[!] LIGHTER SWAP ACTIVE</p>' : ''}
+          ${cRec.rState.veganMode ? '<p style="margin: 2px 0; font-weight: bold;">[!] PLANT-BASED SWAP ACTIVE</p>' : ''}
         </div>
 
         <div style="border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 12px;">
