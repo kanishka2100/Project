@@ -2481,7 +2481,7 @@ const RECIPES_DATA = [
     isMostSearched: true,
     rating: 4.95,
     reviewsCount: 132,
-    image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&auto=format&fit=crop&q=80",
+    image: "./assets/recipes/spinach-paneer-protein-wrap.jpg",
     prepTime: "10 mins",
     cookTime: "8 mins",
     difficulty: "Easy",
@@ -2542,7 +2542,7 @@ const RECIPES_DATA = [
         date: "Yesterday",
         verifiedCafe: true,
         text: "The tofu-paneer blend absorbs the tandoori char so well nobody can distinguish it. Our number one fitness order!",
-        photo: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/spinach-paneer-protein-wrap.jpg",
         helpfulCount: 77
       }
     ]
