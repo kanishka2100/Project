@@ -8,6 +8,7 @@
   const state = {
     activeTab: 'swaplab', // Default to flagship AI Swap Lab: 'swaplab', 'explore', 'htv', 'dashboard', 'slides', 'favorites'
     selectedSwapIndex: 0, // Currently active swap in Swap Lab (defaults to Fresh Cream)
+    swapSearchQuery: '',  // Search query inside Swap Lab
     selectedCategory: 'all',
     selectedDiet: 'all',
     selectedAllergies: new Set(),
@@ -572,26 +573,53 @@
                 <span>Which ingredient is missing or too expensive?</span>
               </h3>
             </div>
-            <span class="text-xs text-slate-400">Select any ingredient to run AI analysis</span>
+            <span class="text-xs text-slate-400">Select or search any ingredient to run AI analysis</span>
+          </div>
+
+          <!-- In-menu Ingredient Search Panel -->
+          <div class="relative max-w-md">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input 
+              type="text" 
+              id="swaplab-search-input"
+              value="${state.swapSearchQuery || ''}"
+              placeholder="Search missing ingredients (e.g. Cream, Avocado, Truffle, Nuts)..." 
+              class="w-full pl-10 pr-9 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-amber-500 transition-all shadow-inner"
+            />
+            <button 
+              type="button" 
+              id="swaplab-search-clear-btn" 
+              class="${state.swapSearchQuery ? '' : 'hidden'} absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center text-[10px] transition-all cursor-pointer"
+              title="Clear search"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
           </div>
 
           <!-- Quick Ingredient Selection Chips -->
-          <div class="flex flex-wrap gap-2.5 pt-2">
-            ${FLAVORSHIFT_SWAP_DATABASE.map((item, idx) => `
-              <button 
-                type="button" 
-                data-swap-idx="${idx}"
-                class="swap-select-chip px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold border transition-all cursor-pointer flex items-center gap-2 ${
-                  idx === state.selectedSwapIndex 
-                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white border-transparent shadow-md scale-105' 
-                    : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-400'
-                }"
-              >
-                <span>${idx === 0 ? '🥛' : idx === 1 ? '🧀' : idx === 2 ? '🥑' : idx === 3 ? '🍄' : '🥜'}</span>
-                <span>${item.targetIngredient}</span>
-                <span class="text-[10px] opacity-75 font-normal hidden md:inline">(${item.commonInDishes[0]})</span>
-              </button>
-            `).join('')}
+          <div id="swap-chips-container" class="flex flex-wrap gap-2.5 pt-1">
+            ${FLAVORSHIFT_SWAP_DATABASE.map((item, idx) => {
+              const q = (state.swapSearchQuery || '').toLowerCase();
+              const matchesTarget = item.targetIngredient.toLowerCase().includes(q);
+              const matchesDishes = item.commonInDishes.some(d => d.toLowerCase().includes(q));
+              const matchesAlts = item.alternatives.some(a => a.name.toLowerCase().includes(q));
+              const isVisible = !q || matchesTarget || matchesDishes || matchesAlts;
+              return `
+                <button 
+                  type="button" 
+                  data-swap-idx="${idx}"
+                  class="swap-select-chip px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold border transition-all cursor-pointer flex items-center gap-2 ${isVisible ? '' : 'hidden'} ${
+                    idx === state.selectedSwapIndex 
+                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white border-transparent shadow-md scale-105' 
+                      : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-amber-400'
+                  }"
+                >
+                  <span>${idx === 0 ? '🥛' : idx === 1 ? '🧀' : idx === 2 ? '🥑' : idx === 3 ? '🍄' : '🥜'}</span>
+                  <span>${item.targetIngredient}</span>
+                  <span class="text-[10px] opacity-75 font-normal hidden md:inline">(${item.commonInDishes[0]})</span>
+                </button>
+              `;
+            }).join('')}
           </div>
         </div>
 
@@ -809,6 +837,51 @@
         radarScores
       );
     }, 20);
+
+    // Attach SwapLab in-menu search listener
+    const swapSearchInput = container.querySelector('#swaplab-search-input');
+    const swapSearchClear = container.querySelector('#swaplab-search-clear-btn');
+
+    swapSearchInput?.addEventListener('input', (e) => {
+      state.swapSearchQuery = e.target.value.trim();
+      const q = state.swapSearchQuery.toLowerCase();
+      
+      if (swapSearchClear) {
+        if (state.swapSearchQuery) {
+          swapSearchClear.classList.remove('hidden');
+        } else {
+          swapSearchClear.classList.add('hidden');
+        }
+      }
+
+      container.querySelectorAll('.swap-select-chip').forEach(btn => {
+        const idx = parseInt(btn.getAttribute('data-swap-idx'), 10);
+        const item = FLAVORSHIFT_SWAP_DATABASE[idx];
+        if (!item) return;
+
+        const matchesTarget = item.targetIngredient.toLowerCase().includes(q);
+        const matchesDishes = item.commonInDishes.some(d => d.toLowerCase().includes(q));
+        const matchesAlts = item.alternatives.some(a => a.name.toLowerCase().includes(q));
+
+        if (!q || matchesTarget || matchesDishes || matchesAlts) {
+          btn.classList.remove('hidden');
+        } else {
+          btn.classList.add('hidden');
+        }
+      });
+    });
+
+    swapSearchClear?.addEventListener('click', () => {
+      state.swapSearchQuery = '';
+      if (swapSearchInput) {
+        swapSearchInput.value = '';
+        swapSearchInput.focus();
+      }
+      swapSearchClear.classList.add('hidden');
+      container.querySelectorAll('.swap-select-chip').forEach(btn => {
+        btn.classList.remove('hidden');
+      });
+    });
 
     // Attach chip selection listeners
     container.querySelectorAll('.swap-select-chip').forEach(btn => {
