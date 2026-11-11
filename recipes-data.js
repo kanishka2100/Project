@@ -2852,7 +2852,7 @@ const RECIPES_DATA = [
     isMostSearched: true,
     rating: 4.95,
     reviewsCount: 160,
-    image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop&q=80",
+    image: "./assets/recipes/mumbai-street-kanda-poha.jpg",
     prepTime: "8 mins",
     cookTime: "8 mins",
     difficulty: "Easy",
@@ -2914,7 +2914,7 @@ const RECIPES_DATA = [
         date: "Yesterday",
         verifiedCafe: true,
         text: "The quick colander rinse keeps every single grain separate without turning soggy or clumping together. Perfect texture!",
-        photo: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/mumbai-street-kanda-poha.jpg",
         helpfulCount: 79
       }
     ]
