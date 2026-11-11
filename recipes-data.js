@@ -967,7 +967,7 @@ const RECIPES_DATA = [
         date: "6 days ago",
         verifiedCafe: true,
         text: "The ice-shocked pea puree method keeps our palak looking radiant green under display heat lamps all evening.",
-        photo: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&auto=format&fit=crop&q=80",
+        photo: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80",
         helpfulCount: 41
       }
     ]
@@ -1436,7 +1436,7 @@ const RECIPES_DATA = [
     isMostSearched: true,
     rating: 4.97,
     reviewsCount: 165,
-    image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80",
+    image: "./assets/recipes/tandoori-garlic-butter-naan.jpg",
     prepTime: "25 mins",
     cookTime: "5 mins",
     difficulty: "Medium",
@@ -1498,7 +1498,7 @@ const RECIPES_DATA = [
         date: "2 days ago",
         verifiedCafe: true,
         text: "The inverted tawa technique with garlic-ghee brushing gives the exact restaurant clay oven texture without requiring commercial tandoor equipment.",
-        photo: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/tandoori-garlic-butter-naan.jpg",
         helpfulCount: 64
       }
     ]
