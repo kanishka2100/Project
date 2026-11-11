@@ -967,7 +967,7 @@ const RECIPES_DATA = [
         date: "6 days ago",
         verifiedCafe: true,
         text: "The ice-shocked pea puree method keeps our palak looking radiant green under display heat lamps all evening.",
-        photo: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80",
+        photo: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop&q=80",
         helpfulCount: 41
       }
     ]
@@ -1738,7 +1738,7 @@ const RECIPES_DATA = [
     isMostSearched: false,
     rating: 4.94,
     reviewsCount: 124,
-    image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800&auto=format&fit=crop&q=80",
+    image: "./assets/recipes/steamed-soft-idli-sambar.jpg",
     prepTime: "10 mins",
     cookTime: "12 mins",
     difficulty: "Easy",
@@ -1798,7 +1798,7 @@ const RECIPES_DATA = [
         date: "3 days ago",
         verifiedCafe: true,
         text: "The freshly bloomed sambar spices make all the difference. Super soft idlis that soak in every drop of flavor.",
-        photo: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80",
+        photo: "./assets/recipes/steamed-soft-idli-sambar.jpg",
         helpfulCount: 46
       }
     ]
