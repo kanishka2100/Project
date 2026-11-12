@@ -514,8 +514,9 @@
         if (normMissing && normMissing.length > 2) {
           adapted = adapted.replace(new RegExp(normMissing, 'gi'), selectedAlt.name);
         }
+        const tip = selectedAlt.textureDesc ? selectedAlt.textureDesc.split(';')[0] : 'Incorporate gently over gentle heat';
         return {
-          text: `${adapted} — [Chef Handling: Follow ${selectedAlt.ratio}. ${selectedAlt.textureDesc || 'Fold gently over gentle heat to preserve smooth emulsion.'}]`,
+          text: `${adapted} (Chef Note: Fold in ${selectedAlt.name}; ${tip}).`,
           isSubstitutedStep: true
         };
       }
@@ -827,163 +828,123 @@
                 const subRecipe = createSubstitutedRecipe(matchedRecipe, uResult.ingredientName, activeAlt, state.substitutedRecipePersons || 1);
 
                 return `
-                  <div class="pt-5 border-t border-beige-200 dark:border-stone-800 space-y-6">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                      <div class="space-y-1.5">
-                        <div class="flex flex-wrap items-center gap-2">
-                          <span class="px-3 py-1 rounded-full text-xs font-bold bg-peach/50 text-terracotta border border-terracotta/30 flex items-center gap-1.5">
-                            <i class="${uResult.icon || 'fa-solid fa-utensils'} text-xs"></i> Missing: ${uResult.ingredientName}
+                  <div class="pt-6 border-t border-beige-200 dark:border-stone-800 space-y-7">
+                    <!-- Clean Section Header -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-beige-200 dark:border-stone-800">
+                      <div>
+                        <div class="flex items-center gap-2 mb-1">
+                          <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-terracotta/10 text-terracotta border border-terracotta/25 font-mono flex items-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-xs"></i> 3 Chef-Calibrated Substitutes
                           </span>
-                          <span class="px-3 py-1 rounded-full text-xs font-bold bg-beige-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
-                            ${uResult.category}
-                          </span>
-                          <span class="px-3 py-1 rounded-full text-xs font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">
-                            Target Dish: ${currentDish || matchedRecipe.title}
-                          </span>
+                          <span class="text-xs text-stone-500 dark:text-stone-400 font-medium">For <strong class="text-forest dark:text-ivory">${currentDish || matchedRecipe.title}</strong></span>
                         </div>
-                        <p class="text-sm text-stone-600 dark:text-stone-300">
-                          <strong>Culinary Role:</strong> ${(uResult.functions || []).join(', ')} • <strong>Profile:</strong> ${uResult.flavorProfile}
-                        </p>
+                        <h3 class="text-2xl sm:text-3xl font-heading font-black text-forest dark:text-ivory">
+                          Top 3 Alternatives for <span class="text-terracotta">${uResult.ingredientName}</span>
+                        </h3>
                       </div>
-                      <div class="flex items-center gap-2 shrink-0">
-                        <button
-                          type="button"
-                          id="toggle-compare-mode-btn"
-                          class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold border transition-all cursor-pointer flex items-center gap-2 ${
-                            state.universalCompareMode
-                              ? 'bg-forest text-ivory border-forest shadow-sm'
-                              : 'bg-ivory dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory hover:border-terracotta'
-                          }"
-                        >
-                          <i class="fa-solid fa-table-columns"></i>
-                          <span>${state.universalCompareMode ? 'Hide Comparison' : 'Compare Matrix'}</span>
-                        </button>
+                      <div class="text-xs text-stone-500 dark:text-stone-400 font-medium sm:text-right">
+                        <span class="inline-block bg-ivory dark:bg-stone-900 px-3 py-1.5 rounded-xl border border-beige-200 dark:border-stone-800">
+                          Click any card to load its recipe below
+                        </span>
                       </div>
                     </div>
-
-                    ${state.universalCompareMode ? `
-                      <div class="overflow-x-auto p-4 rounded-2xl bg-ivory/70 dark:bg-[#181410] border border-beige-200 dark:border-stone-800">
-                        <table class="w-full text-left text-xs sm:text-sm border-collapse">
-                          <thead>
-                            <tr class="border-b border-beige-200 dark:border-stone-800 text-xs uppercase tracking-wider text-stone-500">
-                              <th class="py-2.5 px-3">Alternative</th>
-                              <th class="py-2.5 px-3">Conversion Ratio</th>
-                              <th class="py-2.5 px-3">Culinary Method</th>
-                              <th class="py-2.5 px-3">Taste Notes</th>
-                              <th class="py-2.5 px-3">Dietary & Allergens</th>
-                              <th class="py-2.5 px-3 text-right">Select</th>
-                            </tr>
-                          </thead>
-                          <tbody class="divide-y divide-beige-200/70 dark:divide-stone-800">
-                            ${alts.map(alt => `
-                              <tr class="${state.selectedSubstitutedAlt === alt.name ? 'bg-peach/20 dark:bg-stone-800/60 font-semibold' : ''}">
-                                <td class="py-3 px-3 font-bold text-forest dark:text-ivory">
-                                  ${alt.name}
-                                  <span class="block text-xs font-normal text-terracotta mt-0.5">${alt.type}</span>
-                                </td>
-                                <td class="py-3 px-3 font-mono text-xs sm:text-sm text-espresso dark:text-stone-200">${alt.ratio}</td>
-                                <td class="py-3 px-3 text-xs sm:text-sm text-stone-500">${alt.calcMethod || 'Functional balance'}</td>
-                                <td class="py-3 px-3 text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-[220px]">${alt.tasteDesc}</td>
-                                <td class="py-3 px-3">
-                                  <div class="flex flex-wrap gap-1">
-                                    ${(alt.dietary || []).map(d => `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">${d}</span>`).join('')}
-                                  </div>
-                                </td>
-                                <td class="py-3 px-3 text-right">
-                                  <button type="button" data-select-alt="${alt.name}" class="px-3 py-1.5 rounded-lg ${state.selectedSubstitutedAlt === alt.name ? 'bg-forest text-ivory' : 'bg-terracotta text-white'} font-bold text-xs cursor-pointer">
-                                    ${state.selectedSubstitutedAlt === alt.name ? 'Selected' : 'Select'}
-                                  </button>
-                                </td>
-                              </tr>
-                            `).join('')}
-                          </tbody>
-                        </table>
-                      </div>
-                    ` : ''}
 
                     <!-- Exactly 3 Alternative Cards -->
-                    <div>
-                      <div class="flex items-center justify-between mb-3">
-                        <span class="text-xs font-bold uppercase tracking-wider text-forest dark:text-sage-400 font-mono">
-                          Top 3 Alternative Ingredients (Click to Apply to Complete Recipe)
-                        </span>
-                        <span class="text-xs text-stone-500 italic">Select any alternative below to view updated complete recipe</span>
-                      </div>
-                      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                        ${alts.map((alt, idx) => {
-                          const isSelected = state.selectedSubstitutedAlt === alt.name;
-                          return `
-                            <div class="editorial-card p-5.5 rounded-3xl flex flex-col justify-between space-y-4 transition-all duration-300 ${
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                      ${alts.map((alt, idx) => {
+                        const isSelected = state.selectedSubstitutedAlt === alt.name;
+                        const optionLabel = idx === 0 
+                          ? 'Option 1 · Household Match' 
+                          : idx === 1 
+                            ? 'Option 2 · Plant-Based' 
+                            : 'Option 3 · Chef Recommendation';
+                        return `
+                          <div
+                            data-select-alt="${alt.name}"
+                            class="editorial-card group p-6 sm:p-7 rounded-3xl flex flex-col justify-between transition-all duration-300 cursor-pointer ${
                               isSelected
                                 ? 'bg-white dark:bg-[#1c1713] border-2 border-terracotta shadow-xl ring-2 ring-terracotta/20 scale-[1.01]'
-                                : 'bg-ivory/70 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 hover:border-terracotta/70'
-                            }">
-                              <div class="space-y-3">
-                                <div class="flex items-center justify-between">
-                                  <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider inline-block ${
-                                    idx === 0 ? 'bg-forest text-ivory' : idx === 1 ? 'bg-sage text-white' : 'bg-terracotta text-white'
-                                  }">
-                                    Option ${idx + 1}: ${alt.type}
+                                : 'bg-ivory/80 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 hover:border-terracotta/60 hover:shadow-md'
+                            }"
+                          >
+                            <div>
+                              <!-- Card Header: Option Badge + Active State -->
+                              <div class="flex items-center justify-between gap-2">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider font-mono ${
+                                  isSelected
+                                    ? 'bg-terracotta text-white shadow-xs'
+                                    : 'bg-forest/10 dark:bg-stone-800 text-forest dark:text-sage-300'
+                                }">
+                                  ${optionLabel}
+                                </span>
+                                ${isSelected ? `
+                                  <span class="text-xs font-bold text-terracotta flex items-center gap-1 font-mono">
+                                    <i class="fa-solid fa-circle-check"></i> Active
                                   </span>
-                                  ${isSelected ? `
-                                    <span class="text-xs font-bold text-terracotta flex items-center gap-1 font-mono">
-                                      <i class="fa-solid fa-circle-check"></i> Selected
-                                    </span>
-                                  ` : ''}
-                                </div>
-                                
-                                <h4 class="text-lg sm:text-xl font-bold font-heading text-forest dark:text-ivory leading-snug">
-                                  ${alt.name}
-                                </h4>
-
-                                <div class="p-3 rounded-2xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 shadow-xs">
-                                  <span class="block text-[10px] font-bold uppercase text-terracotta font-mono tracking-wider">Conversion Ratio</span>
-                                  <span class="text-sm font-bold text-forest dark:text-ivory block font-mono mt-0.5 leading-snug">${alt.ratio}</span>
-                                  <span class="block text-xs text-stone-500 mt-1">${alt.calcMethod || 'Functional culinary balance'}</span>
-                                </div>
-
-                                <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                                  <strong>Flavor:</strong> ${alt.tasteDesc}
-                                </p>
-                                <p class="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
-                                  <strong>Texture & Handling:</strong> ${alt.textureDesc}
-                                </p>
-
-                                <div class="flex flex-wrap gap-1.5 pt-1">
-                                  ${(alt.dietary || []).map(tag => `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">${tag}</span>`).join('')}
-                                  ${(alt.allergens && alt.allergens.length && alt.allergens[0] !== 'None')
-                                    ? alt.allergens.map(a => `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-peach/50 text-terracotta">${a}</span>`).join('')
-                                    : '<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-beige-100 dark:bg-stone-800 text-stone-500">No Major Allergens</span>'}
-                                </div>
+                                ` : `
+                                  <span class="text-xs text-stone-400 group-hover:text-forest transition-colors font-medium">
+                                    Select <i class="fa-solid fa-arrow-right text-[10px] ml-0.5"></i>
+                                  </span>
+                                `}
                               </div>
 
-                              <button
-                                type="button"
-                                data-select-alt="${alt.name}"
-                                class="w-full py-2.5 px-3 rounded-xl text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                                  isSelected
-                                    ? 'bg-terracotta text-white shadow-md'
-                                    : 'forest-btn shadow-xs'
-                                }"
-                              >
-                                <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-hand-pointer'}"></i>
-                                <span>${isSelected ? 'Selected Substitute' : 'Select Substitute'}</span>
-                              </button>
-                            </div>
-                          `;
-                        }).join('')}
-                      </div>
-                    </div>
+                              <!-- Alternative Title -->
+                              <h4 class="text-xl sm:text-2xl font-bold font-heading text-forest dark:text-ivory leading-snug mt-3.5 mb-3.5">
+                                ${alt.name}
+                              </h4>
 
-                    ${(uResult.volatiles && uResult.volatiles.length) ? `
-                      <div class="p-4 rounded-2xl bg-ivory/60 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
-                        <div>
-                          <span class="font-bold text-forest dark:text-ivory">Key Aroma Notes: </span>
-                          <span class="text-stone-600 dark:text-stone-300 font-mono text-xs sm:text-sm">${uResult.volatiles.join(' • ')}</span>
-                        </div>
-                        <span class="text-xs text-stone-400 italic">${uResult.source}</span>
-                      </div>
-                    ` : ''}
+                              <!-- Hero Conversion Ratio Box -->
+                              <div class="p-4 rounded-2xl bg-beige-100/70 dark:bg-stone-900 border border-beige-200 dark:border-stone-800 mb-4">
+                                <span class="block text-[10px] font-bold uppercase tracking-wider text-terracotta font-mono">
+                                  Calibrated Ratio
+                                </span>
+                                <span class="block text-sm sm:text-base font-bold font-mono text-forest dark:text-ivory mt-1 leading-snug">
+                                  ${alt.ratio}
+                                </span>
+                              </div>
+
+                              <!-- Crisp Culinary Description -->
+                              <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-3">
+                                ${alt.tasteDesc}
+                              </p>
+                              ${alt.textureDesc ? `
+                                <div class="text-xs text-stone-500 dark:text-stone-400 leading-normal flex items-start gap-1.5 mb-4">
+                                  <i class="fa-solid fa-kitchen-set text-terracotta mt-0.5 shrink-0 text-xs"></i>
+                                  <span><strong>Handling:</strong> ${alt.textureDesc}</span>
+                                </div>
+                              ` : ''}
+
+                              <!-- Clean Dietary Chips -->
+                              <div class="flex flex-wrap gap-1.5 mb-5">
+                                ${(alt.dietary || []).slice(0, 2).map(tag => `
+                                  <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-sage-100/80 dark:bg-stone-800 text-forest dark:text-sage-300">
+                                    ${tag}
+                                  </span>
+                                `).join('')}
+                                ${(alt.allergens && alt.allergens.length && alt.allergens[0] !== 'None')
+                                  ? `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-peach/50 text-terracotta">${alt.allergens[0]}</span>`
+                                  : `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-beige-100 dark:bg-stone-800 text-stone-500">Allergen Safe</span>`
+                                }
+                              </div>
+                            </div>
+
+                            <!-- Action CTA Button -->
+                            <button
+                              type="button"
+                              data-select-alt="${alt.name}"
+                              class="w-full py-3 px-4 rounded-2xl text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                                isSelected
+                                  ? 'bg-terracotta text-white shadow-md'
+                                  : 'bg-forest hover:bg-forest/90 text-white shadow-xs'
+                              }"
+                            >
+                              <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-arrows-rotate'}"></i>
+                              <span>${isSelected ? 'Active in Recipe Below' : 'Apply This Substitute'}</span>
+                            </button>
+                          </div>
+                        `;
+                      }).join('')}
+                    </div>
 
                     <!-- Complete Recipe with the Selected Substitute Replacing Original Missing Ingredient -->
                     <div id="substituted-recipe-card" class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1c1713] border-2 border-terracotta/40 dark:border-stone-800 shadow-xl space-y-6">
@@ -1035,27 +996,24 @@
                         </div>
                       </div>
 
-                      <!-- Visual Substitution Summary Pill Bar -->
-                      <div class="p-4 sm:p-5 rounded-2xl bg-peach/25 dark:bg-[#251e18] border border-terracotta/30 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                        <div class="md:col-span-4 flex items-center gap-3">
-                          <div class="w-10 h-10 rounded-xl bg-terracotta text-white flex items-center justify-center text-base shrink-0 shadow-xs">
+                      <!-- Visual Substitution Summary Strip -->
+                      <div class="p-4 sm:p-5 rounded-2xl bg-peach/25 dark:bg-[#251e18] border border-terracotta/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                          <div class="w-10 h-10 rounded-xl bg-terracotta text-white flex items-center justify-center text-sm shrink-0 shadow-xs">
                             <i class="fa-solid fa-arrows-rotate"></i>
                           </div>
                           <div>
-                            <span class="block text-[10px] font-bold uppercase text-stone-500 font-mono tracking-wider">Active Substitution:</span>
-                            <span class="text-xs line-through text-stone-400 block">${uResult.ingredientName}</span>
-                            <span class="text-sm font-bold text-forest dark:text-ivory block">${activeAlt.name}</span>
+                            <span class="block text-[10px] font-bold uppercase text-stone-500 font-mono tracking-wider">Active Substitution</span>
+                            <div class="flex items-center gap-2 mt-0.5">
+                              <span class="text-xs line-through text-stone-400">${uResult.ingredientName}</span>
+                              <i class="fa-solid fa-arrow-right text-[10px] text-terracotta"></i>
+                              <span class="text-sm font-bold text-forest dark:text-ivory">${activeAlt.name}</span>
+                            </div>
                           </div>
                         </div>
-
-                        <div class="md:col-span-4 p-3 rounded-xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800">
-                          <span class="block text-[10px] font-bold uppercase text-terracotta font-mono">Calibrated Conversion Ratio:</span>
-                          <span class="text-xs font-mono font-bold text-forest dark:text-ivory block mt-0.5">${activeAlt.ratio}</span>
-                        </div>
-
-                        <div class="md:col-span-4 text-xs text-stone-600 dark:text-stone-300">
-                          <span class="font-bold text-forest dark:text-ivory block">Culinary Function:</span>
-                          <span>${activeAlt.calcMethod || activeAlt.tasteDesc}</span>
+                        <div class="sm:text-right">
+                          <span class="block text-[10px] font-bold uppercase text-terracotta font-mono">Calibrated Conversion Ratio</span>
+                          <span class="text-xs sm:text-sm font-mono font-bold text-forest dark:text-ivory block mt-0.5">${activeAlt.ratio}</span>
                         </div>
                       </div>
 
