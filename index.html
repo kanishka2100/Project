@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FlavorShift AI | Culinary Ingredient Swaps & Portion Scaling</title>
-
-  <!-- Google Fonts: High-Clarity Modern Typography -->
+  <title>FlavorShift AI | Intelligent Culinary Ingredient Substitution & Human Taste Validation Platform</title>
+  
+  <!-- Google Fonts: Editorial Food-Tech Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
-    rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+  
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+  
   <!-- Tailwind CSS CDN with Sophisticated Food-Inspired Palette -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -24,10 +21,10 @@
       theme: {
         extend: {
           fontFamily: {
-            heading: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
-            serif: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
-            sans: ['Inter', 'Plus Jakarta Sans', 'sans-serif'],
-            accent: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            heading: ['Playfair Display', 'serif'],
+            serif: ['Playfair Display', 'serif'],
+            sans: ['DM Sans', 'sans-serif'],
+            accent: ['Cormorant Garamond', 'serif'],
             mono: ['JetBrains Mono', 'monospace'],
           },
           colors: {
@@ -104,98 +101,73 @@
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="./styles.css">
 </head>
-
-<body
-  class="min-h-screen flex flex-col font-sans bg-ivory text-espresso dark:bg-[#181410] dark:text-[#FAF7F0] selection:bg-terracotta selection:text-white transition-colors duration-300">
+<body class="min-h-screen flex flex-col font-sans bg-ivory text-espresso dark:bg-[#181410] dark:text-[#FAF7F0] selection:bg-terracotta selection:text-white transition-colors duration-300">
 
   <!-- ============================================== -->
   <!-- 0. INTERACTIVE CULINARY MOUSE & AROMA CANVAS   -->
   <!-- ============================================== -->
-  <canvas id="food-cursor-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-30"
-    aria-hidden="true"></canvas>
+  <canvas id="food-cursor-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-30" aria-hidden="true"></canvas>
 
   <!-- ============================================== -->
   <!-- 0B. ORGANIC AROMA & BOTANICAL FLOATING LAYER   -->
   <!-- ============================================== -->
-  <div id="aroma-botanical-layer" class="aroma-botanical-layer fixed inset-0 pointer-events-none z-0 overflow-hidden"
-    aria-hidden="true">
-
+  <div id="aroma-botanical-layer" class="aroma-botanical-layer fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    
     <!-- Organic Ambient Gradient Blobs -->
-    <div
-      class="aroma-blob aroma-blob-1 absolute -top-24 -left-24 w-96 h-96 rounded-full bg-peach/30 dark:bg-peach/10 blur-3xl pointer-events-none">
-    </div>
-    <div
-      class="aroma-blob aroma-blob-2 absolute top-1/3 -right-24 w-[30rem] h-[30rem] rounded-full bg-sage/25 dark:bg-sage/10 blur-3xl pointer-events-none">
-    </div>
-    <div
-      class="aroma-blob aroma-blob-3 absolute bottom-12 left-1/4 w-80 h-80 rounded-full bg-beige/35 dark:bg-beige/10 blur-3xl pointer-events-none">
-    </div>
+    <div class="aroma-blob aroma-blob-1 absolute -top-24 -left-24 w-96 h-96 rounded-full bg-peach/30 dark:bg-peach/10 blur-3xl pointer-events-none"></div>
+    <div class="aroma-blob aroma-blob-2 absolute top-1/3 -right-24 w-[30rem] h-[30rem] rounded-full bg-sage/25 dark:bg-sage/10 blur-3xl pointer-events-none"></div>
+    <div class="aroma-blob aroma-blob-3 absolute bottom-12 left-1/4 w-80 h-80 rounded-full bg-beige/35 dark:bg-beige/10 blur-3xl pointer-events-none"></div>
 
     <!-- Floating Aroma Trails (Steam Wisps) -->
-    <svg
-      class="aroma-trail aroma-trail-1 hidden sm:block absolute top-[15%] left-[8%] w-36 h-72 opacity-40 dark:opacity-25"
-      viewBox="0 0 100 200" fill="none" stroke="currentColor">
-      <path class="steam-path path-delay-1 stroke-terracotta/40 dark:stroke-terracotta/30"
-        d="M30 190 Q15 140 45 95 T35 10" stroke-width="2.5" stroke-linecap="round" fill="none" />
-      <path class="steam-path path-delay-2 stroke-sage/40 dark:stroke-sage/30" d="M50 195 Q70 145 35 105 T55 20"
-        stroke-width="2" stroke-linecap="round" fill="none" />
+    <svg class="aroma-trail aroma-trail-1 hidden sm:block absolute top-[15%] left-[8%] w-36 h-72 opacity-40 dark:opacity-25" viewBox="0 0 100 200" fill="none" stroke="currentColor">
+      <path class="steam-path path-delay-1 stroke-terracotta/40 dark:stroke-terracotta/30" d="M30 190 Q15 140 45 95 T35 10" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <path class="steam-path path-delay-2 stroke-sage/40 dark:stroke-sage/30" d="M50 195 Q70 145 35 105 T55 20" stroke-width="2" stroke-linecap="round" fill="none"/>
     </svg>
 
-    <svg
-      class="aroma-trail aroma-trail-2 hidden md:block absolute top-[40%] right-[10%] w-44 h-80 opacity-35 dark:opacity-20"
-      viewBox="0 0 100 200" fill="none" stroke="currentColor">
-      <path class="steam-path path-delay-3 stroke-terracotta/35 dark:stroke-terracotta/25"
-        d="M40 190 Q65 130 25 80 T45 5" stroke-width="2.5" stroke-linecap="round" fill="none" />
-      <path class="steam-path path-delay-1 stroke-beige/60 dark:stroke-beige/30" d="M60 195 Q25 140 60 90 T40 15"
-        stroke-width="1.8" stroke-linecap="round" fill="none" />
+    <svg class="aroma-trail aroma-trail-2 hidden md:block absolute top-[40%] right-[10%] w-44 h-80 opacity-35 dark:opacity-20" viewBox="0 0 100 200" fill="none" stroke="currentColor">
+      <path class="steam-path path-delay-3 stroke-terracotta/35 dark:stroke-terracotta/25" d="M40 190 Q65 130 25 80 T45 5" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <path class="steam-path path-delay-1 stroke-beige/60 dark:stroke-beige/30" d="M60 195 Q25 140 60 90 T40 15" stroke-width="1.8" stroke-linecap="round" fill="none"/>
     </svg>
 
     <!-- Floating Botanical Ingredients (Herbs, Spices, Citrus) -->
     <!-- 1. Basil Leaf (Sage Green) -->
-    <div
-      class="floating-botanical botanical-basil-1 hidden lg:block absolute top-[22%] left-[4%] opacity-35 dark:opacity-25">
+    <div class="floating-botanical botanical-basil-1 hidden lg:block absolute top-[22%] left-[4%] opacity-35 dark:opacity-25">
       <svg class="w-10 h-10 text-sage-600 dark:text-sage-400" viewBox="0 0 32 32" fill="currentColor">
-        <path d="M16 3C10 8 6 15 8 22c2 5 7 7 12 5 5-2 7-8 6-15-2-4-5-8-10-9z" />
-        <path d="M12 18c3-3 6-7 8-11" stroke="#FAF7F0" stroke-width="1" stroke-linecap="round" fill="none"
-          opacity="0.6" />
+        <path d="M16 3C10 8 6 15 8 22c2 5 7 7 12 5 5-2 7-8 6-15-2-4-5-8-10-9z"/>
+        <path d="M12 18c3-3 6-7 8-11" stroke="#FAF7F0" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.6"/>
       </svg>
     </div>
 
     <!-- 2. Citrus Slice (Terracotta / Warm Beige) -->
-    <div
-      class="floating-botanical botanical-citrus hidden lg:block absolute top-[65%] left-[6%] opacity-30 dark:opacity-20">
+    <div class="floating-botanical botanical-citrus hidden lg:block absolute top-[65%] left-[6%] opacity-30 dark:opacity-20">
       <svg class="w-14 h-14 text-terracotta" viewBox="0 0 40 40" fill="none" stroke="currentColor">
-        <circle cx="20" cy="20" r="18" stroke-width="2" />
-        <circle cx="20" cy="20" r="15" stroke-width="1" stroke-dasharray="2 2" />
-        <line x1="20" y1="5" x2="20" y2="35" stroke-width="1.2" />
-        <line x1="5" y1="20" x2="35" y2="20" stroke-width="1.2" />
-        <line x1="9" y1="9" x2="31" y2="31" stroke-width="1.2" />
-        <line x1="9" y1="31" x2="31" y2="9" stroke-width="1.2" />
+        <circle cx="20" cy="20" r="18" stroke-width="2"/>
+        <circle cx="20" cy="20" r="15" stroke-width="1" stroke-dasharray="2 2"/>
+        <line x1="20" y1="5" x2="20" y2="35" stroke-width="1.2"/>
+        <line x1="5" y1="20" x2="35" y2="20" stroke-width="1.2"/>
+        <line x1="9" y1="9" x2="31" y2="31" stroke-width="1.2"/>
+        <line x1="9" y1="31" x2="31" y2="9" stroke-width="1.2"/>
       </svg>
     </div>
 
     <!-- 3. Star Anise (Warm Espresso / Terracotta) -->
-    <div
-      class="floating-botanical botanical-anise hidden md:block absolute top-[30%] right-[5%] opacity-30 dark:opacity-20">
+    <div class="floating-botanical botanical-anise hidden md:block absolute top-[30%] right-[5%] opacity-30 dark:opacity-20">
       <svg class="w-12 h-12 text-terracotta-700 dark:text-terracotta-400" viewBox="0 0 36 36" fill="currentColor">
-        <path
-          d="M18 2l2.5 8.5L29 6l-5 7.5 8.5 2.5-8.5 2.5 5 7.5-8.5-4.5L18 30l-2.5-8.5L7 26l5-7.5L3.5 16l8.5-2.5-5-7.5 8.5 4.5z" />
-        <circle cx="18" cy="18" r="3" fill="#FAF7F0" opacity="0.4" />
+        <path d="M18 2l2.5 8.5L29 6l-5 7.5 8.5 2.5-8.5 2.5 5 7.5-8.5-4.5L18 30l-2.5-8.5L7 26l5-7.5L3.5 16l8.5-2.5-5-7.5 8.5 4.5z"/>
+        <circle cx="18" cy="18" r="3" fill="#FAF7F0" opacity="0.4"/>
       </svg>
     </div>
 
     <!-- 4. Rosemary Sprig (Sage Green) -->
-    <div
-      class="floating-botanical botanical-rosemary hidden xl:block absolute top-[75%] right-[7%] opacity-35 dark:opacity-25">
-      <svg class="w-10 h-16 text-sage-600 dark:text-sage-400" viewBox="0 0 24 48" fill="none" stroke="currentColor"
-        stroke-width="1.8" stroke-linecap="round">
-        <path d="M12 44V4" />
-        <path d="M12 36c-4-2-7-5-7-8" />
-        <path d="M12 36c4-2 7-5 7-8" />
-        <path d="M12 26c-4-2-6-5-6-8" />
-        <path d="M12 26c4-2 6-5 6-8" />
-        <path d="M12 16c-3-2-5-4-5-7" />
-        <path d="M12 16c3-2 5-4 5-7" />
+    <div class="floating-botanical botanical-rosemary hidden xl:block absolute top-[75%] right-[7%] opacity-35 dark:opacity-25">
+      <svg class="w-10 h-16 text-sage-600 dark:text-sage-400" viewBox="0 0 24 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M12 44V4"/>
+        <path d="M12 36c-4-2-7-5-7-8"/>
+        <path d="M12 36c4-2 7-5 7-8"/>
+        <path d="M12 26c-4-2-6-5-6-8"/>
+        <path d="M12 26c4-2 6-5 6-8"/>
+        <path d="M12 16c-3-2-5-4-5-7"/>
+        <path d="M12 16c3-2 5-4 5-7"/>
       </svg>
     </div>
 
@@ -204,159 +176,268 @@
   <!-- ============================================== -->
   <!-- 1. TOP GLOBAL NAVIGATION BAR                  -->
   <!-- ============================================== -->
-  <header
-    class="glass-nav sticky top-0 z-40 px-4 lg:px-8 py-3.5 transition-colors border-b border-beige-200/80 dark:border-forest-700/60 bg-ivory/85 dark:bg-[#181410]/85 backdrop-blur-md">
+  <header class="glass-nav sticky top-0 z-40 px-4 lg:px-8 py-3.5 transition-colors border-b border-beige-200/80 dark:border-forest-700/60 bg-ivory/85 dark:bg-[#181410]/85 backdrop-blur-md">
     <div class="max-w-[90rem] mx-auto flex items-center justify-between gap-3 lg:gap-4">
-
+      
       <!-- Brand Logo -->
       <div class="flex items-center gap-3 shrink-0">
         <a href="#swaplab" data-tab="swaplab" class="nav-brand-link flex items-center gap-3 group">
-          <div
-            class="w-11 h-11 rounded-2xl bg-forest text-ivory dark:bg-forest-600 flex items-center justify-center shadow-md shadow-forest/20 group-hover:scale-105 transition-transform duration-300">
+          <div class="w-11 h-11 rounded-2xl bg-forest text-ivory dark:bg-forest-600 flex items-center justify-center shadow-md shadow-forest/20 group-hover:scale-105 transition-transform duration-300">
             <i class="fa-solid fa-fire-burner text-lg text-terracotta"></i>
           </div>
           <div>
-            <span class="font-heading font-extrabold text-xl sm:text-2xl tracking-tight text-forest dark:text-ivory">
-              Flavor<span class="text-terracotta">Shift</span> <span class="text-sage-700 dark:text-sage-300 font-mono text-xs px-2 py-0.5 rounded-lg bg-sage-50 dark:bg-sage-900/40 border border-sage-200 dark:border-sage-700">AI</span>
-            </span>
+            <div class="flex items-center gap-2">
+              <span class="font-heading font-black text-xl sm:text-2xl tracking-tight text-forest dark:text-ivory">
+                Flavor<span class="text-terracotta font-serif italic">Shift</span> <span class="text-sage-600 dark:text-sage-300 font-mono text-xs px-2 py-0.5 rounded-lg bg-sage-50 dark:bg-sage-900/40 border border-sage-200 dark:border-sage-700">AI</span>
+              </span>
+            </div>
+            <span class="text-xs text-stone-500 dark:text-stone-400 block font-accent italic">Culinary Ingredient Swaps & Portion Scaling</span>
           </div>
         </a>
       </div>
 
       <!-- Navigation Tabs -->
       <nav class="hidden md:flex items-center gap-1 bg-beige-100/70 dark:bg-stone-900/70 p-1.5 rounded-2xl border border-beige-200/80 dark:border-stone-800 backdrop-blur-md">
-        <button
-          type="button"
+        <button 
+          type="button" 
           data-tab="swaplab"
-          class="nav-tab-btn active-nav-tab px-3.5 xl:px-4 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          class="nav-tab-btn active-nav-tab px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
         >
           <i class="fa-solid fa-flask-vial text-terracotta"></i>
           <span>Swap Lab</span>
         </button>
 
-        <button
-          type="button"
+        <button 
+          type="button" 
           data-tab="explore"
-          class="nav-tab-btn px-3.5 xl:px-4 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          class="nav-tab-btn px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
         >
           <i class="fa-solid fa-utensils text-forest-500 dark:text-sage-400"></i>
           <span>Explore Menus</span>
         </button>
 
-        <button
-          type="button"
+        <button 
+          type="button" 
           data-tab="htv"
-          class="nav-tab-btn px-3.5 xl:px-4 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          class="nav-tab-btn px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
         >
           <i class="fa-solid fa-users-viewfinder text-sage-600 dark:text-sage-400"></i>
           <span>Tasting Log</span>
         </button>
 
-        <button
-          type="button"
+        <button 
+          type="button" 
           data-tab="dashboard"
-          class="nav-tab-btn px-3.5 xl:px-4 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          class="nav-tab-btn px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
         >
           <i class="fa-solid fa-chart-pie text-terracotta"></i>
           <span>Cost & Margin</span>
         </button>
 
-        <button
-          type="button"
+        <button 
+          type="button" 
+          data-tab="slides"
+          class="nav-tab-btn px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+        >
+          <i class="fa-solid fa-lightbulb text-sage-600"></i>
+          <span>Design Deck</span>
+        </button>
+
+        <button 
+          type="button" 
           data-tab="favorites"
-          class="nav-tab-btn px-3.5 xl:px-4 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer relative whitespace-nowrap"
+          class="nav-tab-btn px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer relative whitespace-nowrap"
         >
           <i class="fa-solid fa-heart text-terracotta"></i>
           <span>Favorites</span>
-          <span id="fav-count-badge" class="px-1.5 py-0.2 rounded-full text-xs font-bold bg-terracotta text-white ml-0.5">0</span>
+          <span id="fav-count-badge" class="px-1.5 py-0.2 rounded-full text-[11px] font-bold bg-terracotta text-white ml-0.5">0</span>
         </button>
       </nav>
 
-      <!-- Right Controls: Pantry & Theme Toggle -->
+      <!-- Right Controls: Foodoscope API Status, Pantry & Theme Toggle -->
       <div class="flex items-center gap-2 shrink-0">
+        <!-- Foodoscope API Status Pill -->
+        <button
+          type="button"
+          id="ai-engine-status-pill"
+          class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-peach/40 dark:bg-stone-900 border border-terracotta/30 dark:border-stone-800 hover:border-terracotta text-espresso dark:text-beige shadow-sm transition-all cursor-pointer whitespace-nowrap"
+          title="Check Foodoscope API connection status"
+        >
+          <span class="w-2 h-2 rounded-full bg-terracotta shrink-0"></span>
+          <span class="hidden sm:inline font-bold">Foodoscope API: Offline</span>
+          <span class="sm:hidden font-bold">API</span>
+        </button>
+
         <!-- Pantry Stock Drawer Button -->
-        <button type="button" id="toggle-pantry-drawer-btn"
-          class="px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 hover:border-sage-500 text-espresso dark:text-ivory shadow-sm transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
-          title="Toggle Available Ingredients Drawer">
+        <button 
+          type="button" 
+          id="toggle-pantry-drawer-btn"
+          class="px-3 py-2 rounded-xl text-xs xl:text-sm font-semibold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 hover:border-sage-500 text-espresso dark:text-ivory shadow-sm transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          title="Toggle Available Ingredients Drawer"
+        >
           <i class="fa-solid fa-kitchen-set text-sage-600 dark:text-sage-400"></i>
-          <span class="hidden sm:inline">Pantry</span>
-          <span id="pantry-active-count" class="hidden px-1.5 py-0.2 rounded-full text-xs font-bold bg-sage text-white">0</span>
+          <span class="hidden lg:inline">Pantry</span>
+          <span id="pantry-active-count" class="hidden px-1.5 py-0.2 rounded-full text-[11px] font-bold bg-sage text-white">0</span>
         </button>
 
         <!-- Theme Toggle -->
-        <button type="button" id="theme-toggle-btn"
-          class="px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 hover:border-terracotta text-espresso dark:text-ivory shadow-sm transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
-          title="Toggle Daylight / Dark Theme">
+        <button 
+          type="button" 
+          id="theme-toggle-btn"
+          class="px-3 py-2 rounded-xl text-xs xl:text-sm font-semibold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 hover:border-terracotta text-espresso dark:text-ivory shadow-sm transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          title="Toggle Daylight / Dark Theme"
+        >
           <i class="fa-solid fa-moon text-terracotta"></i>
-          <span class="hidden sm:inline font-medium text-xs xl:text-sm">Theme</span>
+          <span class="hidden lg:inline font-medium text-xs xl:text-sm">Theme</span>
         </button>
       </div>
 
     </div>
 
     <!-- Mobile Navigation Sub-bar -->
-    <div
-      class="md:hidden flex items-center justify-around border-t border-beige-200/80 dark:border-stone-800 mt-2.5 pt-2">
-      <button type="button" data-tab="swaplab"
-        class="nav-tab-btn active-nav-tab py-1 text-xs font-semibold flex flex-col items-center">
+    <div class="md:hidden flex items-center justify-around border-t border-beige-200/80 dark:border-stone-800 mt-2.5 pt-2">
+      <button type="button" data-tab="swaplab" class="nav-tab-btn active-nav-tab py-1 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-flask-vial mb-0.5 text-terracotta"></i>
         <span>Swap Lab</span>
       </button>
-      <button type="button" data-tab="explore" class="nav-tab-btn py-1 text-xs font-semibold flex flex-col items-center">
+      <button type="button" data-tab="explore" class="nav-tab-btn py-1 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-utensils mb-0.5 text-forest-500 dark:text-sage-400"></i>
         <span>Recipes</span>
       </button>
-      <button type="button" data-tab="htv" class="nav-tab-btn py-1 text-xs font-semibold flex flex-col items-center">
+      <button type="button" data-tab="htv" class="nav-tab-btn py-1 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-users-viewfinder mb-0.5 text-sage-600"></i>
         <span>Tasting</span>
       </button>
-      <button type="button" data-tab="dashboard"
-        class="nav-tab-btn py-1 text-xs font-semibold flex flex-col items-center">
+      <button type="button" data-tab="dashboard" class="nav-tab-btn py-1 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-chart-pie mb-0.5 text-terracotta"></i>
         <span>Margin</span>
       </button>
-      <button type="button" data-tab="favorites" class="nav-tab-btn py-1 text-xs font-semibold flex flex-col items-center">
-        <i class="fa-solid fa-heart mb-0.5 text-terracotta"></i>
-        <span>Saved</span>
+      <button type="button" data-tab="slides" class="nav-tab-btn py-1 text-xs font-medium flex flex-col items-center">
+        <i class="fa-solid fa-lightbulb mb-0.5 text-sage-600"></i>
+        <span>Deck</span>
       </button>
     </div>
   </header>
 
   <!-- ============================================== -->
-  <!-- 2. OPTIONAL KITCHEN PANTRY DRAWER              -->
+  <!-- 2A. FOODOSCOPE API CONNECTION DRAWER           -->
   <!-- ============================================== -->
-  <aside id="pantry-drawer"
-    class="hidden relative z-30 bg-ivory/95 dark:bg-[#1f1a16]/95 border-b border-beige-200 dark:border-stone-800 px-4 lg:px-8 py-5 transition-all shadow-md">
+  <aside id="foodoscope-api-drawer" class="hidden relative z-30 bg-ivory/95 dark:bg-[#1f1a16]/95 border-b border-beige-200 dark:border-stone-800 px-4 lg:px-8 py-5 transition-all shadow-md">
     <div class="max-w-7xl mx-auto space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
+        <div class="space-y-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">Foodoscope & Backend API Diagnostics</span>
+            <span id="foodoscope-status-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-peach/40 dark:bg-stone-800 text-espresso dark:text-beige border border-terracotta/30">
+              <span class="w-2 h-2 rounded-full bg-terracotta"></span>
+              <span>Not Connected (Local Catalog Mode)</span>
+            </span>
+          </div>
           <h3 class="font-heading font-bold text-lg text-forest dark:text-ivory">
-            Pantry Filter
+            Verify Foodoscope API Connection Status
           </h3>
-          <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300">
-            Select ingredients you have on hand
+          <p id="foodoscope-status-detail" class="text-xs sm:text-sm text-stone-600 dark:text-stone-300">
+            No API URL configured yet. Running from the local browser ingredient ontology & 40-recipe catalog.
           </p>
         </div>
 
+        <button type="button" id="close-foodoscope-drawer-btn" class="self-start sm:self-center px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-700 text-stone-600 dark:text-stone-300 hover:border-terracotta cursor-pointer">
+          <i class="fa-solid fa-xmark mr-1"></i>Close
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+        <div class="md:col-span-5">
+          <label for="foodoscope-api-url-input" class="block text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-300 mb-1">
+            Foodoscope / Backend Health URL
+          </label>
+          <input
+            type="url"
+            id="foodoscope-api-url-input"
+            placeholder="https://api.foodoscope.com/... or http://localhost:8000/api/v1"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-xs sm:text-sm font-mono text-forest dark:text-ivory focus:outline-none focus:border-terracotta"
+          />
+        </div>
+
+        <div class="md:col-span-4">
+          <label for="foodoscope-api-key-input" class="block text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-300 mb-1">
+            API Key / Bearer Token (Optional, Saved Locally)
+          </label>
+          <input
+            type="password"
+            id="foodoscope-api-key-input"
+            placeholder="Optional API key for Foodoscope"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-xs sm:text-sm font-mono text-forest dark:text-ivory focus:outline-none focus:border-terracotta"
+          />
+        </div>
+
+        <div class="md:col-span-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            id="foodoscope-test-btn"
+            class="flex-1 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold terracotta-btn text-white shadow-sm cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap"
+          >
+            <i class="fa-solid fa-plug-circle-check"></i>
+            <span>Check Connection</span>
+          </button>
+          <button
+            type="button"
+            id="foodoscope-reset-btn"
+            class="px-3 py-2.5 rounded-xl text-xs font-bold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-700 text-stone-600 dark:text-stone-300 hover:border-terracotta cursor-pointer whitespace-nowrap"
+            title="Disconnect and return to Local Mode"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
+        <span class="font-bold">Quick Presets:</span>
+        <button type="button" id="foodoscope-preset-local-btn" class="px-2.5 py-1 rounded-lg bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-700 hover:border-sage-500 font-semibold text-espresso dark:text-ivory cursor-pointer">
+          Local FastAPI (:8000/api/v1)
+        </button>
+        <span id="foodoscope-telemetry-meta" class="font-mono text-[11px] text-stone-500 dark:text-stone-400 ml-auto">
+          Status: Offline · Mode: Local Ontology
+        </span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============================================== -->
+  <!-- 2. OPTIONAL KITCHEN PANTRY DRAWER              -->
+  <!-- ============================================== -->
+  <aside id="pantry-drawer" class="hidden relative z-30 bg-ivory/95 dark:bg-[#1f1a16]/95 border-b border-beige-200 dark:border-stone-800 px-4 lg:px-8 py-5 transition-all shadow-md">
+    <div class="max-w-7xl mx-auto space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-terracotta">
+              Kitchen Inventory Filter (Optional)
+            </span>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-beige-200/60 dark:bg-stone-800 text-stone-600 dark:text-stone-300">
+              Select items you have to find compatible culinary swaps
+            </span>
+          </div>
+          <h3 class="font-heading font-bold text-lg text-forest dark:text-ivory mt-0.5">
+            Select Your Currently Available Ingredients
+          </h3>
+        </div>
+
         <div class="flex flex-wrap items-center gap-1.5">
-          <button type="button" data-preset="breakfast"
-            class="pantry-preset-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-peach/40 dark:bg-stone-800 text-espresso dark:text-ivory border border-peach hover:bg-peach/70 transition-all cursor-pointer">
+          <span class="text-xs font-medium text-stone-400 mr-1">Presets:</span>
+          <button type="button" data-preset="breakfast" class="pantry-preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-peach/40 dark:bg-stone-800 text-espresso dark:text-ivory border border-peach hover:bg-peach/70 transition-all cursor-pointer">
             🥐 Breakfast Cafe
           </button>
-          <button type="button" data-preset="coffee"
-            class="pantry-preset-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-beige/50 dark:bg-stone-800 text-espresso dark:text-ivory border border-beige-300 hover:bg-beige transition-all cursor-pointer">
+          <button type="button" data-preset="coffee" class="pantry-preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-beige/50 dark:bg-stone-800 text-espresso dark:text-ivory border border-beige-300 hover:bg-beige transition-all cursor-pointer">
             ☕ Coffee & Bakery
           </button>
-          <button type="button" data-preset="vegan"
-            class="pantry-preset-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-sage-100 dark:bg-stone-800 text-forest-700 dark:text-sage-300 border border-sage-300 hover:bg-sage-200 transition-all cursor-pointer">
+          <button type="button" data-preset="vegan" class="pantry-preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-sage-100 dark:bg-stone-800 text-forest-700 dark:text-sage-300 border border-sage-300 hover:bg-sage-200 transition-all cursor-pointer">
             🌿 Vegan Bistro
           </button>
-          <button type="button" data-preset="italian"
-            class="pantry-preset-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-peach/30 dark:bg-stone-800 text-espresso dark:text-ivory border border-terracotta/30 hover:bg-peach/60 transition-all cursor-pointer">
+          <button type="button" data-preset="italian" class="pantry-preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-peach/30 dark:bg-stone-800 text-espresso dark:text-ivory border border-terracotta/30 hover:bg-peach/60 transition-all cursor-pointer">
             🍝 Italian Bar
           </button>
-          <button type="button" id="clear-pantry-btn"
-            class="px-3 py-1.5 rounded-lg text-xs font-semibold text-stone-600 dark:text-stone-300 hover:text-terracotta border border-beige-300 dark:border-stone-700 cursor-pointer transition-all ml-1">
+          <button type="button" id="clear-pantry-btn" class="px-2.5 py-1 rounded-lg text-xs font-medium text-stone-500 hover:text-terracotta border border-beige-300 dark:border-stone-700 cursor-pointer transition-all ml-1">
             Clear
           </button>
         </div>
@@ -367,7 +448,109 @@
   </aside>
 
   <!-- ============================================== -->
-  <!-- 3. MAIN APP VIEW CONTAINERS                    -->
+  <!-- 3. GLOBAL CULINARY PHOTO MARQUEE STRIP         -->
+  <!-- ============================================== -->
+  <div class="relative z-10 food-marquee-container py-2.5 border-y border-beige-200/80 dark:border-stone-800 bg-ivory/70 dark:bg-[#181410]/70 backdrop-blur-sm">
+    <div class="food-marquee-track">
+      <!-- Dish 1: Makhani -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=120&auto=format&fit=crop&q=80" alt="Makhani" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Paneer Butter Masala</span>
+          <span class="text-[10px] text-terracotta font-semibold">✨ Cashew & Milk Emulsion</span>
+        </div>
+      </div>
+      <!-- Dish 2: Avocado Toast -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=120&auto=format&fit=crop&q=80" alt="Avocado Toast" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Smashed Avocado Toast</span>
+          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🥑 Green Pea & Avocado Mash</span>
+        </div>
+      </div>
+      <!-- Dish 3: Truffle Fettuccine -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=120&auto=format&fit=crop&q=80" alt="Truffle Fettuccine" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Wild Mushroom Fettuccine</span>
+          <span class="text-[10px] text-stone-600 dark:text-stone-300 font-semibold">🍄 Steeped Porcini Reduction</span>
+        </div>
+      </div>
+      <!-- Dish 4: Basque Cheesecake -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=120&auto=format&fit=crop&q=80" alt="Basque Cheesecake" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">San Sebastian Basque Cake</span>
+          <span class="text-[10px] text-terracotta font-semibold">🍰 Hung Curd & Cream Cheese</span>
+        </div>
+      </div>
+      <!-- Dish 5: Sourdough Pizza -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=120&auto=format&fit=crop&q=80" alt="Neapolitan Pizza" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Neapolitan Sourdough Pizza</span>
+          <span class="text-[10px] text-terracotta font-semibold">🍕 Mozzarella & Ricotta Melt</span>
+        </div>
+      </div>
+      <!-- Dish 6: Falafel Glow Bowl -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=120&auto=format&fit=crop&q=80" alt="Falafel Bowl" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Crispy Herb Falafel Bowl</span>
+          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🧆 Sesame & Sunflower Silk</span>
+        </div>
+      </div>
+      <!-- Dish 7: Chocolate Lava Souffle -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=120&auto=format&fit=crop&q=80" alt="Molten Lava" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Belgian Chocolate Soufflé</span>
+          <span class="text-[10px] text-terracotta font-semibold">🍫 Dutch Cocoa & Brown Butter</span>
+        </div>
+      </div>
+      <!-- Dish 8: Matcha Cloud -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=120&auto=format&fit=crop&q=80" alt="Matcha Cloud" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Kyoto Matcha Cold Cloud</span>
+          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🍵 Toasted Pepita Silk Foam</span>
+        </div>
+      </div>
+
+      <!-- Duplicate Set for Seamless Continuous Loop -->
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=120&auto=format&fit=crop&q=80" alt="Makhani" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Paneer Butter Masala</span>
+          <span class="text-[10px] text-terracotta font-semibold">✨ Cashew & Milk Emulsion</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=120&auto=format&fit=crop&q=80" alt="Avocado Toast" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Smashed Avocado Toast</span>
+          <span class="text-[10px] text-sage-600 dark:text-sage-400 font-semibold">🥑 Green Pea & Avocado Mash</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=120&auto=format&fit=crop&q=80" alt="Truffle Fettuccine" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">Wild Mushroom Fettuccine</span>
+          <span class="text-[10px] text-stone-600 dark:text-stone-300 font-semibold">🍄 Steeped Porcini Reduction</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-stone-900/90 border border-beige-200 dark:border-stone-800 shadow-sm shrink-0">
+        <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=120&auto=format&fit=crop&q=80" alt="Basque Cheesecake" class="w-10 h-10 rounded-xl object-cover shadow-sm">
+        <div>
+          <span class="text-xs font-bold text-forest dark:text-ivory block leading-tight font-heading">San Sebastian Basque Cake</span>
+          <span class="text-[10px] text-terracotta font-semibold">🍰 Hung Curd & Cream Cheese</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- 4. MAIN APP VIEW CONTAINERS                    -->
   <!-- ============================================== -->
   <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6">
 
@@ -408,7 +591,16 @@
     </section>
 
     <!-- ============================================ -->
-    <!-- VIEW 5: FAVORITES VIEW                       -->
+    <!-- VIEW 5: DESIGN THINKING SLIDES               -->
+    <!-- ============================================ -->
+    <section id="view-slides" class="tab-view-container hidden space-y-8 animate-fade-up">
+      <div id="slides-view-container">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- VIEW 6: FAVORITES VIEW                       -->
     <!-- ============================================ -->
     <section id="view-favorites" class="tab-view-container hidden space-y-8 animate-fade-up">
       <div id="favorites-view-container">
@@ -419,14 +611,12 @@
   </main>
 
   <!-- Global Toast Notification Container -->
-  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none max-w-sm w-full">
-  </div>
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none max-w-sm w-full"></div>
 
   <!-- ============================================== -->
   <!-- 5. RECIPE WEBX MODAL DEEP-DIVE                 -->
   <!-- ============================================== -->
-  <div id="recipe-webx-modal"
-    class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+  <div id="recipe-webx-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
     <div id="modal-recipe-body" class="w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-3xl shadow-2xl">
       <!-- Dynamically filled with Ingredients FIRST, then Whole Recipe Steps SECOND -->
     </div>
@@ -435,23 +625,38 @@
   <!-- ============================================== -->
   <!-- 6. GLOBAL FOOTER                               -->
   <!-- ============================================== -->
-  <footer
-    class="relative z-10 mt-16 border-t border-beige-200/80 dark:border-stone-800 bg-ivory/90 dark:bg-[#181410]/90 backdrop-blur-md py-6 px-4 lg:px-8 text-sm text-stone-600 dark:text-stone-300">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-      <span class="font-heading font-bold text-base text-forest dark:text-ivory">
-        Flavor<span class="text-terracotta">Shift</span> AI
-      </span>
-      <span class="text-xs sm:text-sm text-stone-600 dark:text-stone-300">© 2026 FlavorShift AI</span>
+  <footer class="relative z-10 mt-16 border-t border-beige-200/80 dark:border-stone-800 bg-ivory/80 dark:bg-[#181410]/80 backdrop-blur-md py-10 px-4 lg:px-8 text-xs text-stone-500">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-forest text-ivory dark:bg-forest-600 flex items-center justify-center font-heading font-black text-sm shadow-md shadow-forest/20">
+          FS
+        </div>
+        <div>
+          <span class="font-heading font-bold text-base text-forest dark:text-ivory">Flavor<span class="text-terracotta italic font-serif">Shift</span> AI</span>
+          <span class="block text-[11px] text-stone-500 dark:text-stone-400 font-accent italic">Culinary Ingredient Substitution & Tasting Log Tool</span>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-medium">
+        <span class="flex items-center gap-1.5 text-sage-700 dark:text-sage-400"><i class="fa-solid fa-clipboard-check text-terracotta"></i> Local Kitchen Tasting Log</span>
+        <span class="flex items-center gap-1.5 text-forest-700 dark:text-sage-300"><i class="fa-solid fa-calculator text-sage-600"></i> Ingredient & Portion Scaling</span>
+        <span class="flex items-center gap-1.5 text-terracotta"><i class="fa-solid fa-chart-line"></i> Interactive Cost Calculator</span>
+        <span class="flex items-center gap-1.5 text-sage-600 dark:text-sage-400"><i class="fa-solid fa-leaf"></i> Lighter & Plant-Based Options</span>
+      </div>
+
+      <div class="text-[11px] text-stone-400 text-center md:text-right">
+        <span>© 2026 FlavorShift AI</span>
+        <span class="block text-[10px] text-stone-400/80 mt-0.5">Culinary Recipe & Substitution Companion</span>
+      </div>
     </div>
   </footer>
 
   <!-- Core Recipe Data & Application Scripts -->
-  <script src="./recipes-data.js?v=20261112clean"></script>
-  <script src="./universal-ingredient-engine.js?v=20261112clean"></script>
-  <script src="./api-service.js?v=20261112clean"></script>
-  <script src="./food-cursor-canvas.js?v=20261112clean"></script>
-  <script src="./app.js?v=20261112clean"></script>
+  <script src="./recipes-data.js?v=20261112api"></script>
+  <script src="./universal-ingredient-engine.js?v=20261112api"></script>
+  <script src="./api-service.js?v=20261112api"></script>
+  <script src="./food-cursor-canvas.js?v=20261112api"></script>
+  <script src="./app.js?v=20261112api"></script>
 
 </body>
-
 </html>

@@ -1,11 +1,11 @@
 /* ========================================================
-   FlavorShift AI - Clear Editorial Food-Tech Design System
-   Palette: Warm Ivory, Sage Green, Deep Forest Green,
+   FlavorShift AI - Premium Editorial Food-Tech Design System
+   Palette: Warm Ivory, Sage Green, Deep Forest Green, 
             Terracotta, Soft Peach, Warm Beige, Dark Espresso
-   Typography: Plus Jakarta Sans, Inter, JetBrains Mono
+   Typography: Playfair Display, DM Sans, Cormorant Garamond
    ======================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600&display=swap');
 
 :root {
   /* Editorial Food-Tech Color System */
@@ -21,61 +21,58 @@
   --color-peach-light: #FDF8F5;
   --color-beige: #E9DFC9;
   --color-beige-light: #F6F1E7;
-  --color-espresso: #261F18;
+  --color-espresso: #302820;
 
   /* Theme Canvas */
   --bg-primary: #FAF7F0;
   --bg-secondary: #F4EFE4;
-  --bg-card: rgba(255, 255, 255, 0.96);
+  --bg-card: rgba(255, 255, 255, 0.94);
   --bg-card-hover: #ffffff;
-  --border-color: rgba(135, 155, 118, 0.24);
+  --border-color: rgba(135, 155, 118, 0.22);
   --border-focus: #C87957;
 
-  /* High-Clarity Typography Palette */
-  --text-primary: #261F18;
-  --text-secondary: #4B443B;
-  --text-muted: #6B6257;
+  /* Typography */
+  --text-primary: #302820;
+  --text-secondary: #5C564C;
+  --text-muted: #8F887C;
 
-  --font-heading: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-sans: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-accent: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  --font-heading: 'Playfair Display', serif;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-accent: 'Cormorant Garamond', serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Soft Organic Shadows */
   --shadow-sm: 0 2px 10px rgba(48, 40, 32, 0.04);
   --shadow-md: 0 10px 25px rgba(48, 40, 32, 0.08);
   --shadow-lg: 0 20px 45px rgba(48, 40, 32, 0.12);
-  --glass-bg: rgba(250, 247, 240, 0.92);
-  --glass-border: rgba(233, 223, 201, 0.85);
+  --glass-bg: rgba(250, 247, 240, 0.88);
+  --glass-border: rgba(233, 223, 201, 0.8);
 }
 
 /* Midnight Gourmet Dark Theme */
 [data-theme="dark"] {
   --bg-primary: #181410;
   --bg-secondary: #221C17;
-  --bg-card: rgba(34, 28, 23, 0.94);
-  --bg-card-hover: rgba(44, 36, 30, 0.98);
-  --border-color: rgba(233, 223, 201, 0.14);
+  --bg-card: rgba(34, 28, 23, 0.92);
+  --bg-card-hover: rgba(44, 36, 30, 0.96);
+  --border-color: rgba(233, 223, 201, 0.12);
   --border-focus: #C87957;
 
   --text-primary: #FAF7F0;
-  --text-secondary: #E4DDD0;
-  --text-muted: #B6ADA0;
+  --text-secondary: #D4CBBA;
+  --text-muted: #8C8272;
 
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.55);
   --shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.7);
-  --glass-bg: rgba(24, 20, 16, 0.92);
-  --glass-border: rgba(233, 223, 201, 0.16);
+  --glass-bg: rgba(24, 20, 16, 0.88);
+  --glass-border: rgba(233, 223, 201, 0.14);
 }
 
 /* Global Reset & Base */
 html {
   scroll-behavior: smooth;
   font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
 }
 
 @media (min-width: 768px) {
@@ -103,7 +100,6 @@ body {
   color: var(--text-primary);
   font-size: 1rem;
   line-height: 1.65;
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
@@ -111,8 +107,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  letter-spacing: -0.025em;
-  line-height: 1.18;
+  letter-spacing: -0.02em;
 }
 
 .font-accent {
@@ -409,6 +404,52 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ========================================================
+   FOOD MARQUEE PHOTO SHOWCASE
+   ======================================================== */
+.food-marquee-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.food-marquee-container::before,
+.food-marquee-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 70px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.food-marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-primary), transparent);
+}
+
+.food-marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-primary), transparent);
+}
+
+.food-marquee-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  animation: marqueeScroll 38s linear infinite;
+}
+
+.food-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ========================================================
    PULSE & STATUS BADGES
    ======================================================== */
 .live-pulse-dot {
@@ -518,6 +559,9 @@ h1, h2, h3, h4, h5, h6 {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .food-marquee-track {
+    animation: none !important;
   }
   .steam-path, .floating-botanical, .aroma-blob {
     animation: none !important;
