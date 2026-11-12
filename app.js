@@ -90,9 +90,9 @@
     const themeBtn = document.getElementById('theme-toggle-btn');
     if (themeBtn) {
       if (theme === 'dark') {
-        themeBtn.innerHTML = `<i class="fa-solid fa-sun text-terracotta"></i><span class="hidden sm:inline font-medium text-xs">Light</span>`;
+        themeBtn.innerHTML = `<i class="fa-solid fa-sun text-terracotta"></i><span class="hidden 2xl:inline font-medium text-xs">Light</span>`;
       } else {
-        themeBtn.innerHTML = `<i class="fa-solid fa-moon text-forest"></i><span class="hidden sm:inline font-medium text-xs">Dark</span>`;
+        themeBtn.innerHTML = `<i class="fa-solid fa-moon text-forest"></i><span class="hidden 2xl:inline font-medium text-xs">Dark</span>`;
       }
     }
   }

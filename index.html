@@ -176,32 +176,29 @@
   <!-- ============================================== -->
   <!-- 1. TOP GLOBAL NAVIGATION BAR                  -->
   <!-- ============================================== -->
-  <header class="glass-nav sticky top-0 z-40 px-4 lg:px-8 py-3.5 transition-colors border-b border-beige-200/80 dark:border-forest-700/60 bg-ivory/85 dark:bg-[#181410]/85 backdrop-blur-md">
+  <header class="glass-nav sticky top-0 z-40 px-4 lg:px-6 2xl:px-8 py-3.5 transition-colors border-b border-beige-200/80 dark:border-forest-700/60 bg-ivory/85 dark:bg-[#181410]/85 backdrop-blur-md">
     <div class="max-w-[90rem] mx-auto flex items-center justify-between gap-3 lg:gap-4">
       
       <!-- Brand Logo -->
-      <div class="flex items-center gap-3 shrink-0">
-        <a href="#swaplab" data-tab="swaplab" class="nav-brand-link flex items-center gap-3 group">
-          <div class="w-11 h-11 rounded-2xl bg-forest text-ivory dark:bg-forest-600 flex items-center justify-center shadow-md shadow-forest/20 group-hover:scale-105 transition-transform duration-300">
-            <i class="fa-solid fa-fire-burner text-lg text-terracotta"></i>
+      <div class="flex items-center gap-2.5 shrink-0">
+        <a href="#swaplab" data-tab="swaplab" class="nav-brand-link flex items-center gap-2.5 group">
+          <div class="w-10 h-10 rounded-2xl bg-forest text-ivory dark:bg-forest-600 flex items-center justify-center shadow-md shadow-forest/20 group-hover:scale-105 transition-transform duration-300">
+            <i class="fa-solid fa-fire-burner text-base text-terracotta"></i>
           </div>
           <div>
-            <div class="flex items-center gap-2">
-              <span class="font-heading font-black text-xl sm:text-2xl tracking-tight text-forest dark:text-ivory">
-                Flavor<span class="text-terracotta font-serif italic">Shift</span> <span class="text-sage-600 dark:text-sage-300 font-mono text-xs px-2 py-0.5 rounded-lg bg-sage-50 dark:bg-sage-900/40 border border-sage-200 dark:border-sage-700">AI</span>
-              </span>
-            </div>
-            <span class="text-xs text-stone-500 dark:text-stone-400 block font-accent italic">Culinary Ingredient Swaps & Portion Scaling</span>
+            <span class="font-heading font-black text-lg sm:text-xl tracking-tight text-forest dark:text-ivory whitespace-nowrap">
+              Flavor<span class="text-terracotta font-serif italic">Shift</span> <span class="text-sage-600 dark:text-sage-300 font-mono text-xs px-1.5 py-0.5 rounded-lg bg-sage-50 dark:bg-sage-900/40 border border-sage-200 dark:border-sage-700">AI</span>
+            </span>
           </div>
         </a>
       </div>
 
       <!-- Navigation Tabs -->
-      <nav class="hidden md:flex items-center gap-1 bg-beige-100/70 dark:bg-stone-900/70 p-1.5 rounded-2xl border border-beige-200/80 dark:border-stone-800 backdrop-blur-md">
+      <nav class="hidden xl:flex items-center gap-0.5 2xl:gap-1 bg-beige-100/70 dark:bg-stone-900/70 p-1 rounded-2xl border border-beige-200/80 dark:border-stone-800 backdrop-blur-md">
         <button 
           type="button" 
           data-tab="swaplab"
-          class="nav-tab-btn active-nav-tab px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          class="nav-tab-btn active-nav-tab px-2 2xl:px-3 py-1.5 rounded-xl text-xs font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
         >
           <i class="fa-solid fa-flask-vial text-terracotta"></i>
           <span>Swap Lab</span>
@@ -210,7 +207,7 @@
         <button 
           type="button" 
           data-tab="explore"
-          class="nav-tab-btn px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          class="nav-tab-btn px-2 2xl:px-3 py-1.5 rounded-xl text-xs font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
         >
           <i class="fa-solid fa-utensils text-forest-500 dark:text-sage-400"></i>
           <span>Explore Menus</span>
@@ -219,7 +216,7 @@
         <button 
           type="button" 
           data-tab="htv"
-          class="nav-tab-btn px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          class="nav-tab-btn px-2 2xl:px-3 py-1.5 rounded-xl text-xs font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
         >
           <i class="fa-solid fa-users-viewfinder text-sage-600 dark:text-sage-400"></i>
           <span>Tasting Log</span>
@@ -228,7 +225,7 @@
         <button 
           type="button" 
           data-tab="dashboard"
-          class="nav-tab-btn px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          class="nav-tab-btn px-2 2xl:px-3 py-1.5 rounded-xl text-xs font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
         >
           <i class="fa-solid fa-chart-pie text-terracotta"></i>
           <span>Cost & Margin</span>
@@ -237,7 +234,7 @@
         <button 
           type="button" 
           data-tab="slides"
-          class="nav-tab-btn px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          class="nav-tab-btn px-2 2xl:px-3 py-1.5 rounded-xl text-xs font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
         >
           <i class="fa-solid fa-lightbulb text-sage-600"></i>
           <span>Design Deck</span>
@@ -246,7 +243,7 @@
         <button 
           type="button" 
           data-tab="favorites"
-          class="nav-tab-btn px-2.5 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1.5 cursor-pointer relative whitespace-nowrap"
+          class="nav-tab-btn px-2 2xl:px-3 py-1.5 rounded-xl text-xs font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1 cursor-pointer relative whitespace-nowrap"
         >
           <i class="fa-solid fa-heart text-terracotta"></i>
           <span>Favorites</span>
@@ -255,16 +252,16 @@
       </nav>
 
       <!-- Right Controls: Foodoscope API Status, Pantry & Theme Toggle -->
-      <div class="flex items-center gap-2 shrink-0">
+      <div class="flex items-center gap-1.5 shrink-0">
         <!-- Foodoscope API Status Pill -->
         <button
           type="button"
           id="ai-engine-status-pill"
-          class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-peach/40 dark:bg-stone-900 border border-terracotta/30 dark:border-stone-800 hover:border-terracotta text-espresso dark:text-beige shadow-sm transition-all cursor-pointer whitespace-nowrap"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-peach/40 dark:bg-stone-900 border border-terracotta/30 dark:border-stone-800 hover:border-terracotta text-espresso dark:text-beige shadow-sm transition-all cursor-pointer whitespace-nowrap"
           title="Check Foodoscope API connection status"
         >
           <span class="w-2 h-2 rounded-full bg-terracotta shrink-0"></span>
-          <span class="hidden sm:inline font-bold">Foodoscope API: Offline</span>
+          <span class="hidden sm:inline font-bold">Foodoscope: Offline</span>
           <span class="sm:hidden font-bold">API</span>
         </button>
 
@@ -272,11 +269,11 @@
         <button 
           type="button" 
           id="toggle-pantry-drawer-btn"
-          class="px-3 py-2 rounded-xl text-xs xl:text-sm font-semibold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 hover:border-sage-500 text-espresso dark:text-ivory shadow-sm transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 hover:border-sage-500 text-espresso dark:text-ivory shadow-sm transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
           title="Toggle Available Ingredients Drawer"
         >
           <i class="fa-solid fa-kitchen-set text-sage-600 dark:text-sage-400"></i>
-          <span class="hidden lg:inline">Pantry</span>
+          <span class="hidden 2xl:inline">Pantry</span>
           <span id="pantry-active-count" class="hidden px-1.5 py-0.2 rounded-full text-[11px] font-bold bg-sage text-white">0</span>
         </button>
 
@@ -284,18 +281,18 @@
         <button 
           type="button" 
           id="theme-toggle-btn"
-          class="px-3 py-2 rounded-xl text-xs xl:text-sm font-semibold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 hover:border-terracotta text-espresso dark:text-ivory shadow-sm transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 hover:border-terracotta text-espresso dark:text-ivory shadow-sm transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
           title="Toggle Daylight / Dark Theme"
         >
           <i class="fa-solid fa-moon text-terracotta"></i>
-          <span class="hidden lg:inline font-medium text-xs xl:text-sm">Theme</span>
+          <span class="hidden 2xl:inline font-medium text-xs">Theme</span>
         </button>
       </div>
 
     </div>
 
-    <!-- Mobile Navigation Sub-bar -->
-    <div class="md:hidden flex items-center justify-around border-t border-beige-200/80 dark:border-stone-800 mt-2.5 pt-2">
+    <!-- Mobile / Tablet Navigation Sub-bar -->
+    <div class="xl:hidden flex items-center justify-around border-t border-beige-200/80 dark:border-stone-800 mt-2.5 pt-2">
       <button type="button" data-tab="swaplab" class="nav-tab-btn active-nav-tab py-1 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-flask-vial mb-0.5 text-terracotta"></i>
         <span>Swap Lab</span>
@@ -315,6 +312,10 @@
       <button type="button" data-tab="slides" class="nav-tab-btn py-1 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-lightbulb mb-0.5 text-sage-600"></i>
         <span>Deck</span>
+      </button>
+      <button type="button" data-tab="favorites" class="nav-tab-btn py-1 text-xs font-medium flex flex-col items-center">
+        <i class="fa-solid fa-heart mb-0.5 text-terracotta"></i>
+        <span>Saved</span>
       </button>
     </div>
   </header>
@@ -652,11 +653,11 @@
   </footer>
 
   <!-- Core Recipe Data & Application Scripts -->
-  <script src="./recipes-data.js?v=20261112api"></script>
-  <script src="./universal-ingredient-engine.js?v=20261112api"></script>
-  <script src="./api-service.js?v=20261112api"></script>
-  <script src="./food-cursor-canvas.js?v=20261112api"></script>
-  <script src="./app.js?v=20261112api"></script>
+  <script src="./recipes-data.js?v=20261112api2"></script>
+  <script src="./universal-ingredient-engine.js?v=20261112api2"></script>
+  <script src="./api-service.js?v=20261112api2"></script>
+  <script src="./food-cursor-canvas.js?v=20261112api2"></script>
+  <script src="./app.js?v=20261112api2"></script>
 
 </body>
 </html>

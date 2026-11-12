@@ -171,31 +171,31 @@ const ApiService = (function () {
       if (connectionState === 'connected') {
         pill.innerHTML = `
           <span class="w-2 h-2 rounded-full bg-sage-600 animate-pulse shrink-0"></span>
-          <span class="hidden sm:inline font-bold">Foodoscope API: Connected</span>
+          <span class="hidden sm:inline font-bold">Foodoscope: Connected</span>
           <span class="sm:hidden font-bold">Connected</span>
         `;
-        pill.className = 'inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-sage-100 dark:bg-emerald-950/50 text-forest dark:text-sage-300 border border-sage-400 dark:border-sage-700 shadow-sm transition-all cursor-pointer whitespace-nowrap';
+        pill.className = 'inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-sage-100 dark:bg-emerald-950/50 text-forest dark:text-sage-300 border border-sage-400 dark:border-sage-700 shadow-sm transition-all cursor-pointer whitespace-nowrap';
       } else if (connectionState === 'checking') {
         pill.innerHTML = `
           <span class="w-2 h-2 rounded-full bg-terracotta animate-ping shrink-0"></span>
-          <span class="hidden sm:inline font-bold">Checking API...</span>
+          <span class="hidden sm:inline font-bold">Checking...</span>
           <span class="sm:hidden font-bold">Checking</span>
         `;
-        pill.className = 'inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-peach/60 dark:bg-stone-900 text-espresso dark:text-beige border border-terracotta/50 shadow-sm transition-all cursor-pointer whitespace-nowrap';
+        pill.className = 'inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-peach/60 dark:bg-stone-900 text-espresso dark:text-beige border border-terracotta/50 shadow-sm transition-all cursor-pointer whitespace-nowrap';
       } else if (connectionState === 'error') {
         pill.innerHTML = `
           <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
-          <span class="hidden sm:inline font-bold">Foodoscope API: Auth/HTTP Error</span>
+          <span class="hidden sm:inline font-bold">Foodoscope: Error</span>
           <span class="sm:hidden font-bold">API Error</span>
         `;
-        pill.className = 'inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800 shadow-sm transition-all cursor-pointer whitespace-nowrap';
+        pill.className = 'inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800 shadow-sm transition-all cursor-pointer whitespace-nowrap';
       } else {
         pill.innerHTML = `
           <span class="w-2 h-2 rounded-full bg-terracotta shrink-0"></span>
-          <span class="hidden sm:inline font-bold">Foodoscope API: Offline</span>
+          <span class="hidden sm:inline font-bold">Foodoscope: Offline</span>
           <span class="sm:hidden font-bold">API</span>
         `;
-        pill.className = 'inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-peach/40 dark:bg-stone-900 text-espresso dark:text-beige border border-terracotta/30 dark:border-stone-800 hover:border-terracotta shadow-sm transition-all cursor-pointer whitespace-nowrap';
+        pill.className = 'inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-bold bg-peach/40 dark:bg-stone-900 text-espresso dark:text-beige border border-terracotta/30 dark:border-stone-800 hover:border-terracotta shadow-sm transition-all cursor-pointer whitespace-nowrap';
       }
     }
 
