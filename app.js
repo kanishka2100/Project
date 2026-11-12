@@ -6,7 +6,7 @@
 
   // Application State
   const state = {
-    activeTab: 'swaplab', // 'swaplab', 'explore', 'htv', 'dashboard', 'slides', 'favorites'
+    activeTab: 'swaplab', // 'swaplab', 'explore', 'htv', 'dashboard', 'favorites'
     selectedSwapIndex: 0,
     swapStudioMode: 'universal', // 'universal' | 'curated'
     universalCurrentIngredient: 'Fresh Cream',
@@ -24,11 +24,6 @@
     
     // Per-recipe dynamic toggles and person counts
     recipeStates: {},
-    
-    // Design Thinking Slide State
-    currentSlideIndex: 0,
-    slideAutoplay: false,
-    autoplayTimer: null,
     
     // Currently open recipe in modal
     activeRecipeId: null,
@@ -2022,10 +2017,6 @@
                 <i class="fa-solid fa-boxes-stacked text-terracotta"></i>
                 <span>Pantry Stock</span>
               </button>
-              <button type="button" id="dash-launch-slides-btn" class="px-4 py-2.5 rounded-xl text-xs font-bold terracotta-btn text-white shadow-lg transition-all cursor-pointer flex items-center gap-2">
-                <i class="fa-solid fa-lightbulb"></i>
-                <span>Design Thinking Deck</span>
-              </button>
             </div>
           </div>
         </div>
@@ -2203,10 +2194,6 @@
       document.getElementById('pantry-drawer')?.classList.remove('hidden');
     });
 
-    document.getElementById('dash-launch-slides-btn')?.addEventListener('click', () => {
-      switchTab('slides');
-    });
-
     document.getElementById('dash-currency-select')?.addEventListener('change', (e) => {
       state.currency = e.target.value;
       localStorage.setItem('flavorshift_currency', state.currency);
@@ -2239,150 +2226,6 @@
       state.dashboardCovers = parseInt(e.target.value, 10);
       refreshDashNumbers();
     });
-  }
-
-  // ========================================================
-  // RENDER: DESIGN THINKING SLIDES
-  // ========================================================
-  function renderDesignThinkingView() {
-    const container = document.getElementById('slides-view-container');
-    if (!container) return;
-
-    const currentSlide = DESIGN_THINKING_SLIDES[state.currentSlideIndex] || DESIGN_THINKING_SLIDES[0];
-    const totalSlides = DESIGN_THINKING_SLIDES.length;
-
-    let html = `
-      <div class="space-y-6 max-w-5xl mx-auto animate-fade-up">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-beige-200 dark:border-stone-800 pb-4">
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="px-3 py-0.5 rounded-full text-xs font-black bg-peach/40 text-terracotta border border-terracotta/30">
-                Design Thinking Deck
-              </span>
-              <span class="text-xs text-stone-400 font-semibold">FlavorShift Product Workflow</span>
-            </div>
-            <h2 class="text-2xl md:text-3xl font-black text-forest dark:text-ivory">
-              Designing FlavorShift AI
-            </h2>
-            <p class="text-xs text-stone-500">
-              5-Stage Design Thinking overview covering culinary substitution workflows and local user feedback.
-            </p>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <button type="button" id="slide-prev-btn" class="w-10 h-10 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 hover:border-terracotta flex items-center justify-center font-bold text-stone-700 dark:text-stone-300 transition-all cursor-pointer ${state.currentSlideIndex === 0 ? 'opacity-40 cursor-not-allowed' : ''}" ${state.currentSlideIndex === 0 ? 'disabled' : ''}>
-              <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <button type="button" id="slide-autoplay-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${state.slideAutoplay ? 'bg-terracotta text-white' : 'bg-white dark:bg-[#1f1a16] border-beige-200 dark:border-stone-800 text-stone-700 dark:text-stone-300'}">
-              <i class="fa-solid ${state.slideAutoplay ? 'fa-pause' : 'fa-play'}"></i>
-              <span>${state.slideAutoplay ? 'Pause' : 'Autoplay'}</span>
-            </button>
-            <button type="button" id="slide-next-btn" class="w-10 h-10 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 hover:border-terracotta flex items-center justify-center font-bold text-stone-700 dark:text-stone-300 transition-all cursor-pointer ${state.currentSlideIndex === totalSlides - 1 ? 'opacity-40 cursor-not-allowed' : ''}" ${state.currentSlideIndex === totalSlides - 1 ? 'disabled' : ''}>
-              <i class="fa-solid fa-chevron-right"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
-          ${DESIGN_THINKING_SLIDES.map((s, idx) => `
-            <button type="button" data-jump-slide="${idx}" class="px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border ${idx === state.currentSlideIndex ? 'bg-forest dark:bg-ivory text-ivory dark:text-forest border-transparent shadow-sm' : 'bg-white dark:bg-[#1f1a16] text-stone-600 dark:text-stone-400 border-beige-200 dark:border-stone-800'}">
-              ${s.stage}
-            </button>
-          `).join('')}
-        </div>
-
-        <div class="editorial-card bg-white dark:bg-[#1f1a16]/95 border border-beige-200 dark:border-stone-800 rounded-3xl p-6 md:p-10 shadow-xl relative min-h-[460px] flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-4">
-              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider terracotta-btn text-white shadow-sm">
-                ${currentSlide.badge}
-              </span>
-              <span class="text-xs font-black text-stone-400">
-                Slide ${currentSlide.slideNumber} of ${totalSlides}
-              </span>
-            </div>
-
-            <h3 class="text-2xl md:text-3xl font-black text-forest dark:text-ivory mb-2 leading-tight">
-              ${currentSlide.title}
-            </h3>
-            <p class="text-stone-500 dark:text-stone-300 text-sm mb-8 leading-relaxed max-w-3xl">
-              ${currentSlide.subtitle}
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              ${currentSlide.points.map(pt => `
-                <div class="p-4 rounded-2xl bg-ivory dark:bg-stone-900 border border-beige-200 dark:border-stone-800">
-                  <div class="font-extrabold text-sm text-forest dark:text-ivory mb-2 flex items-center gap-1.5">
-                    <i class="fa-solid fa-circle-check text-terracotta text-xs"></i>
-                    <span>${pt.title}</span>
-                  </div>
-                  <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-medium">
-                    ${pt.desc}
-                  </p>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-
-          <div class="pt-6 border-t border-beige-100 dark:border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-              <span class="text-2xl font-black text-terracotta">${currentSlide.metric.value}</span>
-              <span class="text-xs text-stone-500 font-medium max-w-xs leading-snug">${currentSlide.metric.label}</span>
-            </div>
-
-            <div class="flex items-center gap-1.5">
-              ${DESIGN_THINKING_SLIDES.map((_, i) => `
-                <span data-jump-slide="${i}" class="w-3 h-3 rounded-full transition-all cursor-pointer ${i === state.currentSlideIndex ? 'bg-terracotta w-6' : 'bg-beige-300 dark:bg-stone-800'}"></span>
-              `).join('')}
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    container.innerHTML = html;
-
-    document.getElementById('slide-prev-btn')?.addEventListener('click', () => {
-      if (state.currentSlideIndex > 0) {
-        state.currentSlideIndex--;
-        renderDesignThinkingView();
-      }
-    });
-
-    document.getElementById('slide-next-btn')?.addEventListener('click', () => {
-      if (state.currentSlideIndex < totalSlides - 1) {
-        state.currentSlideIndex++;
-        renderDesignThinkingView();
-      }
-    });
-
-    document.querySelectorAll('[data-jump-slide]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.currentSlideIndex = parseInt(btn.getAttribute('data-jump-slide'), 10);
-        renderDesignThinkingView();
-      });
-    });
-
-    document.getElementById('slide-autoplay-btn')?.addEventListener('click', () => {
-      state.slideAutoplay = !state.slideAutoplay;
-      if (state.slideAutoplay) {
-        stopSlideAutoplay();
-        state.autoplayTimer = setInterval(() => {
-          state.currentSlideIndex = (state.currentSlideIndex + 1) % DESIGN_THINKING_SLIDES.length;
-          renderDesignThinkingView();
-        }, 4500);
-      } else {
-        stopSlideAutoplay();
-      }
-      renderDesignThinkingView();
-    });
-  }
-
-  function stopSlideAutoplay() {
-    if (state.autoplayTimer) {
-      clearInterval(state.autoplayTimer);
-      state.autoplayTimer = null;
-    }
   }
 
   // ========================================================
@@ -3109,8 +2952,6 @@
       renderHtvView();
     } else if (tabName === 'dashboard') {
       renderDashboardView();
-    } else if (tabName === 'slides') {
-      renderDesignThinkingView();
     } else if (tabName === 'favorites') {
       renderFavoritesView();
     }

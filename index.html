@@ -233,15 +233,6 @@
 
         <button 
           type="button" 
-          data-tab="slides"
-          class="nav-tab-btn px-2 2xl:px-3 py-1.5 rounded-xl text-xs font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
-        >
-          <i class="fa-solid fa-lightbulb text-sage-600"></i>
-          <span>Design Deck</span>
-        </button>
-
-        <button 
-          type="button" 
           data-tab="favorites"
           class="nav-tab-btn px-2 2xl:px-3 py-1.5 rounded-xl text-xs font-semibold text-espresso dark:text-ivory hover:text-terracotta transition-all flex items-center gap-1 cursor-pointer relative whitespace-nowrap"
         >
@@ -308,10 +299,6 @@
       <button type="button" data-tab="dashboard" class="nav-tab-btn py-1 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-chart-pie mb-0.5 text-terracotta"></i>
         <span>Margin</span>
-      </button>
-      <button type="button" data-tab="slides" class="nav-tab-btn py-1 text-xs font-medium flex flex-col items-center">
-        <i class="fa-solid fa-lightbulb mb-0.5 text-sage-600"></i>
-        <span>Deck</span>
       </button>
       <button type="button" data-tab="favorites" class="nav-tab-btn py-1 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-heart mb-0.5 text-terracotta"></i>
@@ -592,16 +579,7 @@
     </section>
 
     <!-- ============================================ -->
-    <!-- VIEW 5: DESIGN THINKING SLIDES               -->
-    <!-- ============================================ -->
-    <section id="view-slides" class="tab-view-container hidden space-y-8 animate-fade-up">
-      <div id="slides-view-container">
-        <!-- Rendered by JS -->
-      </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- VIEW 6: FAVORITES VIEW                       -->
+    <!-- VIEW 5: FAVORITES VIEW                       -->
     <!-- ============================================ -->
     <section id="view-favorites" class="tab-view-container hidden space-y-8 animate-fade-up">
       <div id="favorites-view-container">
@@ -653,11 +631,11 @@
   </footer>
 
   <!-- Core Recipe Data & Application Scripts -->
-  <script src="./recipes-data.js?v=20261112api2"></script>
-  <script src="./universal-ingredient-engine.js?v=20261112api2"></script>
-  <script src="./api-service.js?v=20261112api2"></script>
-  <script src="./food-cursor-canvas.js?v=20261112api2"></script>
-  <script src="./app.js?v=20261112api2"></script>
+  <script src="./recipes-data.js?v=20261112nodeck"></script>
+  <script src="./universal-ingredient-engine.js?v=20261112nodeck"></script>
+  <script src="./api-service.js?v=20261112nodeck"></script>
+  <script src="./food-cursor-canvas.js?v=20261112nodeck"></script>
+  <script src="./app.js?v=20261112nodeck"></script>
 
 </body>
 </html>
