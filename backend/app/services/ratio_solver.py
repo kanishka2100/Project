@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 
 # Compositional profiles: {ingredient: {fat%, moisture%, protein%, carb%}}
 INGREDIENT_PROFILES = {
-    "Fresh Cream": {"fat": 30.0, "moisture": 63.0, "protein": 2.0, "carbs": 3.0, "cost_per_100g": 0.70},
-    "Cashew Nut": {"fat": 43.9, "moisture": 5.2, "protein": 18.2, "carbs": 30.2, "cost_per_100g": 1.20},
+    "Fresh Cream": {"fat": 30.0, "moisture": 63.0, "protein": 2.0, "carbs": 3.0, "cost_per_100g": 0.85},
+    "Cashew Nut": {"fat": 43.9, "moisture": 5.2, "protein": 18.2, "carbs": 30.2, "cost_per_100g": 0.80},
     "Warm Milk": {"fat": 3.3, "moisture": 87.0, "protein": 3.3, "carbs": 5.0, "cost_per_100g": 0.08},
     "Greek Yogurt": {"fat": 5.0, "moisture": 80.0, "protein": 10.0, "carbs": 3.6, "cost_per_100g": 0.25},
     "Coconut Cream": {"fat": 24.0, "moisture": 73.0, "protein": 2.3, "carbs": 2.7, "cost_per_100g": 0.40},

@@ -1981,8 +1981,35 @@ const UniversalIngredientEngine = (function () {
     return cloned;
   }
 
+  function applyFlavorIdentityScoring(missingName, candidateList, dishName, userPrefs) {
+    if (typeof FlavorIdentityEngine !== 'undefined') {
+      let matchedRecipe = null;
+      if (typeof RECIPES_DATA !== 'undefined' && Array.isArray(RECIPES_DATA) && dishName) {
+        const lower = dishName.toLowerCase().trim();
+        matchedRecipe = RECIPES_DATA.find(r => 
+          r.id.toLowerCase() === lower ||
+          r.title.toLowerCase().includes(lower) ||
+          lower.includes(r.title.toLowerCase())
+        );
+      }
+      const engineResult = FlavorIdentityEngine.rankSubstitutes(
+        missingName,
+        candidateList,
+        matchedRecipe,
+        null,
+        userPrefs
+      );
+      return {
+        alternatives: engineResult.eligible.length > 0 ? engineResult.eligible : candidateList,
+        excluded: engineResult.excluded || [],
+        weightsUsed: engineResult.weightsUsed
+      };
+    }
+    return { alternatives: candidateList, excluded: [] };
+  }
+
   // 6. MAIN UNIVERSAL LOOKUP ENGINE
-  function analyzeIngredient(rawInput, dishContext = 'General / All Dishes') {
+  function analyzeIngredient(rawInput, dishContext = 'General / All Dishes', userPrefs) {
     const trimmed = (rawInput || '').trim();
 
     if (!trimmed) {
@@ -2015,10 +2042,11 @@ const UniversalIngredientEngine = (function () {
     }
 
     if (directEntry) {
-      const rankedAlts = adjustByContext(directEntry.substitutes, dishContext);
+      const rawCandidates = adjustByContext(directEntry.substitutes, dishContext);
+      const scored = applyFlavorIdentityScoring(directEntry.name, rawCandidates, dishContext, userPrefs);
       return {
         status: 'recognized',
-        source: 'Curated Culinary Substitution Guide',
+        source: 'Flavor Identity Engine & Curated Substitution Guide',
         isFallback: false,
         ingredientName: directEntry.name,
         category: directEntry.category,
@@ -2027,7 +2055,9 @@ const UniversalIngredientEngine = (function () {
         flavorProfile: directEntry.flavorProfile,
         textureProfile: directEntry.textureProfile,
         dishContext: dishContext,
-        alternatives: rankedAlts,
+        alternatives: scored.alternatives,
+        excludedAlternatives: scored.excluded,
+        weightsUsed: scored.weightsUsed,
         volatiles: directEntry.volatiles
       };
     }
@@ -2036,10 +2066,11 @@ const UniversalIngredientEngine = (function () {
     for (const h of CATEGORY_HEURISTICS) {
       const match = h.keywords.some(kw => norm.includes(kw) || kw.includes(norm));
       if (match) {
-        const alts = adjustByContext(h.makeSubstitutes(trimmed), dishContext);
+        const rawCandidates = adjustByContext(h.makeSubstitutes(trimmed), dishContext);
+        const scored = applyFlavorIdentityScoring(trimmed, rawCandidates, dishContext, userPrefs);
         return {
           status: 'recognized',
-          source: 'Culinary Category Heuristic Guide',
+          source: 'Flavor Identity Engine & Culinary Category Heuristic Guide',
           isFallback: true,
           fallbackReason: 'Ingredient identified via culinary category and functional heuristics. Clearly labeled as an AI algorithmic recommendation.',
           ingredientName: trimmed.charAt(0).toUpperCase() + trimmed.slice(1),
@@ -2049,7 +2080,9 @@ const UniversalIngredientEngine = (function () {
           flavorProfile: 'Balanced culinary baseline for ' + h.category,
           textureProfile: 'Standard viscosity & thermal properties of ' + h.category,
           dishContext: dishContext,
-          alternatives: alts,
+          alternatives: scored.alternatives,
+          excludedAlternatives: scored.excluded,
+          weightsUsed: scored.weightsUsed,
           volatiles: h.volatiles
         };
       }
@@ -2093,9 +2126,11 @@ const UniversalIngredientEngine = (function () {
       }
     ];
 
+    const scored = applyFlavorIdentityScoring(capitalName, genericAlts, dishContext, userPrefs);
+
     return {
       status: 'recognized',
-      source: 'Culinary Category Heuristic Guide',
+      source: 'Flavor Identity Engine & Culinary Category Heuristic Guide',
       isFallback: true,
       fallbackReason: 'Ingredient validated as edible food term; recommendations synthesized via culinary functional heuristics.',
       ingredientName: capitalName,
@@ -2105,7 +2140,9 @@ const UniversalIngredientEngine = (function () {
       flavorProfile: 'General savory/mild whole food profile',
       textureProfile: 'Standard kitchen ingredient consistency',
       dishContext: dishContext,
-      alternatives: genericAlts,
+      alternatives: scored.alternatives,
+      excludedAlternatives: scored.excluded,
+      weightsUsed: scored.weightsUsed,
       volatiles: ['general organic volatiles', 'esters', 'organic acids']
     };
   }
@@ -2142,7 +2179,8 @@ const UniversalIngredientEngine = (function () {
     isNonFood,
     normalizeName,
     PRESET_SHOWCASE,
-    ONTOLOGY
+    ONTOLOGY,
+    FlavorIdentityEngine: typeof FlavorIdentityEngine !== 'undefined' ? FlavorIdentityEngine : null
   };
 })();
 

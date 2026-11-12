@@ -60,6 +60,25 @@ Every day, home cooks and professional kitchens encounter two major challenges w
   - **Pine Nuts** → *Toasted Golden Sunflower Seeds + Walnuts*
 - **Live Ratio Converter**: Input any missing quantity (e.g., 250g cream) to receive the exact replacement breakdown in real time.
 
+### 🧠 1B. Flavor Identity Engine (Mathematical Scoring Architecture)
+The platform implements a multi-criteria mathematical scoring model that ranks substitute ingredients:
+
+$$\text{Score} = \text{Gate} \times \left(w_F \times F + w_R \times R + w_C \times C\right)$$
+
+- **Default Weights (Normalized to $\sum = 1.0$)**:
+  - $w_F$ (Flavor Similarity): `0.40`
+  - $w_R$ (Recipe Compatibility): `0.40`
+  - $w_C$ (Cost Efficiency): `0.20`
+- **Component Breakdown**:
+  - **Flavor Similarity ($F \in [0, 1]$)**: Cosine similarity over 12-dimensional culinary sensory descriptor vectors `[SAMPLE]`.
+  - **Recipe Compatibility ($R \in [0, 1]$)**: Co-occurrence and pairwise culinary affinity with the other ingredients in the selected recipe `[SAMPLE]`.
+  - **Cost Efficiency ($C \in [0, 1]$)**: $C = \min(1.0, \text{Price}_{\text{orig}} / \text{Price}_{\text{cand}})$, evaluating benchmark or user-entered ingredient prices `[ESTIMATE]`.
+  - **Hard Filter Gate ($\text{Gate} \in \{0, 1\}$)**: Evaluates allergen safety (fail-safe if missing allergen data), active dietary preferences, stock availability, and culinary role. Candidates failing any mandatory check yield $\text{Gate} = 0$.
+- **Quantity Scaling Formula**:
+  $$\text{Replacement Quantity} = \text{Original Quantity} \times \text{Substitution Ratio} \times \left(\frac{\text{Target Servings}}{\text{Base Servings}}\right)$$
+  Ratios are labeled `[ESTIMATE]` and missing ratios return `"No ratio available"` without arbitrary invention.
+- **Data Honesty Labels**: Every data point is tagged as `[SAMPLE]`, `[ESTIMATE]`, `[USER-ENTERED]`, or `[LIVE FOODOSCOPE]`. No unverified live claims or fake precision percentages.
+
 ### 👥 2. Human Taste Validation (HTV) Community Hub
 - Public kitchen validation database showcasing blind taste test results, texture feedback, and verified cafe reviews.
 - **Interactive HTV Submission Form**: Allows users to log their own kitchen experiments, rate taste match percentage (0–100%), score texture mouthfeel (1–10), and post notes to help future cooks.

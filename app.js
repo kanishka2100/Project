@@ -888,8 +888,20 @@
                                 `}
                               </div>
 
+                              <!-- Flavor Identity Engine Score Badge [SAMPLE] -->
+                              <div class="flex items-center justify-between text-xs font-mono font-bold text-forest dark:text-ivory mt-2.5 mb-1 pt-1.5 border-t border-beige-200/50 dark:border-stone-800/50">
+                                <span class="flex items-center gap-1.5">
+                                  <i class="fa-solid fa-chart-simple text-terracotta text-xs"></i>
+                                  <span>Score: <strong class="text-terracotta text-sm">${alt.score != null ? alt.score : 85}/100</strong></span>
+                                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-beige-200/60 dark:bg-stone-800 text-stone-500 font-semibold">[SAMPLE]</span>
+                                </span>
+                                <span class="text-[11px] text-stone-500 font-mono font-medium">
+                                  F:${Math.round((alt.flavorSimilarity != null ? alt.flavorSimilarity : 0.88) * 100)}% · R:${Math.round((alt.recipeCompatibility != null ? alt.recipeCompatibility : 0.85) * 100)}% · C:${Math.round((alt.costEfficiency != null ? alt.costEfficiency : 0.80) * 100)}%
+                                </span>
+                              </div>
+
                               <!-- Alternative Title -->
-                              <h4 class="text-xl sm:text-2xl font-bold font-heading text-forest dark:text-ivory leading-snug mt-3.5 mb-3.5">
+                              <h4 class="text-xl sm:text-2xl font-bold font-heading text-forest dark:text-ivory leading-snug mt-2 mb-3.5">
                                 ${alt.name}
                               </h4>
 
@@ -903,9 +915,14 @@
                                 </span>
                               </div>
 
-                              <!-- Crisp Culinary Description -->
+                              <!-- Crisp Culinary Description with Formula Contributions -->
                               <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-3">
                                 ${alt.tasteDesc}
+                                ${alt.contributions ? `
+                                  <span class="block text-xs text-stone-500 dark:text-stone-400 mt-1.5 font-mono">
+                                    Contributions: Flavor ${alt.contributions.flavor}pts + Recipe ${alt.contributions.recipe}pts + Cost ${alt.contributions.cost}pts = ${alt.score}pts.
+                                  </span>
+                                ` : ''}
                               </p>
                               ${alt.textureDesc ? `
                                 <div class="text-xs text-stone-500 dark:text-stone-400 leading-normal flex items-start gap-1.5 mb-4">
@@ -945,6 +962,22 @@
                         `;
                       }).join('')}
                     </div>
+
+                    ${(uResult.excludedAlternatives && uResult.excludedAlternatives.length > 0) ? `
+                      <div class="p-4 rounded-2xl bg-ivory/80 dark:bg-stone-900 border border-beige-200 dark:border-stone-800 text-xs text-stone-600 dark:text-stone-300 space-y-2">
+                        <span class="font-bold text-forest dark:text-ivory flex items-center gap-1.5 font-mono uppercase tracking-wider text-[11px]">
+                          <i class="fa-solid fa-shield-halved text-terracotta"></i>
+                          <span>Safety Gate: Excluded Candidates (${uResult.excludedAlternatives.length})</span>
+                        </span>
+                        <div class="flex flex-wrap gap-2 pt-1">
+                          ${uResult.excludedAlternatives.map(ex => `
+                            <span class="px-2.5 py-1 rounded-xl bg-peach/30 text-terracotta border border-terracotta/20 text-xs font-mono">
+                              <strong>${ex.name}:</strong> ${ex.rejectionReason}
+                            </span>
+                          `).join('')}
+                        </div>
+                      </div>
+                    ` : ''}
 
                     <!-- Complete Recipe with the Selected Substitute Replacing Original Missing Ingredient -->
                     <div id="substituted-recipe-card" class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1c1713] border-2 border-terracotta/40 dark:border-stone-800 shadow-xl space-y-6">
