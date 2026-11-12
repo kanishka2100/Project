@@ -7,6 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import get_settings
 from app.core.database import get_db
 
+from app.services.foodoscope_client import foodoscope_client
+
 settings = get_settings()
 router = APIRouter(prefix="/health", tags=["Health"])
 
@@ -14,11 +16,13 @@ router = APIRouter(prefix="/health", tags=["Health"])
 @router.get("")
 @router.get("/")
 async def health_check():
-    """Return basic service health status and version."""
+    """Return basic service health status and version including Foodoscope connectivity."""
+    foodoscope_status = await foodoscope_client.check_health()
     return {
         "status": "healthy",
         "service": settings.APP_NAME,
         "version": settings.VERSION,
+        "foodoscope_api": foodoscope_status,
     }
 
 

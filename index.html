@@ -381,11 +381,20 @@
 
       <div class="flex flex-wrap items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
         <span class="font-bold">Quick Presets:</span>
-        <button type="button" id="foodoscope-preset-local-btn" class="px-2.5 py-1 rounded-lg bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-700 hover:border-sage-500 font-semibold text-espresso dark:text-ivory cursor-pointer">
-          Local FastAPI (:8000/api/v1)
+        <button type="button" id="foodoscope-preset-cloud-btn" class="px-2.5 py-1 rounded-lg bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-700 hover:border-terracotta font-semibold text-espresso dark:text-ivory cursor-pointer flex items-center gap-1">
+          <i class="fa-solid fa-cloud text-terracotta text-[10px]"></i>
+          <span>Foodoscope Cloud (Official)</span>
+        </button>
+        <button type="button" id="foodoscope-preset-local-btn" class="px-2.5 py-1 rounded-lg bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-700 hover:border-sage-500 font-semibold text-espresso dark:text-ivory cursor-pointer flex items-center gap-1">
+          <i class="fa-solid fa-server text-forest dark:text-sage-300 text-[10px]"></i>
+          <span>Local FastAPI (:8000/api/v1)</span>
+        </button>
+        <button type="button" id="foodoscope-test-search-btn" class="px-2.5 py-1 rounded-lg bg-peach/40 dark:bg-stone-900 border border-terracotta/40 hover:border-terracotta font-bold text-terracotta cursor-pointer flex items-center gap-1">
+          <i class="fa-solid fa-bolt text-[10px]"></i>
+          <span>Live RecipeDB Probe</span>
         </button>
         <span id="foodoscope-telemetry-meta" class="font-mono text-[11px] text-stone-500 dark:text-stone-400 ml-auto">
-          Status: Offline · Mode: Local Ontology
+          Status: Checking... · Key: Configured
         </span>
       </div>
     </div>

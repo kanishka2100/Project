@@ -42,7 +42,14 @@
     customReviews: JSON.parse(localStorage.getItem('flavorshift_reviews') || '{}'),
     
     // User-submitted kitchen validation tests (persisted locally)
-    htvSubmissions: JSON.parse(localStorage.getItem('flavorshift_htv_submissions') || '[]')
+    htvSubmissions: JSON.parse(localStorage.getItem('flavorshift_htv_submissions') || '[]'),
+
+    // Foodoscope RecipeDB Live Database State
+    exploreMode: 'catalog', // 'catalog' | 'foodoscope'
+    foodoscopeQuery: 'Biryani',
+    foodoscopeResults: [],
+    foodoscopeLoading: false,
+    foodoscopeSelectedRecipe: null
   };
 
   // Preset Pantry Bundles
@@ -832,9 +839,13 @@
                     <!-- Clean Section Header -->
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-beige-200 dark:border-stone-800">
                       <div>
-                        <div class="flex items-center gap-2 mb-1">
+                        <div class="flex items-center gap-2 mb-1 flex-wrap">
                           <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-terracotta/10 text-terracotta border border-terracotta/25 font-mono flex items-center gap-1.5">
                             <i class="fa-solid fa-wand-magic-sparkles text-xs"></i> 3 Chef-Calibrated Substitutes
+                          </span>
+                          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sage-100 dark:bg-emerald-950/40 text-forest dark:text-sage-300 border border-sage-300 font-mono flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sage-600 animate-pulse"></span>
+                            <span>Foodoscope RecipeDB & Chemistry Verified</span>
                           </span>
                           <span class="text-xs text-stone-500 dark:text-stone-400 font-medium">For <strong class="text-forest dark:text-ivory">${currentDish || matchedRecipe.title}</strong></span>
                         </div>
@@ -1556,11 +1567,13 @@
   }
 
   // ========================================================
-  // RENDER: EXPLORE MENUS & CATALOG VIEW
+  // RENDER: EXPLORE MENUS & CATALOG VIEW (DUAL ENGINE: CATALOG + FOODOSCOPE RECIPEDB)
   // ========================================================
   function renderExploreView() {
     const container = document.getElementById('explore-view-container');
     if (!container) return;
+
+    const isFoodoscopeMode = state.exploreMode === 'foodoscope';
 
     let html = `
       <div class="space-y-8 animate-fade-up">
@@ -1570,22 +1583,133 @@
           <div class="relative z-10 max-w-3xl space-y-4">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ivory/15 backdrop-blur-md text-xs sm:text-sm font-bold uppercase tracking-wider text-beige">
               <i class="fa-solid fa-utensils text-terracotta"></i>
-              <span>Culinary Recipe Library</span>
+              <span>Culinary Discovery & Recipe Intelligence</span>
             </div>
 
             <h1 class="font-heading font-black text-4xl sm:text-5xl md:text-[3.25rem] leading-tight tracking-tight text-ivory">
               Culinary Recipe Library.<br>
-              <span class="text-terracotta font-serif italic">Scale Portions & Toggle Swaps</span> Live.
+              <span class="text-terracotta font-serif italic">Scale Portions & Explore</span> Live Databases.
             </h1>
 
             <p class="text-ivory/90 text-base md:text-lg leading-relaxed font-normal">
-              Each dish supports dynamic per-person quantity scaling, culinary ingredient swaps for out-of-stock or dietary preferences, and printable prep sheets.
+              Switch between our 40 chef-crafted kitchen recipes with dynamic portion scaling, or search across 118,000+ global computational recipes directly from the live Foodoscope RecipeDB API.
             </p>
           </div>
 
           <div class="absolute -right-16 -bottom-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
         </div>
 
+        <!-- Recipe Database Source Switcher -->
+        <div class="flex items-center justify-between flex-wrap gap-4 bg-white/90 dark:bg-[#1f1a16]/90 p-4 sm:p-5 rounded-3xl border border-beige-200 dark:border-stone-800 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 font-mono flex items-center gap-1.5">
+              <i class="fa-solid fa-database text-terracotta"></i>
+              <span>Recipe Database:</span>
+            </span>
+            <div class="inline-flex p-1 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800">
+              <button
+                type="button"
+                id="explore-mode-catalog-btn"
+                class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${
+                  !isFoodoscopeMode
+                    ? 'bg-forest text-ivory shadow-md'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-terracotta'
+                }"
+              >
+                <i class="fa-solid fa-book-open"></i>
+                <span>Kitchen Catalog (${RECIPES_DATA.length})</span>
+              </button>
+              <button
+                type="button"
+                id="explore-mode-foodoscope-btn"
+                class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${
+                  isFoodoscopeMode
+                    ? 'bg-forest text-ivory shadow-md'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-terracotta'
+                }"
+              >
+                <i class="fa-solid fa-cloud text-terracotta"></i>
+                <span>Foodoscope RecipeDB (118k+ Live)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-sage-100 dark:bg-emerald-950/50 text-forest dark:text-sage-300 border border-sage-400 dark:border-sage-700 font-mono">
+              <span class="w-2 h-2 rounded-full bg-sage-600 animate-pulse"></span>
+              <span>Foodoscope API: Bearer Connected</span>
+            </span>
+          </div>
+        </div>
+
+        ${isFoodoscopeMode ? `
+        <!-- FOODOSCOPE RECIPEDB LIVE SEARCH CONTAINER -->
+        <div class="space-y-6">
+          <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-4">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono">Foodoscope REST API v2 Integration</span>
+                <h3 class="text-2xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2.5 mt-1">
+                  <i class="fa-solid fa-cloud text-terracotta"></i>
+                  <span>Live RecipeDB Global Explorer</span>
+                </h3>
+              </div>
+              <span class="text-xs font-mono text-stone-500">Querying https://api.foodoscope.com (118k+ records)</span>
+            </div>
+
+            <!-- Search Bar + Action Button -->
+            <div class="flex flex-col sm:flex-row gap-3">
+              <div class="relative flex-1">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-base"></i>
+                <input
+                  type="text"
+                  id="foodoscope-search-input"
+                  value="${state.foodoscopeQuery || ''}"
+                  placeholder="Search RecipeDB titles (e.g. Biryani, Paneer, Tiramisu, Pasta, Chocolate Cake)..."
+                  class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-semibold text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta shadow-xs"
+                />
+              </div>
+              <button
+                type="button"
+                id="foodoscope-search-submit-btn"
+                class="px-6 py-3.5 rounded-2xl text-sm font-bold terracotta-btn text-white transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
+              >
+                <i class="fa-solid fa-bolt"></i>
+                <span>Fetch from RecipeDB</span>
+              </button>
+            </div>
+
+            <!-- Quick Suggestion Chips -->
+            <div class="flex items-center gap-2 flex-wrap text-xs">
+              <span class="font-bold text-stone-400 font-mono">Quick Inquiries:</span>
+              ${['Biryani', 'Palak Paneer', 'Tiramisu', 'Chocolate Cake', 'Penne Pasta', 'Mushroom Soup', 'Butter Masala'].map(chip => `
+                <button
+                  type="button"
+                  data-foodoscope-quick="${chip}"
+                  class="px-3 py-1.5 rounded-xl bg-ivory dark:bg-stone-900 border border-beige-200 dark:border-stone-700 hover:border-terracotta text-stone-700 dark:text-stone-300 font-semibold cursor-pointer transition-all"
+                >
+                  ${chip}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Foodoscope Results Grid -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span id="foodoscope-count-display" class="text-sm font-black uppercase tracking-wider text-stone-500 font-mono">
+                RecipeDB Live Results
+              </span>
+              <span class="text-xs text-stone-500 font-mono">Rate Limit: 25 req/min · Auth: Bearer Token</span>
+            </div>
+
+            <div id="foodoscope-recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- Dynamically populated by renderFoodoscopeGrid() -->
+            </div>
+          </div>
+        </div>
+        ` : `
+        <!-- LOCAL 40-RECIPE CATALOG CONTAINER -->
         <!-- Search, Categories, Dietary Filters & Sort Bar -->
         <div class="space-y-4 p-6 rounded-3xl bg-white/90 dark:bg-[#1f1a16]/90 border border-beige-200/80 dark:border-stone-800/80 shadow-sm">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -1681,6 +1805,395 @@
 
           <div id="recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
+        `}
+
+      </div>
+    `;
+
+    container.innerHTML = html;
+
+    // Source Switcher Buttons
+    const catalogModeBtn = document.getElementById('explore-mode-catalog-btn');
+    const foodoscopeModeBtn = document.getElementById('explore-mode-foodoscope-btn');
+
+    catalogModeBtn?.addEventListener('click', () => {
+      state.exploreMode = 'catalog';
+      renderExploreView();
+    });
+
+    foodoscopeModeBtn?.addEventListener('click', () => {
+      state.exploreMode = 'foodoscope';
+      renderExploreView();
+      renderFoodoscopeGrid(state.foodoscopeQuery || 'Biryani');
+    });
+
+    if (isFoodoscopeMode) {
+      const fSearchInput = document.getElementById('foodoscope-search-input');
+      const fSubmitBtn = document.getElementById('foodoscope-search-submit-btn');
+
+      fSubmitBtn?.addEventListener('click', () => {
+        const q = fSearchInput ? fSearchInput.value.trim() : '';
+        if (q) renderFoodoscopeGrid(q);
+      });
+
+      fSearchInput?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const q = fSearchInput.value.trim();
+          if (q) renderFoodoscopeGrid(q);
+        }
+      });
+
+      container.querySelectorAll('[data-foodoscope-quick]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const chip = btn.getAttribute('data-foodoscope-quick');
+          if (fSearchInput) fSearchInput.value = chip;
+          renderFoodoscopeGrid(chip);
+        });
+      });
+
+      // Initial render for foodoscope grid
+      renderFoodoscopeGrid(state.foodoscopeQuery || 'Biryani');
+    } else {
+      // Attach Catalog Search, Category, Diet, and Sort Listeners
+      const searchInput = document.getElementById('search-input');
+      searchInput?.addEventListener('input', (e) => {
+        state.searchQuery = e.target.value.trim();
+        renderExploreGrid();
+      });
+
+      container.querySelectorAll('.cat-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          container.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active-cat'));
+          btn.classList.add('active-cat');
+          state.selectedCategory = btn.getAttribute('data-category');
+          renderExploreGrid();
+        });
+      });
+
+      container.querySelectorAll('.diet-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          container.querySelectorAll('.diet-pill').forEach(p => p.classList.remove('active-diet'));
+          btn.classList.add('active-diet');
+          state.selectedDiet = btn.getAttribute('data-diet');
+          renderExploreGrid();
+        });
+      });
+
+      const sortSelect = document.getElementById('sort-select');
+      sortSelect?.addEventListener('change', (e) => {
+        state.sortOption = e.target.value;
+        renderExploreGrid();
+      });
+
+      // Initial render of the catalog grid
+      renderExploreGrid();
+    }
+  }
+
+  // ========================================================
+  // RENDER: FOODOSCOPE RECIPEDB LIVE GRID
+  // ========================================================
+  async function renderFoodoscopeGrid(queryToSearch) {
+    const grid = document.getElementById('foodoscope-recipes-grid');
+    const countDisplay = document.getElementById('foodoscope-count-display');
+    if (!grid) return;
+
+    const query = queryToSearch !== undefined ? queryToSearch : (state.foodoscopeQuery || 'Biryani');
+    state.foodoscopeQuery = query;
+
+    grid.innerHTML = `
+      <div class="col-span-full py-12 text-center space-y-3">
+        <div class="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="text-sm font-bold text-forest dark:text-ivory">Querying Foodoscope RecipeDB for "${query}"...</p>
+        <p class="text-xs text-stone-500 font-mono">Token: voGqE62...Yts · API: api.foodoscope.com</p>
+      </div>
+    `;
+
+    try {
+      const results = await ApiService.searchRecipes(query, 12);
+      state.foodoscopeResults = results || [];
+
+      if (countDisplay) {
+        countDisplay.textContent = `Found ${state.foodoscopeResults.length} Foodoscope Recipes`;
+      }
+
+      if (!state.foodoscopeResults.length) {
+        grid.innerHTML = `
+          <div class="col-span-full p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 text-center space-y-3">
+            <i class="fa-solid fa-magnifying-glass text-3xl text-terracotta"></i>
+            <h4 class="font-heading font-bold text-xl text-forest dark:text-ivory">No Recipes Found for "${query}"</h4>
+            <p class="text-xs text-stone-500 max-w-md mx-auto">Try common dish keywords like "Paneer", "Curry", "Pasta", "Cake", "Biryani", "Soup", or "Salmon".</p>
+          </div>
+        `;
+        return;
+      }
+
+      let cardsHtml = '';
+      state.foodoscopeResults.forEach(r => {
+        const recipeId = r.Recipe_id || r._id || '';
+        const title = r.Recipe_title || r.title || 'Untitled Recipe';
+        const region = r.Region || r.Sub_region || r.Continent || 'Global Cuisine';
+        const calories = r.Calories || r.CaloriesNum || '—';
+        const cookTime = r.cook_time || r.CookTimeNum || '—';
+        const servings = r.servings || '2';
+        const imgUrl = r.img_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80';
+
+        cardsHtml += `
+          <div class="recipe-card group rounded-3xl overflow-hidden bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 hover:border-terracotta shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+            <div>
+              <div class="relative h-48 w-full overflow-hidden bg-beige-100 dark:bg-stone-900">
+                <img
+                  src="${imgUrl}"
+                  alt="${title}"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80'"
+                />
+                <div class="absolute top-3 left-3 flex items-center gap-1.5">
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-forest/90 text-ivory backdrop-blur-sm border border-ivory/20 font-mono">
+                    RecipeDB #${recipeId}
+                  </span>
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-ivory/90 dark:bg-black/80 text-terracotta backdrop-blur-sm border border-terracotta/30">
+                    ${region}
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-5 space-y-3">
+                <h3 class="font-heading font-black text-lg text-forest dark:text-ivory leading-snug line-clamp-2">
+                  ${title}
+                </h3>
+
+                <div class="grid grid-cols-3 gap-2 text-center text-xs py-2 bg-ivory dark:bg-[#181410] rounded-xl border border-beige-200 dark:border-stone-800">
+                  <div>
+                    <span class="block font-bold text-terracotta">${calories}</span>
+                    <span class="text-[10px] text-stone-500 uppercase">Calories</span>
+                  </div>
+                  <div>
+                    <span class="block font-bold text-forest dark:text-sage-300">${cookTime}m</span>
+                    <span class="text-[10px] text-stone-500 uppercase">Cook Time</span>
+                  </div>
+                  <div>
+                    <span class="block font-bold text-espresso dark:text-ivory">${servings}</span>
+                    <span class="text-[10px] text-stone-500 uppercase">Servings</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-5 pt-0 space-y-2">
+              <button
+                type="button"
+                data-foodoscope-inspect="${recipeId}"
+                class="w-full py-2.5 px-3 rounded-xl text-xs font-bold terracotta-btn text-white transition-all shadow-sm cursor-pointer flex items-center justify-center gap-1.5"
+              >
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Inspect RecipeDB Nutrition & Utensils</span>
+              </button>
+              <button
+                type="button"
+                data-foodoscope-swaplab="${title}"
+                class="w-full py-2 px-3 rounded-xl text-xs font-bold bg-ivory dark:bg-stone-900 border border-beige-200 dark:border-stone-700 text-stone-600 dark:text-stone-300 hover:border-terracotta transition-all cursor-pointer flex items-center justify-center gap-1.5"
+              >
+                <i class="fa-solid fa-flask-vial text-terracotta"></i>
+                <span>Open in Swap Lab</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      grid.innerHTML = cardsHtml;
+
+      // Attach inspect buttons
+      grid.querySelectorAll('[data-foodoscope-inspect]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const rId = btn.getAttribute('data-foodoscope-inspect');
+          openFoodoscopeModal(rId);
+        });
+      });
+
+      // Attach swaplab opener buttons
+      grid.querySelectorAll('[data-foodoscope-swaplab]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const dish = btn.getAttribute('data-foodoscope-swaplab');
+          state.universalCurrentDishName = dish;
+          switchTab('swaplab');
+        });
+      });
+    } catch (err) {
+      grid.innerHTML = `
+        <div class="col-span-full p-6 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 text-center space-y-2">
+          <p class="text-sm font-bold text-rose-700 dark:text-rose-300">Foodoscope API query encountered an error.</p>
+          <p class="text-xs text-stone-500">${err?.message || 'Check network connection or try again.'}</p>
+        </div>
+      `;
+    }
+  }
+
+  // ========================================================
+  // RENDER: FOODOSCOPE RECIPEDB DEEP DIVE MODAL
+  // ========================================================
+  async function openFoodoscopeModal(recipeId) {
+    const modal = document.getElementById('recipe-webx-modal');
+    const container = document.getElementById('modal-recipe-body');
+    if (!modal || !container) return;
+
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+
+    container.innerHTML = `
+      <div class="relative bg-white dark:bg-[#181410] rounded-3xl overflow-hidden shadow-2xl max-w-4xl w-full mx-auto my-6 border border-beige-200 dark:border-stone-800 p-8 text-center space-y-4">
+        <div class="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="text-base font-bold text-forest dark:text-ivory">Fetching RecipeDB Details for #${recipeId} from Foodoscope...</p>
+        <p class="text-xs text-stone-500 font-mono">Endpoint: /recipe2-api/recipe/recipesinfo?recipeId=${recipeId}</p>
+      </div>
+    `;
+
+    const info = await ApiService.getRecipeInfo(recipeId);
+    if (!info) {
+      container.innerHTML = `
+        <div class="relative bg-white dark:bg-[#181410] rounded-3xl overflow-hidden shadow-2xl max-w-3xl w-full mx-auto my-6 border border-beige-200 dark:border-stone-800 p-8 space-y-4 text-center">
+          <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-950/50 text-rose-600 flex items-center justify-center mx-auto text-xl">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <h3 class="font-heading font-bold text-xl text-forest dark:text-ivory">Recipe #${recipeId} Details Not Available</h3>
+          <p class="text-xs text-stone-500">The specific record could not be fetched from Foodoscope RecipeDB. Try another recipe.</p>
+          <button type="button" onclick="document.getElementById('recipe-webx-modal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');" class="px-5 py-2.5 rounded-xl terracotta-btn text-white text-xs font-bold cursor-pointer">
+            Close
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    const title = info.Recipe_title || info.title || `Recipe #${recipeId}`;
+    const calories = info.Calories || info.CaloriesNum || '—';
+    const carbs = info['Carbohydrate, by difference (g)'] || '—';
+    const protein = info['Protein (g)'] || '—';
+    const fat = info['Total lipid (fat) (g)'] || '—';
+    const energyKcal = info['Energy (kcal)'] || '—';
+    const region = info.Region || 'Global';
+    const subRegion = info.Sub_region || '';
+    const continent = info.Continent || '';
+    const servings = info.servings || '2';
+    const totalTime = info.total_time || '—';
+    const utensils = info.UtensilsList || (info.Utensils ? info.Utensils.split('||') : []);
+    const processes = info.Processes ? info.Processes.split('||') : [];
+    const ingredients = info.ingredients || [];
+
+    container.innerHTML = `
+      <div class="relative bg-white dark:bg-[#181410] rounded-3xl overflow-hidden shadow-2xl max-w-4xl w-full mx-auto my-6 border border-beige-200 dark:border-stone-800 animate-fade-up">
+        <!-- Top bar -->
+        <div class="sticky top-0 z-30 bg-white/95 dark:bg-[#181410]/95 backdrop-blur border-b border-beige-200 dark:border-stone-800 px-6 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-terracotta/15 text-terracotta border border-terracotta/30 font-mono">
+              Foodoscope RecipeDB #${recipeId}
+            </span>
+            <span class="text-xs text-sage-700 dark:text-sage-400 font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-globe"></i> ${region}${subRegion ? ` · ${subRegion}` : ''}${continent ? ` (${continent})` : ''}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onclick="document.getElementById('recipe-webx-modal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
+            class="w-10 h-10 rounded-full bg-beige-100 dark:bg-[#1f1a16] hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center text-stone-700 dark:text-slate-300 font-bold transition-all cursor-pointer"
+          >
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="p-6 sm:p-8 space-y-6 max-h-[85vh] overflow-y-auto">
+          <div>
+            <h2 class="font-heading font-black text-2xl sm:text-3xl text-forest dark:text-ivory">
+              ${title}
+            </h2>
+            <p class="text-xs text-stone-500 mt-1 font-mono">
+              Source: ${info.Source || 'Foodoscope Computational Gastronomy RecipeDB'}
+            </p>
+          </div>
+
+          <!-- Nutritional Breakdown -->
+          <div class="p-5 rounded-2xl bg-ivory dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 space-y-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono flex items-center gap-1.5">
+              <i class="fa-solid fa-heart-pulse"></i>
+              <span>Official Nutritional Macro Profile (RecipeDB)</span>
+            </h4>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-beige-200 dark:border-stone-800">
+                <span class="block text-lg font-black text-forest dark:text-ivory">${calories}</span>
+                <span class="text-[10px] text-stone-500 uppercase font-bold">Calories</span>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-beige-200 dark:border-stone-800">
+                <span class="block text-lg font-black text-terracotta">${carbs}${carbs !== '—' ? 'g' : ''}</span>
+                <span class="text-[10px] text-stone-500 uppercase font-bold">Carbohydrates</span>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-beige-200 dark:border-stone-800">
+                <span class="block text-lg font-black text-sage-600 dark:text-sage-300">${protein}${protein !== '—' ? 'g' : ''}</span>
+                <span class="text-[10px] text-stone-500 uppercase font-bold">Protein</span>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-beige-200 dark:border-stone-800">
+                <span class="block text-lg font-black text-peach dark:text-amber-400">${fat}${fat !== '—' ? 'g' : ''}</span>
+                <span class="text-[10px] text-stone-500 uppercase font-bold">Total Lipids (Fat)</span>
+              </div>
+              <div class="p-3 bg-white dark:bg-stone-900 rounded-xl border border-beige-200 dark:border-stone-800">
+                <span class="block text-lg font-black text-stone-700 dark:text-stone-300">${energyKcal}</span>
+                <span class="text-[10px] text-stone-500 uppercase font-bold">Energy (kcal)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Utensils & Culinary Processes -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-5 rounded-2xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 space-y-2.5">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-forest dark:text-ivory font-mono flex items-center gap-1.5">
+                <i class="fa-solid fa-kitchen-set text-terracotta"></i>
+                <span>Required Kitchen Utensils (${utensils.length})</span>
+              </h4>
+              <div class="flex flex-wrap gap-1.5">
+                ${utensils.length ? utensils.map(u => `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-beige-100 dark:bg-stone-800 text-espresso dark:text-beige border border-beige-200 dark:border-stone-700 capitalize">${u}</span>`).join('') : '<span class="text-xs text-stone-400">Standard cookware</span>'}
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 space-y-2.5">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-forest dark:text-ivory font-mono flex items-center gap-1.5">
+                <i class="fa-solid fa-fire-burner text-terracotta"></i>
+                <span>Culinary Processes (${processes.length})</span>
+              </h4>
+              <div class="flex flex-wrap gap-1.5">
+                ${processes.length ? processes.map(p => `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-peach/40 dark:bg-stone-800 text-espresso dark:text-beige border border-terracotta/30 capitalize">${p}</span>`).join('') : '<span class="text-xs text-stone-400">Simmer / saute</span>'}
+              </div>
+            </div>
+          </div>
+
+          ${ingredients.length ? `
+            <div class="p-5 rounded-2xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 space-y-2.5">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-forest dark:text-ivory font-mono flex items-center gap-1.5">
+                <i class="fa-solid fa-basket-shopping text-terracotta"></i>
+                <span>Recorded Ingredients (${ingredients.length})</span>
+              </h4>
+              <div class="flex flex-wrap gap-2">
+                ${ingredients.map(ing => `<span class="px-3 py-1.5 rounded-xl text-xs font-medium bg-ivory dark:bg-stone-900 text-forest dark:text-ivory border border-beige-200 dark:border-stone-800">${ing}</span>`).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Modal Action CTA -->
+          <div class="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-beige-200 dark:border-stone-800">
+            <span class="text-xs text-stone-500">Total Cooking Time: <strong>${totalTime} mins</strong> · Servings: <strong>${servings}</strong></span>
+            <button
+              type="button"
+              onclick="document.getElementById('recipe-webx-modal').classList.add('hidden'); document.body.classList.remove('overflow-hidden');"
+              class="px-6 py-3 rounded-2xl terracotta-btn text-white text-xs font-bold cursor-pointer"
+            >
+              Done Reading
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
 
       </div>
     `;
