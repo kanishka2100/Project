@@ -2247,46 +2247,6 @@
     `;
   }
 
-      </div>
-    `;
-
-    container.innerHTML = html;
-
-    // Attach Search, Category, Diet, and Sort Listeners
-    const searchInput = document.getElementById('search-input');
-    searchInput?.addEventListener('input', (e) => {
-      state.searchQuery = e.target.value.trim();
-      renderExploreGrid();
-    });
-
-    container.querySelectorAll('.cat-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        container.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active-cat'));
-        btn.classList.add('active-cat');
-        state.selectedCategory = btn.getAttribute('data-category');
-        renderExploreGrid();
-      });
-    });
-
-    container.querySelectorAll('.diet-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        container.querySelectorAll('.diet-pill').forEach(p => p.classList.remove('active-diet'));
-        btn.classList.add('active-diet');
-        state.selectedDiet = btn.getAttribute('data-diet');
-        renderExploreGrid();
-      });
-    });
-
-    const sortSelect = document.getElementById('sort-select');
-    sortSelect?.addEventListener('change', (e) => {
-      state.sortOption = e.target.value;
-      renderExploreGrid();
-    });
-
-    // Initial render of the grid
-    renderExploreGrid();
-  }
-
   // ========================================================
   // RENDER: PANTRY DRAWER (CHIPS & PRESETS)
   // ========================================================
