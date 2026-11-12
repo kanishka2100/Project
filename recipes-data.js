@@ -147,7 +147,7 @@ const RECIPES_DATA = [
   {
     id: "wild-mushroom-truffle-pasta",
     title: "Truffle-Style Wild Mushroom Fettuccine",
-    category: "Pastas & Mains",
+    category: "Pastas & Italian",
     tagline: "Savory mushroom pasta engineered with steeped dried porcini broth in place of costly truffle oil.",
     image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=900&auto=format&fit=crop&q=85",
     prepTime: "10 mins",
@@ -408,7 +408,7 @@ const RECIPES_DATA = [
   {
     id: "artisan-margherita-sourdough-pizza",
     title: "Neapolitan Sourdough Pizza with Buffalo Melt",
-    category: "Pastas & Mains",
+    category: "Pastas & Italian",
     tagline: "Crisp blistered sourdough pizza balancing moisture by blending low-moisture mozzarella and fresh ricotta.",
     image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900&auto=format&fit=crop&q=85",
     prepTime: "15 mins",
@@ -738,7 +738,7 @@ const RECIPES_DATA = [
     },
     veganOption: {
       active: false,
-      title: "Naturally Vegan Amritsari Chole",
+      title: "Naturally  Vegan Amritsari Chole",
       description: "Naturally plant-based, simmered with whole spices, black salt, and ginger juliennes.",
       replacedItems: []
     },
@@ -772,7 +772,7 @@ const RECIPES_DATA = [
     budgetAlternative: {
       active: false,
       title: "Turmeric-Cardamom Essence & Rose Water (No Saffron)",
-      description: "Replaces costly saffron threads with cold-pressed turmeric infusion, crushed green cardamom, and culinary rose hydrosol.",
+      description: "Replaces precious saffron threads with cold-pressed turmeric infusion, crushed green cardamom, and culinary rose hydrosol.",
       swapRatio: "For 0.2g Saffron → Use 1/4 tsp Golden Turmeric + 1 tsp Rose Hydrosol + 2 crushed Cardamom pods",
       tasteImpact: "Captures the intoxicating floral aromatics and vibrant royal tint.",
       textureImpact: "Individual grains stay slender, aromatic, and fluffy without discoloration.",
@@ -832,7 +832,7 @@ const RECIPES_DATA = [
       tasteImpact: "Natural sweetness balances spinach bitterness with zero cream required.",
       textureImpact: "Silkier emulsion with natural pectin body and radiant chlorophyll color.",
       replacedItems: [
-        { original: "Heavy Cream (50ml)", replacedWith: "Blanched Sweet Pea Puree", reason: "Lends natural gentle sweetness that softens spinach sharpness" }
+        { original: "Heavy Cream (50ml)", replacedWith: "Blanched Sweet Pea Puree", reason: "Maintains natural sweet green depth and saves  per plate" }
       ]
     },
     calorieAlternative: {
@@ -846,7 +846,7 @@ const RECIPES_DATA = [
     },
     veganOption: {
       active: false,
-      title: "Plant-Based Garlic Palak Tofu",
+      title: " Plant-Based Garlic Palak Tofu",
       description: "Naturally vegan using organic firm tofu simmered in garlic-infused spinach sauce.",
       replacedItems: [
         { original: "Dairy Paneer", replacedWith: "Pressed Organic Tofu" }
@@ -1062,7 +1062,7 @@ const RECIPES_DATA = [
     },
     veganOption: {
       active: false,
-      title: "Plant-Based Kadai Tofu",
+      title: " Plant-Based Kadai Tofu",
       description: "Firm tofu seared with bell peppers and whole cracked coriander.",
       replacedItems: [
         { original: "Dairy Paneer", replacedWith: "Firm Organic Tofu" }
@@ -1136,6 +1136,921 @@ const RECIPES_DATA = [
       "Add strong Assam CTC black tea and simmer for 60 seconds until a deep amber liquor forms.",
       "Pour in fresh milk (or barista oat milk for vegan mode) and bring to a gentle frothing boil twice.",
       "Strain through a fine sieve into an artisan clay kulhad or ceramic mug and serve steaming hot."
+    ],
+    reviews: []
+  },
+  {
+    id: "tandoori-garlic-butter-naan",
+    title: "Tandoori Garlic Butter Naan",
+    category: "Breads & Naan",
+    tagline: "Restaurant-grade charred garlic naan with bubbly blisters, optimized for home kitchens without a tandoor.",
+    image: "./assets/recipes/tandoori-garlic-butter-naan.jpg",
+    prepTime: "25 mins",
+    cookTime: "5 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Desi Ghee & Clarified Butter Blend (No High-Cost Butter Spoilage)",
+      description: "When commercial dairy butter runs out or proves too costly, FlavorShift AI uses a fragrant browned ghee wash that delivers deeper caramelized flavor.",
+      swapRatio: "For every 20g Butter → Use 15g Desi Ghee brushed while piping hot",
+      tasteImpact: "Authentic rustic aroma with crisp, golden bubbles.",
+      textureImpact: "Soft, pillowy interior with crisp tandoori blistered crust.",
+      replacedItems: [
+        { original: "Imported Table Butter (20g)", replacedWith: "Farmhouse Desi Ghee Wash", reason: "Prevents sogginess, enhances tandoor aroma" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Whole-Wheat Multigrain Naan (Yogurt Leavened)",
+      description: "Replaces refined all-purpose flour (maida) with fine-milled whole wheat and probiotic curd for easy digestion."
+    },
+    ingredients: [
+      { name: "Fine All-Purpose Flour (Maida)", qtyPerPerson: 100, unit: "g flour", category: "Bakery", isReplaceable: true, replaceableType: "calorie" },
+      { name: "Fresh Curd / Greek Yogurt (for leavening)", qtyPerPerson: 35, unit: "g curd", category: "Dairy" },
+      { name: "Warm Milk or Water", qtyPerPerson: 40, unit: "ml liquid", category: "Dairy" },
+      { name: "Fresh Minced Garlic & Coriander", qtyPerPerson: 15, unit: "g fresh", category: "Produce" },
+      { name: "Salted Table Butter", qtyPerPerson: 20, unit: "g butter", category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Baking Powder & Nigella Seeds (Kalonji)", qtyPerPerson: 0.5, unit: "tsp blend", category: "Spices" }
+    ],
+    steps: [
+      "Knead flour with yogurt, pinch of baking powder, and warm milk until a soft, elastic dough forms; rest for 20 minutes under a damp cloth.",
+      "Divide into balls and stretch into classic teardrop shape; press minced garlic and kalonji seeds onto the top surface.",
+      "Brush the underside lightly with water and slap onto an inverted smoking-hot cast-iron tawa until bubbles form.",
+      "Flip the tawa upside down directly over high gas flame for 30 seconds to get signature tandoori leopard char blisters.",
+      "Brush generously with melted garlic butter or FlavorShift ghee wash and serve piping hot."
+    ],
+    reviews: []
+  },
+  {
+    id: "classic-penne-arrabbiata",
+    title: "Classic Italian Penne all'Arrabbiata",
+    category: "Pastas & Italian",
+    tagline: "Vibrant Roman pasta in a fiery garlic, San Marzano tomato, and extra-virgin olive oil emulsion.",
+    image: "./assets/recipes/classic-penne-arrabbiata.jpg",
+    prepTime: "8 mins",
+    cookTime: "12 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Vegan"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Roma Plum Tomato Puree + Sundried Tomato Paste (No Imported Canned Tomatoes)",
+      description: "When imported Italian San Marzano canned tomatoes are too expensive, FlavorShift AI blends concentrated fresh Roma tomatoes with caramelized garlic oil.",
+      swapRatio: "For 150g San Marzano Canned Tomatoes → Use 120g Ripe Roma puree + 1 tsp tomato concentrate paste",
+      tasteImpact: "Robust tangy sweetness with balanced heat.",
+      textureImpact: "Silky emulsified sauce that coats each ribbed penne tube flawlessly.",
+      replacedItems: [
+        { original: "Imported San Marzano Canned Tomatoes", replacedWith: "Slow-reduced Local Roma Tomato Reduction", reason: "identical natural umami" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Durum Wheat & Zucchini Ribbon Penne",
+      description: "Blends al dente durum wheat penne with equal parts spiralized zucchini ribbons for rich volume with lighter starch balance."
+    },
+    ingredients: [
+      { name: "Bronze-Cut Durum Wheat Penne", qtyPerPerson: 90, unit: "g dry pasta", category: "Grains" },
+      { name: "Crushed Ripe Roma Tomatoes", qtyPerPerson: 160, unit: "g ripe tomatoes", category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Extra Virgin Olive Oil", qtyPerPerson: 1.5, unit: "tablespoons", category: "Pantry" },
+      { name: "Fresh Garlic Cloves (sliced)", qtyPerPerson: 3, unit: "cloves", category: "Produce" },
+      { name: "Dried Red Pepper Flakes (Peperoncino)", qtyPerPerson: 0.75, unit: "tsp flakes", category: "Spices" },
+      { name: "Fresh Sweet Italian Basil", qtyPerPerson: 5, unit: "fresh leaves", category: "Herbs" },
+      { name: "Sea Salt & Freshly Cracked Black Pepper", qtyPerPerson: 0.5, unit: "tsp blend", category: "Spices" }
+    ],
+    steps: [
+      "Bring heavily salted water to a rolling boil; cook penne until perfectly al dente (1 minute under package directions).",
+      "In a wide skillet, gently heat extra virgin olive oil with thinly sliced garlic and crushed chili flakes until fragrant and pale golden.",
+      "Pour in crushed tomato puree and simmer gently for 8 minutes until sauce thickens and oil begins to shimmer.",
+      "Transfer penne directly into the sauce along with 1/4 cup starchy pasta cooking water; toss vigorously to create a glossy emulsion.",
+      "Tear fresh sweet basil over the pasta, finish with a drizzle of raw olive oil, and serve hot."
+    ],
+    reviews: []
+  },
+  {
+    id: "hakka-street-style-noodles",
+    title: "Chili-Garlic Veg Hakka Noodles",
+    category: "Noodles & Wok",
+    tagline: "High-heat wok-tossed noodles with shredded crunchy vegetables, toasted garlic, and dark scallion oil.",
+    image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=800&auto=format&fit=crop&q=80",
+    prepTime: "12 mins",
+    cookTime: "6 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Vegan"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Toasted Sesame & Mustard Oil Bloom (No Expensive Chili-Crunch Oil)",
+      description: "Creates an aromatic wok-seasoned base using whole crushed garlic and toasted sesame oil that delivers authentic charred street flavor.",
+      swapRatio: "Replace imported chili crisp oil with 1 tbsp neutral cooking oil bloomed with dry red chilies and garlic",
+      tasteImpact: "Smoky, savory, and satisfying wok-hei aromatics.",
+      textureImpact: "Springy noodles that stay separate and firm without becoming clumped.",
+      replacedItems: [
+        { original: "Imported Chili Crisp Oil", replacedWith: "In-house Garlic Scallion Bloom Oil", reason: "Delivers intense wok aroma" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Equal-blend Hakka Noodles & Sliced Cabbage Slaw",
+      description: "Doubles the finely shredded green cabbage and bell pepper volume to deliver high-satiety crunch with reduced carbohydrate density."
+    },
+    ingredients: [
+      { name: "Hakka Eggless Wheat Noodles", qtyPerPerson: 90, unit: "g dry noodles", category: "Grains" },
+      { name: "Crisp Green Bell Peppers & Cabbage", qtyPerPerson: 80, unit: "g shredded", category: "Produce" },
+      { name: "Fresh Garlic & Ginger (finely minced)", qtyPerPerson: 20, unit: "g fresh", category: "Produce" },
+      { name: "Naturally Brewed Dark Soy Sauce", qtyPerPerson: 1, unit: "tablespoon", category: "Pantry" },
+      { name: "Chili-Garlic Paste & Rice Vinegar", qtyPerPerson: 1, unit: "tablespoon blend", category: "Pantry" },
+      { name: "Cold-Pressed Sesame & Wok Oil", qtyPerPerson: 1, unit: "tablespoon", category: "Pantry", isReplaceable: true, replaceableType: "budget" },
+      { name: "Spring Onion Greens (Scallions)", qtyPerPerson: 15, unit: "g chopped", category: "Produce" }
+    ],
+    steps: [
+      "Boil noodles in salted water until  done; immediately drain, rinse with cold water, and toss with a few drops of oil to stop cooking.",
+      "Get a carbon-steel wok or heavy skillet smoking hot; swirl in wok oil until shimmering.",
+      "Add minced ginger, garlic, and sliced green chilies; stir-fry vigorously for 20 seconds without burning.",
+      "Toss in shredded cabbage, carrots, and bell peppers on highest flame for 90 seconds to maintain blistered, crunchy snap.",
+      "Drop in cooled noodles, drizzle dark soy sauce and chili-garlic paste around the rim of the wok, and toss rapidly for 2 minutes.",
+      "Finish with fresh spring onion greens and a crack of black pepper before plating immediately."
+    ],
+    reviews: []
+  },
+  {
+    id: "crispy-mysore-masala-dosa",
+    title: "Crispy Golden Mysore Masala Dosa",
+    category: "South Indian",
+    tagline: "Traditional fermented rice-lentil crepe smeared with spicy red garlic chutney and spiced potato masala.",
+    image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?w=800&auto=format&fit=crop&q=80",
+    prepTime: "15 mins",
+    cookTime: "5 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Cold-Pressed Sesame Oil Roast (Dairy-Free & Budget Saver)",
+      description: "When clarified butter (ghee) is costly or when vegan preferences are desired, FlavorShift AI uses authentic cold-pressed sesame gingelly oil for an ultra-crisp golden crust.",
+      swapRatio: "For 15g Ghee → Use 12g cold-pressed gingelly sesame oil brushed around edges",
+      tasteImpact: "Deep roasted nutty aroma with paper-crisp shatter.",
+      textureImpact: "Extra crisp golden bottom with tender, fluffy inner lace.",
+      replacedItems: [
+        { original: "Desi Ghee (for roasting)", replacedWith: "Cold-Pressed Gingelly Sesame Oil", reason: "Delivers traditional temple-style aroma at half the fat expenditure" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Sprouted Moong & Oats Masala Dosa (Pesarattu-Style)",
+      description: "Swaps white rice batter for slow-fermented whole sprouted green gram and rolled oats for low glycemic index and high dietary protein."
+    },
+    ingredients: [
+      { name: "Fermented Dosa Batter (Rice & Urad Dal)", qtyPerPerson: 120, unit: "ml batter", category: "Grains" },
+      { name: "Spiced Potato Mash (Aloo Bhaji with Mustard Seeds)", qtyPerPerson: 80, unit: "g potato filling", category: "Produce" },
+      { name: "Mysore Fiery Red Garlic-Byadgi Chutney", qtyPerPerson: 20, unit: "g red chutney", category: "Spices" },
+      { name: "Desi Ghee or Cold-Pressed Sesame Oil", qtyPerPerson: 15, unit: "ml roast oil", category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Fresh Coconut & Green Chili Chutney", qtyPerPerson: 40, unit: "g side chutney", category: "Produce" }
+    ],
+    steps: [
+      "Heat a seasoned heavy cast-iron tawa until water droplets sizzle and evaporate immediately; wipe lightly with half an onion.",
+      "Pour a ladle of fermented batter into the center and spiral outwards into a thin, even circle.",
+      "Drizzle melted ghee (or FlavorShift cold-pressed sesame oil) around the outer perimeter and center.",
+      "When the surface turns golden-amber, smear a tablespoon of fiery Mysore red garlic paste across the entire dosa surface.",
+      "Spoon spiced potato bhaji in the center, fold into a crisp cylinder or envelope, and serve with fresh coconut chutney."
+    ],
+    reviews: []
+  },
+  {
+    id: "steamed-soft-idli-sambar",
+    title: "Melt-in-Mouth Steamed Idli & Udupi Sambar",
+    category: "South Indian",
+    tagline: "Cloud-soft fermented steamed rice cakes served with aromatic lentil-vegetable Udupi sambar.",
+    image: "./assets/recipes/steamed-soft-idli-sambar.jpg",
+    prepTime: "10 mins",
+    cookTime: "12 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "In-House Roasted Sambar Spice Masala (No Stale Store Powder)",
+      description: "Blooms whole coriander, fenugreek, and chana dal in seconds to give Udupi temple-style aroma without branded packaged powders.",
+      swapRatio: "1.5 tsp roasted coriander-fenugreek blend replaces commercial sambar masala packet",
+      tasteImpact: "Complex, comforting sweet-tangy lentil broth.",
+      textureImpact: "Featherlight, pillow-soft idlis that absorb sambar completely.",
+      replacedItems: [
+        { original: "Branded Packaged Sambar Powder", replacedWith: "Freshly Roasted Spice Masala Bloom", reason: "Zero preservatives, 3x volatile aroma" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Quinoa & Foxtail Millet Steamed Idli",
+      description: "Replaces half the white idli rice with fiber-dense foxtail millet and organic quinoa for prolonged sustained energy."
+    },
+    ingredients: [
+      { name: "Steamed Idli Cakes (Fermented Batter)", qtyPerPerson: 3, unit: "steamed idlis", category: "Grains" },
+      { name: "Toor Dal & Drumstick Sambar Broth", qtyPerPerson: 180, unit: "ml sambar", category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Fresh Grated Coconut Chutney with Mustard Tadka", qtyPerPerson: 40, unit: "g side chutney", category: "Produce" },
+      { name: "Fresh Curry Leaves & Asafoetida (Hing)", qtyPerPerson: 0.5, unit: "tsp blend", category: "Spices" }
+    ],
+    steps: [
+      "Lightly grease idli plates with oil; fill molds 3/4th with aerated fermented batter.",
+      "Steam over high pressure for 10 minutes until a toothpick inserted into center comes out clean; rest 2 minutes before un-molding.",
+      "In a saucepan, simmer cooked toor dal with drumstick, shallots, tamarind pulp, and freshly roasted sambar spices.",
+      "Temper with mustard seeds, dried red chilies, hing, and fresh curry leaves in hot oil.",
+      "Float idlis directly in deep sambar bowl and top with fresh cilantro and a dab of cold coconut chutney."
+    ],
+    reviews: []
+  },
+  {
+    id: "wood-fired-margherita-pizza",
+    title: "Artisanal Margherita Pizza",
+    category: "Pastas & Italian",
+    tagline: "Crisp leopard-spotted Italian crust with crushed San Marzano tomatoes, fresh mozzarella, and sweet basil.",
+    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&auto=format&fit=crop&q=80",
+    prepTime: "20 mins",
+    cookTime: "8 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Fresh Strained Paneer & Domestic Mozzarella Melt (No High-Import Dairy Markup)",
+      description: "When imported Italian buffalo mozzarella is unavailable or expensive, blends fresh domestic mozzarella with mild strained curd for equal stringy stretch and milky sweetness.",
+      swapRatio: "70g Domestic Mozzarella + 20g Strained Fresh Cottage Cheese replaces 90g imported Fior di Latte",
+      tasteImpact: "Creamy, milky stretch with balanced acidic tomato bite.",
+      textureImpact: "Gooey melted cheese pull with blistered, airy sourdough crust.",
+      replacedItems: [
+        { original: "Imported Italian Buffalo Mozzarella", replacedWith: "Domestic Low-Moisture Mozzarella & Cottage Curd Blend", reason: "Prevents soggy crust and saves " }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Thin-Crust Whole Wheat & Cauliflower Crust Pizza",
+      description: "Bakes a crisp, ultra-thin crust enriched with finely grated cauliflower and whole wheat flour."
+    },
+    ingredients: [
+      { name: "Slow-Fermented Neapolitan Pizza Dough", qtyPerPerson: 180, unit: "g dough ball", category: "Bakery" },
+      { name: "Crushed Plum Tomato Reduction", qtyPerPerson: 70, unit: "g sauce", category: "Produce" },
+      { name: "Fresh Mozzarella / Fior di Latte", qtyPerPerson: 90, unit: "g sliced cheese", category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Extra Virgin Olive Oil", qtyPerPerson: 1, unit: "tablespoon", category: "Pantry" },
+      { name: "Fresh Genovese Sweet Basil & Sea Salt", qtyPerPerson: 6, unit: "fresh leaves", category: "Herbs" }
+    ],
+    steps: [
+      "Preheat oven with pizza stone or heavy cast-iron pan to maximum heat (250°C / 480°F) for 40 minutes.",
+      "Gently stretch fermented dough from center outwards onto semolina-dusted board, keeping a puffy outer rim (cornicione).",
+      "Spoon crushed plum tomato sauce thinly over dough; arrange torn fresh mozzarella pieces evenly.",
+      "Slide onto smoking-hot stone/pan; bake 6 to 8 minutes until cheese is bubbling and crust develops charred leopard blisters.",
+      "Remove from heat, scatter fresh basil leaves, drizzle with extra virgin olive oil, and slice immediately."
+    ],
+    reviews: []
+  },
+  {
+    id: "classic-italian-tiramisu",
+    title: "Artisanal Espresso Tiramisu",
+    category: "Bakery & Desserts",
+    tagline: "Airy espresso-soaked savoiardi ladyfingers layered with velvety mascarpone sabayon and dusted dark cocoa.",
+    image: "./assets/recipes/classic-italian-tiramisu.jpg",
+    prepTime: "20 mins",
+    cookTime: "0 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Hung Curd & Double-Cottage Cream Velvet (No Costly Imported Mascarpone)",
+      description: "When imported Italian mascarpone is too expensive, FlavorShift AI blends ultra-smooth hung curd with fresh malai cream and vanilla bean.",
+      swapRatio: "For 100g Mascarpone → Use 60g Strained Hung Curd + 40g Fresh Malai Cream whisked silky",
+      tasteImpact: "Velvety, milky richness with gentle clean sweetness.",
+      textureImpact: "Micro-smooth, stable mousse consistency that holds sharp cafe slice edges.",
+      replacedItems: [
+        { original: "Imported Italian Mascarpone Cheese", replacedWith: "Farmhouse Hung Curd & Velvet Malai Puree", reason: "Cuts dessert expenditure by  without curdling" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Skinny Greek Yogurt & Espresso Cloud Parfait",
+      description: "Uses non-fat whipped Greek yogurt sweetened with organic monkfruit extract and whole wheat sponge."
+    },
+    ingredients: [
+      { name: "Crisp Italian Ladyfingers (Savoiardi)", qtyPerPerson: 4, unit: "biscuits", category: "Bakery" },
+      { name: "Velvety Mascarpone Cheese", qtyPerPerson: 90, unit: "g cheese", category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Fresh Double Espresso Shot", qtyPerPerson: 50, unit: "ml fresh brew", category: "Pantry" },
+      { name: "Pure Vanilla Bean Extract & Sugar", qtyPerPerson: 1, unit: "tsp blend", category: "Sweetener", isReplaceable: true, replaceableType: "calorie" },
+      { name: "Dutch Processed  Dark Cocoa Powder", qtyPerPerson: 1, unit: "tsp dusting", category: "Pantry" }
+    ],
+    steps: [
+      "Brew intense dark roast espresso and let cool to room temperature in a shallow dipping bowl.",
+      "In a chilled bowl, whisk mascarpone (or FlavorShift hung curd-malai cream) with vanilla and sweetening until glossy soft peaks form.",
+      "Quickly dip ladyfingers into espresso for 1 second per side; arrange as a snug foundation layer in serving cup.",
+      "Pipe or spoon half of the velvet cream over the biscuits; repeat with a second soaked layer.",
+      "Chill for minimum 2 hours to set; dust heavily with Dutch dark cocoa powder before serving."
+    ],
+    reviews: []
+  },
+  {
+    id: "warm-dark-chocolate-lava-cake",
+    title: "Molten Dark Chocolate Lava Cake",
+    category: "Bakery & Desserts",
+    tagline: "Individual warm chocolate sponge with a luscious flowing molten ganache center.",
+    image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&auto=format&fit=crop&q=80",
+    prepTime: "12 mins",
+    cookTime: "10 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Single-Origin Domestic Dark Cocoa Melt (No High-Duty Belgian Couverture)",
+      description: "Employs high-fat domestic Indian single-origin cocoa mass blended with cold-pressed coconut butter for an ultra-glossy river of lava.",
+      swapRatio: "For 60g Imported Couverture → Use 45g Cocoa mass + 15g butter blend",
+      tasteImpact: "Intense bittersweet dark cocoa profile with zero waxy feel.",
+      textureImpact: "Tender cake walls with warm, free-flowing silky chocolate center.",
+      replacedItems: [
+        { original: "Imported Belgian Dark Couverture", replacedWith: "South Indian Single-Origin Artisanal Dark Cocoa Mass", reason: "Saves  with deeper fruity terroir notes" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Avocado & Dark Cocoa Clean Molten Pot",
+      description: "Replaces butter with velvety Hass avocado puree and organic allulose sweetener for guilt-free indulgence."
+    },
+    ingredients: [
+      { name: " Dark Chocolate Callets", qtyPerPerson: 60, unit: "g chocolate", category: "Bakery", isReplaceable: true, replaceableType: "budget" },
+      { name: "Unsalted Dairy Table Butter", qtyPerPerson: 35, unit: "g butter", category: "Dairy", isReplaceable: true, replaceableType: "calorie-vegan" },
+      { name: "Whole Egg or Flax-Emulsion", qtyPerPerson: 1, unit: "egg / emulsion", category: "Dairy", isReplaceable: true, replaceableType: "vegan" },
+      { name: "Fine All-Purpose Flour", qtyPerPerson: 20, unit: "g flour", category: "Bakery" },
+      { name: "Raw Cane Sugar & Sea Salt", qtyPerPerson: 25, unit: "g blend", category: "Sweetener" },
+      { name: "Tahitian Vanilla Extract", qtyPerPerson: 0.5, unit: "tsp", category: "Pantry" }
+    ],
+    steps: [
+      "Melt dark chocolate and butter together gently over a bain-marie (hot water bath) until silky and glossy.",
+      "Whisk egg and cane sugar in a bowl until pale and frothy.",
+      "Fold melted chocolate mixture into the egg froth; gently sift in flour and a pinch of flaky salt.",
+      "Pour batter into a buttered, cocoa-dusted ramekin up to 3/4 full.",
+      "Bake at 200°C (395°F) for exactly 9–10 minutes until the edges are firm but center jiggles gently.",
+      "Invert immediately onto a dessert plate, dust with powdered sugar, and serve with fresh berries."
+    ],
+    reviews: []
+  },
+  {
+    id: "vanilla-bean-panna-cotta",
+    title: "Vanilla Bean Panna Cotta with Berry Coulis",
+    category: "Bakery & Desserts",
+    tagline: "Silky, delicate chilled Italian cream custard infused with Madagascar vanilla bean and tart raspberry glaze.",
+    image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=800&auto=format&fit=crop&q=80",
+    prepTime: "10 mins",
+    cookTime: "5 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Thick Whole Milk & Coconut Milk Silk (No High-Cost Whipping Cream)",
+      description: "Combines reduced whole farmhouse milk with coconut milk for the same luxurious mouth-coating wobble at reduced dairy expense.",
+      swapRatio: "For 100ml Heavy Cream → Use 60ml Whole Milk + 40ml Coconut Milk",
+      tasteImpact: "Clean floral vanilla profile with tropical undertones.",
+      textureImpact: "Gentle, delicate wobble that melts instantly on the palate.",
+      replacedItems: [
+        { original: "Dairy Whipping Cream", replacedWith: "Farmhouse Full-Cream & Coconut Milk Infusion", reason: "Prevents heavy dairy aftertaste while cutting costs" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Almond Milk & Agar-Agar Light Wobble",
+      description: "Uses unsweetened vanilla almond milk set with plant-based agar-agar for an ultra-clean 150-calorie dessert."
+    },
+    ingredients: [
+      { name: "Fresh Dairy Whipping Cream", qtyPerPerson: 100, unit: "ml cream", category: "Dairy", isReplaceable: true, replaceableType: "budget-calorie-vegan" },
+      { name: "Whole Farmhouse Milk", qtyPerPerson: 50, unit: "ml milk", category: "Dairy" },
+      { name: "Plant-Based Agar-Agar or Gelatin", qtyPerPerson: 2, unit: "g setting agent", category: "Pantry" },
+      { name: "Madagascar Vanilla Pod Seeds", qtyPerPerson: 0.5, unit: "pod seeds", category: "Spices" },
+      { name: "Wild Raspberry & Strawberry Reduction", qtyPerPerson: 35, unit: "g coulis", category: "Produce" }
+    ],
+    steps: [
+      "Simmer cream, milk, scraped vanilla seeds, and sugar in a saucepan over gentle heat for 3 minutes without boiling.",
+      "Sprinkle agar-agar flakes into the warm liquid, whisking thoroughly for 90 seconds until completely dissolved.",
+      "Pour through a fine mesh strainer into small glass jars or dariole molds.",
+      "Refrigerate for minimum 3 hours until gently set with signature panna cotta wobble.",
+      "Top with fresh tart berry coulis and fresh mint leaves right before serving."
+    ],
+    reviews: []
+  },
+  {
+    id: "gulab-jamun-cheesecake-fusion",
+    title: "Gulab Jamun Saffron Cheesecake",
+    category: "Bakery & Desserts",
+    tagline: "East-meets-west cafe fusion pairing cardamom graham cracker crust with saffron cream and embedded mini gulab jamuns.",
+    image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=800&auto=format&fit=crop&q=80",
+    prepTime: "25 mins",
+    cookTime: "30 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Chenna (Fresh Cottage Curd) & Cream Cheese Blend (Local Artisanal Blend)",
+      description: "Combines freshly curdled warm cow milk chenna with cream cheese to replicate Philadelphia richness at domestic milk prices.",
+      swapRatio: "50g Whipped Soft Chenna + 40g Cream Cheese replaces 90g imported cream cheese",
+      tasteImpact: "Subtle sweet lactic curd with saffron and rose water notes.",
+      textureImpact: "Dense, creamy, velvet sliceability that holds embedded gulab jamuns firmly.",
+      replacedItems: [
+        { original: "Imported Philadelphia Cream Cheese", replacedWith: "Whipped Fresh Soft Chenna Curd", reason: "Prevents heavy dense aftertaste and saves " }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Hung Greek Yogurt & Stevia Baked Pot",
+      description: "Bakes strained high-protein Greek yogurt with crushed digestive biscuits and sugar-free rose essence."
+    },
+    ingredients: [
+      { name: "Cream Cheese / Soft Chenna Blend", qtyPerPerson: 90, unit: "g cheese curd", category: "Dairy", isReplaceable: true, replaceableType: "budget" },
+      { name: "Mini Soft Gulab Jamuns (drained)", qtyPerPerson: 2, unit: "pieces", category: "Bakery" },
+      { name: "Crushed Graham Crackers / Digestive Biscuits", qtyPerPerson: 35, unit: "g crumbs", category: "Bakery" },
+      { name: "Kashmiri Saffron & Green Cardamom Powder", qtyPerPerson: 0.5, unit: "tsp blend", category: "Spices" },
+      { name: "Melted Butter (for crust binding)", qtyPerPerson: 15, unit: "g butter", category: "Dairy" }
+    ],
+    steps: [
+      "Mix crushed digestive biscuits with melted butter and cardamom; press tightly into base of springform pan or mold.",
+      "Whisk cream cheese and whipped chenna with sugar, saffron milk infusion, and a splash of rose water until micro-smooth.",
+      "Pour half the cheese batter over the crust; arrange drained mini gulab jamuns evenly across the surface.",
+      "Cover with remaining batter, smooth the top, and bake in a water bath at 160°C (320°F) for 35 minutes until just set.",
+      "Chill overnight in refrigerator; slice cleanly and garnish with slivered pistachios and dried rose petals."
+    ],
+    reviews: []
+  },
+  {
+    id: "fudgy-avocado-chocolate-brownie",
+    title: "Double Dark Chocolate Fudgy Brownie",
+    category: "Bakery & Desserts",
+    tagline: "Decadent crinkle-top chocolate brownie with fudgy gooey centers and roasted walnut chunks.",
+    image: "https://images.unsplash.com/photo-1607920591413-4ec007e70023?w=800&auto=format&fit=crop&q=80",
+    prepTime: "15 mins",
+    cookTime: "22 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Toasted Sunflower Seeds & Cocoa Butter (No High-Cost Imported Walnuts)",
+      description: "When imported California walnuts are too expensive, uses toasted salted pumpkin and sunflower seeds for equal nutty crunch.",
+      swapRatio: "25g Toasted Sunflower & Pumpkin seed mix replaces 25g walnuts",
+      tasteImpact: "Deep roasted crunch with intense bittersweet cocoa.",
+      textureImpact: "Chewy edges with gooey, fudgy center and crisp, papery crinkle crust.",
+      replacedItems: [
+        { original: "Imported California Walnuts (25g)", replacedWith: "Toasted Roasted Sunflower & Pumpkin Seeds", reason: "Allergen-friendly crunch that saves  per brownie slice" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Skinny Sweet Potato & Dark Cocoa Brownie",
+      description: "Uses pureed steamed sweet potato to replace much of the butter and refined flour for moist, dense fudge texture."
+    },
+    ingredients: [
+      { name: " Semi-Sweet Dark Chocolate", qtyPerPerson: 50, unit: "g chocolate", category: "Bakery" },
+      { name: "Pure Dairy Table Butter", qtyPerPerson: 30, unit: "g butter", category: "Dairy", isReplaceable: true, replaceableType: "calorie" },
+      { name: "Brown Cane Sugar & Vanilla", qtyPerPerson: 30, unit: "g blend", category: "Sweetener" },
+      { name: "Unbleached Pastry Flour", qtyPerPerson: 25, unit: "g flour", category: "Bakery" },
+      { name: "Roughly Chopped Walnuts or Seeds", qtyPerPerson: 20, unit: "g nuts", category: "Pantry", isReplaceable: true, replaceableType: "budget" }
+    ],
+    steps: [
+      "Melt dark chocolate and butter together until silky smooth; let cool slightly.",
+      "Whisk eggs (or yogurt substitute) with brown sugar vigorously for 3 minutes until pale and frothy.",
+      "Gently fold melted chocolate into the whipped eggs; fold in flour and cocoa powder with a spatula.",
+      "Stir in chopped walnuts or toasted seeds, reserving a few for the top.",
+      "Pour into parchment-lined pan; bake at 175°C (350°F) for 22 minutes until a toothpick has moist crumbs.",
+      "Cool completely before slicing into clean cafe squares."
+    ],
+    reviews: []
+  },
+  {
+    id: "quinoa-avocado-superfood-bowl",
+    title: "Mediterranean Quinoa & Avocado Power Bowl",
+    category: "Diet Conscious",
+    tagline: "Nutrient-packed clean bowl featuring fluffy quinoa, crisp cucumbers, ripe avocado, chickpeas, and lemon tahini dressing.",
+    image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80",
+    prepTime: "12 mins",
+    cookTime: "15 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Broken Wheat (Dalia) & White Sesame Drizzle (No High-Import Quinoa)",
+      description: "Swaps imported organic quinoa with roasted nutty domestic broken wheat dalia and homemade sesame tahini for identical mouthfeel.",
+      swapRatio: "70g Steamed Dalia replaces 70g cooked quinoa",
+      tasteImpact: "Earthy, nutty grains with vibrant citrus-herb dressing.",
+      textureImpact: "Fluffy, hearty grain base with crisp vegetable snap and creamy avocado.",
+      replacedItems: [
+        { original: "Imported South American Quinoa", replacedWith: "Slow-Steamed Roasted Broken Wheat (Dalia)", reason: "high sustained satiety" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Cauliflower Rice & Cucumber Shred Slaw Base",
+      description: "Replaces half the grains with fresh riced cauliflower for an ultra-low carbohydrate macro profile."
+    },
+    ingredients: [
+      { name: "Fluffy Steamed White Quinoa", qtyPerPerson: 80, unit: "g cooked grains", category: "Grains", isReplaceable: true, replaceableType: "budget" },
+      { name: "Sliced Hass Avocado", qtyPerPerson: 50, unit: "g fresh avocado", category: "Produce" },
+      { name: "Spiced Boiled Chickpeas (Kabuli Chana)", qtyPerPerson: 60, unit: "g legumes", category: "Produce" },
+      { name: "Cherry Tomatoes & Persian Cucumber", qtyPerPerson: 70, unit: "g fresh dice", category: "Produce" },
+      { name: "Lemon Tahini & Extra Virgin Olive Oil Dressing", qtyPerPerson: 25, unit: "ml dressing", category: "Pantry" }
+    ],
+    steps: [
+      "Rinse quinoa thoroughly to remove saponins; cook in seasoned vegetable broth until translucent and fluffy.",
+      "Toss boiled chickpeas with smoked paprika, cumin, and sea salt in a hot dry pan for 2 minutes to crisp the skin.",
+      "Assemble grain foundation in a wide stoneware salad bowl.",
+      "Arrange sliced avocado, cherry tomato halves, diced cucumber, and spiced chickpeas in clean color-blocked sections.",
+      "Whisk fresh lemon juice, tahini, minced garlic, and cold water into a silky dressing; drizzle liberally over bowl before serving."
+    ],
+    reviews: []
+  },
+  {
+    id: "grilled-tofu-edamame-buddha-bowl",
+    title: "Sesame-Ginger Tofu Buddha Bowl",
+    category: "Diet Conscious",
+    tagline: "Clean plant-protein bowl with crispy pan-seared organic tofu, steamed edamame, purple cabbage, and toasted sesame glaze.",
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&auto=format&fit=crop&q=80",
+    prepTime: "15 mins",
+    cookTime: "10 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Sprouted Green Moong & Roasted Peanut Crunch (No Expensive Edamame)",
+      description: "When frozen Japanese edamame is high cost, substitutes tender steamed sprouted whole moong beans and crushed roasted peanuts.",
+      swapRatio: "50g Sprouted Moong replaces 50g Edamame beans",
+      tasteImpact: "Fresh, earthy legume sweetness with savory garlic crunch.",
+      textureImpact: "Crisp outer tofu shell with tender, chewy protein and fresh raw vegetables.",
+      replacedItems: [
+        { original: "Imported Frozen Edamame Beans", replacedWith: "Steamed Fresh Sprouted Moong", reason: "Provides tender sprouted legume texture and plant protein" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Air-Fried Tofu & Zucchini Noodle Base",
+      description: "Air-fries the marinated tofu without oil and swaps rice for crisp raw zucchini ribbons."
+    },
+    ingredients: [
+      { name: "Organic Firm Pressed Tofu Cubes", qtyPerPerson: 120, unit: "g tofu", category: "Produce" },
+      { name: "Steamed Edamame / Sprouted Beans", qtyPerPerson: 50, unit: "g legumes", category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Shredded Purple Cabbage & Carrots", qtyPerPerson: 80, unit: "g vegetables", category: "Produce" },
+      { name: "Tamari Soy & Grated Ginger Glaze", qtyPerPerson: 20, unit: "ml sauce", category: "Pantry" },
+      { name: "Toasted White & Black Sesame Seeds", qtyPerPerson: 1, unit: "tsp garnish", category: "Pantry" },
+      { name: "Steamed Brown Jasmine Rice", qtyPerPerson: 70, unit: "g cooked rice", category: "Grains" }
+    ],
+    steps: [
+      "Press tofu with paper towels to extract moisture; toss cubes in tamari, garlic powder, and cornstarch.",
+      "Sear in a hot skillet with a teaspoon of oil for 7 minutes, turning until all sides are deep golden and crisp.",
+      "Steam edamame or sprouted moong with sea salt for 3 minutes until tender-crisp.",
+      "Lay warm brown rice in a bowl, arranging crisp tofu, purple cabbage, and edamame around the perimeter.",
+      "Drizzle with sesame-ginger dressing and sprinkle with toasted sesame seeds and sliced scallions."
+    ],
+    reviews: []
+  },
+  {
+    id: "greek-tzatziki-grain-salad",
+    title: "Chilled Greek Tzatziki & Lentil Salad",
+    category: "Diet Conscious",
+    tagline: "Cooling cafe salad of brown lentils, crisp bell peppers, and homemade cucumber-garlic Greek yogurt dressing.",
+    image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=800&auto=format&fit=crop&q=80",
+    prepTime: "10 mins",
+    cookTime: "10 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Desi Brown Masoor & Strained Dahi Tzatziki (No Imported Puy Lentils)",
+      description: "Replaces imported French green lentils with domestic whole brown masoor dal cooked al dente.",
+      swapRatio: "80g Whole Brown Masoor replaces 80g imported lentils",
+      tasteImpact: "Earthy, savory lentils balanced by tart cucumber-dill yogurt.",
+      textureImpact: "Firm, non-mushy lentil bite with refreshing cooling creaminess.",
+      replacedItems: [
+        { original: "Imported French Green Lentils", replacedWith: "Farm Fresh Whole Brown Masoor", reason: "Holds firm tender shape in chilled salads" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Low-Fat Cucumber & Fresh Mint Dressing",
+      description: "Prepares tzatziki using fat-free strained yogurt with fresh mint and grated English cucumber."
+    },
+    ingredients: [
+      { name: "Al Dente Whole Brown Lentils", qtyPerPerson: 90, unit: "g cooked lentils", category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Strained Greek Yogurt (Tzatziki Base)", qtyPerPerson: 80, unit: "g yogurt", category: "Dairy" },
+      { name: "English Cucumber (grated & squeezed)", qtyPerPerson: 50, unit: "g cucumber", category: "Produce" },
+      { name: "Extra Virgin Olive Oil & Lemon Juice", qtyPerPerson: 15, unit: "ml blend", category: "Pantry" },
+      { name: "Fresh Dill, Minced Garlic & Sea Salt", qtyPerPerson: 1, unit: "tsp blend", category: "Herbs" }
+    ],
+    steps: [
+      "Cook whole lentils in water with a bay leaf until tender but still holding their shape (do not overcook); chill thoroughly.",
+      "Grate English cucumber, toss with a pinch of salt, and squeeze tightly in cheesecloth to extract excess liquid.",
+      "Stir squeezed cucumber into thick Greek yogurt with minced garlic, fresh chopped dill, lemon juice, and olive oil.",
+      "Toss chilled lentils with diced red onions, bell peppers, and half of the tzatziki sauce.",
+      "Transfer to salad bowl, dollop remaining tzatziki over the top, and finish with a crack of black pepper."
+    ],
+    reviews: []
+  },
+  {
+    id: "spinach-paneer-protein-wrap",
+    title: "Vibrant Spinach & Grilled Paneer Wrap",
+    category: "Diet Conscious",
+    tagline: "Whole-wheat flatbread wrap stuffed with tandoori-spiced grilled paneer strips, baby spinach, and mint-yogurt chutney.",
+    image: "./assets/recipes/spinach-paneer-protein-wrap.jpg",
+    prepTime: "10 mins",
+    cookTime: "8 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Desi Tawa-Grilled Tofu & Paneer Mix (Cost & Saturated Fat Cutter)",
+      description: "Blends firm organic tofu with equal parts fresh paneer to maintain bouncy bite while creating a lighter high-protein filling.",
+      swapRatio: "50g Tofu + 50g Paneer replaces 100g pure paneer",
+      tasteImpact: "Smoky tandoori spices mask tofu, delivering pure paneer flavor.",
+      textureImpact: "Firm, succulent grilled bites wrapped in warm, toasted flatbread.",
+      replacedItems: [
+        { original: "Full-Fat Malai Paneer", replacedWith: "Equal-blend Tawa Grilled Paneer & Firm Tofu Blend", reason: "Saves  with superior protein-to-fat balance" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Low-Carb Lettuce & Roti Wrap",
+      description: "Swaps white tortilla for thin whole-wheat phulka rolled in crisp romaine lettuce leaves."
+    },
+    ingredients: [
+      { name: "Fresh Malai Paneer or Tofu Strips", qtyPerPerson: 100, unit: "g strips", category: "Dairy", isReplaceable: true, replaceableType: "budget" },
+      { name: "Whole Wheat Roti / Tortilla Wrap", qtyPerPerson: 1, unit: "wrap", category: "Bakery" },
+      { name: "Fresh Baby Spinach & Sliced Bell Peppers", qtyPerPerson: 60, unit: "g vegetables", category: "Produce" },
+      { name: "Spicy Mint & Coriander Greek Yogurt Chutney", qtyPerPerson: 30, unit: "g sauce", category: "Dairy" },
+      { name: "Tandoori Tikka Spices & Lemon Juice", qtyPerPerson: 1, unit: "tsp blend", category: "Spices" }
+    ],
+    steps: [
+      "Toss paneer or paneer-tofu strips in tandoori spices, lemon juice, and a drop of mustard oil; sear in a cast-iron skillet for 4 minutes until charred.",
+      "Warm the whole wheat roti on dry tawa for 20 seconds per side until pliable.",
+      "Spread mint-coriander yogurt chutney down the center of the warm wrap.",
+      "Layer fresh washed baby spinach leaves, grilled paneer strips, and crunchy sliced onions.",
+      "Tightly fold bottom upward, roll into a snug cylinder, cut diagonally, and serve wrapped in parchment paper."
+    ],
+    reviews: []
+  },
+  {
+    id: "zesty-kale-roasted-chickpea-salad",
+    title: "Crunchy Garlic Kale & Chickpea Caesar",
+    category: "Diet Conscious",
+    tagline: "Massaged curly kale tossed with crispy garlic-roasted chickpeas, shaved Parmesan, and creamy cashew Caesar dressing.",
+    image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=800&auto=format&fit=crop&q=80",
+    prepTime: "12 mins",
+    cookTime: "15 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Baby Spinach & Roasted Moong Crunch (No Imported Curly Kale)",
+      description: "When organic imported kale is out of stock, uses crisp fresh baby palak and spiced roasted lentils for identical hearty texture.",
+      swapRatio: "80g Baby Spinach replaces 80g massaged kale",
+      tasteImpact: "Tangy, savory garlic Caesar punch with zero bitterness.",
+      textureImpact: "Tender, hearty greens with crunchy roasted chickpea croutons.",
+      replacedItems: [
+        { original: "Imported Organic Curly Kale", replacedWith: "Farm Fresh Crisp Baby Palak", reason: "Tender local baby leaves with mild earthy bite" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Light Lemon-Mustard Vinaigrette Toss",
+      description: "Replaces creamy cashew dressing with a light Dijon mustard, lemon juice, and apple cider vinegar emulsion."
+    },
+    ingredients: [
+      { name: "Fresh Curly Kale (stemmed & chopped)", qtyPerPerson: 90, unit: "g fresh greens", category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Oven-Roasted Crunchy Chickpeas", qtyPerPerson: 50, unit: "g croutons", category: "Produce" },
+      { name: "Silky Cashew & Garlic Caesar Dressing", qtyPerPerson: 30, unit: "ml dressing", category: "Pantry" },
+      { name: "Shaved Aged Vegetarian Parmesan or Nutritional Yeast", qtyPerPerson: 15, unit: "g cheese", category: "Dairy" },
+      { name: "Fresh Lemon Juice & Extra Virgin Olive Oil", qtyPerPerson: 10, unit: "ml blend", category: "Pantry" }
+    ],
+    steps: [
+      "Remove tough center stems from kale leaves; tear into bite-sized pieces.",
+      "Drizzle with 1/2 tsp olive oil and a pinch of salt; massage firmly with fingers for 90 seconds until leaves turn dark emerald and silky tender.",
+      "Toss cooked chickpeas with olive oil, garlic powder, and paprika; bake at 200°C for 18 minutes until shatter-crisp.",
+      "Pour creamy cashew Caesar dressing over the massaged kale; toss thoroughly to coat every leaf.",
+      "Garnish with hot crunchy chickpea croutons and shaved cheese before serving."
+    ],
+    reviews: []
+  },
+  {
+    id: "classic-shakshuka-poached-eggs",
+    title: "Artisanal Skillet Shakshuka",
+    category: "Breakfast & Morning",
+    tagline: "North African skillet eggs gently poached in a spiced bell pepper, ripe tomato, and cumin reduction.",
+    image: "https://images.unsplash.com/photo-1590412200988-a436970781fa?w=800&auto=format&fit=crop&q=80",
+    prepTime: "8 mins",
+    cookTime: "14 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Desi Roma Puree & Cottage Cheese Crumbles (No Imported Feta Markup)",
+      description: "Replaces high-priced Greek imported feta with freshly crumbled salted paneer and slow-simmered local Roma tomatoes.",
+      swapRatio: "30g Crumbled Paneer + lemon zest replaces 30g imported feta",
+      tasteImpact: "Savory cumin-spiced warmth with creamy yolk richness.",
+      textureImpact: "Runny golden egg yolks swimming in thick, chunky spiced tomato gravy.",
+      replacedItems: [
+        { original: "Imported Greek Barrel Feta (30g)", replacedWith: "Crumbled Farmhouse Paneer with Lemon Salt", reason: "Prevents excessive saltiness while saving " }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Egg White & Roasted Pepper Skillet",
+      description: "Uses 1 whole egg + 2 egg whites poached in rich vegetable reduction for high protein and low dietary cholesterol."
+    },
+    ingredients: [
+      { name: "Farm Fresh Large Free-Range Eggs", qtyPerPerson: 2, unit: "eggs", category: "Produce" },
+      { name: "Crushed Ripe Roma Tomatoes & Bell Peppers", qtyPerPerson: 180, unit: "g spiced base", category: "Produce" },
+      { name: "Extra Virgin Olive Oil", qtyPerPerson: 1, unit: "tablespoon", category: "Pantry" },
+      { name: "Smoked Paprika, Cumin & Ground Coriander", qtyPerPerson: 1, unit: "tsp blend", category: "Spices" },
+      { name: "Crumbled Feta or Farmhouse Paneer", qtyPerPerson: 30, unit: "g cheese", category: "Dairy", isReplaceable: true, replaceableType: "budget" }
+    ],
+    steps: [
+      "In a small cast-iron skillet, heat olive oil; sauté diced onions and red bell peppers until soft and lightly caramelized.",
+      "Add minced garlic, cumin, and smoked paprika, stirring for 45 seconds until aromatic.",
+      "Pour in crushed tomatoes; simmer for 8 minutes until sauce is thick and saucy.",
+      "Use the back of a spoon to create two wells in the simmering sauce; crack an egg gently into each well.",
+      "Cover skillet and cook over low heat for 5–6 minutes until whites are just set and yolks remain runny.",
+      "Garnish with crumbled feta or paneer, fresh cilantro, and serve sizzling hot with toasted sourdough."
+    ],
+    reviews: []
+  },
+  {
+    id: "overnight-chia-berry-pudding",
+    title: "Almond Milk Chia & Wild Berry Parfait",
+    category: "Breakfast & Morning",
+    tagline: "Slow-hydrated organic black chia seeds steeped in vanilla almond milk, layered with fresh berry compote and granola.",
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
+    prepTime: "5 mins",
+    cookTime: "0 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan", "Dairy-Free"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Fresh Toned Milk & Basil Seeds (Sabja) Silk (No High-Import Chia)",
+      description: "When imported chia seeds are high cost, uses sweet basil seeds (sabja) which hydrate in 15 minutes with cooling Ayurvedic properties.",
+      swapRatio: "25g Sabja seeds replaces 25g Chia seeds",
+      tasteImpact: "Subtle floral vanilla creaminess with popping texture.",
+      textureImpact: "Delicate jelly pearls suspended in chilled aromatic milk.",
+      replacedItems: [
+        { original: "Imported Organic Chia Seeds", replacedWith: "Cooling Sweet Basil Seeds (Sabja)", reason: "Hydrates 4x faster and saves  per jar" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Stevia & Unsweetened Coconut Water Gel",
+      description: "Hydrates seeds in tender coconut water with zero added cane sugars for clean electrolyte hydration."
+    },
+    ingredients: [
+      { name: "Organic Black Chia Seeds", qtyPerPerson: 25, unit: "g seeds", category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Unsweetened Vanilla Almond Milk", qtyPerPerson: 120, unit: "ml plant milk", category: "Dairy" },
+      { name: "Wild Blackberry & Blueberry Compote", qtyPerPerson: 40, unit: "g compote", category: "Produce" },
+      { name: "Toasted Rolled Oats Granola", qtyPerPerson: 20, unit: "g crunch", category: "Grains" }
+    ],
+    steps: [
+      "Whisk chia seeds into vanilla almond milk with a drop of pure maple syrup; stir again after 5 minutes to prevent clumping.",
+      "Cover and chill overnight (or minimum 4 hours) in glass jars until thick, pudding-like consistency develops.",
+      "Spoon wild berry compote at the bottom of serving tumbler.",
+      "Layer chilled chia pudding over the berries.",
+      "Crown with toasted crunchy granola and sliced fresh strawberries right before service."
+    ],
+    reviews: []
+  },
+  {
+    id: "fluffy-buttermilk-pancakes",
+    title: "Fluffy Golden Buttermilk Pancakes",
+    category: "Breakfast & Morning",
+    tagline: "Thick, cloud-like diner pancakes served with melted cultured butter and warm amber maple syrup.",
+    image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&auto=format&fit=crop&q=80",
+    prepTime: "10 mins",
+    cookTime: "8 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Fresh Milk & Lemon Curdle Leaven (No Specialty Buttermilk Buying)",
+      description: "When commercial cultured buttermilk is missing, adds 1 tbsp fresh lemon juice to warm whole milk for instant lactic lift.",
+      swapRatio: "120ml Milk + 1 tsp lemon juice replaces 120ml packaged buttermilk",
+      tasteImpact: "Sweet, buttery vanilla aroma with gentle tang.",
+      textureImpact: "Extra fluffy, 1-inch tall pancakes that soak syrup effortlessly.",
+      replacedItems: [
+        { original: "Commercial Cultured Buttermilk Carton", replacedWith: "Farm Fresh Milk & Lemon Curdle Brew", reason: "Fresh on-demand souring with zero carton waste" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Oat Flour & Banana Protein Pancakes",
+      description: "Blends rolled oats with ripe banana and egg whites for naturally sweetened morning protein."
+    },
+    ingredients: [
+      { name: "Unbleached Pastry Flour", qtyPerPerson: 80, unit: "g flour", category: "Bakery" },
+      { name: "Fresh Milk & Lemon Curdle / Buttermilk", qtyPerPerson: 120, unit: "ml liquid", category: "Dairy", isReplaceable: true, replaceableType: "budget" },
+      { name: "Farm Fresh Egg", qtyPerPerson: 1, unit: "egg", category: "Produce" },
+      { name: "Melted Table Butter & Baking Powder", qtyPerPerson: 15, unit: "g blend", category: "Dairy" },
+      { name: "Warm Maple Syrup & Fresh Berries", qtyPerPerson: 30, unit: "ml drizzle", category: "Sweetener" }
+    ],
+    steps: [
+      "Whisk flour, baking powder, a pinch of baking soda, and sugar in a large bowl.",
+      "In a separate bowl, whisk buttermilk (or milk-lemon curdle), egg, and melted butter.",
+      "Gently combine wet and dry ingredients with a fork; leave batter lumpy and let rest for 6 minutes (do not over-mix).",
+      "Ladle onto a medium-hot buttered griddle; cook until bubbles form on top and burst.",
+      "Flip gently and cook for 90 seconds until golden brown on both sides.",
+      "Stack high, crown with butter pat, and pour warm maple syrup over the top."
+    ],
+    reviews: []
+  },
+  {
+    id: "mumbai-street-kanda-poha",
+    title: "Rustic Mumbai Kanda Batata Poha",
+    category: "Breakfast & Morning",
+    tagline: "Light, fluffy flattened rice tempered with mustard seeds, crunchy peanuts, turmeric, and fresh lime juice.",
+    image: "./assets/recipes/mumbai-street-kanda-poha.jpg",
+    prepTime: "8 mins",
+    cookTime: "8 mins",
+    difficulty: "Easy",
+    dietary: ["Vegetarian", "Gluten-Free", "Vegan"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Toasted Roasted Chana Dal (No Expensive Nut Oil)",
+      description: "When raw peanuts are costly or when nut-free allergen requests occur, uses golden roasted chana dal for equal crunchy pop.",
+      swapRatio: "15g Roasted Chana replaces 15g raw peanuts",
+      tasteImpact: "Golden turmeric aromatics with tangy lemon finish.",
+      textureImpact: "Featherlight, non-sticky rice flakes with crispy savory tempering.",
+      replacedItems: [
+        { original: "Raw Shelled Peanuts", replacedWith: "Roasted Split Bengal Gram (Chana Dal)", reason: "Nut-free allergen safety and  lower ingredient cost" }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "Equal-blend Red Rice Poha & Steamed Green Peas",
+      description: "Uses unpolished red rice flakes and double sweet peas for low glycemic index."
+    },
+    ingredients: [
+      { name: "Thick Flattened Rice (Jada Poha)", qtyPerPerson: 80, unit: "g dry flakes", category: "Grains" },
+      { name: "Finely Chopped Red Onions & Potatoes", qtyPerPerson: 60, unit: "g produce", category: "Produce" },
+      { name: "Raw Peanuts or Roasted Gram", qtyPerPerson: 15, unit: "g nuts/gram", category: "Produce", isReplaceable: true, replaceableType: "budget" },
+      { name: "Mustard Seeds, Curry Leaves & Green Chilies", qtyPerPerson: 1, unit: "tsp tadka", category: "Spices" },
+      { name: "Fresh Coriander, Fresh Coconut & Lime Juice", qtyPerPerson: 15, unit: "g garnish", category: "Produce" }
+    ],
+    steps: [
+      "Rinse thick poha gently in a colander under running water for 30 seconds; drain well and let rest for 5 minutes (it will absorb water and become soft).",
+      "Heat oil in a kadai; fry peanuts until golden and crunchy, remove and set aside.",
+      "In the same oil, add mustard seeds, green chilies, and fresh curry leaves until they crackle.",
+      "Add finely diced potatoes and onions with turmeric powder; sauté covered over low flame until potatoes are fork-tender.",
+      "Gently fluff softened poha with a fork; fold into the kadai with salt and sugar; steam covered for 2 minutes.",
+      "Squeeze fresh lime juice, top with fried peanuts, fresh grated coconut, and chopped coriander."
+    ],
+    reviews: []
+  },
+  {
+    id: "classic-french-omelette-sourdough",
+    title: "Classic French Herb Omelette & Sourdough",
+    category: "Breakfast & Morning",
+    tagline: "Silky, custardy French rolled omelette infused with fresh tarragon and chives, served alongside buttered sourdough.",
+    image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&auto=format&fit=crop&q=80",
+    prepTime: "5 mins",
+    cookTime: "3 mins",
+    difficulty: "Medium",
+    dietary: ["Vegetarian"],
+    basePortionPersons: 1,
+    budgetAlternative: {
+      active: false,
+      title: "Desi Ghee Glaze & Local Farm Eggs (No French Butter Cost)",
+      description: "Replaces imported European churned butter with aromatic domestic clarified butter for a rich golden sheen.",
+      swapRatio: "15g Desi Ghee replaces 20g imported European butter",
+      tasteImpact: "Velvety, melt-in-mouth egg custard with savory chives.",
+      textureImpact: "Pale yellow exterior with soft, creamy scrambled interior core.",
+      replacedItems: [
+        { original: "Imported Normandy European Cultured Butter", replacedWith: "Farmhouse Clarified Desi Ghee", reason: "Prevents browning and cuts fat cost by " }
+      ]
+    },
+    calorieAlternative: {
+      active: false,
+      title: "2-White 1-Whole Egg Light Roll",
+      description: "Combines 2 egg whites with 1 yolk whisked with sparkling water for high volume and reduced dietary lipids."
+    },
+    ingredients: [
+      { name: "Farm Fresh Free-Range Eggs", qtyPerPerson: 3, unit: "eggs", category: "Produce" },
+      { name: "Unsalted Churned Table Butter", qtyPerPerson: 20, unit: "g butter", category: "Dairy", isReplaceable: true, replaceableType: "budget" },
+      { name: "Fresh Chives, Parsley & Chervil", qtyPerPerson: 1, unit: "tablespoon herbs", category: "Herbs" },
+      { name: "Toasted Artisanal Sourdough Slice", qtyPerPerson: 1, unit: "slice", category: "Bakery" },
+      { name: "Flaky Sea Salt & White Pepper", qtyPerPerson: 0.5, unit: "tsp blend", category: "Spices" }
+    ],
+    steps: [
+      "Crack eggs into a bowl; whisk thoroughly with a fork until whites and yolks are completely uniform with zero streaks.",
+      "Heat a non-stick 8-inch skillet over medium heat; melt butter until foaming without turning brown.",
+      "Pour eggs in; immediately shake pan vigorously with one hand while stirring rapidly in small circles with a silicone spatula.",
+      "When curds are creamy and barely set, smooth the surface and pull pan off heat.",
+      "Tilt pan and roll the omelette into a neat cigar shape onto a warm plate.",
+      "Brush top with a dab of butter for shine, scatter fresh chives, and serve with toasted sourdough."
     ],
     reviews: []
   }

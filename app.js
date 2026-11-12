@@ -8,6 +8,9 @@
   const state = {
     activeTab: 'swaplab', // 'swaplab', 'explore', 'htv', 'dashboard', 'slides', 'favorites'
     selectedSwapIndex: 0,
+    universalCurrentIngredient: 'Fresh Cream',
+    universalCurrentDishContext: 'General / All Dishes',
+    universalCompareMode: false,
     selectedCategory: 'all',
     selectedDiet: 'all',
     searchQuery: '',
@@ -478,6 +481,28 @@
     if (!container) return;
 
     const activeSwap = FLAVORSHIFT_SWAP_DATABASE[state.selectedSwapIndex] || FLAVORSHIFT_SWAP_DATABASE[0];
+    const currentIng = state.universalCurrentIngredient;
+    const currentCtx = state.universalCurrentDishContext || 'General / All Dishes';
+    const dishContexts = [
+      'General / All Dishes',
+      'Curries & Gravies',
+      'Baking & Cakes',
+      'Tea & Beverages',
+      'Pastas & Sauces',
+      'Salads & Dressings',
+      'Breakfast & Bowls'
+    ];
+    let uResult = null;
+    if (typeof UniversalIngredientEngine !== 'undefined' && currentIng) {
+      try {
+        uResult = UniversalIngredientEngine.analyzeIngredient(currentIng, currentCtx);
+      } catch (e) {
+        console.warn('Universal engine lookup fallback:', e);
+      }
+    }
+    const presetShowcase = (typeof UniversalIngredientEngine !== 'undefined' && UniversalIngredientEngine.PRESET_SHOWCASE)
+      ? UniversalIngredientEngine.PRESET_SHOWCASE
+      : [];
 
     let html = `
       <div class="space-y-12 animate-fade-up max-w-6xl mx-auto">
@@ -727,8 +752,234 @@
         <!-- SECTION 4: THE INTERACTIVE SWAP LAB STAGE      -->
         <!-- ============================================== -->
         <section id="ai-swaplab-stage" class="space-y-6 reveal-on-scroll">
-          
-          <!-- Step 1: Interactive Target Ingredient Selector -->
+
+          <!-- Universal Ingredient Intelligence Lookup (Any Ingredient + Dish Context) -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-5 glow-card">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-3">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono">Universal Ingredient Lookup</span>
+                <h3 class="text-xl sm:text-2xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2 mt-0.5">
+                  <i class="fa-solid fa-magnifying-glass text-terracotta text-lg"></i>
+                  <span>Search Any Culinary Ingredient</span>
+                </h3>
+              </div>
+              <span class="text-xs text-stone-500 font-accent italic">Context-aware ratios, culinary behavior, and allergen guidance</span>
+            </div>
+
+            <!-- Search Bar + Dish Context + Analyze CTA -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+              <div class="md:col-span-6 relative">
+                <label for="universal-ingredient-input" class="block text-[10px] font-bold uppercase text-stone-400 mb-1 ml-1">Ingredient Name</label>
+                <div class="relative">
+                  <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-xs"></i>
+                  <input
+                    type="text"
+                    id="universal-ingredient-input"
+                    value="${currentIng || ''}"
+                    placeholder="Try Milk, Paneer, Mushroom, Saffron, Miso, Gochujang, Eggs..."
+                    class="w-full pl-9 pr-9 py-3 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-xs sm:text-sm font-semibold text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta transition-all"
+                  />
+                  <button
+                    type="button"
+                    id="universal-search-clear-btn"
+                    class="${currentIng ? '' : 'hidden'} absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-[10px] cursor-pointer"
+                    title="Clear input"
+                  >
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="md:col-span-4 relative">
+                <label for="universal-dish-context-select" class="block text-[10px] font-bold uppercase text-stone-400 mb-1 ml-1">Dish Context</label>
+                <div class="relative">
+                  <i class="fa-solid fa-bowl-food absolute left-3.5 top-1/2 -translate-y-1/2 text-terracotta text-xs"></i>
+                  <select
+                    id="universal-dish-context-select"
+                    class="w-full pl-9 pr-8 py-3 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-xs sm:text-sm font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer appearance-none"
+                  >
+                    ${dishContexts.map(ctx => `<option value="${ctx}" ${ctx === currentCtx ? 'selected' : ''}>${ctx}</option>`).join('')}
+                  </select>
+                  <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-xs pointer-events-none"></i>
+                </div>
+              </div>
+
+              <div class="md:col-span-2">
+                <button
+                  type="button"
+                  id="universal-analyze-btn"
+                  class="w-full py-3 px-4 rounded-2xl text-xs sm:text-sm font-bold terracotta-btn text-white transition-all shadow-md cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <i class="fa-solid fa-bolt"></i>
+                  <span>Analyze</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Preset Showcase Pills -->
+            ${presetShowcase.length > 0 ? `
+              <div class="flex flex-wrap items-center gap-1.5 pt-1">
+                <span class="text-[11px] font-bold text-stone-400 mr-1">Quick picks:</span>
+                ${presetShowcase.slice(0, 12).map(p => `
+                  <button
+                    type="button"
+                    data-universal-chip="${p.name}"
+                    class="px-2.5 py-1 rounded-xl text-[11px] font-bold border transition-all cursor-pointer flex items-center gap-1 ${
+                      currentIng && currentIng.toLowerCase() === p.name.toLowerCase()
+                        ? 'bg-forest text-ivory border-forest shadow-xs'
+                        : 'bg-ivory dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-stone-600 dark:text-stone-300 hover:border-terracotta'
+                    }"
+                  >
+                    <i class="${p.icon} text-[10px] text-terracotta"></i>
+                    <span>${p.name}</span>
+                  </button>
+                `).join('')}
+              </div>
+            ` : ''}
+
+            <!-- Universal Engine Output -->
+            <div id="universal-results-container">
+              ${!uResult ? '' : uResult.status === 'invalid' ? `
+                <div class="p-6 rounded-2xl bg-peach/30 dark:bg-stone-900/80 border border-terracotta/40 text-center space-y-3">
+                  <div class="w-12 h-12 rounded-full bg-terracotta/15 text-terracotta flex items-center justify-center mx-auto text-lg">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                  </div>
+                  <h4 class="text-lg font-black font-heading text-forest dark:text-ivory">Ingredient Unrecognized</h4>
+                  <p class="text-xs font-medium text-espresso dark:text-stone-200 max-w-xl mx-auto">${uResult.message}</p>
+                  <p class="text-[11px] text-stone-500 max-w-xl mx-auto">${uResult.suggestion}</p>
+                  <div class="pt-1 flex flex-wrap items-center justify-center gap-2">
+                    <button type="button" id="try-another-ingredient-btn" class="px-4 py-2 rounded-xl text-xs font-bold terracotta-btn text-white cursor-pointer">Try Another Ingredient</button>
+                    <button type="button" data-universal-chip="Milk" class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory cursor-pointer">Test "Milk"</button>
+                    <button type="button" data-universal-chip="Paneer" class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory cursor-pointer">Test "Paneer"</button>
+                  </div>
+                </div>
+              ` : uResult.status === 'recognized' ? (() => {
+                const alts = uResult.alternatives || [];
+                const topAlt = alts[0] || { name: 'Culinary Alternative', ratio: '' };
+                return `
+                  <div class="pt-4 border-t border-beige-200 dark:border-stone-800 space-y-5">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                      <div class="space-y-1">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-peach/50 text-terracotta border border-terracotta/30 flex items-center gap-1">
+                            <i class="${uResult.icon || 'fa-solid fa-utensils'} text-[10px]"></i> ${uResult.ingredientName}
+                          </span>
+                          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-beige-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300">
+                            ${uResult.category}
+                          </span>
+                          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">
+                            Context: ${uResult.dishContext}
+                          </span>
+                        </div>
+                        <p class="text-xs text-stone-500 dark:text-stone-400">
+                          <strong>Role:</strong> ${(uResult.functions || []).join(', ')} • <strong>Profile:</strong> ${uResult.flavorProfile}
+                        </p>
+                      </div>
+                      <div class="flex items-center gap-2 shrink-0">
+                        <button
+                          type="button"
+                          id="toggle-compare-mode-btn"
+                          class="px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
+                            state.universalCompareMode
+                              ? 'bg-forest text-ivory border-forest shadow-sm'
+                              : 'bg-ivory dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory hover:border-terracotta'
+                          }"
+                        >
+                          <i class="fa-solid fa-table-columns"></i>
+                          <span>${state.universalCompareMode ? 'Hide Comparison' : 'Compare Matrix'}</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    ${state.universalCompareMode ? `
+                      <div class="overflow-x-auto p-4 rounded-2xl bg-ivory/70 dark:bg-[#181410] border border-beige-200 dark:border-stone-800">
+                        <table class="w-full text-left text-xs border-collapse">
+                          <thead>
+                            <tr class="border-b border-beige-200 dark:border-stone-800 text-[10px] uppercase tracking-wider text-stone-400">
+                              <th class="py-2 px-3">Alternative</th>
+                              <th class="py-2 px-3">Conversion Ratio</th>
+                              <th class="py-2 px-3">Culinary Method</th>
+                              <th class="py-2 px-3">Taste Notes</th>
+                              <th class="py-2 px-3">Dietary & Allergens</th>
+                              <th class="py-2 px-3 text-right">Select</th>
+                            </tr>
+                          </thead>
+                          <tbody class="divide-y divide-beige-200/70 dark:divide-stone-800">
+                            ${alts.map(alt => `
+                              <tr>
+                                <td class="py-2.5 px-3 font-bold text-forest dark:text-ivory">
+                                  ${alt.name}
+                                  <span class="block text-[10px] font-normal text-terracotta">${alt.type}</span>
+                                </td>
+                                <td class="py-2.5 px-3 font-mono text-[11px] text-espresso dark:text-stone-200">${alt.ratio}</td>
+                                <td class="py-2.5 px-3 text-[11px] text-stone-500">${alt.calcMethod || 'Functional balance'}</td>
+                                <td class="py-2.5 px-3 text-[11px] text-stone-600 dark:text-stone-300 max-w-[200px]">${alt.tasteDesc}</td>
+                                <td class="py-2.5 px-3">
+                                  <div class="flex flex-wrap gap-1">
+                                    ${(alt.dietary || []).map(d => `<span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">${d}</span>`).join('')}
+                                  </div>
+                                </td>
+                                <td class="py-2.5 px-3 text-right">
+                                  <button type="button" data-select-alt="${alt.name}" class="px-2.5 py-1 rounded-lg bg-terracotta text-white font-bold text-[11px] cursor-pointer">Select</button>
+                                </td>
+                              </tr>
+                            `).join('')}
+                          </tbody>
+                        </table>
+                      </div>
+                    ` : ''}
+
+                    <div class="grid grid-cols-1 ${alts.length === 2 ? 'md:grid-cols-2' : alts.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'} gap-4">
+                      ${alts.map((alt, idx) => `
+                        <div class="editorial-card p-5 bg-ivory/70 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-3">
+                          <div class="space-y-2.5">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider inline-block ${
+                              idx === 0 ? 'bg-forest text-ivory' : idx === 1 ? 'bg-sage text-white' : 'bg-terracotta text-white'
+                            }">
+                              Option ${idx + 1}: ${alt.type}
+                            </span>
+                            <h4 class="text-base font-bold font-heading text-forest dark:text-ivory leading-snug">${alt.name}</h4>
+                            <div class="p-2.5 rounded-xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800">
+                              <span class="block text-[10px] font-bold uppercase text-terracotta font-mono">Conversion Ratio:</span>
+                              <span class="text-xs font-bold text-forest dark:text-ivory block font-mono mt-0.5">${alt.ratio}</span>
+                              <span class="block text-[10px] text-stone-400 mt-1">${alt.calcMethod || 'Functional culinary balance'}</span>
+                            </div>
+                            <p class="text-[11px] text-stone-600 dark:text-stone-300 leading-relaxed">
+                              <strong>Flavor:</strong> ${alt.contextNotes && alt.contextNotes[uResult.dishContext] ? alt.contextNotes[uResult.dishContext] : alt.tasteDesc}
+                            </p>
+                            <p class="text-[11px] text-stone-500 dark:text-stone-400 leading-relaxed">
+                              <strong>Texture:</strong> ${alt.textureDesc}
+                            </p>
+                            <div class="flex flex-wrap gap-1 pt-1">
+                              ${(alt.dietary || []).map(tag => `<span class="px-2 py-0.5 rounded text-[9px] font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">${tag}</span>`).join('')}
+                              ${(alt.allergens && alt.allergens.length && alt.allergens[0] !== 'None')
+                                ? alt.allergens.map(a => `<span class="px-2 py-0.5 rounded text-[9px] font-bold bg-peach/50 text-terracotta">${a}</span>`).join('')
+                                : '<span class="px-2 py-0.5 rounded text-[9px] font-bold bg-beige-100 dark:bg-stone-800 text-stone-500">No Major Allergens</span>'}
+                            </div>
+                          </div>
+                          <button type="button" data-select-alt="${alt.name}" class="w-full py-2 px-3 rounded-xl text-xs font-bold forest-btn cursor-pointer">
+                            Select Substitute
+                          </button>
+                        </div>
+                      `).join('')}
+                    </div>
+
+                    ${(uResult.volatiles && uResult.volatiles.length) ? `
+                      <div class="p-4 rounded-2xl bg-ivory/60 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                        <div>
+                          <span class="font-bold text-forest dark:text-ivory">Key Aroma Notes: </span>
+                          <span class="text-stone-600 dark:text-stone-300 font-mono text-[11px]">${uResult.volatiles.join(' • ')}</span>
+                        </div>
+                        <span class="text-[11px] text-stone-400 italic">${uResult.source}</span>
+                      </div>
+                    ` : ''}
+                  </div>
+                `;
+              })() : ''}
+            </div>
+          </div>
+
+          <!-- Step 1: Curated Target Ingredient Visual Selector -->
           <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-4 glow-card">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-3">
               <div>
@@ -1042,6 +1293,62 @@
 
     container.innerHTML = html;
 
+    // Universal Ingredient Lookup Events
+    const uInput = container.querySelector('#universal-ingredient-input');
+    const uClear = container.querySelector('#universal-search-clear-btn');
+    const uSelect = container.querySelector('#universal-dish-context-select');
+    const uAnalyze = container.querySelector('#universal-analyze-btn');
+
+    const runUniversalLookup = () => {
+      const val = uInput ? uInput.value.trim() : '';
+      if (!val) return;
+      state.universalCurrentIngredient = val;
+      renderSwapLabView();
+    };
+
+    uInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') runUniversalLookup();
+    });
+    uInput?.addEventListener('input', (e) => {
+      state.universalCurrentIngredient = e.target.value;
+      if (uClear) uClear.classList.toggle('hidden', !e.target.value);
+    });
+    uClear?.addEventListener('click', () => {
+      state.universalCurrentIngredient = '';
+      if (uInput) { uInput.value = ''; uInput.focus(); }
+      uClear.classList.add('hidden');
+    });
+    uSelect?.addEventListener('change', (e) => {
+      state.universalCurrentDishContext = e.target.value;
+      renderSwapLabView();
+    });
+    uAnalyze?.addEventListener('click', runUniversalLookup);
+
+    container.querySelectorAll('[data-universal-chip]').forEach(chip => {
+      chip.addEventListener('click', () => {
+        state.universalCurrentIngredient = chip.getAttribute('data-universal-chip');
+        renderSwapLabView();
+      });
+    });
+
+    container.querySelector('#try-another-ingredient-btn')?.addEventListener('click', () => {
+      state.universalCurrentIngredient = '';
+      renderSwapLabView();
+      container.querySelector('#universal-ingredient-input')?.focus();
+    });
+
+    container.querySelector('#toggle-compare-mode-btn')?.addEventListener('click', () => {
+      state.universalCompareMode = !state.universalCompareMode;
+      renderSwapLabView();
+    });
+
+    container.querySelectorAll('[data-select-alt]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const altName = btn.getAttribute('data-select-alt');
+        showNotification('Substitute Selected', `Selected "${altName}" for ${state.universalCurrentIngredient || 'your recipe'}.`, 'success');
+      });
+    });
+
     // Attach Swap Lab ingredient search listeners
     const swapSearchInput = container.querySelector('#swaplab-search-input');
     const swapSearchClear = container.querySelector('#swaplab-search-clear-btn');
@@ -1201,14 +1508,29 @@
             <button type="button" data-category="Cafe & Bistro Curries" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🍛 Indian Curries & Makhani
             </button>
-            <button type="button" data-category="Brunch & Toast" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
-              🥑 Brunch, Toast & Bowls
+            <button type="button" data-category="Breads & Naan" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+              🫓 Breads & Naan
             </button>
-            <button type="button" data-category="Pastas & Mains" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
-              🍝 Pastas & Sourdough Pizza
+            <button type="button" data-category="South Indian" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+              🥥 South Indian
+            </button>
+            <button type="button" data-category="Pastas & Italian" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+              🍝 Pastas & Italian
+            </button>
+            <button type="button" data-category="Noodles & Wok" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+              🍜 Noodles & Wok
+            </button>
+            <button type="button" data-category="Brunch & Toast" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+              🥑 Brunch & Bowls
+            </button>
+            <button type="button" data-category="Breakfast & Morning" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+              🍳 Breakfast & Morning
+            </button>
+            <button type="button" data-category="Diet Conscious" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+              🥗 Diet Conscious
             </button>
             <button type="button" data-category="Bakery & Desserts" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
-              🍰 Bakery & Soufflé
+              🍰 Bakery & Desserts
             </button>
             <button type="button" data-category="Coffee & Drinks" class="cat-pill px-4 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               ☕ Artisan Coffee & Matcha
