@@ -72,6 +72,19 @@
 /* Global Reset & Base */
 html {
   scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 1280px) {
+  html {
+    font-size: 18px;
+  }
 }
 
 * {
@@ -85,7 +98,8 @@ body {
   font-family: var(--font-sans);
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.65;
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
