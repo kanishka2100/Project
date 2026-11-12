@@ -196,6 +196,10 @@
               <span class="font-heading font-black text-xl sm:text-2xl tracking-tight text-forest dark:text-ivory">
                 Flavor<span class="text-terracotta font-serif italic">Shift</span> <span class="text-sage-600 dark:text-sage-300 font-mono text-[11px] px-2 py-0.5 rounded-lg bg-sage-50 dark:bg-sage-900/40 border border-sage-200 dark:border-sage-700">AI</span>
               </span>
+              <span id="ai-engine-status-pill" class="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-peach/40 dark:bg-stone-800 text-espresso dark:text-beige border border-terracotta/30 transition-all">
+                <span class="w-2 h-2 rounded-full bg-terracotta"></span>
+                <span class="font-bold">Local Catalog Mode</span>
+              </span>
             </div>
             <span class="text-[11px] text-stone-500 dark:text-stone-400 block font-accent italic">Culinary Ingredient Swaps & Portion Scaling</span>
           </div>
@@ -532,6 +536,9 @@
 
   </main>
 
+  <!-- Global Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none max-w-sm w-full"></div>
+
   <!-- ============================================== -->
   <!-- 5. RECIPE WEBX MODAL DEEP-DIVE                 -->
   <!-- ============================================== -->
@@ -571,8 +578,10 @@
   </footer>
 
   <!-- Core Recipe Data & Application Scripts -->
-  <script src="./recipes-data.js"></script>
-  <script src="./app.js"></script>
+  <script src="./recipes-data.js?v=20261112clean"></script>
+  <script src="./api-service.js?v=20261112clean"></script>
+  <script src="./food-cursor-canvas.js?v=20261112clean"></script>
+  <script src="./app.js?v=20261112clean"></script>
 
 </body>
 </html>

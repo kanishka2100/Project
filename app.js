@@ -11,7 +11,9 @@
     selectedCategory: 'all',
     selectedDiet: 'all',
     searchQuery: '',
+    swapSearchQuery: '',
     sortOption: 'default',
+    currency: localStorage.getItem('flavorshift_currency') || '₹',
     activePantryIngredients: new Set(JSON.parse(localStorage.getItem('flavorshift_pantry') || '[]')),
     favorites: new Set(JSON.parse(localStorage.getItem('flavorshift_favs') || '["paneer-butter-masala", "wild-mushroom-truffle-pasta", "artisan-margherita-sourdough-pizza"]')),
     theme: localStorage.getItem('flavorshift_theme') || 'light',
@@ -161,13 +163,60 @@
 
   // Helper: Format Currency
   function formatMoney(amount) {
-    return '$' + Number(amount).toFixed(2);
+    return `${state.currency}${Number(amount).toFixed(2)}`;
   }
 
   // Helper: Calculate Gross Profit Margin % from user inputs
   function calcMargin(cost, price) {
     if (!price || price <= 0) return 0;
     return Math.round(((price - cost) / price) * 100);
+  }
+
+  // Helper: Editorial Toast Notification
+  function showNotification(title, message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = `pointer-events-auto transform transition-all duration-300 ease-out translate-y-2 opacity-0 flex items-start gap-3 p-4 rounded-2xl shadow-xl border backdrop-blur-md ${
+      type === 'success'
+        ? 'bg-forest/95 border-sage/40 text-ivory'
+        : type === 'warning'
+        ? 'bg-espresso/95 border-terracotta/50 text-ivory'
+        : 'bg-espresso/95 border-beige/20 text-ivory'
+    }`;
+
+    const icon = type === 'success' ? 'fa-circle-check text-sage-300'
+               : type === 'warning' ? 'fa-triangle-exclamation text-terracotta'
+               : 'fa-bell text-terracotta';
+
+    toast.innerHTML = `
+      <i class="fa-solid ${icon} text-lg shrink-0 mt-0.5"></i>
+      <div class="flex-1 min-w-0">
+        <h5 class="text-xs font-black uppercase tracking-wider text-ivory">${title}</h5>
+        <p class="text-xs text-beige mt-0.5 leading-snug font-medium">${message}</p>
+      </div>
+      <button type="button" class="text-beige/70 hover:text-ivory shrink-0 text-xs transition-colors cursor-pointer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    `;
+
+    toast.querySelector('button').addEventListener('click', () => {
+      toast.classList.add('opacity-0', 'translate-y-2');
+      setTimeout(() => toast.remove(), 300);
+    });
+
+    container.appendChild(toast);
+    requestAnimationFrame(() => {
+      toast.classList.remove('opacity-0', 'translate-y-2');
+    });
+
+    setTimeout(() => {
+      if (toast.parentElement) {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }
+    }, 3500);
   }
 
   // Helper: Get Active Recipe Data with Swaps Computed
@@ -229,6 +278,27 @@
         if (raw.id === 'matcha-pistachio-cloud-latte' && ing.name.includes('Pistachio')) {
           return { ...ing, name: 'Toasted Green Pepita Silk & Almond Foam', isSwapped: true, swapReason: 'Pastel green seed butter cold foam with nutty finish' };
         }
+        // Generic budget swaps for regional Indian catalog recipes
+        if (ing.replaceableType && ing.replaceableType.includes('budget')) {
+          if (ing.name.includes('Khoya') || ing.name.includes('Mawa')) {
+            return { ...ing, name: 'Skim Milk Powder, Warm Milk & Cardamom Paste', isSwapped: true, swapReason: 'Delivers creamy milk-solid richness from pantry staples' };
+          }
+          if (ing.name.includes('Anardana')) {
+            return { ...ing, name: 'Tamarind Pulp & Steeped Assam Black Tea', isSwapped: true, swapReason: 'Provides dark color and tart fruit depth' };
+          }
+          if (ing.name.includes('Saffron')) {
+            return { ...ing, name: 'Cold-Pressed Turmeric, Cardamom & Rose Hydrosol', isSwapped: true, swapReason: 'Golden hue and floral aroma without saffron threads' };
+          }
+          if (ing.name.includes('Malai') || (ing.name.includes('Cream') && !ing.name.includes('Coconut'))) {
+            return { ...ing, name: 'Soaked Cashew & Warm Milk Velvet Emulsion', isSwapped: true, swapReason: 'Rich emulsified gravy finish without fresh cream' };
+          }
+          if (ing.name.includes('Coconut Milk')) {
+            return { ...ing, name: 'Desiccated Coconut & Warm Milk Blend', isSwapped: true, swapReason: 'Whipped coconut meat blended with warm milk' };
+          }
+          if (ing.name.includes('Fresh Dairy Milk')) {
+            return { ...ing, name: 'Toned Milk with Crushed Whole Spices', isSwapped: true, swapReason: 'Clean spice decoction without syrups' };
+          }
+        }
         return ing;
       });
 
@@ -281,6 +351,20 @@
         if (raw.id === 'basque-burnt-cheesecake' && ing.name.includes('Sugar')) {
           return { ...ing, name: 'Monkfruit Allulose Baker Blend', isLowCalorie: true };
         }
+        if (ing.replaceableType && ing.replaceableType.includes('calorie') && !ing.isLowCalorie) {
+          if (ing.name.includes('Cream') || ing.name.includes('Malai') || ing.name.includes('Khoya')) {
+            return { ...ing, name: 'Strained Greek Yogurt / Hung Curd Blend', isLowCalorie: true };
+          }
+          if (ing.name.includes('Paneer')) {
+            return { ...ing, name: 'Air-Crisped Low-Fat Paneer or Firm Tofu', isLowCalorie: true };
+          }
+          if (ing.name.includes('Ghee') || ing.name.includes('Oil') || ing.name.includes('Butter')) {
+            return { ...ing, name: 'Measured Light Oil & Aromatic Mist', isLowCalorie: true };
+          }
+          if (ing.name.includes('Sugar') || ing.name.includes('Milk')) {
+            return { ...ing, name: ing.name.includes('Milk') ? 'Skimmed Milk' : 'Natural Stevia / Reduced Sweetener', isLowCalorie: true };
+          }
+        }
         return ing;
       });
 
@@ -326,6 +410,21 @@
         }
         if (ing.name.includes('Egg')) {
           return { ...ing, name: 'Smoked Paprika Tofu / Whipped Aquafaba', isVegan: true };
+        }
+        if (ing.name.includes('Paneer')) {
+          return { ...ing, name: 'Pressed Organic Turmeric Tofu Cubes', isVegan: true };
+        }
+        if (ing.name.includes('Khoya') || ing.name.includes('Mawa')) {
+          return { ...ing, name: 'Blended Cashew-Coconut Thickener', isVegan: true };
+        }
+        if ((ing.name.includes('Cream') && !ing.name.includes('Coconut')) || ing.name.includes('Yogurt') || ing.name.includes('Dahi') || ing.name.includes('Malai')) {
+          return { ...ing, name: 'Coconut-Cashew Silk Emulsion', isVegan: true };
+        }
+        if (ing.name.includes('Milk') && !ing.name.includes('Coconut') && !ing.name.includes('Oat') && !ing.name.includes('Almond')) {
+          return { ...ing, name: 'Unsweetened Soy / Oat Milk', isVegan: true };
+        }
+        if (ing.name.includes('Ghee')) {
+          return { ...ing, name: 'Cold-Pressed Plant Oil', isVegan: true };
         }
         return ing;
       });
@@ -639,16 +738,39 @@
                   <span>What's Missing or Out of Stock in Your Kitchen Right Now?</span>
                 </h3>
               </div>
-              <span class="text-xs text-stone-500 font-accent italic">Select an ingredient below to view curated swap options</span>
+              <span class="text-xs text-stone-500 font-accent italic">Select or search an ingredient below to view curated swap options</span>
+            </div>
+
+            <!-- In-menu Ingredient Search Panel -->
+            <div class="relative max-w-md pt-1">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-xs mt-0.5"></i>
+              <input 
+                type="text" 
+                id="swaplab-search-input"
+                value="${state.swapSearchQuery || ''}"
+                placeholder="Search target ingredients (Cream, Avocado, Truffle, Nuts)..." 
+                class="w-full pl-9 pr-9 py-2 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-xs sm:text-sm font-medium text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta transition-all"
+              />
+              <button 
+                type="button" 
+                id="swaplab-search-clear-btn" 
+                class="${state.swapSearchQuery ? '' : 'hidden'} absolute right-3 top-1/2 -translate-y-1/2 mt-0.5 w-5 h-5 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-[10px] transition-all cursor-pointer"
+                title="Clear search"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
             </div>
 
             <!-- Quick Ingredient Selection Chips with Food Photography -->
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-2">
-              ${FLAVORSHIFT_SWAP_DATABASE.map((item, idx) => `
+              ${FLAVORSHIFT_SWAP_DATABASE.map((item, idx) => {
+                const q = (state.swapSearchQuery || '').toLowerCase();
+                const isVisible = !q || item.targetIngredient.toLowerCase().includes(q) || item.commonInDishes.some(d => d.toLowerCase().includes(q)) || item.alternatives.some(a => a.name.toLowerCase().includes(q));
+                return `
                 <button 
                   type="button" 
                   data-swap-idx="${idx}"
-                  class="swap-select-chip p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${
+                  class="swap-select-chip p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${isVisible ? '' : 'hidden'} ${
                     idx === state.selectedSwapIndex 
                       ? 'bg-forest text-ivory border-forest shadow-md scale-[1.02]' 
                       : 'bg-ivory dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory hover:border-terracotta'
@@ -665,7 +787,8 @@
                     <span class="text-[11px] opacity-80 block truncate mt-0.5 font-sans">${item.commonInDishes[0]}</span>
                   </div>
                 </button>
-              `).join('')}
+              `;
+              }).join('')}
             </div>
           </div>
 
@@ -918,6 +1041,28 @@
     `;
 
     container.innerHTML = html;
+
+    // Attach Swap Lab ingredient search listeners
+    const swapSearchInput = container.querySelector('#swaplab-search-input');
+    const swapSearchClear = container.querySelector('#swaplab-search-clear-btn');
+    const filterSwapChips = (rawVal) => {
+      state.swapSearchQuery = rawVal.trim();
+      const q = state.swapSearchQuery.toLowerCase();
+      if (swapSearchClear) swapSearchClear.classList.toggle('hidden', !state.swapSearchQuery);
+      container.querySelectorAll('.swap-select-chip').forEach(btn => {
+        const idx = parseInt(btn.getAttribute('data-swap-idx'), 10);
+        const item = FLAVORSHIFT_SWAP_DATABASE[idx];
+        if (!item) return;
+        const match = !q || item.targetIngredient.toLowerCase().includes(q) || item.commonInDishes.some(d => d.toLowerCase().includes(q)) || item.alternatives.some(a => a.name.toLowerCase().includes(q));
+        btn.classList.toggle('hidden', !match);
+      });
+    };
+    swapSearchInput?.addEventListener('input', (e) => filterSwapChips(e.target.value));
+    swapSearchClear?.addEventListener('click', () => {
+      if (swapSearchInput) swapSearchInput.value = '';
+      filterSwapChips('');
+      swapSearchInput?.focus();
+    });
 
     // Attach chip selection listeners
     container.querySelectorAll('.swap-select-chip').forEach(btn => {
@@ -1454,10 +1599,13 @@
 
   // Favorite Toggle
   function toggleFavorite(id) {
+    const rec = RECIPES_DATA.find(r => r.id === id);
     if (state.favorites.has(id)) {
       state.favorites.delete(id);
+      if (rec) showNotification('Removed from Saved', `${rec.title} removed from your saved list.`, 'warning');
     } else {
       state.favorites.add(id);
+      if (rec) showNotification('Recipe Saved', `${rec.title} bookmarked to Favorites.`, 'success');
     }
     localStorage.setItem('flavorshift_favs', JSON.stringify(Array.from(state.favorites)));
     updateFavoritesBadge();
@@ -1837,7 +1985,11 @@
               <p class="text-xs text-stone-500">Calculations update strictly from the values you enter below (zero pre-filled mock prices)</p>
             </div>
 
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <select id="dash-currency-select" aria-label="Select currency" class="px-3 py-2.5 text-xs rounded-xl border border-beige-200 dark:border-stone-800 bg-ivory dark:bg-[#181410] font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer shadow-sm">
+                <option value="₹" ${state.currency === '₹' ? 'selected' : ''}>₹ INR</option>
+                <option value="$" ${state.currency === '$' ? 'selected' : ''}>$ USD</option>
+              </select>
               <select id="dash-cover-recipe-select" class="px-3.5 py-2.5 text-xs rounded-xl border border-beige-200 dark:border-stone-800 bg-ivory dark:bg-[#181410] font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer shadow-sm">
                 ${RECIPES_DATA.map(r => `
                   <option value="${r.id}" ${r.id === state.dashboardSelectedRecipeId ? 'selected' : ''}>
@@ -1851,16 +2003,16 @@
           <!-- User Pricing Inputs -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
-              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Standard Cost / Portion ($)</label>
-              <input type="number" step="0.01" min="0" id="dash-base-cost-input" value="${state.dashBaseCost}" placeholder="e.g. 2.50" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
+              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Standard Cost / Portion (<span class="dash-currency-symbol">${state.currency}</span>)</label>
+              <input type="number" step="0.01" min="0" id="dash-base-cost-input" value="${state.dashBaseCost}" placeholder="e.g. 120" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
             </div>
             <div>
-              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Swapped Cost / Portion ($)</label>
-              <input type="number" step="0.01" min="0" id="dash-alt-cost-input" value="${state.dashAltCost}" placeholder="e.g. 1.75" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
+              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Swapped Cost / Portion (<span class="dash-currency-symbol">${state.currency}</span>)</label>
+              <input type="number" step="0.01" min="0" id="dash-alt-cost-input" value="${state.dashAltCost}" placeholder="e.g. 85" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
             </div>
             <div>
-              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Menu Price / Portion ($)</label>
-              <input type="number" step="0.01" min="0" id="dash-retail-price-input" value="${state.dashRetailPrice}" placeholder="e.g. 9.00" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
+              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Menu Price / Portion (<span class="dash-currency-symbol">${state.currency}</span>)</label>
+              <input type="number" step="0.01" min="0" id="dash-retail-price-input" value="${state.dashRetailPrice}" placeholder="e.g. 320" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
             </div>
           </div>
 
@@ -1933,6 +2085,13 @@
 
     document.getElementById('dash-launch-slides-btn')?.addEventListener('click', () => {
       switchTab('slides');
+    });
+
+    document.getElementById('dash-currency-select')?.addEventListener('change', (e) => {
+      state.currency = e.target.value;
+      localStorage.setItem('flavorshift_currency', state.currency);
+      document.querySelectorAll('.dash-currency-symbol').forEach(el => { el.textContent = state.currency; });
+      refreshDashNumbers();
     });
 
     document.getElementById('dash-cover-recipe-select')?.addEventListener('change', (e) => {
