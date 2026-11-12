@@ -6,7 +6,7 @@
 
   // Application State
   const state = {
-    activeTab: 'swaplab', // 'swaplab', 'explore', 'htv', 'dashboard', 'slides', 'favorites'
+    activeTab: 'swaplab', // 'swaplab', 'explore', 'htv', 'dashboard', 'favorites'
     selectedSwapIndex: 0,
     swapStudioMode: 'universal', // 'universal' | 'curated'
     universalCurrentIngredient: 'Fresh Cream',
@@ -24,11 +24,6 @@
     
     // Per-recipe dynamic toggles and person counts
     recipeStates: {},
-    
-    // Design Thinking Slide State
-    currentSlideIndex: 0,
-    slideAutoplay: false,
-    autoplayTimer: null,
     
     // Currently open recipe in modal
     activeRecipeId: null,
@@ -407,7 +402,7 @@
   }
 
   // ========================================================
-  // RENDER: FLAVORSHIFT AI SWAP LAB (FLAGSHIP FEATURE)
+  // RENDER: FLAVORSHIFT AI SWAP LAB
   // ========================================================
   function renderSwapLabView() {
     const container = document.getElementById('swaplab-view-container');
@@ -441,64 +436,40 @@
       <div class="space-y-8 animate-fade-up max-w-6xl mx-auto">
 
         <!-- ============================================== -->
-        <!-- SECTION 1: EDITORIAL HERO & DISH SHOWCASE      -->
+        <!-- SECTION 1: HERO & CULINARY DISH SHOWCASE       -->
         <!-- ============================================== -->
         <section class="relative overflow-hidden rounded-3xl bg-forest dark:bg-[#1A2620] text-ivory shadow-xl p-6 sm:p-10 lg:p-12 border border-beige-200/20 glow-card reveal-on-scroll">
           <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 
             <div class="lg:col-span-7 space-y-5">
-              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-ivory/15 backdrop-blur-md text-xs font-bold tracking-wider text-beige uppercase border border-ivory/20">
-                <i class="fa-solid fa-wand-magic-sparkles text-terracotta"></i>
-                <span>Culinary Substitution & Portion Studio</span>
-              </div>
-
-              <h1 class="font-heading font-black text-3xl sm:text-5xl lg:text-[3.15rem] tracking-tight leading-[1.12]">
-                Culinary Precision When Ingredients Run Short.<br>
-                <span class="text-terracotta font-serif italic">Chef-Calibrated Ratios</span> for Real Kitchens.
+              <h1 class="font-heading font-extrabold text-3xl sm:text-5xl lg:text-[3.15rem] tracking-tight leading-[1.12] text-white">
+                Smart Ingredient Swaps.<br>
+                <span class="text-terracotta-300">Exact Kitchen Ratios.</span>
               </h1>
 
-              <p class="text-ivory/90 text-base sm:text-lg leading-relaxed font-normal max-w-2xl font-sans">
-                Substitute scarce or dietary ingredients cleanly without losing sauce emulsion, aroma depth, or texture—across ${RECIPES_DATA.length} curated kitchen recipes.
+              <p class="text-ivory/95 text-base sm:text-lg leading-relaxed font-normal max-w-2xl font-sans">
+                Replace scarce or dietary ingredients cleanly across ${RECIPES_DATA.length} dishes—with calibrated ratios and scaled portions.
               </p>
-
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-center">
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15">
-                  <span class="block text-xl font-black text-ivory font-heading">${RECIPES_DATA.length} Dishes</span>
-                  <span class="text-xs text-beige/85 font-bold uppercase tracking-wider">Recipe Library</span>
-                </div>
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15">
-                  <span class="block text-xl font-black text-terracotta font-heading">${presetShowcase.length || FLAVORSHIFT_SWAP_DATABASE.length} Presets</span>
-                  <span class="text-xs text-beige/85 font-bold uppercase tracking-wider">Quick Swaps</span>
-                </div>
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15">
-                  <span class="block text-xl font-black text-sage-300 font-heading">1+ Covers</span>
-                  <span class="text-xs text-beige/85 font-bold uppercase tracking-wider">Portion Scaling</span>
-                </div>
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15">
-                  <span class="block text-xl font-black text-peach font-heading">Local Log</span>
-                  <span class="text-xs text-beige/85 font-bold uppercase tracking-wider">Tasting Notes</span>
-                </div>
-              </div>
 
               <div class="pt-2 flex flex-wrap items-center gap-3.5">
                 <a href="#ai-swaplab-stage" class="terracotta-btn px-6 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-2 cursor-pointer shadow-md">
                   <i class="fa-solid fa-magnifying-glass"></i>
-                  <span>Open Swap Prompt Studio</span>
+                  <span>Open Swap Studio</span>
                 </a>
-                <button type="button" data-hero-action="explore" class="px-6 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-2 cursor-pointer bg-ivory/15 hover:bg-ivory/25 text-ivory border border-ivory/30 backdrop-blur-sm transition-all">
-                  <span>Browse ${RECIPES_DATA.length} Catalog Dishes</span>
+                <button type="button" data-hero-action="explore" class="px-6 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-2 cursor-pointer bg-ivory/15 hover:bg-ivory/25 text-white border border-ivory/30 backdrop-blur-sm transition-all">
+                  <span>Browse ${RECIPES_DATA.length} Dishes</span>
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
               </div>
             </div>
 
-            <!-- Sorted 2x2 Culinary Dish Mosaic (Zero Videos) -->
+            <!-- 2x2 Culinary Dish Mosaic -->
             <div class="lg:col-span-5 grid grid-cols-2 gap-3.5">
               ${[
-                { id: 'paneer-butter-masala', label: 'Paneer Butter Masala', sub: 'Cashew Cream Swap', img: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=80' },
-                { id: 'dal-makhani-bistro', label: 'Slow-Simmered Dal Makhani', sub: 'Cream-Free Emulsion', img: './assets/recipes/slow-simmered-dal-makhani.jpg' },
-                { id: 'classic-penne-arrabbiata', label: 'Penne all\'Arrabbiata', sub: 'Roma Tomato Reduction', img: './assets/recipes/classic-penne-arrabbiata.jpg' },
-                { id: 'masala-chai-bistro', label: 'Karak Masala Chai', sub: 'Whole Spice Decoction', img: './assets/recipes/artisan-karak-masala-chai.jpg' }
+                { id: 'paneer-butter-masala', label: 'Paneer Butter Masala', img: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=80' },
+                { id: 'dal-makhani-bistro', label: 'Slow-Simmered Dal Makhani', img: './assets/recipes/slow-simmered-dal-makhani.jpg' },
+                { id: 'classic-penne-arrabbiata', label: 'Penne all\'Arrabbiata', img: './assets/recipes/classic-penne-arrabbiata.jpg' },
+                { id: 'masala-chai-bistro', label: 'Karak Masala Chai', img: './assets/recipes/artisan-karak-masala-chai.jpg' }
               ].map(card => `
                 <button
                   type="button"
@@ -506,10 +477,9 @@
                   class="group text-left rounded-2xl overflow-hidden border border-beige-200/20 bg-black/30 relative aspect-[4/3] shadow-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta"
                 >
                   <img src="${card.img}" alt="${card.label}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div>
                   <div class="absolute bottom-2.5 left-3 right-3">
-                    <span class="block text-sm font-bold text-ivory leading-tight truncate">${card.label}</span>
-                    <span class="block text-xs text-peach/90 truncate mt-0.5">${card.sub}</span>
+                    <span class="block text-sm font-bold text-white leading-tight truncate">${card.label}</span>
                   </div>
                 </button>
               `).join('')}
@@ -519,7 +489,7 @@
         </section>
 
         <!-- ============================================== -->
-        <!-- SECTION 2: SORTED SWAP STUDIO (2 CLEAN MODES)  -->
+        <!-- SECTION 2: SWAP WORKSPACE                      -->
         <!-- ============================================== -->
         <section id="ai-swaplab-stage" class="space-y-5 reveal-on-scroll">
 
@@ -537,7 +507,7 @@
                 class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   state.swapStudioMode !== 'curated'
                     ? 'bg-forest text-ivory shadow-xs'
-                    : 'text-stone-600 dark:text-stone-300 hover:text-terracotta'
+                    : 'text-stone-700 dark:text-stone-200 hover:text-terracotta'
                 }"
               >
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -549,7 +519,7 @@
                 class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   state.swapStudioMode === 'curated'
                     ? 'bg-forest text-ivory shadow-xs'
-                    : 'text-stone-600 dark:text-stone-300 hover:text-terracotta'
+                    : 'text-stone-700 dark:text-stone-200 hover:text-terracotta'
                 }"
               >
                 <i class="fa-solid fa-images"></i>
@@ -559,32 +529,28 @@
           </div>
 
           ${state.swapStudioMode !== 'curated' ? `
-          <!-- Universal Ingredient Intelligence Lookup (Any Ingredient + Dish Context) -->
+          <!-- Universal Ingredient Lookup -->
           <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-6 glow-card">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-4">
-              <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono">Universal Ingredient Prompt</span>
-                <h3 class="text-2xl sm:text-3xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2.5 mt-1">
-                  <i class="fa-solid fa-magnifying-glass text-terracotta text-xl"></i>
-                  <span>What Ingredient Are You Substituting Today?</span>
-                </h3>
-              </div>
-              <span class="text-sm text-stone-500 font-accent italic">Context-aware kitchen ratios, texture notes & allergens</span>
+            <div class="border-b border-beige-200 dark:border-stone-800 pb-4">
+              <h3 class="text-2xl sm:text-3xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2.5">
+                <i class="fa-solid fa-magnifying-glass text-terracotta text-xl"></i>
+                <span>Find an Ingredient Substitute</span>
+              </h3>
             </div>
 
-            <!-- Executive Chef Quick-Prompt Starters -->
+            <!-- Quick Prompt Starters -->
             <div class="p-4 rounded-2xl bg-ivory/80 dark:bg-[#181410] border border-beige-200/80 dark:border-stone-800 space-y-2.5">
               <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest dark:text-sage-300 font-mono">
                 <i class="fa-solid fa-sparkles text-terracotta"></i>
-                <span>Quick Kitchen Scenarios (Click to Test Prompt)</span>
+                <span>Quick Prompts</span>
               </div>
               <div class="flex flex-wrap gap-2">
                 ${[
-                  { label: '“Out of heavy cream for rich Indian curry”', ing: 'Fresh Cream', ctx: 'Curries & Gravies' },
-                  { label: '“Need a dairy-free aged cheese swap for pasta”', ing: 'Parmesan', ctx: 'Pastas & Sauces' },
-                  { label: '“Eggless baking binder for sponges & muffins”', ing: 'Eggs', ctx: 'Baking & Cakes' },
-                  { label: '“Warm saffron color & aroma alternative for rice”', ing: 'Saffron', ctx: 'Curries & Gravies' },
-                  { label: '“Nut-free toasted crunch for pesto & salads”', ing: 'Pine Nuts', ctx: 'Salads & Dressings' }
+                  { label: 'Cream swap · Curries', ing: 'Fresh Cream', ctx: 'Curries & Gravies' },
+                  { label: 'Dairy-free cheese · Pasta', ing: 'Parmesan', ctx: 'Pastas & Sauces' },
+                  { label: 'Egg binder · Baking', ing: 'Eggs', ctx: 'Baking & Cakes' },
+                  { label: 'Saffron swap · Rice', ing: 'Saffron', ctx: 'Curries & Gravies' },
+                  { label: 'Nut-free crunch · Salads', ing: 'Pine Nuts', ctx: 'Salads & Dressings' }
                 ].map(p => `
                   <button
                     type="button"
@@ -605,20 +571,20 @@
             <!-- Search Bar + Dish Context + Analyze CTA -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-end">
               <div class="md:col-span-6 relative">
-                <label for="universal-ingredient-input" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5 ml-1">Target Ingredient</label>
+                <label for="universal-ingredient-input" class="block text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-300 mb-1.5 ml-1">Ingredient</label>
                 <div class="relative">
-                  <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
+                  <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-500 text-sm"></i>
                   <input
                     type="text"
                     id="universal-ingredient-input"
                     value="${currentIng || ''}"
-                    placeholder="Type any ingredient (Milk, Paneer, Mushroom, Miso, Gochujang, Eggs...)"
-                    class="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-semibold text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta transition-all"
+                    placeholder="Milk, Paneer, Mushroom, Miso, Eggs..."
+                    class="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-semibold text-forest dark:text-ivory placeholder:text-stone-500 focus:outline-none focus:border-terracotta transition-all"
                   />
                   <button
                     type="button"
                     id="universal-search-clear-btn"
-                    class="${currentIng ? '' : 'hidden'} absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-xs cursor-pointer"
+                    class="${currentIng ? '' : 'hidden'} absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-700 dark:text-stone-200 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-xs cursor-pointer"
                     title="Clear input"
                   >
                     <i class="fa-solid fa-xmark"></i>
@@ -627,7 +593,7 @@
               </div>
 
               <div class="md:col-span-4 relative">
-                <label for="universal-dish-context-select" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5 ml-1">Culinary Dish Context</label>
+                <label for="universal-dish-context-select" class="block text-xs font-bold uppercase tracking-wider text-stone-600 dark:text-stone-300 mb-1.5 ml-1">Dish Type</label>
                 <div class="relative">
                   <i class="fa-solid fa-bowl-food absolute left-4 top-1/2 -translate-y-1/2 text-terracotta text-sm"></i>
                   <select
@@ -636,7 +602,7 @@
                   >
                     ${dishContexts.map(ctx => `<option value="${ctx}" ${ctx === currentCtx ? 'selected' : ''}>${ctx}</option>`).join('')}
                   </select>
-                  <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 text-xs pointer-events-none"></i>
+                  <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-stone-500 text-xs pointer-events-none"></i>
                 </div>
               </div>
 
@@ -655,15 +621,15 @@
             <!-- Preset Showcase Pills -->
             ${presetShowcase.length > 0 ? `
               <div class="flex flex-wrap items-center gap-2 pt-1">
-                <span class="text-xs font-bold text-stone-500 mr-1">Common Pantry Targets:</span>
+                <span class="text-xs font-bold text-stone-600 dark:text-stone-300 mr-1">Popular:</span>
                 ${presetShowcase.slice(0, 12).map(p => `
                   <button
                     type="button"
                     data-universal-chip="${p.name}"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
+                    class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
                       currentIng && currentIng.toLowerCase() === p.name.toLowerCase()
                         ? 'bg-forest text-ivory border-forest shadow-xs'
-                        : 'bg-ivory dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-terracotta'
+                        : 'bg-ivory dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory hover:border-terracotta'
                     }"
                   >
                     <i class="${p.icon} text-xs text-terracotta"></i>
@@ -680,35 +646,33 @@
                   <div class="w-12 h-12 rounded-full bg-terracotta/15 text-terracotta flex items-center justify-center mx-auto text-lg">
                     <i class="fa-solid fa-triangle-exclamation"></i>
                   </div>
-                  <h4 class="text-lg font-black font-heading text-forest dark:text-ivory">Ingredient Unrecognized</h4>
-                  <p class="text-xs font-medium text-espresso dark:text-stone-200 max-w-xl mx-auto">${uResult.message}</p>
-                  <p class="text-[11px] text-stone-500 max-w-xl mx-auto">${uResult.suggestion}</p>
+                  <h4 class="text-lg font-bold font-heading text-forest dark:text-ivory">Not a Food Ingredient</h4>
+                  <p class="text-sm font-medium text-espresso dark:text-stone-200 max-w-xl mx-auto">${uResult.message}</p>
                   <div class="pt-1 flex flex-wrap items-center justify-center gap-2">
-                    <button type="button" id="try-another-ingredient-btn" class="px-4 py-2 rounded-xl text-xs font-bold terracotta-btn text-white cursor-pointer">Try Another Ingredient</button>
-                    <button type="button" data-universal-chip="Milk" class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory cursor-pointer">Test "Milk"</button>
-                    <button type="button" data-universal-chip="Paneer" class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory cursor-pointer">Test "Paneer"</button>
+                    <button type="button" id="try-another-ingredient-btn" class="px-4 py-2 rounded-xl text-xs font-bold terracotta-btn text-white cursor-pointer">Try Another</button>
+                    <button type="button" data-universal-chip="Milk" class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory cursor-pointer">Milk</button>
+                    <button type="button" data-universal-chip="Paneer" class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory cursor-pointer">Paneer</button>
                   </div>
                 </div>
               ` : uResult.status === 'recognized' ? (() => {
                 const alts = uResult.alternatives || [];
-                const topAlt = alts[0] || { name: 'Culinary Alternative', ratio: '' };
                 return `
                   <div class="pt-5 border-t border-beige-200 dark:border-stone-800 space-y-5">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
                       <div class="space-y-1.5">
                         <div class="flex flex-wrap items-center gap-2">
-                          <span class="px-3 py-1 rounded-full text-xs font-bold bg-peach/50 text-terracotta border border-terracotta/30 flex items-center gap-1.5">
+                          <span class="px-3 py-1 rounded-full text-xs sm:text-sm font-bold bg-peach/50 text-terracotta border border-terracotta/30 flex items-center gap-1.5">
                             <i class="${uResult.icon || 'fa-solid fa-utensils'} text-xs"></i> ${uResult.ingredientName}
                           </span>
-                          <span class="px-3 py-1 rounded-full text-xs font-bold bg-beige-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
+                          <span class="px-3 py-1 rounded-full text-xs sm:text-sm font-semibold bg-beige-100 dark:bg-stone-800 text-espresso dark:text-stone-200">
                             ${uResult.category}
                           </span>
-                          <span class="px-3 py-1 rounded-full text-xs font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">
-                            Context: ${uResult.dishContext}
+                          <span class="px-3 py-1 rounded-full text-xs sm:text-sm font-semibold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">
+                            ${uResult.dishContext}
                           </span>
                         </div>
-                        <p class="text-sm text-stone-600 dark:text-stone-300">
-                          <strong>Culinary Role:</strong> ${(uResult.functions || []).join(', ')} • <strong>Profile:</strong> ${uResult.flavorProfile}
+                        <p class="text-sm text-stone-700 dark:text-stone-200">
+                          <strong>Role:</strong> ${(uResult.functions || []).join(', ')} • <strong>Profile:</strong> ${uResult.flavorProfile}
                         </p>
                       </div>
                       <div class="flex items-center gap-2 shrink-0">
@@ -731,12 +695,12 @@
                       <div class="overflow-x-auto p-4 rounded-2xl bg-ivory/70 dark:bg-[#181410] border border-beige-200 dark:border-stone-800">
                         <table class="w-full text-left text-xs sm:text-sm border-collapse">
                           <thead>
-                            <tr class="border-b border-beige-200 dark:border-stone-800 text-xs uppercase tracking-wider text-stone-500">
+                            <tr class="border-b border-beige-200 dark:border-stone-800 text-xs uppercase tracking-wider text-stone-600 dark:text-stone-300">
                               <th class="py-2.5 px-3">Alternative</th>
-                              <th class="py-2.5 px-3">Conversion Ratio</th>
-                              <th class="py-2.5 px-3">Culinary Method</th>
-                              <th class="py-2.5 px-3">Taste Notes</th>
-                              <th class="py-2.5 px-3">Dietary & Allergens</th>
+                              <th class="py-2.5 px-3">Ratio</th>
+                              <th class="py-2.5 px-3">Method</th>
+                              <th class="py-2.5 px-3">Taste</th>
+                              <th class="py-2.5 px-3">Dietary</th>
                               <th class="py-2.5 px-3 text-right">Select</th>
                             </tr>
                           </thead>
@@ -745,14 +709,14 @@
                               <tr>
                                 <td class="py-3 px-3 font-bold text-forest dark:text-ivory">
                                   ${alt.name}
-                                  <span class="block text-xs font-normal text-terracotta mt-0.5">${alt.type}</span>
+                                  <span class="block text-xs font-medium text-terracotta mt-0.5">${alt.type}</span>
                                 </td>
                                 <td class="py-3 px-3 font-mono text-xs sm:text-sm text-espresso dark:text-stone-200">${alt.ratio}</td>
-                                <td class="py-3 px-3 text-xs sm:text-sm text-stone-500">${alt.calcMethod || 'Functional balance'}</td>
-                                <td class="py-3 px-3 text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-[220px]">${alt.tasteDesc}</td>
+                                <td class="py-3 px-3 text-xs sm:text-sm text-stone-600 dark:text-stone-300">${alt.calcMethod || 'Standard prep'}</td>
+                                <td class="py-3 px-3 text-xs sm:text-sm text-stone-700 dark:text-stone-200 max-w-[220px]">${alt.tasteDesc}</td>
                                 <td class="py-3 px-3">
                                   <div class="flex flex-wrap gap-1">
-                                    ${(alt.dietary || []).map(d => `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">${d}</span>`).join('')}
+                                    ${(alt.dietary || []).map(d => `<span class="px-2 py-0.5 rounded text-xs font-semibold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">${d}</span>`).join('')}
                                   </div>
                                 </td>
                                 <td class="py-3 px-3 text-right">
@@ -772,25 +736,24 @@
                             <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider inline-block ${
                               idx === 0 ? 'bg-forest text-ivory' : idx === 1 ? 'bg-sage text-white' : 'bg-terracotta text-white'
                             }">
-                              Option ${idx + 1}: ${alt.type}
+                              ${alt.type}
                             </span>
                             <h4 class="text-lg sm:text-xl font-bold font-heading text-forest dark:text-ivory leading-snug">${alt.name}</h4>
                             <div class="p-3 rounded-xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800">
-                              <span class="block text-[11px] font-bold uppercase text-terracotta font-mono">Conversion Ratio</span>
+                              <span class="block text-xs font-bold uppercase text-terracotta font-mono">Ratio</span>
                               <span class="text-sm font-bold text-forest dark:text-ivory block font-mono mt-0.5">${alt.ratio}</span>
-                              <span class="block text-xs text-stone-500 mt-1">${alt.calcMethod || 'Functional culinary balance'}</span>
                             </div>
-                            <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                            <p class="text-sm text-stone-700 dark:text-stone-200 leading-relaxed">
                               <strong>Flavor:</strong> ${alt.contextNotes && alt.contextNotes[uResult.dishContext] ? alt.contextNotes[uResult.dishContext] : alt.tasteDesc}
                             </p>
-                            <p class="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+                            <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
                               <strong>Texture:</strong> ${alt.textureDesc}
                             </p>
                             <div class="flex flex-wrap gap-1.5 pt-1">
                               ${(alt.dietary || []).map(tag => `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">${tag}</span>`).join('')}
                               ${(alt.allergens && alt.allergens.length && alt.allergens[0] !== 'None')
                                 ? alt.allergens.map(a => `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-peach/50 text-terracotta">${a}</span>`).join('')
-                                : '<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-beige-100 dark:bg-stone-800 text-stone-500">No Major Allergens</span>'}
+                                : '<span class="px-2.5 py-0.5 rounded text-xs font-semibold bg-beige-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300">Allergen-Free</span>'}
                             </div>
                           </div>
                           <button type="button" data-select-alt="${alt.name}" class="w-full py-2.5 px-3 rounded-xl text-sm font-bold forest-btn cursor-pointer">
@@ -799,48 +762,34 @@
                         </div>
                       `).join('')}
                     </div>
-
-                    ${(uResult.volatiles && uResult.volatiles.length) ? `
-                      <div class="p-4 rounded-2xl bg-ivory/60 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm">
-                        <div>
-                          <span class="font-bold text-forest dark:text-ivory">Key Aroma Notes: </span>
-                          <span class="text-stone-600 dark:text-stone-300 font-mono text-xs sm:text-sm">${uResult.volatiles.join(' • ')}</span>
-                        </div>
-                        <span class="text-xs text-stone-400 italic">${uResult.source}</span>
-                      </div>
-                    ` : ''}
                   </div>
                 `;
               })() : ''}
             </div>
           ` : `
-          <!-- Step 1: Curated Target Ingredient Visual Selector -->
-          <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-4 glow-card">
+          <!-- Curated Target Ingredient Visual Selector -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-5 glow-card">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-3">
-              <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono">Step 1: Choose Ingredient to Swap</span>
-                <h3 class="text-xl sm:text-2xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2 mt-0.5">
-                  <i class="fa-solid fa-fire text-terracotta text-lg"></i>
-                  <span>What's Missing or Out of Stock in Your Kitchen Right Now?</span>
-                </h3>
-              </div>
-              <span class="text-xs text-stone-500 font-accent italic">Select or search an ingredient below to view curated swap options</span>
+              <h3 class="text-xl sm:text-2xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2">
+                <i class="fa-solid fa-fire text-terracotta text-lg"></i>
+                <span>Select a Missing Ingredient</span>
+              </h3>
             </div>
 
             <!-- In-menu Ingredient Search Panel -->
             <div class="relative max-w-md pt-1">
-              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-xs mt-0.5"></i>
-              <input 
-                type="text" 
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-500 text-sm"></i>
+              <input
+                type="text"
                 id="swaplab-search-input"
                 value="${state.swapSearchQuery || ''}"
-                placeholder="Search target ingredients (Cream, Avocado, Truffle, Nuts)..." 
-                class="w-full pl-9 pr-9 py-2 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-xs sm:text-sm font-medium text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta transition-all"
+                placeholder="Search ingredients (Cream, Avocado, Truffle, Nuts)..."
+                class="w-full pl-10 pr-9 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm font-medium text-forest dark:text-ivory placeholder:text-stone-500 focus:outline-none focus:border-terracotta transition-all"
               />
-              <button 
-                type="button" 
-                id="swaplab-search-clear-btn" 
-                class="${state.swapSearchQuery ? '' : 'hidden'} absolute right-3 top-1/2 -translate-y-1/2 mt-0.5 w-5 h-5 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-[10px] transition-all cursor-pointer"
+              <button
+                type="button"
+                id="swaplab-search-clear-btn"
+                class="${state.swapSearchQuery ? '' : 'hidden'} absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-700 dark:text-stone-200 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-xs transition-all cursor-pointer"
                 title="Clear search"
               >
                 <i class="fa-solid fa-xmark"></i>
@@ -848,29 +797,29 @@
             </div>
 
             <!-- Quick Ingredient Selection Chips with Food Photography -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-2">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-1">
               ${FLAVORSHIFT_SWAP_DATABASE.map((item, idx) => {
                 const q = (state.swapSearchQuery || '').toLowerCase();
                 const isVisible = !q || item.targetIngredient.toLowerCase().includes(q) || item.commonInDishes.some(d => d.toLowerCase().includes(q)) || item.alternatives.some(a => a.name.toLowerCase().includes(q));
                 return `
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   data-swap-idx="${idx}"
                   class="swap-select-chip p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${isVisible ? '' : 'hidden'} ${
-                    idx === state.selectedSwapIndex 
-                      ? 'bg-forest text-ivory border-forest shadow-md scale-[1.02]' 
+                    idx === state.selectedSwapIndex
+                      ? 'bg-forest text-ivory border-forest shadow-md scale-[1.02]'
                       : 'bg-ivory dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory hover:border-terracotta'
                   }"
                 >
                   <div class="h-20 w-full rounded-xl overflow-hidden relative shadow-xs">
                     <img src="${item.originalPhoto}" alt="${item.targetIngredient}" class="w-full h-full object-cover">
-                    <span class="absolute bottom-1 right-1.5 text-[10px] bg-black/60 backdrop-blur text-beige px-1.5 py-0.5 rounded-md font-mono">
-                      ${idx === 0 ? '🥛 Dairy' : idx === 1 ? '🥑 Produce' : idx === 2 ? '🍄 Umami' : idx === 3 ? '🧀 Cheese' : '🥜 Nuts'}
+                    <span class="absolute bottom-1 right-1.5 text-xs bg-black/70 backdrop-blur text-white px-2 py-0.5 rounded-md font-medium">
+                      ${idx === 0 ? 'Dairy' : idx === 1 ? 'Produce' : idx === 2 ? 'Umami' : idx === 3 ? 'Cheese' : 'Nuts'}
                     </span>
                   </div>
                   <div>
                     <span class="font-bold text-sm block leading-tight font-heading">${item.targetIngredient}</span>
-                    <span class="text-[11px] opacity-80 block truncate mt-0.5 font-sans">${item.commonInDishes[0]}</span>
+                    <span class="text-xs opacity-90 block truncate mt-0.5 font-sans">${item.commonInDishes[0]}</span>
                   </div>
                 </button>
               `;
@@ -878,28 +827,28 @@
             </div>
           </div>
 
-          <!-- Step 2: Culinary Substitution Analysis & Photographic Comparison -->
+          <!-- Culinary Substitution Analysis & Photographic Comparison -->
           <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-xl space-y-6">
             
             <!-- Selected Ingredient & Dish Side-by-Side Visual Banner -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center border-b border-beige-200 dark:border-stone-800 pb-6">
               
-              <div class="md:col-span-7 space-y-2">
+              <div class="md:col-span-7 space-y-2.5">
                 <div class="flex flex-wrap items-center gap-2">
-                  <span class="px-3 py-1 rounded-full text-xs font-bold bg-peach/50 text-terracotta border border-terracotta/30">
-                    Target: ${activeSwap.targetIngredient}
+                  <span class="px-3 py-1 rounded-full text-xs sm:text-sm font-bold bg-peach/50 text-terracotta border border-terracotta/30">
+                    ${activeSwap.targetIngredient}
                   </span>
-                  <span class="text-xs text-stone-500 dark:text-stone-400 font-medium">
-                    Common In: ${activeSwap.commonInDishes.join(', ')}
+                  <span class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-medium">
+                    ${activeSwap.commonInDishes.join(', ')}
                   </span>
                 </div>
 
-                <h3 class="text-2xl sm:text-3xl font-black font-heading text-forest dark:text-ivory leading-tight">
-                  Curated Alternatives for <span class="text-terracotta font-serif italic">"${activeSwap.targetIngredient}"</span>
+                <h3 class="text-2xl sm:text-3xl font-bold font-heading text-forest dark:text-ivory leading-tight">
+                  Alternatives for <span class="text-terracotta">${activeSwap.targetIngredient}</span>
                 </h3>
                 
-                <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-sans leading-relaxed">
-                  Kitchen Context: <span class="text-terracotta font-semibold">${activeSwap.reasonForSwap}</span>
+                <p class="text-sm text-stone-700 dark:text-stone-200 font-sans leading-relaxed">
+                  ${activeSwap.reasonForSwap}
                 </p>
               </div>
 
@@ -907,7 +856,7 @@
               <div class="md:col-span-5 flex items-center gap-3">
                 <div class="flex-1 rounded-2xl overflow-hidden border border-beige-200 dark:border-stone-700 shadow-md relative aspect-[4/3] food-img-hover">
                   <img src="${activeSwap.originalPhoto}" alt="Original" class="w-full h-full object-cover">
-                  <span class="absolute bottom-1.5 left-1.5 right-1.5 bg-black/70 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-lg text-center truncate">
+                  <span class="absolute bottom-1.5 left-1.5 right-1.5 bg-black/75 backdrop-blur-md text-white text-xs font-bold px-2 py-0.5 rounded-lg text-center truncate">
                     ${activeSwap.targetIngredient}
                   </span>
                 </div>
@@ -918,7 +867,7 @@
 
                 <div class="flex-1 rounded-2xl overflow-hidden border border-terracotta/40 shadow-md relative aspect-[4/3] food-img-hover">
                   <img src="${activeSwap.dishPhoto}" alt="Dish" class="w-full h-full object-cover">
-                  <span class="absolute bottom-1.5 left-1.5 right-1.5 bg-terracotta/95 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg text-center truncate">
+                  <span class="absolute bottom-1.5 left-1.5 right-1.5 bg-terracotta/95 text-white text-xs font-bold px-2 py-0.5 rounded-lg text-center truncate">
                     ${activeSwap.commonInDishes[0]}
                   </span>
                 </div>
@@ -929,10 +878,10 @@
             <!-- Alternative Cards with Food Photography -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               ${activeSwap.alternatives.map((alt, i) => {
-                const badgeColor = i === 0 
-                  ? 'bg-forest text-ivory' 
-                  : i === 1 
-                    ? 'bg-sage text-white' 
+                const badgeColor = i === 0
+                  ? 'bg-forest text-ivory'
+                  : i === 1
+                    ? 'bg-sage text-white'
                     : 'bg-terracotta text-white';
 
                 return `
@@ -941,39 +890,39 @@
                       <!-- Alternative Food Image -->
                       <div class="h-36 rounded-2xl overflow-hidden mb-3.5 relative shadow-xs food-img-hover">
                         <img src="${alt.photo}" alt="${alt.name}" class="w-full h-full object-cover">
-                        <span class="absolute top-2 left-2 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${badgeColor} shadow-md">
+                        <span class="absolute top-2 left-2 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${badgeColor} shadow-md">
                           ${alt.type}
                         </span>
                       </div>
 
-                      <h4 class="text-base sm:text-lg font-bold font-heading text-forest dark:text-ivory mb-2 leading-snug">
+                      <h4 class="text-lg font-bold font-heading text-forest dark:text-ivory mb-2 leading-snug">
                         ${alt.name}
                       </h4>
 
                       <!-- Exact Ratio Box -->
                       <div class="p-3 rounded-2xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 mb-3 shadow-xs">
-                        <span class="block text-[10px] font-bold uppercase text-terracotta tracking-wider font-mono">Kitchen Conversion Ratio:</span>
-                        <span class="text-xs font-bold text-forest dark:text-ivory mt-0.5 block leading-relaxed font-mono">
+                        <span class="block text-xs font-bold uppercase text-terracotta tracking-wider font-mono">Ratio</span>
+                        <span class="text-sm font-bold text-forest dark:text-ivory mt-0.5 block leading-relaxed font-mono">
                           ${alt.ratio}
                         </span>
                       </div>
 
                       <!-- Taste & Texture Qualitative Notes -->
-                      <div class="space-y-2.5 text-xs">
+                      <div class="space-y-2.5 text-sm">
                         <div>
-                          <span class="text-stone-600 dark:text-stone-300 font-semibold flex items-center gap-1 mb-0.5">
-                            <i class="fa-solid fa-face-smile text-terracotta"></i> Flavor Notes:
+                          <span class="text-forest dark:text-ivory font-semibold flex items-center gap-1.5 mb-0.5">
+                            <i class="fa-solid fa-face-smile text-terracotta"></i> Flavor
                           </span>
-                          <p class="text-[11px] text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
+                          <p class="text-sm text-stone-700 dark:text-stone-200 leading-relaxed font-sans">
                             ${alt.tasteDesc}
                           </p>
                         </div>
 
                         <div class="pt-2 border-t border-beige-200/80 dark:border-stone-800">
-                          <span class="font-semibold text-stone-600 dark:text-stone-300 block mb-0.5 flex items-center gap-1">
-                            <i class="fa-solid fa-water text-sage-600"></i> Texture & Handling:
+                          <span class="font-semibold text-forest dark:text-ivory block mb-0.5 flex items-center gap-1.5">
+                            <i class="fa-solid fa-water text-sage-600"></i> Texture
                           </span>
-                          <p class="text-[11px] text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
+                          <p class="text-sm text-stone-700 dark:text-stone-200 leading-relaxed font-sans">
                             ${alt.textureDesc}
                           </p>
                         </div>
@@ -983,22 +932,22 @@
                     <!-- Action -->
                     <div class="pt-3 border-t border-beige-200 dark:border-stone-800">
                       ${activeSwap.targetRecipeId ? `
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           data-test-recipe="${activeSwap.targetRecipeId}"
-                          class="w-full py-2.5 px-3 rounded-xl text-xs font-bold forest-btn transition-all cursor-pointer shadow-md flex items-center justify-center gap-1.5"
+                          class="w-full py-3 px-3 rounded-xl text-sm font-bold forest-btn transition-all cursor-pointer shadow-md flex items-center justify-center gap-1.5"
                         >
                           <i class="fa-solid fa-fire-burner text-terracotta"></i>
-                          <span>Open Recipe with Swap</span>
+                          <span>Open Recipe</span>
                         </button>
                       ` : `
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           data-hero-action="explore"
-                          class="w-full py-2.5 px-3 rounded-xl text-xs font-bold forest-btn transition-all cursor-pointer shadow-md flex items-center justify-center gap-1.5"
+                          class="w-full py-3 px-3 rounded-xl text-sm font-bold forest-btn transition-all cursor-pointer shadow-md flex items-center justify-center gap-1.5"
                         >
                           <i class="fa-solid fa-utensils text-terracotta"></i>
-                          <span>Browse Recipe Catalog</span>
+                          <span>Browse Recipes</span>
                         </button>
                       `}
                     </div>
@@ -1010,91 +959,6 @@
           </div>
           `}
 
-        </section>
-
-        <!-- ============================================== -->
-        <!-- SECTION 3: SORTED KITCHEN TOOLKIT & WORKFLOW   -->
-        <!-- ============================================== -->
-        <section class="space-y-5 reveal-on-scroll">
-          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
-            <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-forest dark:text-sage-400 font-mono">
-                Kitchen Toolkit & Workflow
-              </span>
-              <h2 class="font-heading font-black text-2xl sm:text-3xl text-forest dark:text-ivory">
-                Everything You Need in Four Steps
-              </h2>
-            </div>
-            <p class="text-sm text-stone-500 dark:text-stone-400 font-accent italic">
-              Explore menus, toggle swaps, plan costs, and print scaled prep tickets.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-4">
-              <div class="space-y-2.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-2xl font-black text-terracotta/60 font-heading">01</span>
-                  <i class="fa-solid fa-utensils text-terracotta text-lg"></i>
-                </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Catalog & Scaler</h4>
-                <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                  Browse ${RECIPES_DATA.length} dishes across 10 categories with per-person ingredient scaling and swap toggles.
-                </p>
-              </div>
-              <button type="button" data-hero-action="explore" class="sage-btn w-full py-2.5 px-4 rounded-xl text-sm font-bold text-center cursor-pointer">
-                View Menus →
-              </button>
-            </div>
-
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-4">
-              <div class="space-y-2.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-2xl font-black text-sage-600/60 font-heading">02</span>
-                  <i class="fa-solid fa-users-viewfinder text-sage-600 text-lg"></i>
-                </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Kitchen Tasting Log</h4>
-                <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                  Test substitutes on your own stove and save personal ratings and flavor notes locally.
-                </p>
-              </div>
-              <button type="button" data-hero-action="htv" class="sage-btn w-full py-2.5 px-4 rounded-xl text-sm font-bold text-center cursor-pointer">
-                Open Tasting Log →
-              </button>
-            </div>
-
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-4">
-              <div class="space-y-2.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-2xl font-black text-terracotta/60 font-heading">03</span>
-                  <i class="fa-solid fa-chart-pie text-terracotta text-lg"></i>
-                </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Batch Cost Calculator</h4>
-                <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                  Enter your own portion costs and menu prices across 5–200 covers to check shift margins.
-                </p>
-              </div>
-              <button type="button" data-hero-action="dashboard" class="sage-btn w-full py-2.5 px-4 rounded-xl text-sm font-bold text-center cursor-pointer">
-                Open Calculator →
-              </button>
-            </div>
-
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-4">
-              <div class="space-y-2.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-2xl font-black text-forest-400/60 font-heading">04</span>
-                  <i class="fa-solid fa-receipt text-forest dark:text-sage-300 text-lg"></i>
-                </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Prep Tickets</h4>
-                <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                  Format and print scaled ingredient checklists and adapted cooking steps for prep stations.
-                </p>
-              </div>
-              <button type="button" data-print-sample="paneer-butter-masala" class="sage-btn w-full py-2.5 px-4 rounded-xl text-sm font-bold text-center cursor-pointer">
-                Print Sample Ticket →
-              </button>
-            </div>
-          </div>
         </section>
 
       </div>
@@ -1250,21 +1114,15 @@
     let html = `
       <div class="space-y-8 animate-fade-up">
 
-        <!-- Dynamic Explore Banner -->
-        <div class="relative rounded-3xl overflow-hidden bg-forest dark:bg-[#1A2620] text-ivory border border-beige-200/20 shadow-xl p-8 md:p-12">
-          <div class="relative z-10 max-w-3xl space-y-4">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ivory/15 backdrop-blur-md text-xs sm:text-sm font-bold uppercase tracking-wider text-beige">
-              <i class="fa-solid fa-utensils text-terracotta"></i>
-              <span>Culinary Recipe Library</span>
-            </div>
-
-            <h1 class="font-heading font-black text-4xl sm:text-5xl md:text-[3.25rem] leading-tight tracking-tight text-ivory">
-              Culinary Recipe Library.<br>
-              <span class="text-terracotta font-serif italic">Scale Portions & Toggle Swaps</span> Live.
+        <!-- Explore Banner -->
+        <div class="relative rounded-3xl overflow-hidden bg-forest dark:bg-[#1A2620] text-ivory border border-beige-200/20 shadow-xl p-8 md:p-10">
+          <div class="relative z-10 max-w-3xl space-y-3">
+            <h1 class="font-heading font-extrabold text-3xl sm:text-5xl leading-tight tracking-tight text-white">
+              Explore ${RECIPES_DATA.length} Recipes
             </h1>
 
-            <p class="text-ivory/90 text-base md:text-lg leading-relaxed font-normal">
-              Each dish supports dynamic per-person quantity scaling, culinary ingredient swaps for out-of-stock or dietary preferences, and printable prep sheets.
+            <p class="text-ivory/95 text-base md:text-lg leading-relaxed font-normal">
+              Scale portions per person, toggle ingredient swaps, and print prep sheets.
             </p>
           </div>
 
@@ -1272,23 +1130,23 @@
         </div>
 
         <!-- Search, Categories, Dietary Filters & Sort Bar -->
-        <div class="space-y-4 p-6 rounded-3xl bg-white/90 dark:bg-[#1f1a16]/90 border border-beige-200/80 dark:border-stone-800/80 shadow-sm">
+        <div class="space-y-4 p-6 rounded-3xl bg-white/95 dark:bg-[#1f1a16]/95 border border-beige-200/80 dark:border-stone-800/80 shadow-sm">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div class="relative flex-1 max-w-lg">
-              <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-base"></i>
+              <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-500 text-base"></i>
               <input
                 type="text"
                 id="search-input"
-                placeholder="Search recipes or ingredients (Cream, Truffle, Avocado, Cocoa)..."
-                class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-medium text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta shadow-sm transition-all"
+                placeholder="Search recipes or ingredients (Cream, Truffle, Avocado)..."
+                class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-medium text-forest dark:text-ivory placeholder:text-stone-500 focus:outline-none focus:border-terracotta shadow-sm transition-all"
               >
             </div>
 
             <div class="flex items-center gap-2.5 shrink-0">
-              <span class="text-xs sm:text-sm font-bold text-stone-400 hidden sm:inline">Sort by:</span>
+              <span class="text-xs sm:text-sm font-bold text-stone-600 dark:text-stone-300 hidden sm:inline">Sort:</span>
               <select
                 id="sort-select"
-                class="px-4 py-3.5 rounded-2xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm font-bold text-espresso dark:text-stone-200 focus:outline-none focus:border-terracotta shadow-sm cursor-pointer"
+                class="px-4 py-3.5 rounded-2xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm font-bold text-espresso dark:text-stone-100 focus:outline-none focus:border-terracotta shadow-sm cursor-pointer"
               >
                 <option value="default">🍽️ Featured Catalog Order</option>
                 <option value="title-asc">🔤 Alphabetical (A–Z)</option>
@@ -1300,54 +1158,54 @@
 
           <!-- Category Pills -->
           <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            <button type="button" data-category="all" class="cat-pill active-cat px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
-              All Menus (${RECIPES_DATA.length})
+            <button type="button" data-category="all" class="cat-pill active-cat px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+              All (${RECIPES_DATA.length})
             </button>
-            <button type="button" data-category="Cafe & Bistro Curries" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Cafe & Bistro Curries" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🍛 Indian Curries & Makhani
             </button>
-            <button type="button" data-category="Breads & Naan" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Breads & Naan" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🫓 Breads & Naan
             </button>
-            <button type="button" data-category="South Indian" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="South Indian" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🥥 South Indian
             </button>
-            <button type="button" data-category="Pastas & Italian" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Pastas & Italian" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🍝 Pastas & Italian
             </button>
-            <button type="button" data-category="Noodles & Wok" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Noodles & Wok" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🍜 Noodles & Wok
             </button>
-            <button type="button" data-category="Brunch & Toast" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Brunch & Toast" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🥑 Brunch & Bowls
             </button>
-            <button type="button" data-category="Breakfast & Morning" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Breakfast & Morning" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🍳 Breakfast & Morning
             </button>
-            <button type="button" data-category="Diet Conscious" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Diet Conscious" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🥗 Diet Conscious
             </button>
-            <button type="button" data-category="Bakery & Desserts" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Bakery & Desserts" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               🍰 Bakery & Desserts
             </button>
-            <button type="button" data-category="Coffee & Drinks" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
+            <button type="button" data-category="Coffee & Drinks" class="cat-pill px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-terracotta transition-all whitespace-nowrap cursor-pointer">
               ☕ Artisan Coffee & Matcha
             </button>
           </div>
 
           <!-- Diet Focus Pills -->
           <div class="flex items-center gap-2 overflow-x-auto pb-1 text-xs sm:text-sm">
-            <span class="font-bold text-stone-400 shrink-0 mr-1">Diet Focus:</span>
-            <button type="button" data-diet="all" class="diet-pill active-diet px-3.5 py-2 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-sage-500 cursor-pointer transition-all">
+            <span class="font-bold text-stone-600 dark:text-stone-300 shrink-0 mr-1">Diet:</span>
+            <button type="button" data-diet="all" class="diet-pill active-diet px-3.5 py-2 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-sage-500 cursor-pointer transition-all">
               All Diets
             </button>
-            <button type="button" data-diet="Vegetarian" class="diet-pill px-3.5 py-2 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-sage-500 cursor-pointer transition-all flex items-center gap-1.5">
+            <button type="button" data-diet="Vegetarian" class="diet-pill px-3.5 py-2 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-sage-500 cursor-pointer transition-all flex items-center gap-1.5">
               <i class="fa-solid fa-seedling text-sage-600"></i> Vegetarian
             </button>
-            <button type="button" data-diet="Vegan" class="diet-pill px-3.5 py-2 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-sage-500 cursor-pointer transition-all flex items-center gap-1.5">
+            <button type="button" data-diet="Vegan" class="diet-pill px-3.5 py-2 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-sage-500 cursor-pointer transition-all flex items-center gap-1.5">
               <i class="fa-solid fa-leaf text-sage-600"></i> Vegan Option
             </button>
-            <button type="button" data-diet="Gluten-Free" class="diet-pill px-3.5 py-2 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-stone-700 dark:text-stone-300 hover:border-sage-500 cursor-pointer transition-all">
+            <button type="button" data-diet="Gluten-Free" class="diet-pill px-3.5 py-2 rounded-lg font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#1f1a16] text-espresso dark:text-stone-200 hover:border-sage-500 cursor-pointer transition-all">
               🌾 Gluten-Free
             </button>
           </div>
@@ -1355,12 +1213,9 @@
 
         <!-- Recipe Cards Grid Section -->
         <div>
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-            <span id="recipes-count-display" class="text-sm font-black uppercase tracking-wider text-stone-500">
+          <div class="flex items-center justify-between mb-4">
+            <span id="recipes-count-display" class="text-sm font-bold uppercase tracking-wider text-stone-600 dark:text-stone-300">
               Showing Recipes
-            </span>
-            <span class="text-sm text-sage-700 dark:text-sage-400 font-bold flex items-center gap-1.5">
-              <i class="fa-solid fa-kitchen-set"></i> Toggle swap modes on any card to preview changes
             </span>
           </div>
 
@@ -1580,27 +1435,26 @@
             <!-- Card Content -->
             <div class="p-6 space-y-3.5">
               <div>
-                <h3 class="text-xl font-black text-forest dark:text-ivory leading-snug group-hover:text-terracotta transition-colors">
+                <h3 class="text-xl font-bold font-heading text-forest dark:text-ivory leading-snug group-hover:text-terracotta transition-colors">
                   ${recipe.title}
                 </h3>
-                <p class="text-stone-500 dark:text-stone-400 text-sm line-clamp-2 mt-1.5 leading-relaxed font-medium">
+                <p class="text-stone-600 dark:text-stone-300 text-sm line-clamp-2 mt-1.5 leading-relaxed">
                   ${recipe.tagline}
                 </p>
               </div>
 
               <!-- Key Ingredient Icons -->
-              <div class="flex items-center gap-1.5 py-1">
-                <span class="text-xs font-bold text-stone-400 mr-1">Includes:</span>
+              <div class="flex items-center gap-1.5 py-0.5">
                 ${recipe.ingredients.slice(0, 5).map(ing => `
                   <span class="w-7 h-7 rounded-lg bg-beige-100 dark:bg-stone-800/60 flex items-center justify-center text-sm" title="${ing.name}">
                     ${ing.icon || '🌿'}
                   </span>
                 `).join('')}
-                ${extraIngredients > 0 ? `<span class="text-xs text-stone-400">+${extraIngredients} more</span>` : ''}
+                ${extraIngredients > 0 ? `<span class="text-xs font-semibold text-stone-600 dark:text-stone-300">+${extraIngredients}</span>` : ''}
               </div>
 
               <!-- Quick Swaps Bar -->
-              <div class="flex flex-wrap gap-2 pt-1.5">
+              <div class="flex flex-wrap gap-2 pt-1">
                 <button
                   type="button"
                   data-card-swap-toggle="budget"
@@ -1610,10 +1464,10 @@
                       ? 'bg-terracotta text-white border-terracotta shadow-sm'
                       : 'bg-peach/30 dark:bg-stone-900 text-terracotta border-peach dark:border-stone-700 hover:bg-peach/60'
                   }"
-                  title="Toggle Pantry / Budget Alternative"
+                  title="Toggle Budget Swap"
                 >
                   <i class="fa-solid fa-arrows-rotate"></i>
-                  <span>Budget Swap</span>
+                  <span>Budget</span>
                 </button>
 
                 <button
@@ -1625,10 +1479,10 @@
                       ? 'bg-rose-500 text-white border-rose-600 shadow-sm'
                       : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800 hover:bg-rose-100'
                   }"
-                  title="Toggle Lighter Ingredient Swap"
+                  title="Toggle Lighter Swap"
                 >
                   <i class="fa-solid fa-fire-flame-simple"></i>
-                  <span>Lighter Swap</span>
+                  <span>Lighter</span>
                 </button>
 
                 ${recipe.veganOption ? `
@@ -1656,19 +1510,16 @@
           <div class="p-5 pt-0">
             <div class="grid grid-cols-3 gap-2 py-2.5 px-3 rounded-2xl bg-ivory dark:bg-stone-900 text-center mb-3.5 border border-beige-100 dark:border-stone-800/60">
               <div>
-                <span class="block text-[11px] text-stone-400 uppercase font-bold tracking-wider">Prep / Cook</span>
-                <span class="text-sm font-black text-forest dark:text-ivory">${recipe.prepTime}</span>
-                <span class="block text-[11px] text-stone-400">+ ${recipe.cookTime}</span>
+                <span class="block text-xs text-stone-600 dark:text-stone-300 uppercase font-bold tracking-wider">Time</span>
+                <span class="text-sm font-bold text-forest dark:text-ivory">${recipe.prepTime}</span>
               </div>
               <div>
-                <span class="block text-[11px] text-stone-400 uppercase font-bold tracking-wider">Ingredients</span>
-                <span class="text-base font-black text-sage-700 dark:text-sage-400">${recipe.ingredients.length}</span>
-                <span class="block text-[11px] text-stone-400">items</span>
+                <span class="block text-xs text-stone-600 dark:text-stone-300 uppercase font-bold tracking-wider">Items</span>
+                <span class="text-base font-bold text-sage-700 dark:text-sage-400">${recipe.ingredients.length}</span>
               </div>
               <div>
-                <span class="block text-[11px] text-stone-400 uppercase font-bold tracking-wider">Skill</span>
-                <span class="text-sm font-black text-terracotta">${recipe.difficulty}</span>
-                <span class="block text-[11px] text-stone-400">${rState.budgetMode || rState.calorieMode || rState.veganMode ? 'Swap Active' : 'Standard'}</span>
+                <span class="block text-xs text-stone-600 dark:text-stone-300 uppercase font-bold tracking-wider">Level</span>
+                <span class="text-sm font-bold text-terracotta">${recipe.difficulty}</span>
               </div>
             </div>
 
@@ -1677,7 +1528,7 @@
               data-open-recipe="${recipe.id}"
               class="w-full py-3.5 px-4 rounded-2xl font-bold text-sm forest-btn text-white hover:scale-[1.01] shadow-md hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>View Ingredients & Whole Recipe</span>
+              <span>Open Recipe</span>
               <i class="fa-solid fa-arrow-right text-xs"></i>
             </button>
           </div>
@@ -1758,17 +1609,11 @@
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-beige-200 dark:border-stone-800 pb-5">
           <div>
-            <div class="flex items-center gap-2.5 mb-2">
-              <span class="px-3.5 py-1 rounded-full text-xs sm:text-sm font-black bg-sage-100 dark:bg-sage-900/40 text-forest dark:text-sage-300 border border-sage-300/60 dark:border-sage-700 flex items-center gap-1.5 shadow-xs">
-                <i class="fa-solid fa-clipboard-list text-terracotta"></i> Local Kitchen Log
-              </span>
-              <span class="text-xs sm:text-sm text-stone-400 font-semibold">Personal Taste & Texture Notes</span>
-            </div>
-            <h2 class="text-3xl md:text-4xl font-black text-forest dark:text-ivory">
-              Record Substitutions in Your Own Kitchen
+            <h2 class="text-3xl md:text-4xl font-extrabold font-heading text-forest dark:text-ivory">
+              Kitchen Tasting Log
             </h2>
-            <p class="text-sm sm:text-base text-stone-500 mt-1.5 leading-relaxed">
-              Log how a swap behaves on your stove—sauce emulsion, seasoning balance, and feedback saved directly in your browser.
+            <p class="text-sm sm:text-base text-stone-600 dark:text-stone-300 mt-1.5 leading-relaxed">
+              Save swap behavior, seasoning balance, and tasting notes locally.
             </p>
           </div>
 
@@ -1782,56 +1627,48 @@
           </button>
         </div>
 
-        <!-- 3 Factual Status Cards (No Invented Statistics) -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <!-- 2 Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="p-6 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 text-center shadow-sm">
-            <span class="text-4xl font-black text-sage-600 font-heading">${submissions.length}</span>
-            <span class="block text-sm font-bold text-stone-700 dark:text-stone-300 mt-1.5">Your Logged Kitchen Trials</span>
-            <span class="block text-xs text-stone-400 mt-0.5">Entries saved in this browser</span>
+            <span class="text-4xl font-extrabold text-sage-700 dark:text-sage-400 font-heading">${submissions.length}</span>
+            <span class="block text-sm font-bold text-stone-700 dark:text-stone-200 mt-1.5">Logged Kitchen Trials</span>
           </div>
 
           <div class="p-6 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 text-center shadow-sm">
-            <span class="text-4xl font-black text-terracotta font-heading">${RECIPES_DATA.length}</span>
-            <span class="block text-sm font-bold text-stone-700 dark:text-stone-300 mt-1.5">Catalog Dishes Available</span>
-            <span class="block text-xs text-stone-400 mt-0.5">All ready for personal tasting notes</span>
-          </div>
-
-          <div class="p-6 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 text-center shadow-sm">
-            <span class="text-2xl sm:text-3xl font-black text-forest dark:text-ivory font-heading">Local Only</span>
-            <span class="block text-sm font-bold text-stone-700 dark:text-stone-300 mt-2">Browser Storage</span>
-            <span class="block text-xs text-stone-400 mt-0.5">No unverified public ratings included</span>
+            <span class="text-4xl font-extrabold text-terracotta font-heading">${RECIPES_DATA.length}</span>
+            <span class="block text-sm font-bold text-stone-700 dark:text-stone-200 mt-1.5">Catalog Dishes</span>
           </div>
         </div>
 
         <!-- Interactive Submission Drawer / Form -->
         <div id="htv-submission-box" class="hidden p-6 rounded-3xl bg-peach/30 dark:bg-stone-900 border border-terracotta/40 dark:border-stone-700 space-y-4 shadow-lg">
           <div class="flex items-center justify-between">
-            <h4 class="font-black text-lg text-forest dark:text-ivory flex items-center gap-2">
+            <h4 class="font-bold text-lg text-forest dark:text-ivory flex items-center gap-2">
               <i class="fa-solid fa-flask-vial text-terracotta"></i>
-              <span>Log Your Kitchen Taste Observations</span>
+              <span>Add Tasting Note</span>
             </h4>
-            <button type="button" id="close-htv-form-btn" class="w-8 h-8 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 flex items-center justify-center font-bold cursor-pointer">
+            <button type="button" id="close-htv-form-btn" class="w-8 h-8 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-700 dark:text-stone-200 flex items-center justify-center font-bold cursor-pointer">
               <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
             <div>
-              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Name / Role</label>
-              <input type="text" id="htv-input-author" placeholder="e.g. Home Cook / Chef" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800">
+              <label class="block font-bold text-stone-700 dark:text-stone-200 mb-1">Name / Role</label>
+              <input type="text" id="htv-input-author" placeholder="e.g. Home Cook" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800">
             </div>
             <div>
-              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Kitchen / Location (Optional)</label>
+              <label class="block font-bold text-stone-700 dark:text-stone-200 mb-1">Kitchen (Optional)</label>
               <input type="text" id="htv-input-kitchen" placeholder="e.g. Home Kitchen" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800">
             </div>
             <div>
-              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Recipe Tested</label>
+              <label class="block font-bold text-stone-700 dark:text-stone-200 mb-1">Recipe</label>
               <select id="htv-input-recipe" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-bold">
                 ${RECIPES_DATA.map(r => `<option value="${r.title}">${r.title}</option>`).join('')}
               </select>
             </div>
             <div>
-              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Tasting Rating</label>
+              <label class="block font-bold text-stone-700 dark:text-stone-200 mb-1">Rating</label>
               <select id="htv-input-rating" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-bold">
                 <option value="5">★★★★★ (5 - Worked very well)</option>
                 <option value="4">★★★★☆ (4 - Good texture & taste)</option>
@@ -1843,11 +1680,11 @@
           </div>
 
           <div class="text-sm">
-            <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Cooking & Taste Notes</label>
-            <textarea id="htv-input-comment" rows="3" placeholder="Share how the substitute handled cooking heat, texture, and flavor..." class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800"></textarea>
+            <label class="block font-bold text-stone-700 dark:text-stone-200 mb-1">Tasting Notes</label>
+            <textarea id="htv-input-comment" rows="3" placeholder="How did the substitute hold heat, texture, and flavor?" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800"></textarea>
           </div>
 
-          <button type="button" id="htv-save-submission-btn" class="px-5 py-2.5 rounded-xl text-xs font-black terracotta-btn text-white shadow-md cursor-pointer">
+          <button type="button" id="htv-save-submission-btn" class="px-5 py-2.5 rounded-xl text-sm font-bold terracotta-btn text-white shadow-md cursor-pointer">
             Save Kitchen Log
           </button>
         </div>
@@ -1855,12 +1692,12 @@
         <!-- User-Submitted Kitchen Feedback Feed -->
         <div class="space-y-4">
           <div class="flex items-center justify-between">
-            <h3 class="text-xl font-black text-forest dark:text-ivory flex items-center gap-2">
+            <h3 class="text-xl font-bold text-forest dark:text-ivory flex items-center gap-2">
               <i class="fa-solid fa-comments text-terracotta"></i>
-              <span>Saved Kitchen Tasting Entries (${submissions.length})</span>
+              <span>Saved Entries (${submissions.length})</span>
             </h3>
             ${submissions.length > 0 ? `
-              <button type="button" id="htv-clear-submissions-btn" class="text-xs font-semibold text-stone-500 hover:text-terracotta cursor-pointer">
+              <button type="button" id="htv-clear-submissions-btn" class="text-xs sm:text-sm font-semibold text-stone-600 dark:text-stone-300 hover:text-terracotta cursor-pointer">
                 Clear Log
               </button>
             ` : ''}
@@ -1871,9 +1708,9 @@
               <div class="inline-flex w-12 h-12 rounded-2xl bg-sage-100 dark:bg-stone-800 text-sage-700 dark:text-sage-300 items-center justify-center text-xl">
                 <i class="fa-regular fa-clipboard"></i>
               </div>
-              <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">No Kitchen Trials Logged Yet</h4>
-              <p class="text-xs text-stone-500 max-w-md mx-auto leading-relaxed">
-                This log only displays notes you actually enter—no pre-filled or synthetic reviews are shown. Click "Log Kitchen Tasting Test" above after testing a recipe swap.
+              <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">No Trials Logged Yet</h4>
+              <p class="text-sm text-stone-600 dark:text-stone-300 max-w-md mx-auto leading-relaxed">
+                Click "Log Kitchen Tasting Test" to record your own cooking notes.
               </p>
             </div>
           ` : `
@@ -1883,22 +1720,22 @@
                   <div>
                     <div class="h-36 rounded-2xl overflow-hidden mb-3 relative">
                       <img src="${item.photo || RECIPES_DATA[0].image}" alt="Dish" class="w-full h-full object-cover">
-                      <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-black/60 text-white backdrop-blur">
+                      <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full text-xs font-bold bg-black/70 text-white backdrop-blur">
                         ${item.dish}
                       </span>
-                      <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-lg text-xs font-black bg-terracotta text-white">
+                      <span class="absolute bottom-2 right-2 px-2.5 py-0.5 rounded-lg text-xs font-bold bg-terracotta text-white">
                         ${'★'.repeat(item.rating || 5)}${'☆'.repeat(5 - (item.rating || 5))}
                       </span>
                     </div>
 
-                    <p class="text-xs text-stone-700 dark:text-stone-300 leading-relaxed font-medium mb-3">
+                    <p class="text-sm text-stone-700 dark:text-stone-200 leading-relaxed font-medium mb-3">
                       "${item.comment}"
                     </p>
                   </div>
                   
-                  <div class="flex items-center justify-between pt-2 border-t border-beige-100 dark:border-stone-800/60 text-[11px] text-stone-400">
-                    <span class="font-bold text-stone-600 dark:text-stone-300">${item.author} • ${item.kitchen}</span>
-                    <span class="text-sage-600 font-semibold">${item.date || 'Saved locally'}</span>
+                  <div class="flex items-center justify-between pt-2 border-t border-beige-100 dark:border-stone-800/60 text-xs text-stone-600 dark:text-stone-300">
+                    <span class="font-bold">${item.author} • ${item.kitchen}</span>
+                    <span class="text-sage-700 dark:text-sage-400 font-semibold">${item.date || 'Saved'}</span>
                   </div>
                 </div>
               `).join('')}
@@ -2002,115 +1839,80 @@
         <div class="relative overflow-hidden rounded-3xl p-6 md:p-8 bg-forest dark:bg-[#1A2620] text-ivory shadow-xl border border-beige-200/20">
           <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div class="space-y-2">
-              <div class="flex flex-wrap items-center gap-2.5">
-                <span class="px-3 py-1 rounded-full text-xs font-black bg-ivory/15 text-beige border border-beige-200/30 flex items-center gap-1.5 shadow-sm">
-                  <i class="fa-solid fa-calculator text-terracotta"></i>
-                  <span>User-Driven Cost & Margin Calculator</span>
-                </span>
-              </div>
-
-              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black font-heading tracking-tight text-ivory">
-                Kitchen Batch Cost & Margin Simulator
+              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-heading tracking-tight text-white">
+                Cost & Margin Calculator
               </h2>
-              <p class="text-ivory/80 text-xs sm:text-sm max-w-2xl font-medium leading-relaxed">
-                Enter your own supplier costs per portion and menu price to calculate batch totals and gross margins across 5–200 covers.
+              <p class="text-ivory/95 text-sm sm:text-base max-w-2xl leading-relaxed">
+                Enter your portion costs and menu prices to simulate totals across 5–200 covers.
               </p>
             </div>
 
             <div class="flex flex-wrap items-center gap-2.5 shrink-0">
-              <button type="button" id="dash-quick-pantry-btn" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-ivory border border-white/20 backdrop-blur transition-all cursor-pointer flex items-center gap-2 shadow-sm">
+              <button type="button" id="dash-quick-pantry-btn" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white/15 hover:bg-white/25 text-white border border-white/25 backdrop-blur transition-all cursor-pointer flex items-center gap-2 shadow-sm">
                 <i class="fa-solid fa-boxes-stacked text-terracotta"></i>
                 <span>Pantry Stock</span>
-              </button>
-              <button type="button" id="dash-launch-slides-btn" class="px-4 py-2.5 rounded-xl text-xs font-bold terracotta-btn text-white shadow-lg transition-all cursor-pointer flex items-center gap-2">
-                <i class="fa-solid fa-lightbulb"></i>
-                <span>Design Thinking Deck</span>
               </button>
             </div>
           </div>
         </div>
 
-        <!-- 4 Factual Summary Cards -->
+        <!-- Summary Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between rounded-3xl">
-            <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Catalog Recipes</span>
-                <span class="w-10 h-10 rounded-2xl bg-forest/15 text-sage-700 dark:text-sage-400 flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-utensils"></i>
-                </span>
-              </div>
-              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">${totalRecipes}</span>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs sm:text-sm font-bold text-stone-600 dark:text-stone-300 uppercase tracking-wider">Recipes</span>
+              <span class="w-10 h-10 rounded-2xl bg-forest/15 text-sage-700 dark:text-sage-400 flex items-center justify-center font-bold">
+                <i class="fa-solid fa-utensils"></i>
+              </span>
             </div>
-            <div class="pt-3 border-t border-beige-100 dark:border-stone-800">
-              <span class="text-[11px] text-sage-700 dark:text-sage-400 font-bold">Dishes available in menu library</span>
-            </div>
+            <span class="text-3xl font-extrabold text-forest dark:text-ivory tracking-tight">${totalRecipes}</span>
           </div>
 
           <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between rounded-3xl">
-            <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Swap Profiles</span>
-                <span class="w-10 h-10 rounded-2xl bg-terracotta/15 text-terracotta flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-flask-vial"></i>
-                </span>
-              </div>
-              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">${totalSwaps}</span>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs sm:text-sm font-bold text-stone-600 dark:text-stone-300 uppercase tracking-wider">Swap Guides</span>
+              <span class="w-10 h-10 rounded-2xl bg-terracotta/15 text-terracotta flex items-center justify-center font-bold">
+                <i class="fa-solid fa-flask-vial"></i>
+              </span>
             </div>
-            <div class="pt-3 border-t border-beige-100 dark:border-stone-800">
-              <span class="text-[11px] text-terracotta font-bold">Target ingredients in Swap Lab</span>
-            </div>
+            <span class="text-3xl font-extrabold text-forest dark:text-ivory tracking-tight">${totalSwaps}</span>
           </div>
 
           <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between rounded-3xl">
-            <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Saved Notes</span>
-                <span class="w-10 h-10 rounded-2xl bg-sage-100 dark:bg-stone-800 text-sage-700 dark:text-sage-300 flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-clipboard-list"></i>
-                </span>
-              </div>
-              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">${totalNotesCount}</span>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs sm:text-sm font-bold text-stone-600 dark:text-stone-300 uppercase tracking-wider">Saved Notes</span>
+              <span class="w-10 h-10 rounded-2xl bg-sage-100 dark:bg-stone-800 text-sage-700 dark:text-sage-300 flex items-center justify-center font-bold">
+                <i class="fa-solid fa-clipboard-list"></i>
+              </span>
             </div>
-            <div class="pt-3 border-t border-beige-100 dark:border-stone-800">
-              <span class="text-[11px] text-stone-500 font-bold">User notes stored in browser</span>
-            </div>
+            <span class="text-3xl font-extrabold text-forest dark:text-ivory tracking-tight">${totalNotesCount}</span>
           </div>
 
           <div class="dash-kpi-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm flex flex-col justify-between rounded-3xl">
-            <div>
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-black text-stone-400 uppercase tracking-wider">Slider Range</span>
-                <span class="w-10 h-10 rounded-2xl bg-peach/50 text-terracotta flex items-center justify-center font-bold">
-                  <i class="fa-solid fa-sliders"></i>
-                </span>
-              </div>
-              <span class="text-3xl font-black text-forest dark:text-ivory tracking-tight">5–200</span>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs sm:text-sm font-bold text-stone-600 dark:text-stone-300 uppercase tracking-wider">Covers Range</span>
+              <span class="w-10 h-10 rounded-2xl bg-peach/50 text-terracotta flex items-center justify-center font-bold">
+                <i class="fa-solid fa-sliders"></i>
+              </span>
             </div>
-            <div class="pt-3 border-t border-beige-100 dark:border-stone-800">
-              <span class="text-[11px] text-stone-500 font-bold">Covers supported in calculator below</span>
-            </div>
+            <span class="text-3xl font-extrabold text-forest dark:text-ivory tracking-tight">5–200</span>
           </div>
         </div>
 
         <!-- Interactive Calculator -->
         <div class="p-6 md:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-6">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <span class="text-xs font-black uppercase tracking-wider text-terracotta">Kitchen Batch Calculator</span>
-              <h3 class="text-xl font-black text-forest dark:text-ivory flex items-center gap-2">
-                <i class="fa-solid fa-calculator text-terracotta"></i>
-                <span>Custom Covers Cost & Margin Simulator</span>
-              </h3>
-              <p class="text-xs text-stone-500">Calculations update strictly from the values you enter below (zero pre-filled mock prices)</p>
-            </div>
+            <h3 class="text-xl font-bold text-forest dark:text-ivory flex items-center gap-2">
+              <i class="fa-solid fa-calculator text-terracotta"></i>
+              <span>Batch Cost & Margin Simulator</span>
+            </h3>
 
             <div class="flex flex-wrap items-center gap-2">
-              <select id="dash-currency-select" aria-label="Select currency" class="px-3 py-2.5 text-xs rounded-xl border border-beige-200 dark:border-stone-800 bg-ivory dark:bg-[#181410] font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer shadow-sm">
+              <select id="dash-currency-select" aria-label="Select currency" class="px-3.5 py-2.5 text-sm rounded-xl border border-beige-200 dark:border-stone-800 bg-ivory dark:bg-[#181410] font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer shadow-sm">
                 <option value="₹" ${state.currency === '₹' ? 'selected' : ''}>₹ INR</option>
                 <option value="$" ${state.currency === '$' ? 'selected' : ''}>$ USD</option>
               </select>
-              <select id="dash-cover-recipe-select" class="px-3.5 py-2.5 text-xs rounded-xl border border-beige-200 dark:border-stone-800 bg-ivory dark:bg-[#181410] font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer shadow-sm">
+              <select id="dash-cover-recipe-select" class="px-3.5 py-2.5 text-sm rounded-xl border border-beige-200 dark:border-stone-800 bg-ivory dark:bg-[#181410] font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer shadow-sm">
                 ${RECIPES_DATA.map(r => `
                   <option value="${r.id}" ${r.id === state.dashboardSelectedRecipeId ? 'selected' : ''}>
                     ${r.title}
@@ -2121,35 +1923,35 @@
           </div>
 
           <!-- User Pricing Inputs -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
             <div>
-              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Standard Cost / Portion (<span class="dash-currency-symbol">${state.currency}</span>)</label>
+              <label class="block font-bold text-stone-700 dark:text-stone-200 mb-1.5">Standard Cost / Portion (<span class="dash-currency-symbol">${state.currency}</span>)</label>
               <input type="number" step="0.01" min="0" id="dash-base-cost-input" value="${state.dashBaseCost}" placeholder="e.g. 120" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
             </div>
             <div>
-              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Swapped Cost / Portion (<span class="dash-currency-symbol">${state.currency}</span>)</label>
+              <label class="block font-bold text-stone-700 dark:text-stone-200 mb-1.5">Swapped Cost / Portion (<span class="dash-currency-symbol">${state.currency}</span>)</label>
               <input type="number" step="0.01" min="0" id="dash-alt-cost-input" value="${state.dashAltCost}" placeholder="e.g. 85" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
             </div>
             <div>
-              <label class="block font-bold text-stone-700 dark:text-stone-300 mb-1">Your Menu Price / Portion (<span class="dash-currency-symbol">${state.currency}</span>)</label>
+              <label class="block font-bold text-stone-700 dark:text-stone-200 mb-1.5">Menu Price / Portion (<span class="dash-currency-symbol">${state.currency}</span>)</label>
               <input type="number" step="0.01" min="0" id="dash-retail-price-input" value="${state.dashRetailPrice}" placeholder="e.g. 320" class="w-full px-3.5 py-2.5 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 font-mono font-bold text-forest dark:text-ivory focus:outline-none focus:border-terracotta">
             </div>
           </div>
 
           <div class="p-5 rounded-2xl bg-ivory dark:bg-[#181410]/60 border border-beige-200 dark:border-stone-800 space-y-4">
             <div class="flex items-center justify-between">
-              <span class="text-sm font-bold text-stone-700 dark:text-stone-300">Target Shift Covers (${selectedCoverRecipe.title}):</span>
-              <span class="text-2xl font-black text-terracotta font-heading" id="dash-covers-display">
+              <span class="text-sm sm:text-base font-bold text-stone-700 dark:text-stone-200">Covers (${selectedCoverRecipe.title}):</span>
+              <span class="text-2xl font-extrabold text-terracotta font-heading" id="dash-covers-display">
                 ${m.covers} Persons
               </span>
             </div>
             
-            <input 
-              type="range" 
-              id="dash-covers-slider" 
-              min="5" 
-              max="200" 
-              step="5" 
+            <input
+              type="range"
+              id="dash-covers-slider"
+              min="5"
+              max="200"
+              step="5"
               value="${state.dashboardCovers}"
               class="w-full accent-terracotta cursor-pointer"
             >
@@ -2157,27 +1959,24 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
             <div class="p-5 rounded-2xl bg-peach/30 dark:bg-stone-900 border border-peach dark:border-stone-800">
-              <span class="block text-xs text-terracotta font-bold uppercase">Standard Batch Cost</span>
-              <span id="dash-out-base-total" class="block text-2xl font-black text-forest dark:text-ivory my-1">${m.baseTotal}</span>
-              <span class="block text-xs text-stone-500">Based on your standard cost</span>
+              <span class="block text-xs sm:text-sm text-terracotta font-bold uppercase">Standard Batch</span>
+              <span id="dash-out-base-total" class="block text-2xl font-extrabold text-forest dark:text-ivory mt-1.5">${m.baseTotal}</span>
             </div>
 
             <div class="p-5 rounded-2xl bg-sage-50 dark:bg-stone-900 border border-sage-200 dark:border-stone-800">
-              <span class="block text-xs text-sage-700 dark:text-sage-300 font-bold uppercase">Swapped Batch Cost</span>
-              <span id="dash-out-alt-total" class="block text-2xl font-black text-forest dark:text-ivory my-1">${m.altTotal}</span>
-              <span class="block text-xs text-stone-500">Based on your alt cost</span>
+              <span class="block text-xs sm:text-sm text-sage-700 dark:text-sage-300 font-bold uppercase">Swapped Batch</span>
+              <span id="dash-out-alt-total" class="block text-2xl font-extrabold text-forest dark:text-ivory mt-1.5">${m.altTotal}</span>
             </div>
 
             <div class="p-5 rounded-2xl bg-beige/40 dark:bg-stone-900 border border-beige-300 dark:border-stone-800">
-              <span class="block text-xs text-espresso dark:text-beige font-bold uppercase">Gross Revenue</span>
-              <span id="dash-out-revenue" class="block text-2xl font-black text-forest dark:text-ivory my-1">${m.revenueTotal}</span>
-              <span id="dash-out-margin" class="block text-xs text-sage-700 dark:text-sage-400 font-bold">${m.altMargin}</span>
+              <span class="block text-xs sm:text-sm text-espresso dark:text-beige font-bold uppercase">Gross Revenue</span>
+              <span id="dash-out-revenue" class="block text-2xl font-extrabold text-forest dark:text-ivory my-1">${m.revenueTotal}</span>
+              <span id="dash-out-margin" class="block text-xs sm:text-sm text-sage-700 dark:text-sage-400 font-bold">${m.altMargin}</span>
             </div>
 
             <div class="p-5 rounded-2xl bg-peach/40 dark:bg-stone-900 border border-terracotta/30 dark:border-stone-800">
-              <span class="block text-xs text-terracotta font-bold uppercase">Net Cost Difference</span>
-              <span id="dash-out-savings" class="block text-2xl font-black text-terracotta my-1">${m.diffTotal}</span>
-              <span class="block text-xs text-stone-500">Across selected covers</span>
+              <span class="block text-xs sm:text-sm text-terracotta font-bold uppercase">Net Difference</span>
+              <span id="dash-out-savings" class="block text-2xl font-extrabold text-terracotta mt-1.5">${m.diffTotal}</span>
             </div>
           </div>
         </div>
@@ -2201,10 +2000,6 @@
     document.getElementById('dash-quick-pantry-btn')?.addEventListener('click', () => {
       switchTab('explore');
       document.getElementById('pantry-drawer')?.classList.remove('hidden');
-    });
-
-    document.getElementById('dash-launch-slides-btn')?.addEventListener('click', () => {
-      switchTab('slides');
     });
 
     document.getElementById('dash-currency-select')?.addEventListener('change', (e) => {
@@ -2239,150 +2034,6 @@
       state.dashboardCovers = parseInt(e.target.value, 10);
       refreshDashNumbers();
     });
-  }
-
-  // ========================================================
-  // RENDER: DESIGN THINKING SLIDES
-  // ========================================================
-  function renderDesignThinkingView() {
-    const container = document.getElementById('slides-view-container');
-    if (!container) return;
-
-    const currentSlide = DESIGN_THINKING_SLIDES[state.currentSlideIndex] || DESIGN_THINKING_SLIDES[0];
-    const totalSlides = DESIGN_THINKING_SLIDES.length;
-
-    let html = `
-      <div class="space-y-6 max-w-5xl mx-auto animate-fade-up">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-beige-200 dark:border-stone-800 pb-4">
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span class="px-3 py-0.5 rounded-full text-xs font-black bg-peach/40 text-terracotta border border-terracotta/30">
-                Design Thinking Deck
-              </span>
-              <span class="text-xs text-stone-400 font-semibold">FlavorShift Product Workflow</span>
-            </div>
-            <h2 class="text-2xl md:text-3xl font-black text-forest dark:text-ivory">
-              Designing FlavorShift AI
-            </h2>
-            <p class="text-xs text-stone-500">
-              5-Stage Design Thinking overview covering culinary substitution workflows and local user feedback.
-            </p>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <button type="button" id="slide-prev-btn" class="w-10 h-10 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 hover:border-terracotta flex items-center justify-center font-bold text-stone-700 dark:text-stone-300 transition-all cursor-pointer ${state.currentSlideIndex === 0 ? 'opacity-40 cursor-not-allowed' : ''}" ${state.currentSlideIndex === 0 ? 'disabled' : ''}>
-              <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <button type="button" id="slide-autoplay-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${state.slideAutoplay ? 'bg-terracotta text-white' : 'bg-white dark:bg-[#1f1a16] border-beige-200 dark:border-stone-800 text-stone-700 dark:text-stone-300'}">
-              <i class="fa-solid ${state.slideAutoplay ? 'fa-pause' : 'fa-play'}"></i>
-              <span>${state.slideAutoplay ? 'Pause' : 'Autoplay'}</span>
-            </button>
-            <button type="button" id="slide-next-btn" class="w-10 h-10 rounded-xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 hover:border-terracotta flex items-center justify-center font-bold text-stone-700 dark:text-stone-300 transition-all cursor-pointer ${state.currentSlideIndex === totalSlides - 1 ? 'opacity-40 cursor-not-allowed' : ''}" ${state.currentSlideIndex === totalSlides - 1 ? 'disabled' : ''}>
-              <i class="fa-solid fa-chevron-right"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
-          ${DESIGN_THINKING_SLIDES.map((s, idx) => `
-            <button type="button" data-jump-slide="${idx}" class="px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer border ${idx === state.currentSlideIndex ? 'bg-forest dark:bg-ivory text-ivory dark:text-forest border-transparent shadow-sm' : 'bg-white dark:bg-[#1f1a16] text-stone-600 dark:text-stone-400 border-beige-200 dark:border-stone-800'}">
-              ${s.stage}
-            </button>
-          `).join('')}
-        </div>
-
-        <div class="editorial-card bg-white dark:bg-[#1f1a16]/95 border border-beige-200 dark:border-stone-800 rounded-3xl p-6 md:p-10 shadow-xl relative min-h-[460px] flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-4">
-              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider terracotta-btn text-white shadow-sm">
-                ${currentSlide.badge}
-              </span>
-              <span class="text-xs font-black text-stone-400">
-                Slide ${currentSlide.slideNumber} of ${totalSlides}
-              </span>
-            </div>
-
-            <h3 class="text-2xl md:text-3xl font-black text-forest dark:text-ivory mb-2 leading-tight">
-              ${currentSlide.title}
-            </h3>
-            <p class="text-stone-500 dark:text-stone-300 text-sm mb-8 leading-relaxed max-w-3xl">
-              ${currentSlide.subtitle}
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              ${currentSlide.points.map(pt => `
-                <div class="p-4 rounded-2xl bg-ivory dark:bg-stone-900 border border-beige-200 dark:border-stone-800">
-                  <div class="font-extrabold text-sm text-forest dark:text-ivory mb-2 flex items-center gap-1.5">
-                    <i class="fa-solid fa-circle-check text-terracotta text-xs"></i>
-                    <span>${pt.title}</span>
-                  </div>
-                  <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-medium">
-                    ${pt.desc}
-                  </p>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-
-          <div class="pt-6 border-t border-beige-100 dark:border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-              <span class="text-2xl font-black text-terracotta">${currentSlide.metric.value}</span>
-              <span class="text-xs text-stone-500 font-medium max-w-xs leading-snug">${currentSlide.metric.label}</span>
-            </div>
-
-            <div class="flex items-center gap-1.5">
-              ${DESIGN_THINKING_SLIDES.map((_, i) => `
-                <span data-jump-slide="${i}" class="w-3 h-3 rounded-full transition-all cursor-pointer ${i === state.currentSlideIndex ? 'bg-terracotta w-6' : 'bg-beige-300 dark:bg-stone-800'}"></span>
-              `).join('')}
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    container.innerHTML = html;
-
-    document.getElementById('slide-prev-btn')?.addEventListener('click', () => {
-      if (state.currentSlideIndex > 0) {
-        state.currentSlideIndex--;
-        renderDesignThinkingView();
-      }
-    });
-
-    document.getElementById('slide-next-btn')?.addEventListener('click', () => {
-      if (state.currentSlideIndex < totalSlides - 1) {
-        state.currentSlideIndex++;
-        renderDesignThinkingView();
-      }
-    });
-
-    document.querySelectorAll('[data-jump-slide]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.currentSlideIndex = parseInt(btn.getAttribute('data-jump-slide'), 10);
-        renderDesignThinkingView();
-      });
-    });
-
-    document.getElementById('slide-autoplay-btn')?.addEventListener('click', () => {
-      state.slideAutoplay = !state.slideAutoplay;
-      if (state.slideAutoplay) {
-        stopSlideAutoplay();
-        state.autoplayTimer = setInterval(() => {
-          state.currentSlideIndex = (state.currentSlideIndex + 1) % DESIGN_THINKING_SLIDES.length;
-          renderDesignThinkingView();
-        }, 4500);
-      } else {
-        stopSlideAutoplay();
-      }
-      renderDesignThinkingView();
-    });
-  }
-
-  function stopSlideAutoplay() {
-    if (state.autoplayTimer) {
-      clearInterval(state.autoplayTimer);
-      state.autoplayTimer = null;
-    }
   }
 
   // ========================================================
@@ -2589,24 +2240,20 @@
 
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-peach/30 dark:bg-stone-900/60 border border-beige-200 dark:border-stone-800">
                 <div>
-                  <span class="block text-[10px] text-stone-500 dark:text-stone-400 font-bold uppercase tracking-wider">Prep Time</span>
-                  <span class="text-lg font-black text-forest dark:text-ivory">${cRec.prepTime}</span>
-                  <span class="block text-[11px] text-stone-500 dark:text-stone-400">Active prep</span>
+                  <span class="block text-xs text-stone-600 dark:text-stone-300 font-bold uppercase tracking-wider">Prep</span>
+                  <span class="text-lg font-extrabold text-forest dark:text-ivory">${cRec.prepTime}</span>
                 </div>
                 <div>
-                  <span class="block text-[10px] text-stone-500 dark:text-stone-400 font-bold uppercase tracking-wider">Cook Time</span>
-                  <span class="text-lg font-black text-terracotta">${cRec.cookTime}</span>
-                  <span class="block text-[11px] text-stone-500 dark:text-stone-400">${cRec.difficulty}</span>
+                  <span class="block text-xs text-stone-600 dark:text-stone-300 font-bold uppercase tracking-wider">Cook</span>
+                  <span class="text-lg font-extrabold text-terracotta">${cRec.cookTime}</span>
                 </div>
                 <div>
-                  <span class="block text-[10px] text-stone-500 dark:text-stone-400 font-bold uppercase tracking-wider">Batch Size</span>
-                  <span class="text-lg font-black text-forest dark:text-ivory">${cRec.persons} ${cRec.persons === 1 ? 'cover' : 'covers'}</span>
-                  <span class="block text-[11px] text-stone-500 dark:text-stone-400">Scaled live</span>
+                  <span class="block text-xs text-stone-600 dark:text-stone-300 font-bold uppercase tracking-wider">Servings</span>
+                  <span class="text-lg font-extrabold text-forest dark:text-ivory">${cRec.persons} ${cRec.persons === 1 ? 'cover' : 'covers'}</span>
                 </div>
                 <div>
-                  <span class="block text-[10px] text-stone-500 dark:text-stone-400 font-bold uppercase tracking-wider">Ingredients</span>
-                  <span class="text-lg font-black text-sage-700 dark:text-sage-400">${cRec.ingredients.length} items</span>
-                  <span class="block text-[11px] text-stone-500 dark:text-stone-400">${cRec.appliedSwaps.length} active swap${cRec.appliedSwaps.length === 1 ? '' : 's'}</span>
+                  <span class="block text-xs text-stone-600 dark:text-stone-300 font-bold uppercase tracking-wider">Items</span>
+                  <span class="text-lg font-extrabold text-sage-700 dark:text-sage-400">${cRec.ingredients.length}</span>
                 </div>
               </div>
             </div>
@@ -2712,24 +2359,18 @@
           <!-- ============================================== -->
           <div class="space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-3">
-              <div>
-                <span class="text-xs font-black uppercase tracking-wider text-terracotta">Step 1 of 2</span>
-                <h3 class="text-xl font-black text-forest dark:text-ivory flex items-center gap-2">
-                  <i class="fa-solid fa-basket-shopping text-terracotta"></i>
-                  <span>Bill of Ingredients (Scaled for ${cRec.persons} ${cRec.persons === 1 ? 'Person' : 'Persons'})</span>
-                </h3>
-              </div>
-              <div class="text-xs text-stone-500">
-                Scaled automatically for <span class="font-extrabold text-forest dark:text-ivory">${cRec.persons} ${cRec.persons === 1 ? 'cover' : 'covers'}</span>
-              </div>
+              <h3 class="text-xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2">
+                <i class="fa-solid fa-basket-shopping text-terracotta"></i>
+                <span>Ingredients (${cRec.persons} ${cRec.persons === 1 ? 'Person' : 'Persons'})</span>
+              </h3>
             </div>
 
             <!-- Ingredients Table -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               ${cRec.ingredients.map((ing, idx) => `
                 <div class="p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
-                  ing.isSwapped 
-                    ? 'bg-peach/30/80 dark:bg-amber-950/30 border-amber-300 dark:border-amber-800' 
+                  ing.isSwapped
+                    ? 'bg-peach/30/80 dark:bg-amber-950/30 border-amber-300 dark:border-amber-800'
                     : ing.isLowCalorie
                       ? 'bg-rose-50/80 dark:bg-rose-950/30 border-rose-300 dark:border-rose-800'
                       : ing.isVegan
@@ -2737,7 +2378,7 @@
                         : 'bg-white dark:bg-[#1f1a16]/80 border-beige-200 dark:border-stone-800/80'
                 }">
                   <div class="flex items-start gap-3 min-w-0">
-                    <span class="w-7 h-7 rounded-xl bg-beige-100 dark:bg-stone-800 text-stone-700 dark:text-slate-300 text-xs font-bold flex items-center justify-center shrink-0">
+                    <span class="w-7 h-7 rounded-xl bg-beige-100 dark:bg-stone-800 text-stone-700 dark:text-slate-200 text-xs font-bold flex items-center justify-center shrink-0">
                       ${ing.icon || idx + 1}
                     </span>
                     <div class="min-w-0">
@@ -2746,18 +2387,18 @@
                       </div>
                       ${ing.swapReason ? `
                         <div class="text-xs text-terracotta dark:text-amber-300 font-medium">
-                          💡 ${ing.swapReason}
+                          ${ing.swapReason}
                         </div>
                       ` : ''}
-                      <div class="text-xs text-stone-400">
-                        Category: ${ing.category}
+                      <div class="text-xs text-stone-600 dark:text-stone-300">
+                        ${ing.category}
                       </div>
                     </div>
                   </div>
 
                   <div class="text-right shrink-0">
-                    <div class="text-base font-black text-terracotta dark:text-amber-400">
-                      ${ing.scaledQty} <span class="text-xs font-semibold text-stone-500">${ing.displayUnit}</span>
+                    <div class="text-base font-extrabold text-terracotta dark:text-amber-400">
+                      ${ing.scaledQty} <span class="text-xs font-semibold text-stone-600 dark:text-stone-300">${ing.displayUnit}</span>
                     </div>
                   </div>
                 </div>
@@ -2770,25 +2411,22 @@
           <!-- ============================================== -->
           <div class="space-y-4 pt-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-3">
-              <div>
-                <span class="text-xs font-black uppercase tracking-wider text-sage-600">Step 2 of 2</span>
-                <h3 class="text-xl sm:text-2xl font-black text-forest dark:text-ivory flex items-center gap-2">
-                  <i class="fa-solid fa-fire-burner text-sage-600"></i>
-                  <span>Chef Culinary Method (Swapped Ingredients Integrated Seamlessly)</span>
-                </h3>
-              </div>
-              <div class="text-xs sm:text-sm text-stone-500">
-                Ticket Time: <span class="font-extrabold text-forest dark:text-ivory">${cRec.prepTime} prep + ${cRec.cookTime} cook</span>
+              <h3 class="text-xl sm:text-2xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2">
+                <i class="fa-solid fa-fire-burner text-sage-600"></i>
+                <span>Preparation Steps</span>
+              </h3>
+              <div class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-semibold">
+                <span class="text-forest dark:text-ivory">${cRec.prepTime} prep • ${cRec.cookTime} cook</span>
               </div>
             </div>
 
             <div class="space-y-3">
               ${cRec.steps.map((step, idx) => `
                 <div class="p-4 rounded-2xl bg-white dark:bg-[#1f1a16]/90 border border-beige-200 dark:border-stone-800/80 shadow-sm flex items-start gap-4">
-                  <span class="w-9 h-9 rounded-xl terracotta-btn text-white font-black text-sm flex items-center justify-center shrink-0 shadow-sm">
+                  <span class="w-9 h-9 rounded-xl terracotta-btn text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">
                     ${idx + 1}
                   </span>
-                  <div class="flex-1 text-sm sm:text-base text-espresso dark:text-slate-200 leading-relaxed font-medium">
+                  <div class="flex-1 text-sm sm:text-base text-espresso dark:text-slate-100 leading-relaxed font-medium">
                     ${step}
                   </div>
                 </div>
@@ -2800,11 +2438,10 @@
           <div class="space-y-6 pt-4 border-t border-beige-200 dark:border-stone-800">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h4 class="text-lg font-black text-forest dark:text-ivory flex items-center gap-2">
+                <h4 class="text-lg font-bold text-forest dark:text-ivory flex items-center gap-2">
                   <i class="fa-solid fa-clipboard-check text-sage-600"></i>
-                  <span>Kitchen Tasting Notes & Feedback (${cRec.allReviews.length})</span>
+                  <span>Tasting Notes (${cRec.allReviews.length})</span>
                 </h4>
-                <p class="text-xs text-stone-500">Notes recorded locally in this browser for recipe testing</p>
               </div>
 
               <button 
@@ -3109,8 +2746,6 @@
       renderHtvView();
     } else if (tabName === 'dashboard') {
       renderDashboardView();
-    } else if (tabName === 'slides') {
-      renderDesignThinkingView();
     } else if (tabName === 'favorites') {
       renderFavoritesView();
     }
