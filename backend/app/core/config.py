@@ -9,6 +9,7 @@ from __future__ import annotations
 from functools import lru_cache
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field 
 
 
 class Settings(BaseSettings):
@@ -19,12 +20,12 @@ class Settings(BaseSettings):
     """
 
     model_config = SettingsConfigDict(
-        env_file=".env",
-        env_prefix="FLAVORSHIFT_",
-        env_file_encoding="utf-8",
-        case_sensitive=False,
-    )
-
+    env_file=".env",
+    env_prefix="FLAVORSHIFT_",
+    env_file_encoding="utf-8",
+    case_sensitive=False,
+    extra="ignore",
+)
     # ── Application ──────────────────────────────────────────────────────
     APP_NAME: str = "FlavorShift AI"
     VERSION: str = "0.1.0"
@@ -34,9 +35,15 @@ class Settings(BaseSettings):
     # ── Database ─────────────────────────────────────────────────────────
     DATABASE_URL: str = "sqlite+aiosqlite:///./flavorshift.db"
 
-    # ── Groq / Llama 3.1 ────────────────────────────────────────────────
+    # Groq / Llama 3.1 ────────────────────────────────────────────────
     GROQ_API_KEY: str = ""
     GROQ_MODEL_NAME: str = "llama-3.1-8b-instant"
+
+    # Foodoscope API
+    FOODOSCOPE_API_KEY: str = Field(
+        default="",
+        validation_alias="FOODOSCOPE_API_KEY"
+    )
 
     # ── CORS ─────────────────────────────────────────────────────────────
     CORS_ORIGINS: list[str] = [

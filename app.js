@@ -10,8 +10,11 @@
     selectedSwapIndex: 0,
     swapStudioMode: 'universal', // 'universal' | 'curated'
     universalCurrentIngredient: 'Fresh Cream',
-    universalCurrentDishContext: 'General / All Dishes',
+    universalCurrentDishName: 'Paneer Butter Masala',
+    universalCurrentDishContext: 'Curries & Gravies',
     universalCompareMode: false,
+    selectedSubstitutedAlt: '',
+    substitutedRecipePersons: 1,
     selectedCategory: 'all',
     selectedDiet: 'all',
     searchQuery: '',
@@ -401,6 +404,145 @@
     };
   }
 
+  // Helper: Find matching recipe from catalog for a given dish query or missing ingredient
+  function findMatchingRecipe(dishQuery, missingIng) {
+    const q = (dishQuery || '').trim().toLowerCase();
+    if (q) {
+      let match = RECIPES_DATA.find(r => r.title.toLowerCase() === q);
+      if (match) return match;
+      match = RECIPES_DATA.find(r => r.title.toLowerCase().includes(q) || q.includes(r.title.toLowerCase()));
+      if (match) return match;
+      const words = q.split(/\s+/).filter(w => w.length > 2);
+      for (const w of words) {
+        match = RECIPES_DATA.find(r => r.title.toLowerCase().includes(w) || r.id.toLowerCase().includes(w));
+        if (match) return match;
+      }
+    }
+    if (missingIng) {
+      const norm = missingIng.trim().toLowerCase();
+      const ingMatch = RECIPES_DATA.find(r => r.ingredients && r.ingredients.some(i => i.name.toLowerCase().includes(norm)));
+      if (ingMatch) return ingMatch;
+    }
+    return RECIPES_DATA.find(r => r.id === 'paneer-butter-masala') || RECIPES_DATA[0];
+  }
+
+  // Helper: Create complete recipe with selected substitute replacing the missing ingredient
+  function createSubstitutedRecipe(recipe, missingIngName, selectedAlt, portions = 1) {
+    if (!recipe) recipe = RECIPES_DATA[0];
+    const normMissing = (missingIngName || '').trim().toLowerCase();
+    let found = false;
+
+    // Map ingredients with updated quantities and swapped highlight
+    let ingredients = (recipe.ingredients || []).map(ing => {
+      const normIng = ing.name.toLowerCase();
+      const isDirectMatch = normMissing && (normIng.includes(normMissing) || normMissing.includes(normIng));
+      const isSemanticMatch = normMissing && (
+        (normMissing.includes('cream') && (normIng.includes('cream') || normIng.includes('malai'))) ||
+        (normMissing.includes('butter') && (normIng.includes('butter') || normIng.includes('ghee'))) ||
+        (normMissing.includes('milk') && normIng.includes('milk')) ||
+        (normMissing.includes('cheese') && (normIng.includes('cheese') || normIng.includes('feta') || normIng.includes('parmesan') || normIng.includes('ricotta') || normIng.includes('mozzarella'))) ||
+        (normMissing.includes('paneer') && normIng.includes('paneer')) ||
+        (normMissing.includes('egg') && normIng.includes('egg')) ||
+        (normMissing.includes('tomato') && normIng.includes('tomato')) ||
+        (normMissing.includes('onion') && normIng.includes('onion')) ||
+        (normMissing.includes('garlic') && normIng.includes('garlic')) ||
+        (normMissing.includes('mushroom') && normIng.includes('mushroom')) ||
+        (normMissing.includes('avocado') && normIng.includes('avocado')) ||
+        (normMissing.includes('saffron') && normIng.includes('saffron')) ||
+        (normMissing.includes('flour') && normIng.includes('flour'))
+      );
+
+      if (!found && (isDirectMatch || isSemanticMatch)) {
+        found = true;
+        let scaledQty = ing.qtyPerPerson * portions;
+        let displayQty = scaledQty % 1 === 0 ? scaledQty : scaledQty.toFixed(1);
+        return {
+          ...ing,
+          name: selectedAlt.name,
+          originalName: ing.name,
+          scaledQty: displayQty,
+          displayUnit: ing.unit,
+          isSubstituted: true,
+          swapBadge: `Substituted for ${ing.name}`,
+          swapRatio: selectedAlt.ratio || 'Chef-calibrated functional substitute',
+          swapNote: selectedAlt.calcMethod || selectedAlt.tasteDesc
+        };
+      }
+
+      let scaledQty = ing.qtyPerPerson * portions;
+      let displayQty = scaledQty % 1 === 0 ? scaledQty : scaledQty.toFixed(1);
+      return {
+        ...ing,
+        scaledQty: displayQty,
+        displayUnit: ing.unit,
+        isSubstituted: false
+      };
+    });
+
+    if (!found) {
+      ingredients.unshift({
+        name: selectedAlt.name,
+        originalName: missingIngName || 'Target Ingredient',
+        scaledQty: (50 * portions),
+        displayUnit: 'g calibrated portion',
+        category: 'Substituted',
+        icon: 'fa-solid fa-utensils',
+        isSubstituted: true,
+        swapBadge: `Substituted for ${missingIngName || 'Missing Item'}`,
+        swapRatio: selectedAlt.ratio || 'Chef-calibrated functional substitute',
+        swapNote: selectedAlt.calcMethod || selectedAlt.tasteDesc
+      });
+    }
+
+    // Adapt preparation steps with updated substitute instructions
+    let stepsUpdated = 0;
+    let steps = (recipe.steps || []).map((st, sIdx) => {
+      let lower = st.toLowerCase();
+      const mentionsMissing = normMissing && lower.includes(normMissing);
+      const mentionsGeneral = normMissing && (
+        (normMissing.includes('cream') && (lower.includes('cream') || lower.includes('malai'))) ||
+        (normMissing.includes('butter') && (lower.includes('butter') || lower.includes('ghee'))) ||
+        (normMissing.includes('milk') && lower.includes('milk')) ||
+        (normMissing.includes('egg') && lower.includes('egg')) ||
+        (normMissing.includes('cheese') && (lower.includes('cheese') || lower.includes('feta') || lower.includes('parmesan'))) ||
+        (normMissing.includes('paneer') && lower.includes('paneer'))
+      );
+
+      if (mentionsMissing || mentionsGeneral) {
+        stepsUpdated++;
+        let adapted = st;
+        if (normMissing && normMissing.length > 2) {
+          adapted = adapted.replace(new RegExp(normMissing, 'gi'), selectedAlt.name);
+        }
+        return {
+          text: `${adapted} — [Chef Handling: Follow ${selectedAlt.ratio}. ${selectedAlt.textureDesc || 'Fold gently over gentle heat to preserve smooth emulsion.'}]`,
+          isSubstitutedStep: true
+        };
+      }
+      return {
+        text: st,
+        isSubstitutedStep: false
+      };
+    });
+
+    if (stepsUpdated === 0 && steps.length > 0) {
+      const targetIdx = Math.min(2, steps.length - 1);
+      steps[targetIdx] = {
+        text: `Incorporate ${selectedAlt.name}: ${steps[targetIdx].text} Swirl in ${selectedAlt.name} according to the calibrated conversion (${selectedAlt.ratio}). ${selectedAlt.textureDesc || 'Maintain gentle simmer to ensure uniform integration.'}`,
+        isSubstitutedStep: true
+      };
+    }
+
+    return {
+      ...recipe,
+      portions,
+      missingIngName,
+      selectedAlt,
+      ingredients,
+      steps
+    };
+  }
+
   // ========================================================
   // RENDER: FLAVORSHIFT AI SWAP LAB (FLAGSHIP FEATURE)
   // ========================================================
@@ -410,16 +552,26 @@
 
     const activeSwap = FLAVORSHIFT_SWAP_DATABASE[state.selectedSwapIndex] || FLAVORSHIFT_SWAP_DATABASE[0];
     const currentIng = state.universalCurrentIngredient;
-    const currentCtx = state.universalCurrentDishContext || 'General / All Dishes';
-    const dishContexts = [
-      'General / All Dishes',
-      'Curries & Gravies',
-      'Baking & Cakes',
-      'Tea & Beverages',
-      'Pastas & Sauces',
-      'Salads & Dressings',
-      'Breakfast & Bowls'
-    ];
+    const currentDish = state.universalCurrentDishName || 'Paneer Butter Masala';
+
+    let currentCtx = state.universalCurrentDishContext || 'General / All Dishes';
+    if (currentDish) {
+      const dLower = currentDish.toLowerCase();
+      if (dLower.includes('curry') || dLower.includes('masala') || dLower.includes('makhani') || dLower.includes('korma') || dLower.includes('dal') || dLower.includes('biryani')) {
+        currentCtx = 'Curries & Gravies';
+      } else if (dLower.includes('pasta') || dLower.includes('spaghetti') || dLower.includes('penne') || dLower.includes('arrabbiata') || dLower.includes('sauce') || dLower.includes('gnocchi') || dLower.includes('lasagna')) {
+        currentCtx = 'Pastas & Sauces';
+      } else if (dLower.includes('cake') || dLower.includes('bake') || dLower.includes('muffin') || dLower.includes('cookie') || dLower.includes('tiramisu') || dLower.includes('pie') || dLower.includes('bread') || dLower.includes('souffle') || dLower.includes('cheesecake')) {
+        currentCtx = 'Baking & Cakes';
+      } else if (dLower.includes('tea') || dLower.includes('latte') || dLower.includes('coffee') || dLower.includes('smoothie') || dLower.includes('drink') || dLower.includes('chai')) {
+        currentCtx = 'Tea & Beverages';
+      } else if (dLower.includes('salad') || dLower.includes('dressing') || dLower.includes('pesto') || dLower.includes('bowl')) {
+        currentCtx = 'Salads & Dressings';
+      } else if (dLower.includes('toast') || dLower.includes('egg') || dLower.includes('pancake') || dLower.includes('oat') || dLower.includes('waffle') || dLower.includes('breakfast')) {
+        currentCtx = 'Breakfast & Bowls';
+      }
+    }
+
     let uResult = null;
     if (typeof UniversalIngredientEngine !== 'undefined' && currentIng) {
       try {
@@ -554,87 +706,78 @@
           </div>
 
           ${state.swapStudioMode !== 'curated' ? `
-          <!-- Universal Ingredient Intelligence Lookup (Any Ingredient + Dish Context) -->
+          <!-- Missing Ingredient Substitution Studio -->
           <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-6 glow-card">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-4">
               <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono">Universal Ingredient Prompt</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono">Missing Ingredient Substitution</span>
                 <h3 class="text-2xl sm:text-3xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2.5 mt-1">
                   <i class="fa-solid fa-magnifying-glass text-terracotta text-xl"></i>
-                  <span>What Ingredient Are You Substituting Today?</span>
+                  <span>Type Your Missing Ingredient</span>
                 </h3>
               </div>
               <span class="text-sm text-stone-500 font-accent italic">Context-aware kitchen ratios, texture notes & allergens</span>
             </div>
 
-            <!-- Executive Chef Quick-Prompt Starters -->
-            <div class="p-4 rounded-2xl bg-ivory/80 dark:bg-[#181410] border border-beige-200/80 dark:border-stone-800 space-y-2.5">
-              <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest dark:text-sage-300 font-mono">
-                <i class="fa-solid fa-sparkles text-terracotta"></i>
-                <span>Quick Kitchen Scenarios (Click to Test Prompt)</span>
-              </div>
-              <div class="flex flex-wrap gap-2">
-                ${[
-                  { label: '“Out of heavy cream for rich Indian curry”', ing: 'Fresh Cream', ctx: 'Curries & Gravies' },
-                  { label: '“Need a dairy-free aged cheese swap for pasta”', ing: 'Parmesan', ctx: 'Pastas & Sauces' },
-                  { label: '“Eggless baking binder for sponges & muffins”', ing: 'Eggs', ctx: 'Baking & Cakes' },
-                  { label: '“Warm saffron color & aroma alternative for rice”', ing: 'Saffron', ctx: 'Curries & Gravies' },
-                  { label: '“Nut-free toasted crunch for pesto & salads”', ing: 'Pine Nuts', ctx: 'Salads & Dressings' }
-                ].map(p => `
-                  <button
-                    type="button"
-                    data-prompt-ing="${p.ing}"
-                    data-prompt-ctx="${p.ctx}"
-                    class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all cursor-pointer text-left ${
-                      currentIng && currentIng.toLowerCase() === p.ing.toLowerCase() && currentCtx === p.ctx
-                        ? 'bg-terracotta text-white border-terracotta shadow-sm'
-                        : 'bg-white dark:bg-stone-900 border-beige-200 dark:border-stone-700 text-espresso dark:text-ivory hover:border-terracotta'
-                    }"
-                  >
-                    ${p.label}
-                  </button>
-                `).join('')}
-              </div>
-            </div>
-
-            <!-- Search Bar + Dish Context + Analyze CTA -->
+            <!-- Two Search / Input Boxes: Missing Ingredient + Dish Name + Analyze CTA -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-end">
-              <div class="md:col-span-6 relative">
-                <label for="universal-ingredient-input" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5 ml-1">Target Ingredient</label>
+              <!-- Box 1: Missing Ingredient -->
+              <div class="md:col-span-5 relative">
+                <label for="universal-ingredient-input" class="block text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-1.5 ml-1 flex items-center gap-1.5">
+                  <i class="fa-solid fa-circle-exclamation text-terracotta"></i>
+                  <span>Missing Ingredient</span>
+                </label>
                 <div class="relative">
                   <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
                   <input
                     type="text"
                     id="universal-ingredient-input"
                     value="${currentIng || ''}"
-                    placeholder="Type any ingredient (Milk, Paneer, Mushroom, Miso, Gochujang, Eggs...)"
-                    class="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-semibold text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta transition-all"
+                    placeholder="Enter the ingredient you don't have (e.g. Fresh Cream, Butter, Eggs, Parmesan...)"
+                    class="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-semibold text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta transition-all shadow-xs"
                   />
                   <button
                     type="button"
                     id="universal-search-clear-btn"
                     class="${currentIng ? '' : 'hidden'} absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-xs cursor-pointer"
-                    title="Clear input"
+                    title="Clear missing ingredient"
                   >
                     <i class="fa-solid fa-xmark"></i>
                   </button>
                 </div>
               </div>
 
-              <div class="md:col-span-4 relative">
-                <label for="universal-dish-context-select" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5 ml-1">Culinary Dish Context</label>
+              <!-- Box 2: Dish Name -->
+              <div class="md:col-span-5 relative">
+                <label for="universal-dish-input" class="block text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-1.5 ml-1 flex items-center gap-1.5">
+                  <i class="fa-solid fa-bowl-food text-terracotta"></i>
+                  <span>Dish Name</span>
+                </label>
                 <div class="relative">
-                  <i class="fa-solid fa-bowl-food absolute left-4 top-1/2 -translate-y-1/2 text-terracotta text-sm"></i>
-                  <select
-                    id="universal-dish-context-select"
-                    class="w-full pl-11 pr-9 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer appearance-none"
+                  <i class="fa-solid fa-utensils absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
+                  <input
+                    type="text"
+                    id="universal-dish-input"
+                    list="catalog-dish-datalist"
+                    value="${currentDish || ''}"
+                    placeholder="Enter the dish/recipe (e.g. Paneer Butter Masala, Pasta, Tiramisu...)"
+                    class="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-semibold text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta transition-all shadow-xs"
+                  />
+                  <datalist id="catalog-dish-datalist">
+                    ${RECIPES_DATA.map(r => `<option value="${r.title}">`).join('')}
+                  </datalist>
+                  <button
+                    type="button"
+                    id="universal-dish-clear-btn"
+                    class="${currentDish ? '' : 'hidden'} absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-xs cursor-pointer"
+                    title="Clear dish name"
                   >
-                    ${dishContexts.map(ctx => `<option value="${ctx}" ${ctx === currentCtx ? 'selected' : ''}>${ctx}</option>`).join('')}
-                  </select>
-                  <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 text-xs pointer-events-none"></i>
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
                 </div>
               </div>
 
+              <!-- Analyze CTA -->
               <div class="md:col-span-2">
                 <button
                   type="button"
@@ -646,27 +789,6 @@
                 </button>
               </div>
             </div>
-
-            <!-- Preset Showcase Pills -->
-            ${presetShowcase.length > 0 ? `
-              <div class="flex flex-wrap items-center gap-2 pt-1">
-                <span class="text-xs font-bold text-stone-500 mr-1">Common Pantry Targets:</span>
-                ${presetShowcase.slice(0, 12).map(p => `
-                  <button
-                    type="button"
-                    data-universal-chip="${p.name}"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
-                      currentIng && currentIng.toLowerCase() === p.name.toLowerCase()
-                        ? 'bg-forest text-ivory border-forest shadow-xs'
-                        : 'bg-ivory dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-terracotta'
-                    }"
-                  >
-                    <i class="${p.icon} text-xs text-terracotta"></i>
-                    <span>${p.name}</span>
-                  </button>
-                `).join('')}
-              </div>
-            ` : ''}
 
             <!-- Universal Engine Output -->
             <div id="universal-results-container">
@@ -680,26 +802,43 @@
                   <p class="text-[11px] text-stone-500 max-w-xl mx-auto">${uResult.suggestion}</p>
                   <div class="pt-1 flex flex-wrap items-center justify-center gap-2">
                     <button type="button" id="try-another-ingredient-btn" class="px-4 py-2 rounded-xl text-xs font-bold terracotta-btn text-white cursor-pointer">Try Another Ingredient</button>
-                    <button type="button" data-universal-chip="Milk" class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory cursor-pointer">Test "Milk"</button>
-                    <button type="button" data-universal-chip="Paneer" class="px-3 py-2 rounded-xl text-xs font-bold bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory cursor-pointer">Test "Paneer"</button>
                   </div>
                 </div>
               ` : uResult.status === 'recognized' ? (() => {
-                const alts = uResult.alternatives || [];
-                const topAlt = alts[0] || { name: 'Culinary Alternative', ratio: '' };
+                const rawAlts = uResult.alternatives || [];
+                const alts = rawAlts.slice(0, 3);
+                while (alts.length < 3) {
+                  alts.push({
+                    name: 'Chef-Calibrated Whole Food Alternative',
+                    type: 'Functional Kitchen Emulsion',
+                    ratio: '1:1 by volume or weight',
+                    calcMethod: 'Functional moisture and lipid balance',
+                    tasteDesc: 'Neutral, creamy culinary medium that absorbs dish flavors.',
+                    textureDesc: 'Smooth consistency matching target viscosity.',
+                    dietary: ['Vegetarian', 'Gluten-Free'],
+                    allergens: ['None']
+                  });
+                }
+                if (!state.selectedSubstitutedAlt || !alts.some(a => a.name === state.selectedSubstitutedAlt)) {
+                  state.selectedSubstitutedAlt = alts[0].name;
+                }
+                const activeAlt = alts.find(a => a.name === state.selectedSubstitutedAlt) || alts[0];
+                const matchedRecipe = findMatchingRecipe(currentDish, uResult.ingredientName);
+                const subRecipe = createSubstitutedRecipe(matchedRecipe, uResult.ingredientName, activeAlt, state.substitutedRecipePersons || 1);
+
                 return `
-                  <div class="pt-5 border-t border-beige-200 dark:border-stone-800 space-y-5">
+                  <div class="pt-5 border-t border-beige-200 dark:border-stone-800 space-y-6">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
                       <div class="space-y-1.5">
                         <div class="flex flex-wrap items-center gap-2">
                           <span class="px-3 py-1 rounded-full text-xs font-bold bg-peach/50 text-terracotta border border-terracotta/30 flex items-center gap-1.5">
-                            <i class="${uResult.icon || 'fa-solid fa-utensils'} text-xs"></i> ${uResult.ingredientName}
+                            <i class="${uResult.icon || 'fa-solid fa-utensils'} text-xs"></i> Missing: ${uResult.ingredientName}
                           </span>
                           <span class="px-3 py-1 rounded-full text-xs font-bold bg-beige-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
                             ${uResult.category}
                           </span>
                           <span class="px-3 py-1 rounded-full text-xs font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">
-                            Context: ${uResult.dishContext}
+                            Target Dish: ${currentDish || matchedRecipe.title}
                           </span>
                         </div>
                         <p class="text-sm text-stone-600 dark:text-stone-300">
@@ -737,7 +876,7 @@
                           </thead>
                           <tbody class="divide-y divide-beige-200/70 dark:divide-stone-800">
                             ${alts.map(alt => `
-                              <tr>
+                              <tr class="${state.selectedSubstitutedAlt === alt.name ? 'bg-peach/20 dark:bg-stone-800/60 font-semibold' : ''}">
                                 <td class="py-3 px-3 font-bold text-forest dark:text-ivory">
                                   ${alt.name}
                                   <span class="block text-xs font-normal text-terracotta mt-0.5">${alt.type}</span>
@@ -751,7 +890,9 @@
                                   </div>
                                 </td>
                                 <td class="py-3 px-3 text-right">
-                                  <button type="button" data-select-alt="${alt.name}" class="px-3 py-1.5 rounded-lg bg-terracotta text-white font-bold text-xs cursor-pointer">Select</button>
+                                  <button type="button" data-select-alt="${alt.name}" class="px-3 py-1.5 rounded-lg ${state.selectedSubstitutedAlt === alt.name ? 'bg-forest text-ivory' : 'bg-terracotta text-white'} font-bold text-xs cursor-pointer">
+                                    ${state.selectedSubstitutedAlt === alt.name ? 'Selected' : 'Select'}
+                                  </button>
                                 </td>
                               </tr>
                             `).join('')}
@@ -760,39 +901,78 @@
                       </div>
                     ` : ''}
 
-                    <div class="grid grid-cols-1 ${alts.length === 2 ? 'md:grid-cols-2' : alts.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'} gap-4">
-                      ${alts.map((alt, idx) => `
-                        <div class="editorial-card p-5 bg-ivory/70 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-4">
-                          <div class="space-y-3">
-                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider inline-block ${
-                              idx === 0 ? 'bg-forest text-ivory' : idx === 1 ? 'bg-sage text-white' : 'bg-terracotta text-white'
+                    <!-- Exactly 3 Alternative Cards -->
+                    <div>
+                      <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-forest dark:text-sage-400 font-mono">
+                          Top 3 Alternative Ingredients (Click to Apply to Complete Recipe)
+                        </span>
+                        <span class="text-xs text-stone-500 italic">Select any alternative below to view updated complete recipe</span>
+                      </div>
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        ${alts.map((alt, idx) => {
+                          const isSelected = state.selectedSubstitutedAlt === alt.name;
+                          return `
+                            <div class="editorial-card p-5.5 rounded-3xl flex flex-col justify-between space-y-4 transition-all duration-300 ${
+                              isSelected
+                                ? 'bg-white dark:bg-[#1c1713] border-2 border-terracotta shadow-xl ring-2 ring-terracotta/20 scale-[1.01]'
+                                : 'bg-ivory/70 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 hover:border-terracotta/70'
                             }">
-                              Option ${idx + 1}: ${alt.type}
-                            </span>
-                            <h4 class="text-lg sm:text-xl font-bold font-heading text-forest dark:text-ivory leading-snug">${alt.name}</h4>
-                            <div class="p-3 rounded-xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800">
-                              <span class="block text-[11px] font-bold uppercase text-terracotta font-mono">Conversion Ratio</span>
-                              <span class="text-sm font-bold text-forest dark:text-ivory block font-mono mt-0.5">${alt.ratio}</span>
-                              <span class="block text-xs text-stone-500 mt-1">${alt.calcMethod || 'Functional culinary balance'}</span>
+                              <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                  <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider inline-block ${
+                                    idx === 0 ? 'bg-forest text-ivory' : idx === 1 ? 'bg-sage text-white' : 'bg-terracotta text-white'
+                                  }">
+                                    Option ${idx + 1}: ${alt.type}
+                                  </span>
+                                  ${isSelected ? `
+                                    <span class="text-xs font-bold text-terracotta flex items-center gap-1 font-mono">
+                                      <i class="fa-solid fa-circle-check"></i> Selected
+                                    </span>
+                                  ` : ''}
+                                </div>
+                                
+                                <h4 class="text-lg sm:text-xl font-bold font-heading text-forest dark:text-ivory leading-snug">
+                                  ${alt.name}
+                                </h4>
+
+                                <div class="p-3 rounded-2xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 shadow-xs">
+                                  <span class="block text-[10px] font-bold uppercase text-terracotta font-mono tracking-wider">Conversion Ratio</span>
+                                  <span class="text-sm font-bold text-forest dark:text-ivory block font-mono mt-0.5 leading-snug">${alt.ratio}</span>
+                                  <span class="block text-xs text-stone-500 mt-1">${alt.calcMethod || 'Functional culinary balance'}</span>
+                                </div>
+
+                                <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                                  <strong>Flavor:</strong> ${alt.tasteDesc}
+                                </p>
+                                <p class="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+                                  <strong>Texture & Handling:</strong> ${alt.textureDesc}
+                                </p>
+
+                                <div class="flex flex-wrap gap-1.5 pt-1">
+                                  ${(alt.dietary || []).map(tag => `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">${tag}</span>`).join('')}
+                                  ${(alt.allergens && alt.allergens.length && alt.allergens[0] !== 'None')
+                                    ? alt.allergens.map(a => `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-peach/50 text-terracotta">${a}</span>`).join('')
+                                    : '<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-beige-100 dark:bg-stone-800 text-stone-500">No Major Allergens</span>'}
+                                </div>
+                              </div>
+
+                              <button
+                                type="button"
+                                data-select-alt="${alt.name}"
+                                class="w-full py-2.5 px-3 rounded-xl text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                                  isSelected
+                                    ? 'bg-terracotta text-white shadow-md'
+                                    : 'forest-btn shadow-xs'
+                                }"
+                              >
+                                <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-hand-pointer'}"></i>
+                                <span>${isSelected ? 'Selected Substitute' : 'Select Substitute'}</span>
+                              </button>
                             </div>
-                            <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                              <strong>Flavor:</strong> ${alt.contextNotes && alt.contextNotes[uResult.dishContext] ? alt.contextNotes[uResult.dishContext] : alt.tasteDesc}
-                            </p>
-                            <p class="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
-                              <strong>Texture:</strong> ${alt.textureDesc}
-                            </p>
-                            <div class="flex flex-wrap gap-1.5 pt-1">
-                              ${(alt.dietary || []).map(tag => `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">${tag}</span>`).join('')}
-                              ${(alt.allergens && alt.allergens.length && alt.allergens[0] !== 'None')
-                                ? alt.allergens.map(a => `<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-peach/50 text-terracotta">${a}</span>`).join('')
-                                : '<span class="px-2.5 py-0.5 rounded text-xs font-bold bg-beige-100 dark:bg-stone-800 text-stone-500">No Major Allergens</span>'}
-                            </div>
-                          </div>
-                          <button type="button" data-select-alt="${alt.name}" class="w-full py-2.5 px-3 rounded-xl text-sm font-bold forest-btn cursor-pointer">
-                            Select Substitute
-                          </button>
-                        </div>
-                      `).join('')}
+                          `;
+                        }).join('')}
+                      </div>
                     </div>
 
                     ${(uResult.volatiles && uResult.volatiles.length) ? `
@@ -804,6 +984,196 @@
                         <span class="text-xs text-stone-400 italic">${uResult.source}</span>
                       </div>
                     ` : ''}
+
+                    <!-- Complete Recipe with the Selected Substitute Replacing Original Missing Ingredient -->
+                    <div id="substituted-recipe-card" class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1c1713] border-2 border-terracotta/40 dark:border-stone-800 shadow-xl space-y-6">
+                      
+                      <!-- Header & Banner -->
+                      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-beige-200 dark:border-stone-800 pb-5">
+                        <div class="space-y-1.5">
+                          <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-terracotta text-white font-mono flex items-center gap-1.5 shadow-xs">
+                              <i class="fa-solid fa-utensils"></i> Complete Adapted Recipe
+                            </span>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">
+                              ${subRecipe.category}
+                            </span>
+                            <span class="text-xs text-stone-500 font-medium">
+                              Prep: ${subRecipe.prepTime} • Cook: ${subRecipe.cookTime} • ${subRecipe.difficulty}
+                            </span>
+                          </div>
+                          <h3 class="text-2xl sm:text-3xl font-black font-heading text-forest dark:text-ivory">
+                            ${subRecipe.title}
+                          </h3>
+                          <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300">
+                            Complete recipe updated with <strong class="text-terracotta">${activeAlt.name}</strong> replacing <strong class="line-through text-stone-400">${uResult.ingredientName}</strong>.
+                          </p>
+                        </div>
+
+                        <!-- Portions Scaler Controls -->
+                        <div class="flex items-center gap-2 shrink-0 bg-ivory dark:bg-stone-900 border border-beige-200 dark:border-stone-800 rounded-2xl p-2 shadow-xs">
+                          <span class="text-xs font-bold uppercase tracking-wider text-stone-500 ml-2">Portions:</span>
+                          <button
+                            type="button"
+                            data-sub-portion="-1"
+                            class="w-8 h-8 rounded-xl bg-white dark:bg-stone-800 border border-beige-200 dark:border-stone-700 text-forest dark:text-ivory hover:bg-terracotta hover:text-white flex items-center justify-center font-bold text-sm cursor-pointer transition-all"
+                            title="Decrease portions"
+                          >
+                            <i class="fa-solid fa-minus text-xs"></i>
+                          </button>
+                          <span id="sub-recipe-portion-count" class="font-mono font-bold text-sm sm:text-base text-forest dark:text-ivory px-2 min-w-[5.5rem] text-center">
+                            ${subRecipe.portions} ${subRecipe.portions === 1 ? 'Cover' : 'Covers'}
+                          </span>
+                          <button
+                            type="button"
+                            data-sub-portion="1"
+                            class="w-8 h-8 rounded-xl bg-white dark:bg-stone-800 border border-beige-200 dark:border-stone-700 text-forest dark:text-ivory hover:bg-terracotta hover:text-white flex items-center justify-center font-bold text-sm cursor-pointer transition-all"
+                            title="Increase portions"
+                          >
+                            <i class="fa-solid fa-plus text-xs"></i>
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- Visual Substitution Summary Pill Bar -->
+                      <div class="p-4 sm:p-5 rounded-2xl bg-peach/25 dark:bg-[#251e18] border border-terracotta/30 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-4 flex items-center gap-3">
+                          <div class="w-10 h-10 rounded-xl bg-terracotta text-white flex items-center justify-center text-base shrink-0 shadow-xs">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                          </div>
+                          <div>
+                            <span class="block text-[10px] font-bold uppercase text-stone-500 font-mono tracking-wider">Active Substitution:</span>
+                            <span class="text-xs line-through text-stone-400 block">${uResult.ingredientName}</span>
+                            <span class="text-sm font-bold text-forest dark:text-ivory block">${activeAlt.name}</span>
+                          </div>
+                        </div>
+
+                        <div class="md:col-span-4 p-3 rounded-xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800">
+                          <span class="block text-[10px] font-bold uppercase text-terracotta font-mono">Calibrated Conversion Ratio:</span>
+                          <span class="text-xs font-mono font-bold text-forest dark:text-ivory block mt-0.5">${activeAlt.ratio}</span>
+                        </div>
+
+                        <div class="md:col-span-4 text-xs text-stone-600 dark:text-stone-300">
+                          <span class="font-bold text-forest dark:text-ivory block">Culinary Function:</span>
+                          <span>${activeAlt.calcMethod || activeAlt.tasteDesc}</span>
+                        </div>
+                      </div>
+
+                      <!-- Two-Column Layout: Bill of Ingredients (Left) + Adapted Method (Right) -->
+                      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                        
+                        <!-- Left: Complete Bill of Ingredients -->
+                        <div class="lg:col-span-5 space-y-3">
+                          <div class="flex items-center justify-between pb-1 border-b border-beige-200 dark:border-stone-800">
+                            <h4 class="font-heading font-bold text-base sm:text-lg text-forest dark:text-ivory flex items-center gap-2">
+                              <i class="fa-solid fa-clipboard-list text-terracotta"></i>
+                              <span>Bill of Ingredients (${subRecipe.portions} ${subRecipe.portions === 1 ? 'Portion' : 'Portions'})</span>
+                            </h4>
+                            <span class="text-[11px] font-mono text-terracotta font-bold">1 Swapped</span>
+                          </div>
+
+                          <div class="space-y-2">
+                            ${subRecipe.ingredients.map(ing => `
+                              <div class="p-3 rounded-2xl flex items-center justify-between gap-3 transition-all ${
+                                ing.isSubstituted
+                                  ? 'bg-peach/30 dark:bg-stone-900 border-2 border-terracotta shadow-sm'
+                                  : 'bg-ivory/60 dark:bg-[#181410] border border-beige-200 dark:border-stone-800'
+                              }">
+                                <div class="min-w-0">
+                                  <div class="flex items-center gap-2">
+                                    <span class="text-sm font-bold truncate text-forest dark:text-ivory ${ing.isSubstituted ? 'text-terracotta dark:text-peach' : ''}">
+                                      ${ing.name}
+                                    </span>
+                                    ${ing.isSubstituted ? `
+                                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-terracotta text-white uppercase font-mono shrink-0">
+                                        <i class="fa-solid fa-arrows-rotate"></i> Swap
+                                      </span>
+                                    ` : ''}
+                                  </div>
+                                  ${ing.isSubstituted ? `
+                                    <span class="block text-[11px] text-stone-500 mt-0.5">
+                                      Replaced: <span class="line-through">${ing.originalName}</span> • <span class="font-mono text-terracotta font-bold">${ing.swapRatio}</span>
+                                    </span>
+                                  ` : ''}
+                                </div>
+                                <span class="font-mono text-xs sm:text-sm font-bold text-forest dark:text-ivory shrink-0 bg-white dark:bg-stone-800 px-2.5 py-1 rounded-xl border border-beige-200 dark:border-stone-700">
+                                  ${ing.scaledQty} ${ing.displayUnit}
+                                </span>
+                              </div>
+                            `).join('')}
+                          </div>
+                        </div>
+
+                        <!-- Right: Adapted Cooking Instructions -->
+                        <div class="lg:col-span-7 space-y-3">
+                          <div class="flex items-center justify-between pb-1 border-b border-beige-200 dark:border-stone-800">
+                            <h4 class="font-heading font-bold text-base sm:text-lg text-forest dark:text-ivory flex items-center gap-2">
+                              <i class="fa-solid fa-fire-burner text-terracotta"></i>
+                              <span>Cooking Instructions (Adapted for ${activeAlt.name})</span>
+                            </h4>
+                            <span class="text-[11px] text-stone-500 font-accent italic">Step-by-step culinary method</span>
+                          </div>
+
+                          <div class="space-y-3">
+                            ${subRecipe.steps.map((st, sIdx) => `
+                              <div class="p-4 rounded-2xl transition-all ${
+                                st.isSubstitutedStep
+                                  ? 'bg-peach/25 dark:bg-stone-900 border-2 border-terracotta/70 shadow-sm'
+                                  : 'bg-ivory/60 dark:bg-[#181410] border border-beige-200 dark:border-stone-800'
+                              }">
+                                <div class="flex items-center justify-between gap-2 mb-1.5">
+                                  <span class="text-xs font-bold uppercase tracking-wider font-mono ${
+                                    st.isSubstitutedStep ? 'text-terracotta font-black flex items-center gap-1.5' : 'text-stone-500'
+                                  }">
+                                    ${st.isSubstitutedStep ? `<i class="fa-solid fa-fire text-terracotta"></i> Step ${sIdx + 1}: Adapted Substitute Handling` : `Step ${sIdx + 1}`}
+                                  </span>
+                                  ${st.isSubstitutedStep ? `
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-terracotta text-white uppercase font-mono">
+                                      Active Modification
+                                    </span>
+                                  ` : ''}
+                                </div>
+                                <p class="text-xs sm:text-sm text-espresso dark:text-stone-200 leading-relaxed font-sans">
+                                  ${st.text}
+                                </p>
+                              </div>
+                            `).join('')}
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <!-- Substituted Recipe Action Bar -->
+                      <div class="pt-4 border-t border-beige-200 dark:border-stone-800 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <button
+                            type="button"
+                            data-open-sub-modal="${subRecipe.id}"
+                            class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold terracotta-btn text-white transition-all cursor-pointer shadow-md flex items-center gap-2"
+                          >
+                            <i class="fa-solid fa-expand"></i>
+                            <span>Open in Full Recipe Studio</span>
+                          </button>
+                          <button
+                            type="button"
+                            data-print-sub-ticket="${subRecipe.id}"
+                            class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-ivory dark:bg-stone-900 border border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory hover:border-terracotta transition-all cursor-pointer flex items-center gap-2"
+                          >
+                            <i class="fa-solid fa-print text-terracotta"></i>
+                            <span>Print Prep Ticket</span>
+                          </button>
+                        </div>
+                        <button
+                          type="button"
+                          data-log-sub-test="${subRecipe.id}"
+                          class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold sage-btn transition-all cursor-pointer flex items-center gap-2"
+                        >
+                          <i class="fa-solid fa-star text-white"></i>
+                          <span>Log Kitchen Test & Rating</span>
+                        </button>
+                      </div>
+
+                    </div>
                   </div>
                 `;
               })() : ''}
@@ -1007,91 +1377,6 @@
 
         </section>
 
-        <!-- ============================================== -->
-        <!-- SECTION 3: SORTED KITCHEN TOOLKIT & WORKFLOW   -->
-        <!-- ============================================== -->
-        <section class="space-y-5 reveal-on-scroll">
-          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
-            <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-forest dark:text-sage-400 font-mono">
-                Kitchen Toolkit & Workflow
-              </span>
-              <h2 class="font-heading font-black text-2xl sm:text-3xl text-forest dark:text-ivory">
-                Everything You Need in Four Steps
-              </h2>
-            </div>
-            <p class="text-sm text-stone-500 dark:text-stone-400 font-accent italic">
-              Explore menus, toggle swaps, plan costs, and print scaled prep tickets.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-4">
-              <div class="space-y-2.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-2xl font-black text-terracotta/60 font-heading">01</span>
-                  <i class="fa-solid fa-utensils text-terracotta text-lg"></i>
-                </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Catalog & Scaler</h4>
-                <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                  Browse ${RECIPES_DATA.length} dishes across 10 categories with per-person ingredient scaling and swap toggles.
-                </p>
-              </div>
-              <button type="button" data-hero-action="explore" class="sage-btn w-full py-2.5 px-4 rounded-xl text-sm font-bold text-center cursor-pointer">
-                View Menus →
-              </button>
-            </div>
-
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-4">
-              <div class="space-y-2.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-2xl font-black text-sage-600/60 font-heading">02</span>
-                  <i class="fa-solid fa-users-viewfinder text-sage-600 text-lg"></i>
-                </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Kitchen Tasting Log</h4>
-                <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                  Test substitutes on your own stove and save personal ratings and flavor notes locally.
-                </p>
-              </div>
-              <button type="button" data-hero-action="htv" class="sage-btn w-full py-2.5 px-4 rounded-xl text-sm font-bold text-center cursor-pointer">
-                Open Tasting Log →
-              </button>
-            </div>
-
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-4">
-              <div class="space-y-2.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-2xl font-black text-terracotta/60 font-heading">03</span>
-                  <i class="fa-solid fa-chart-pie text-terracotta text-lg"></i>
-                </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Batch Cost Calculator</h4>
-                <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                  Enter your own portion costs and menu prices across 5–200 covers to check shift margins.
-                </p>
-              </div>
-              <button type="button" data-hero-action="dashboard" class="sage-btn w-full py-2.5 px-4 rounded-xl text-sm font-bold text-center cursor-pointer">
-                Open Calculator →
-              </button>
-            </div>
-
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-4">
-              <div class="space-y-2.5">
-                <div class="flex items-center justify-between">
-                  <span class="text-2xl font-black text-forest-400/60 font-heading">04</span>
-                  <i class="fa-solid fa-receipt text-forest dark:text-sage-300 text-lg"></i>
-                </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Prep Tickets</h4>
-                <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                  Format and print scaled ingredient checklists and adapted cooking steps for prep stations.
-                </p>
-              </div>
-              <button type="button" data-print-sample="paneer-butter-masala" class="sage-btn w-full py-2.5 px-4 rounded-xl text-sm font-bold text-center cursor-pointer">
-                Print Sample Ticket →
-              </button>
-            </div>
-          </div>
-        </section>
-
       </div>
     `;
 
@@ -1112,16 +1397,24 @@
       });
     });
 
-    // Universal Ingredient Lookup Events
+    // Missing Ingredient & Dish Name Universal Lookup Events
     const uInput = container.querySelector('#universal-ingredient-input');
     const uClear = container.querySelector('#universal-search-clear-btn');
-    const uSelect = container.querySelector('#universal-dish-context-select');
+    const uDishInput = container.querySelector('#universal-dish-input');
+    const uDishClear = container.querySelector('#universal-dish-clear-btn');
     const uAnalyze = container.querySelector('#universal-analyze-btn');
 
     const runUniversalLookup = () => {
       const val = uInput ? uInput.value.trim() : '';
-      if (!val) return;
+      const dishVal = uDishInput ? uDishInput.value.trim() : '';
+      if (!val) {
+        showNotification('Missing Ingredient Required', 'Please enter the ingredient you need to substitute.', 'warning');
+        if (uInput) uInput.focus();
+        return;
+      }
       state.universalCurrentIngredient = val;
+      state.universalCurrentDishName = dishVal;
+      state.selectedSubstitutedAlt = '';
       renderSwapLabView();
     };
 
@@ -1137,26 +1430,21 @@
       if (uInput) { uInput.value = ''; uInput.focus(); }
       uClear.classList.add('hidden');
     });
-    uSelect?.addEventListener('change', (e) => {
-      state.universalCurrentDishContext = e.target.value;
-      renderSwapLabView();
+
+    uDishInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') runUniversalLookup();
     });
+    uDishInput?.addEventListener('input', (e) => {
+      state.universalCurrentDishName = e.target.value;
+      if (uDishClear) uDishClear.classList.toggle('hidden', !e.target.value);
+    });
+    uDishClear?.addEventListener('click', () => {
+      state.universalCurrentDishName = '';
+      if (uDishInput) { uDishInput.value = ''; uDishInput.focus(); }
+      uDishClear.classList.add('hidden');
+    });
+
     uAnalyze?.addEventListener('click', runUniversalLookup);
-
-    container.querySelectorAll('[data-prompt-ing]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        state.universalCurrentIngredient = btn.getAttribute('data-prompt-ing') || 'Fresh Cream';
-        state.universalCurrentDishContext = btn.getAttribute('data-prompt-ctx') || 'General / All Dishes';
-        renderSwapLabView();
-      });
-    });
-
-    container.querySelectorAll('[data-universal-chip]').forEach(chip => {
-      chip.addEventListener('click', () => {
-        state.universalCurrentIngredient = chip.getAttribute('data-universal-chip');
-        renderSwapLabView();
-      });
-    });
 
     container.querySelector('#try-another-ingredient-btn')?.addEventListener('click', () => {
       state.universalCurrentIngredient = '';
@@ -1169,10 +1457,51 @@
       renderSwapLabView();
     });
 
+    // Alternative Selection (Point 6 & 7) -> sets active substitute and updates complete recipe
     container.querySelectorAll('[data-select-alt]').forEach(btn => {
       btn.addEventListener('click', () => {
         const altName = btn.getAttribute('data-select-alt');
-        showNotification('Substitute Selected', `Selected "${altName}" for ${state.universalCurrentIngredient || 'your recipe'}.`, 'success');
+        state.selectedSubstitutedAlt = altName;
+        renderSwapLabView();
+        showNotification('Substitute Selected', `Loaded complete adapted recipe with "${altName}".`, 'success');
+        const recCard = document.getElementById('substituted-recipe-card');
+        if (recCard) {
+          recCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    });
+
+    // Substituted recipe portion scaler
+    container.querySelectorAll('[data-sub-portion]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const delta = parseInt(btn.getAttribute('data-sub-portion'), 10) || 0;
+        state.substitutedRecipePersons = Math.max(1, Math.min(25, (state.substitutedRecipePersons || 1) + delta));
+        renderSwapLabView();
+        const recCard = document.getElementById('substituted-recipe-card');
+        if (recCard) {
+          recCard.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+        }
+      });
+    });
+
+    // Substituted recipe modal opener
+    container.querySelectorAll('[data-open-sub-modal]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openRecipeModal(btn.getAttribute('data-open-sub-modal'));
+      });
+    });
+
+    // Substituted recipe ticket print
+    container.querySelectorAll('[data-print-sub-ticket]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        printKitchenTicket(btn.getAttribute('data-print-sub-ticket'));
+      });
+    });
+
+    // Substituted recipe tasting log transition
+    container.querySelectorAll('[data-log-sub-test]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        switchTab('htv');
       });
     });
 
