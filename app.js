@@ -8,6 +8,7 @@
   const state = {
     activeTab: 'swaplab', // 'swaplab', 'explore', 'htv', 'dashboard', 'slides', 'favorites'
     selectedSwapIndex: 0,
+    swapStudioMode: 'universal', // 'universal' | 'curated'
     universalCurrentIngredient: 'Fresh Cream',
     universalCurrentDishContext: 'General / All Dishes',
     universalCompareMode: false,
@@ -20,15 +21,6 @@
     activePantryIngredients: new Set(JSON.parse(localStorage.getItem('flavorshift_pantry') || '[]')),
     favorites: new Set(JSON.parse(localStorage.getItem('flavorshift_favs') || '["paneer-butter-masala", "wild-mushroom-truffle-pasta", "artisan-margherita-sourdough-pizza"]')),
     theme: localStorage.getItem('flavorshift_theme') || 'light',
-    
-    // Video Controller State
-    ambientVideoEnabled: localStorage.getItem('flavorshift_video_enabled') !== 'false',
-    currentVideoScene: 'sizzle', // 'sizzle', 'prep', 'fire'
-    videoSources: {
-      sizzle: './assets/videos/culinary-loop.mp4',
-      prep: './assets/videos/kitchen-prep.mp4',
-      fire: './assets/videos/food-sizzle.webm'
-    },
     
     // Per-recipe dynamic toggles and person counts
     recipeStates: {},
@@ -103,65 +95,6 @@
         themeBtn.innerHTML = `<i class="fa-solid fa-moon text-forest"></i><span class="hidden sm:inline font-medium text-xs">Dark</span>`;
       }
     }
-  }
-
-  // Video Management
-  function setAmbientVideo(enabled) {
-    state.ambientVideoEnabled = enabled;
-    localStorage.setItem('flavorshift_video_enabled', enabled ? 'true' : 'false');
-    const bgVideo = document.getElementById('ambient-video-backdrop');
-    const statusText = document.getElementById('video-status-text');
-    const globalVid = document.getElementById('global-ambient-video');
-
-    if (bgVideo) {
-      if (enabled) {
-        bgVideo.style.opacity = state.theme === 'dark' ? '0.25' : '0.35';
-        if (globalVid && globalVid.paused) {
-          globalVid.play().catch(() => {});
-        }
-      } else {
-        bgVideo.style.opacity = '0';
-        if (globalVid && !globalVid.paused) {
-          globalVid.pause();
-        }
-      }
-    }
-
-    if (statusText) {
-      statusText.textContent = enabled ? 'ON' : 'OFF';
-      statusText.className = enabled ? 'text-[11px] font-black text-terracotta' : 'text-[11px] font-black text-stone-400';
-    }
-  }
-
-  function changeVideoScene(sceneKey) {
-    if (!state.videoSources[sceneKey]) return;
-    state.currentVideoScene = sceneKey;
-    const src = state.videoSources[sceneKey];
-
-    const globalVid = document.getElementById('global-ambient-video');
-    if (globalVid) {
-      globalVid.src = src;
-      if (state.ambientVideoEnabled) {
-        globalVid.play().catch(() => {});
-      }
-    }
-
-    const heroVid = document.getElementById('hero-sizzle-video');
-    if (heroVid) {
-      heroVid.src = src;
-      heroVid.play().catch(() => {});
-    }
-
-    // Update active scene buttons
-    document.querySelectorAll('[data-video-scene]').forEach(btn => {
-      if (btn.getAttribute('data-video-scene') === sceneKey) {
-        btn.classList.add('bg-terracotta', 'text-white', 'border-terracotta', 'shadow-md');
-        btn.classList.remove('bg-black/30', 'text-beige/80', 'border-beige-200/20', 'hover:bg-black/50');
-      } else {
-        btn.classList.remove('bg-terracotta', 'text-white', 'border-terracotta', 'shadow-md');
-        btn.classList.add('bg-black/30', 'text-beige/80', 'border-beige-200/20', 'hover:bg-black/50');
-      }
-    });
   }
 
   // Helper: Format Currency
@@ -505,254 +438,127 @@
       : [];
 
     let html = `
-      <div class="space-y-12 animate-fade-up max-w-6xl mx-auto">
-        
-        <!-- ============================================== -->
-        <!-- SECTION 1: INTRODUCTION & FOOD-TECH HERO       -->
-        <!-- ============================================== -->
-        <section class="relative overflow-hidden rounded-3xl bg-forest dark:bg-[#1A2620] text-ivory shadow-2xl p-6 sm:p-10 lg:p-12 border border-beige-200/20 glow-card reveal-on-scroll">
-          
-          <!-- Subtle Floating Aroma Steam Line in Hero -->
-          <div class="absolute -top-10 right-1/4 w-40 h-72 opacity-25 pointer-events-none" aria-hidden="true">
-            <svg viewBox="0 0 100 200" fill="none" class="w-full h-full">
-              <path class="steam-path stroke-terracotta/50" d="M30 190 Q10 140 45 95 T35 10" stroke-width="2" stroke-linecap="round"/>
-              <path class="steam-path stroke-sage/40 path-delay-2" d="M60 195 Q80 145 40 105 T55 20" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-          </div>
+      <div class="space-y-8 animate-fade-up max-w-6xl mx-auto">
 
-          <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
+        <!-- ============================================== -->
+        <!-- SECTION 1: EDITORIAL HERO & DISH SHOWCASE      -->
+        <!-- ============================================== -->
+        <section class="relative overflow-hidden rounded-3xl bg-forest dark:bg-[#1A2620] text-ivory shadow-xl p-6 sm:p-8 lg:p-10 border border-beige-200/20 glow-card reveal-on-scroll">
+          <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-7 items-center">
+
             <div class="lg:col-span-7 space-y-4">
-              <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ivory/15 backdrop-blur-md text-[11px] font-bold tracking-wider text-beige uppercase border border-ivory/20">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ivory/15 backdrop-blur-md text-[11px] font-bold tracking-wider text-beige uppercase border border-ivory/20">
                 <i class="fa-solid fa-wand-magic-sparkles text-terracotta"></i>
-                <span>Culinary Substitution & Recipe Scaling Studio</span>
+                <span>Culinary Substitution & Scaling Studio</span>
               </div>
-              
+
               <h1 class="font-heading font-black text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-[1.15]">
                 Adapt Recipes Thoughtfully.<br>
-                <span class="text-terracotta font-serif italic">Practical Substitutions</span> Built for Real Kitchens.
+                <span class="text-terracotta font-serif italic">Practical Swaps</span> Built for Real Kitchens.
               </h1>
-              
-              <p class="text-ivory/85 text-sm sm:text-base leading-relaxed font-normal max-w-2xl font-sans">
-                Out of fresh dairy cream for <strong>Paneer Butter Masala</strong>? Replacing truffle oil in wild mushroom pasta? Explore curated ingredient ratios, texture and heat notes, per-person scaling, and a local tasting log to record your kitchen results.
+
+              <p class="text-ivory/85 text-sm leading-relaxed font-normal max-w-2xl font-sans">
+                Search any missing ingredient for practical kitchen ratios, texture & simmer guidance, per-person recipe scaling, and local tasting notes.
               </p>
 
-              <!-- 4 Factual Feature Summary Cards -->
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 text-center">
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15 shadow-sm">
-                  <span class="block text-xl font-black text-ivory font-heading">${RECIPES_DATA.length} Dishes</span>
-                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Recipe Catalog</span>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 text-center">
+                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-2.5 border border-beige-200/15">
+                  <span class="block text-lg font-black text-ivory font-heading">${RECIPES_DATA.length} Dishes</span>
+                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Recipe Library</span>
                 </div>
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15 shadow-sm">
-                  <span class="block text-xl font-black text-terracotta font-heading">${FLAVORSHIFT_SWAP_DATABASE.length} Profiles</span>
-                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Swap Ratios</span>
+                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-2.5 border border-beige-200/15">
+                  <span class="block text-lg font-black text-terracotta font-heading">${presetShowcase.length || FLAVORSHIFT_SWAP_DATABASE.length} Presets</span>
+                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Quick Swaps</span>
                 </div>
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15 shadow-sm">
-                  <span class="block text-xl font-black text-sage-300 font-heading">1+ Covers</span>
-                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Batch Scaling</span>
+                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-2.5 border border-beige-200/15">
+                  <span class="block text-lg font-black text-sage-300 font-heading">1+ Covers</span>
+                  <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Portion Scaling</span>
                 </div>
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15 shadow-sm">
-                  <span class="block text-xl font-black text-peach font-heading">Local Log</span>
+                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-2.5 border border-beige-200/15">
+                  <span class="block text-lg font-black text-peach font-heading">Local Log</span>
                   <span class="text-[10px] text-beige/80 font-bold uppercase tracking-wider">Tasting Notes</span>
                 </div>
               </div>
 
-              <!-- Quick Action CTAs -->
-              <div class="pt-3 flex flex-wrap items-center gap-3">
-                <button type="button" data-hero-action="explore" class="terracotta-btn px-5 py-3 rounded-2xl text-xs font-bold flex items-center gap-2 cursor-pointer shadow-md">
-                  <span>Explore ${RECIPES_DATA.length} Catalog Dishes</span>
+              <div class="pt-2 flex flex-wrap items-center gap-3">
+                <a href="#ai-swaplab-stage" class="terracotta-btn px-5 py-3 rounded-2xl text-xs font-bold flex items-center gap-2 cursor-pointer shadow-md">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <span>Search Ingredient Swap</span>
+                </a>
+                <button type="button" data-hero-action="explore" class="px-5 py-3 rounded-2xl text-xs font-bold flex items-center gap-2 cursor-pointer bg-ivory/15 hover:bg-ivory/25 text-ivory border border-ivory/30 backdrop-blur-sm transition-all">
+                  <span>Browse ${RECIPES_DATA.length} Catalog Dishes</span>
                   <i class="fa-solid fa-arrow-right"></i>
                 </button>
-                <a href="#ai-swaplab-stage" class="px-5 py-3 rounded-2xl text-xs font-bold flex items-center gap-2 cursor-pointer bg-ivory/15 hover:bg-ivory/25 text-ivory border border-ivory/30 backdrop-blur-sm transition-all rounded-2xl">
-                  <i class="fa-solid fa-flask-vial text-terracotta"></i>
-                  <span>Launch Swap Lab Below</span>
-                </a>
               </div>
-
-              <!-- Culinary Video Loop Switcher Buttons -->
-              <div class="pt-2 flex flex-wrap items-center gap-2 text-xs">
-                <span class="font-bold text-beige/80 mr-1 flex items-center gap-1.5 text-[11px]">
-                  <i class="fa-solid fa-film text-terracotta"></i> Video Scene:
-                </span>
-                <button type="button" data-video-scene="sizzle" class="px-3 py-1.5 rounded-xl font-bold border transition-all cursor-pointer text-xs ${state.currentVideoScene === 'sizzle' ? 'bg-terracotta text-white border-terracotta shadow-md' : 'bg-black/30 text-beige/80 border-beige-200/20 hover:bg-black/50'}">
-                  🔥 Flambé & Sauté
-                </button>
-                <button type="button" data-video-scene="prep" class="px-3 py-1.5 rounded-xl font-bold border transition-all cursor-pointer text-xs ${state.currentVideoScene === 'prep' ? 'bg-terracotta text-white border-terracotta shadow-md' : 'bg-black/30 text-beige/80 border-beige-200/20 hover:bg-black/50'}">
-                  🔪 Master Prep
-                </button>
-                <button type="button" data-video-scene="fire" class="px-3 py-1.5 rounded-xl font-bold border transition-all cursor-pointer text-xs ${state.currentVideoScene === 'fire' ? 'bg-terracotta text-white border-terracotta shadow-md' : 'bg-black/30 text-beige/80 border-beige-200/20 hover:bg-black/50'}">
-                  🥘 Simmering Fire
-                </button>
-              </div>
-
             </div>
 
-            <!-- Ambient Video Player Card -->
-            <div class="lg:col-span-5 relative rounded-3xl overflow-hidden shadow-2xl border-2 border-beige-200/30 bg-black/40 group aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3]">
-              <video 
-                id="hero-sizzle-video" 
-                autoplay 
-                muted 
-                loop 
-                playsinline 
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            <!-- Sorted 2x2 Culinary Dish Mosaic (Zero Videos) -->
+            <div class="lg:col-span-5 grid grid-cols-2 gap-3">
+              ${[
+                { id: 'paneer-butter-masala', label: 'Paneer Butter Masala', sub: 'Cashew Cream Swap', img: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=80' },
+                { id: 'dal-makhani-bistro', label: 'Slow-Simmered Dal Makhani', sub: 'Cream-Free Emulsion', img: './assets/recipes/slow-simmered-dal-makhani.jpg' },
+                { id: 'classic-penne-arrabbiata', label: 'Penne all\'Arrabbiata', sub: 'Roma Tomato Reduction', img: './assets/recipes/classic-penne-arrabbiata.jpg' },
+                { id: 'masala-chai-bistro', label: 'Karak Masala Chai', sub: 'Whole Spice Decoction', img: './assets/recipes/artisan-karak-masala-chai.jpg' }
+              ].map(card => `
+                <button
+                  type="button"
+                  data-open-hero-recipe="${card.id}"
+                  class="group text-left rounded-2xl overflow-hidden border border-beige-200/20 bg-black/30 relative aspect-[4/3] shadow-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta"
+                >
+                  <img src="${card.img}" alt="${card.label}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+                  <div class="absolute bottom-2 left-2.5 right-2.5">
+                    <span class="block text-[11px] font-bold text-ivory leading-tight truncate">${card.label}</span>
+                    <span class="block text-[10px] text-peach/90 truncate">${card.sub}</span>
+                  </div>
+                </button>
+              `).join('')}
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECTION 2: SORTED SWAP STUDIO (2 CLEAN MODES)  -->
+        <!-- ============================================== -->
+        <section id="ai-swaplab-stage" class="space-y-5 reveal-on-scroll">
+
+          <!-- Segmented Studio Mode Switcher -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-[#1f1a16] px-5 py-3.5 rounded-2xl border border-beige-200 dark:border-stone-800 shadow-xs">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-flask-vial text-terracotta"></i>
+              <h2 class="font-heading font-bold text-base sm:text-lg text-forest dark:text-ivory">Swap Workspace</h2>
+            </div>
+
+            <div class="inline-flex p-1 rounded-xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800">
+              <button
+                type="button"
+                data-swap-studio-mode="universal"
+                class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  state.swapStudioMode !== 'curated'
+                    ? 'bg-forest text-ivory shadow-xs'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-terracotta'
+                }"
               >
-                <source src="${state.videoSources[state.currentVideoScene]}" type="video/mp4">
-                <source src="./assets/videos/culinary-loop.mp4" type="video/mp4">
-              </video>
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none"></div>
-
-              <div class="absolute top-3 left-3 flex items-center gap-2">
-                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-black/60 backdrop-blur-md text-beige border border-beige-200/20 flex items-center gap-1.5">
-                  <i class="fa-solid fa-video text-terracotta"></i> Culinary Video Loop
-                </span>
-              </div>
-
-              <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
-                <span class="font-bold flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-xl text-beige">
-                  <i class="fa-solid fa-kitchen-set text-terracotta"></i>
-                  <span>Kitchen Ambience</span>
-                </span>
-                
-                <div class="flex items-center gap-2">
-                  <button type="button" id="hero-video-play-btn" class="w-8 h-8 rounded-xl bg-black/60 backdrop-blur-md text-white hover:bg-terracotta flex items-center justify-center cursor-pointer transition-colors shadow">
-                    <i class="fa-solid fa-pause text-xs"></i>
-                  </button>
-                  <button type="button" id="hero-video-mute-btn" class="w-8 h-8 rounded-xl bg-black/60 backdrop-blur-md text-white hover:bg-terracotta flex items-center justify-center cursor-pointer transition-colors shadow">
-                    <i class="fa-solid fa-volume-xmark text-xs"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-peach/15 blur-3xl pointer-events-none"></div>
-        </section>
-
-        <!-- ============================================== -->
-        <!-- SECTION 2: THE CONCEPT (PROBLEM WE SOLVE)      -->
-        <!-- ============================================== -->
-        <section class="space-y-6 reveal-on-scroll">
-          <div class="text-center max-w-2xl mx-auto space-y-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono">
-              The Culinary Dilemma
-            </span>
-            <h2 class="font-heading font-black text-2xl sm:text-3xl text-forest dark:text-ivory">
-              Why Kitchens Are Forced to Adapt
-            </h2>
-            <p class="text-stone-500 dark:text-stone-400 text-xs sm:text-sm font-accent italic">
-              Three practical challenges make reliable ingredient substitution guidance essential during prep.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Problem 1 -->
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-3xl space-y-3">
-              <div class="w-12 h-12 rounded-2xl bg-peach/50 dark:bg-stone-800 text-terracotta flex items-center justify-center text-xl shadow-xs">
-                <i class="fa-solid fa-truck-ramp-box"></i>
-              </div>
-              <h3 class="font-heading font-bold text-lg text-forest dark:text-ivory">1. Stockouts & Supply Swings</h3>
-              <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                When fresh heavy cream curdles in transit, ripe avocados run out, or specialty truffle oil is delayed, cooks often have to improvise substitutions mid-prep.
-              </p>
-              <div class="pt-2 text-[11px] font-semibold text-terracotta flex items-center gap-1">
-                <i class="fa-solid fa-shield-halved"></i> Structured ratio alternatives on hand
-              </div>
-            </div>
-
-            <!-- Problem 2 -->
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-3xl space-y-3">
-              <div class="w-12 h-12 rounded-2xl bg-sage-100 dark:bg-stone-800 text-sage-600 dark:text-sage-300 flex items-center justify-center text-xl shadow-xs">
-                <i class="fa-solid fa-leaf"></i>
-              </div>
-              <h3 class="font-heading font-bold text-lg text-forest dark:text-ivory">2. Dietary & Plant-Based Pivots</h3>
-              <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                Replacing dairy cream or cheese without technique adjustments can cause thin sauces, dull flavor, or splitting under high stove heat.
-              </p>
-              <div class="pt-2 text-[11px] font-semibold text-sage-600 dark:text-sage-400 flex items-center gap-1">
-                <i class="fa-solid fa-check"></i> Heat-handling notes for seed & nut emulsions
-              </div>
-            </div>
-
-            <!-- Problem 3 -->
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-3xl space-y-3">
-              <div class="w-12 h-12 rounded-2xl bg-beige/50 dark:bg-stone-800 text-forest flex items-center justify-center text-xl shadow-xs">
-                <i class="fa-solid fa-chart-line-down"></i>
-              </div>
-              <h3 class="font-heading font-bold text-lg text-forest dark:text-ivory">3. Food Cost Pressure</h3>
-              <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                Imported cheeses, truffle oils, and pine nuts squeeze margins for small kitchens. Flexible domestic swaps help teams plan around ingredient costs using their own supplier numbers.
-              </p>
-              <div class="pt-2 text-[11px] font-semibold text-forest dark:text-sage-300 flex items-center gap-1">
-                <i class="fa-solid fa-calculator"></i> Calculate margins with your own costs
-              </div>
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Universal Search</span>
+              </button>
+              <button
+                type="button"
+                data-swap-studio-mode="curated"
+                class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  state.swapStudioMode === 'curated'
+                    ? 'bg-forest text-ivory shadow-xs'
+                    : 'text-stone-600 dark:text-stone-300 hover:text-terracotta'
+                }"
+              >
+                <i class="fa-solid fa-images"></i>
+                <span>Visual Dish Pair Guides (${FLAVORSHIFT_SWAP_DATABASE.length})</span>
+              </button>
             </div>
           </div>
-        </section>
 
-        <!-- ============================================== -->
-        <!-- SECTION 3: HOW IT WORKS (4-STEP WORKFLOW)      -->
-        <!-- ============================================== -->
-        <section class="space-y-6 reveal-on-scroll">
-          <div class="text-center max-w-2xl mx-auto space-y-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-sage-600 font-mono">
-              Kitchen Workflow
-            </span>
-            <h2 class="font-heading font-black text-2xl sm:text-3xl text-forest dark:text-ivory">
-              How FlavorShift Works
-            </h2>
-            <p class="text-stone-500 dark:text-stone-400 text-xs sm:text-sm font-accent italic">
-              From selecting a missing ingredient to printing a scaled prep sheet and logging your tasting notes.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            
-            <!-- Step 1 -->
-            <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl space-y-2 relative">
-              <span class="text-2xl font-black text-terracotta/40 font-heading">01</span>
-              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Identify Culinary Role</h4>
-              <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
-                See whether the missing ingredient acts as a fat emulsion, thickening base, umami enhancer, or cheese melt.
-              </p>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl space-y-2 relative">
-              <span class="text-2xl font-black text-sage-500/40 font-heading">02</span>
-              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Compare Swap Options</h4>
-              <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
-                Review curated culinary alternatives with taste profiles and stovetop emulsion handling guidance.
-              </p>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl space-y-2 relative">
-              <span class="text-2xl font-black text-forest-400/40 font-heading">03</span>
-              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Scale Kitchen Ratios</h4>
-              <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
-                Apply replacement proportions (such as 60g soaked cashews + 40g warm milk per 100g cream) across any headcount.
-              </p>
-            </div>
-
-            <!-- Step 4 -->
-            <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl space-y-2 relative">
-              <span class="text-2xl font-black text-terracotta/40 font-heading">04</span>
-              <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Record Tasting Notes</h4>
-              <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed font-sans">
-                Cook the adapted dish on your own stove and save personal ratings and texture observations in your browser log.
-              </p>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- ============================================== -->
-        <!-- SECTION 4: THE INTERACTIVE SWAP LAB STAGE      -->
-        <!-- ============================================== -->
-        <section id="ai-swaplab-stage" class="space-y-6 reveal-on-scroll">
-
+          ${state.swapStudioMode !== 'curated' ? `
           <!-- Universal Ingredient Intelligence Lookup (Any Ingredient + Dish Context) -->
           <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-5 glow-card">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-3">
@@ -977,8 +783,7 @@
                 `;
               })() : ''}
             </div>
-          </div>
-
+          ` : `
           <!-- Step 1: Curated Target Ingredient Visual Selector -->
           <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-4 glow-card">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-3">
@@ -1173,51 +978,54 @@
             </div>
 
           </div>
+          `}
 
         </section>
 
         <!-- ============================================== -->
-        <!-- SECTION 5: FEATURES & SUITE SHOWCASE           -->
+        <!-- SECTION 3: SORTED KITCHEN TOOLKIT & WORKFLOW   -->
         <!-- ============================================== -->
-        <section class="space-y-6 reveal-on-scroll">
-          <div class="text-center max-w-2xl mx-auto space-y-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-forest dark:text-sage-400 font-mono">
-              Comprehensive Toolkit
-            </span>
-            <h2 class="font-heading font-black text-2xl sm:text-3xl text-forest dark:text-ivory">
-              Culinary Planning & Testing Suite
-            </h2>
-            <p class="text-stone-500 dark:text-stone-400 text-xs sm:text-sm font-accent italic">
-              Recipe scaling, customizable batch pricing, and personal kitchen tasting logs.
+        <section class="space-y-4 reveal-on-scroll">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-forest dark:text-sage-400 font-mono">
+                Kitchen Toolkit & Workflow
+              </span>
+              <h2 class="font-heading font-black text-2xl text-forest dark:text-ivory">
+                Everything You Need in Four Steps
+              </h2>
+            </div>
+            <p class="text-xs text-stone-500 dark:text-stone-400 font-accent italic">
+              Explore menus, toggle swaps, plan costs, and print scaled prep tickets.
             </p>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <!-- Feature 1: Explore Menus -->
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-3xl flex flex-col justify-between space-y-4">
-              <div class="space-y-3">
-                <div class="w-12 h-12 rounded-2xl bg-forest text-ivory flex items-center justify-center text-xl shadow-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xl font-black text-terracotta/50 font-heading">01</span>
                   <i class="fa-solid fa-utensils text-terracotta"></i>
                 </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Recipe Catalog & Scaler</h4>
-                <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                  ${RECIPES_DATA.length} dishes with dynamic person count scaling and 1-click budget, lighter, or plant-based toggles.
+                <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Catalog & Scaler</h4>
+                <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
+                  Browse ${RECIPES_DATA.length} dishes across 10 categories with per-person ingredient scaling and swap toggles.
                 </p>
               </div>
               <button type="button" data-hero-action="explore" class="sage-btn w-full py-2 px-3 rounded-xl text-xs font-bold text-center cursor-pointer">
-                View Recipes →
+                View Menus →
               </button>
             </div>
 
-            <!-- Feature 2: Tasting Log -->
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-3xl flex flex-col justify-between space-y-4">
-              <div class="space-y-3">
-                <div class="w-12 h-12 rounded-2xl bg-sage-100 text-sage-700 flex items-center justify-center text-xl shadow-xs">
-                  <i class="fa-solid fa-users-viewfinder"></i>
+            <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xl font-black text-sage-600/50 font-heading">02</span>
+                  <i class="fa-solid fa-users-viewfinder text-sage-600"></i>
                 </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Kitchen Tasting Log</h4>
-                <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                  Record your own cooking trial feedback, texture observations, and ratings directly in browser storage.
+                <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Kitchen Tasting Log</h4>
+                <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
+                  Test substitutes on your own stove and save personal ratings and flavor notes locally.
                 </p>
               </div>
               <button type="button" data-hero-action="htv" class="sage-btn w-full py-2 px-3 rounded-xl text-xs font-bold text-center cursor-pointer">
@@ -1225,30 +1033,30 @@
               </button>
             </div>
 
-            <!-- Feature 3: Cost & Margin -->
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-3xl flex flex-col justify-between space-y-4">
-              <div class="space-y-3">
-                <div class="w-12 h-12 rounded-2xl bg-peach/40 text-terracotta flex items-center justify-center text-xl shadow-xs">
-                  <i class="fa-solid fa-chart-pie"></i>
+            <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xl font-black text-terracotta/50 font-heading">03</span>
+                  <i class="fa-solid fa-chart-pie text-terracotta"></i>
                 </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Cost & Margin Calculator</h4>
-                <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
-                  Enter your own supplier costs and menu price across 5–200 covers to compute batch totals and margins.
+                <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Batch Cost Calculator</h4>
+                <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
+                  Enter your own portion costs and menu prices across 5–200 covers to check shift margins.
                 </p>
               </div>
               <button type="button" data-hero-action="dashboard" class="sage-btn w-full py-2 px-3 rounded-xl text-xs font-bold text-center cursor-pointer">
-                Launch Calculator →
+                Open Calculator →
               </button>
             </div>
 
-            <!-- Feature 4: Kitchen Tickets -->
-            <div class="editorial-card p-6 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-3xl flex flex-col justify-between space-y-4">
-              <div class="space-y-3">
-                <div class="w-12 h-12 rounded-2xl bg-beige text-espresso flex items-center justify-center text-xl shadow-xs">
-                  <i class="fa-solid fa-receipt text-terracotta"></i>
+            <div class="editorial-card p-5 bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 rounded-2xl flex flex-col justify-between space-y-3">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xl font-black text-forest-400/50 font-heading">04</span>
+                  <i class="fa-solid fa-receipt text-forest dark:text-sage-300"></i>
                 </div>
-                <h4 class="font-heading font-bold text-lg text-forest dark:text-ivory">Printable Prep Tickets</h4>
-                <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed font-sans">
+                <h4 class="font-heading font-bold text-base text-forest dark:text-ivory">Prep Tickets</h4>
+                <p class="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
                   Format and print scaled ingredient checklists and adapted cooking steps for prep stations.
                 </p>
               </div>
@@ -1256,42 +1064,28 @@
                 Print Sample Ticket →
               </button>
             </div>
-
           </div>
-        </section>
-
-        <!-- ============================================== -->
-        <!-- SECTION 6: FINAL EDITORIAL CALL TO ACTION      -->
-        <!-- ============================================== -->
-        <section class="editorial-card p-8 sm:p-12 rounded-3xl bg-forest dark:bg-[#1A2620] text-ivory text-center space-y-6 reveal-on-scroll relative overflow-hidden">
-          <div class="max-w-2xl mx-auto space-y-3 relative z-10">
-            <span class="text-xs font-bold uppercase tracking-wider text-beige/80 font-mono">
-              Ready to Cook & Adapt?
-            </span>
-            <h2 class="font-heading font-black text-2xl sm:text-4xl text-ivory leading-tight">
-              Try a Substitution in Your Own Kitchen
-            </h2>
-            <p class="text-ivory/85 text-xs sm:text-sm font-sans leading-relaxed">
-              Browse all ${RECIPES_DATA.length} dishes, adjust serving counts, print prep tickets, and record your own tasting notes.
-            </p>
-            <div class="pt-3 flex flex-wrap items-center justify-center gap-3">
-              <button type="button" data-hero-action="explore" class="terracotta-btn px-6 py-3.5 rounded-2xl text-xs font-bold cursor-pointer shadow-md">
-                <span>Explore Full Culinary Catalog</span>
-                <i class="fa-solid fa-arrow-right ml-1"></i>
-              </button>
-              <button type="button" data-hero-action="htv" class="px-6 py-3.5 rounded-2xl text-xs font-bold bg-ivory/15 hover:bg-ivory/25 text-ivory border border-ivory/30 backdrop-blur cursor-pointer transition-all">
-                <span>Log Kitchen Notes</span>
-              </button>
-            </div>
-          </div>
-          <div class="absolute -left-12 -bottom-12 w-64 h-64 rounded-full bg-peach/10 blur-3xl pointer-events-none"></div>
-          <div class="absolute -right-12 -top-12 w-64 h-64 rounded-full bg-sage/10 blur-3xl pointer-events-none"></div>
         </section>
 
       </div>
     `;
 
     container.innerHTML = html;
+
+    // Segmented Swap Studio Mode Switcher
+    container.querySelectorAll('[data-swap-studio-mode]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.swapStudioMode = btn.getAttribute('data-swap-studio-mode');
+        renderSwapLabView();
+      });
+    });
+
+    // Hero Showcase Dish Clicks
+    container.querySelectorAll('[data-open-hero-recipe]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openRecipeModal(btn.getAttribute('data-open-hero-recipe'));
+      });
+    });
 
     // Universal Ingredient Lookup Events
     const uInput = container.querySelector('#universal-ingredient-input');
@@ -1402,40 +1196,6 @@
         const target = btn.getAttribute('data-hero-action');
         switchTab(target);
       });
-    });
-
-    // Video Scene Switcher Listeners
-    container.querySelectorAll('[data-video-scene]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const sc = btn.getAttribute('data-video-scene');
-        changeVideoScene(sc);
-      });
-    });
-
-    // Hero video play/pause
-    const heroVid = document.getElementById('hero-sizzle-video');
-    const playBtn = document.getElementById('hero-video-play-btn');
-    playBtn?.addEventListener('click', () => {
-      if (heroVid) {
-        if (heroVid.paused) {
-          heroVid.play();
-          playBtn.innerHTML = `<i class="fa-solid fa-pause text-xs"></i>`;
-        } else {
-          heroVid.pause();
-          playBtn.innerHTML = `<i class="fa-solid fa-play text-xs"></i>`;
-        }
-      }
-    });
-
-    // Hero video mute/unmute
-    const muteBtn = document.getElementById('hero-video-mute-btn');
-    muteBtn?.addEventListener('click', () => {
-      if (heroVid) {
-        heroVid.muted = !heroVid.muted;
-        muteBtn.innerHTML = heroVid.muted 
-          ? `<i class="fa-solid fa-volume-xmark text-xs"></i>` 
-          : `<i class="fa-solid fa-volume-high text-xs"></i>`;
-      }
     });
 
     // Initialize Scroll Animations
@@ -3325,11 +3085,6 @@
     document.getElementById('theme-toggle-btn')?.addEventListener('click', () => {
       const nextTheme = state.theme === 'light' ? 'dark' : 'light';
       applyTheme(nextTheme);
-      setAmbientVideo(state.ambientVideoEnabled);
-    });
-
-    document.getElementById('toggle-video-ambient-btn')?.addEventListener('click', () => {
-      setAmbientVideo(!state.ambientVideoEnabled);
     });
 
     document.querySelectorAll('.nav-tab-btn').forEach(btn => {
@@ -3375,7 +3130,6 @@
   function init() {
     initRecipeStates();
     applyTheme(state.theme);
-    setAmbientVideo(state.ambientVideoEnabled);
     updateFavoritesBadge();
     renderPantrySection();
     renderSwapLabView();

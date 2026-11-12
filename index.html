@@ -104,15 +104,9 @@
 <body class="min-h-screen flex flex-col font-sans bg-ivory text-espresso dark:bg-[#181410] dark:text-[#FAF7F0] selection:bg-terracotta selection:text-white transition-colors duration-300">
 
   <!-- ============================================== -->
-  <!-- 0. AMBIENT FOOD VIDEO BACKGROUND LAYER         -->
+  <!-- 0. INTERACTIVE CULINARY MOUSE & AROMA CANVAS   -->
   <!-- ============================================== -->
-  <div id="ambient-video-backdrop" class="ambient-video-backdrop opacity-30 dark:opacity-20 transition-opacity duration-700 pointer-events-none">
-    <video id="global-ambient-video" autoplay muted loop playsinline>
-      <source src="./assets/videos/culinary-loop.mp4" type="video/mp4">
-      <source src="./assets/videos/food-sizzle.webm" type="video/webm">
-    </video>
-    <div class="ambient-vignette"></div>
-  </div>
+  <canvas id="food-cursor-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-30" aria-hidden="true"></canvas>
 
   <!-- ============================================== -->
   <!-- 0B. ORGANIC AROMA & BOTANICAL FLOATING LAYER   -->
@@ -264,20 +258,8 @@
         </button>
       </nav>
 
-      <!-- Right Controls: Video Ambient Toggle, Pantry & Theme Toggle -->
+      <!-- Right Controls: Pantry & Theme Toggle -->
       <div class="flex items-center gap-2">
-        <!-- Background Video Ambient Intensity Toggle -->
-        <button 
-          type="button" 
-          id="toggle-video-ambient-btn"
-          class="px-3 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 hover:border-terracotta text-espresso dark:text-ivory shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
-          title="Toggle Background Food Video Ambience"
-        >
-          <i class="fa-solid fa-video text-terracotta"></i>
-          <span class="hidden lg:inline text-[11px]">Video Reel:</span>
-          <span id="video-status-text" class="text-[11px] font-bold text-terracotta">ON</span>
-        </button>
-
         <!-- Pantry Stock Drawer Button -->
         <button 
           type="button" 
@@ -578,11 +560,11 @@
   </footer>
 
   <!-- Core Recipe Data & Application Scripts -->
-  <script src="./recipes-data.js?v=20261112clean"></script>
-  <script src="./universal-ingredient-engine.js?v=20261112clean"></script>
-  <script src="./api-service.js?v=20261112clean"></script>
-  <script src="./food-cursor-canvas.js?v=20261112clean"></script>
-  <script src="./app.js?v=20261112clean"></script>
+  <script src="./recipes-data.js?v=20261112sorted"></script>
+  <script src="./universal-ingredient-engine.js?v=20261112sorted"></script>
+  <script src="./api-service.js?v=20261112sorted"></script>
+  <script src="./food-cursor-canvas.js?v=20261112sorted"></script>
+  <script src="./app.js?v=20261112sorted"></script>
 
 </body>
 </html>
