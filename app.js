@@ -790,37 +790,6 @@
               <span class="text-sm text-stone-500 font-accent italic">Context-aware kitchen ratios, texture notes & allergens</span>
             </div>
 
-            <!-- Executive Chef Quick-Prompt Starters -->
-            <div class="p-4 rounded-2xl bg-ivory/80 dark:bg-[#181410] border border-beige-200/80 dark:border-stone-800 space-y-2.5">
-              <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest dark:text-sage-300 font-mono">
-                <i class="fa-solid fa-sparkles text-terracotta"></i>
-                <span>QUICK KITCHEN SCENARIOS (CLICK TO TEST PROMPT)</span>
-              </div>
-              <div class="flex flex-wrap gap-2">
-                ${[
-                  { label: '“Out of heavy cream for rich Indian curry”', ing: 'Fresh Cream', ctx: 'Curries & Gravies', dish: 'Paneer Butter Masala' },
-                  { label: '“Need a dairy-free aged cheese swap for pasta”', ing: 'Parmesan', ctx: 'Pastas & Sauces', dish: 'Wild Mushroom Fettuccine' },
-                  { label: '“Eggless baking binder for sponges & muffins”', ing: 'Eggs', ctx: 'Baking & Cakes', dish: 'San Sebastian Basque Cake' },
-                  { label: '“Warm saffron color & aroma alternative for rice”', ing: 'Saffron', ctx: 'Curries & Gravies', dish: 'Paneer Butter Masala' },
-                  { label: '“Nut-free toasted crunch for pesto & salads”', ing: 'Pine Nuts', ctx: 'Salads & Dressings', dish: 'Smashed Avocado Toast' }
-                ].map(p => `
-                  <button
-                    type="button"
-                    data-prompt-ing="${p.ing}"
-                    data-prompt-ctx="${p.ctx}"
-                    data-prompt-dish="${p.dish}"
-                    class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all cursor-pointer text-left ${
-                      currentIng && currentIng.toLowerCase() === p.ing.toLowerCase() && currentCtx === p.ctx
-                        ? 'bg-terracotta text-white border-terracotta shadow-sm'
-                        : 'bg-white dark:bg-stone-900 border-beige-200 dark:border-stone-700 text-espresso dark:text-ivory hover:border-terracotta'
-                    }"
-                  >
-                    ${p.label}
-                  </button>
-                `).join('')}
-              </div>
-            </div>
-
             <!-- Search Bar + Dish Context + Analyze CTA -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-end">
               <div class="md:col-span-6 relative">
@@ -870,27 +839,6 @@
                 </button>
               </div>
             </div>
-
-            <!-- Common Pantry Targets -->
-            ${presetShowcase.length > 0 ? `
-              <div class="flex flex-wrap items-center gap-2 pt-1">
-                <span class="text-xs font-bold text-stone-500 mr-1">Common Pantry Targets:</span>
-                ${presetShowcase.slice(0, 12).map(p => `
-                  <button
-                    type="button"
-                    data-universal-chip="${p.name}"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
-                      currentIng && currentIng.toLowerCase() === p.name.toLowerCase()
-                        ? 'bg-forest text-ivory border-forest shadow-xs'
-                        : 'bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-terracotta'
-                    }"
-                  >
-                    <i class="${p.icon} text-xs text-terracotta"></i>
-                    <span>${p.name}</span>
-                  </button>
-                `).join('')}
-              </div>
-            ` : ''}
 
             <!-- Universal Engine Output -->
             <div id="universal-results-container">
@@ -3980,8 +3928,6 @@
       renderExploreView();
     } else if (tabName === 'htv') {
       renderHtvView();
-    } else if (tabName === 'dashboard') {
-      renderDashboardView();
     } else if (tabName === 'favorites') {
       renderFavoritesView();
     }
