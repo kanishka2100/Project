@@ -103,6 +103,153 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ========================================================
+   FOOD & AROMA-INSPIRED BACKGROUND ANIMATIONS
+   ======================================================== */
+.aroma-botanical-layer {
+  pointer-events: none;
+}
+
+/* Ambient Gradient Blobs */
+.aroma-blob-1 {
+  animation: morphBlob 18s ease-in-out infinite alternate;
+}
+
+.aroma-blob-2 {
+  animation: morphBlob 22s ease-in-out infinite alternate-reverse;
+}
+
+.aroma-blob-3 {
+  animation: morphBlob 16s ease-in-out infinite alternate;
+}
+
+@keyframes morphBlob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate(25px, -20px) scale(1.08);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translate(-15px, 15px) scale(0.95);
+    opacity: 0.2;
+  }
+}
+
+/* Floating Aroma Steam Trails */
+.steam-path {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: steamRise 10s ease-in-out infinite;
+}
+
+.path-delay-1 { animation-delay: 0s; }
+.path-delay-2 { animation-delay: 3s; }
+.path-delay-3 { animation-delay: 6s; }
+
+@keyframes steamRise {
+  0% {
+    stroke-dashoffset: 200;
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  20% {
+    opacity: 0.6;
+  }
+  80% {
+    opacity: 0.4;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+    transform: translateY(-25px) scale(1.04);
+  }
+}
+
+/* Floating Botanical Elements (Herbs, Citrus, Anise) */
+.floating-botanical {
+  transition: transform 0.4s ease;
+  filter: drop-shadow(0 4px 10px rgba(48, 40, 32, 0.08));
+}
+
+.botanical-basil-1 {
+  animation: herbFloat 14s ease-in-out infinite alternate;
+}
+
+.botanical-citrus {
+  animation: citrusFloat 20s ease-in-out infinite alternate;
+}
+
+.botanical-anise {
+  animation: aniseSpin 30s linear infinite;
+}
+
+.botanical-rosemary {
+  animation: rosemarySway 16s ease-in-out infinite alternate;
+}
+
+.botanical-cardamom {
+  animation: herbFloat 18s ease-in-out infinite alternate-reverse;
+}
+
+.botanical-chili {
+  animation: citrusFloat 22s ease-in-out infinite alternate;
+}
+
+@keyframes herbFloat {
+  0% {
+    transform: translateY(0px) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-22px) rotate(8deg);
+  }
+  100% {
+    transform: translateY(8px) rotate(-3deg);
+  }
+}
+
+@keyframes citrusFloat {
+  0% {
+    transform: rotate(0deg) translateY(0);
+  }
+  50% {
+    transform: rotate(45deg) translateY(-18px);
+  }
+  100% {
+    transform: rotate(90deg) translateY(0);
+  }
+}
+
+@keyframes aniseSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rosemarySway {
+  0% {
+    transform: rotate(-4deg) translateY(0);
+  }
+  50% {
+    transform: rotate(6deg) translateY(-15px);
+  }
+  100% {
+    transform: rotate(-4deg) translateY(0);
+  }
+}
+
+/* Accessibility: Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .steam-path, .floating-botanical, .aroma-blob {
+    animation: none !important;
+  }
+}
+
+/* ========================================================
    CARDS & CONTAINERS (CLEAN & MINIMALIST)
    ======================================================== */
 .cafe-card, .editorial-card, .glow-card {
