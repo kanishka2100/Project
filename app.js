@@ -1653,7 +1653,7 @@
     });
 
     if (uResult && uResult.ingredientName && typeof ApiService !== 'undefined') {
-      const activeAltName = (activeAlt ? activeAlt.name : state.selectedSubstitutedAlt) || '';
+      const activeAltName = state.selectedSubstitutedAlt || '';
       ApiService.searchDualRecipesForSwap(uResult.ingredientName, activeAltName, currentDish, 2).then(dualData => {
         const contextEl = document.getElementById('swaplab-foodoscope-context-text');
         const dualContainer = document.getElementById('swaplab-dual-recipedb-container');

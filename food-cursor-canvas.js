@@ -331,7 +331,7 @@
 
   function init() {
     canvas = document.getElementById('food-cursor-canvas');
-    if (!canvas) return;
+    if (!canvas || typeof canvas.getContext !== 'function') return;
     ctx = canvas.getContext('2d');
     if (!ctx) return;
 
