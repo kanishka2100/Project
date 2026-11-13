@@ -105,6 +105,119 @@
     }
   }
 
+  // ========================================================
+  // SMART CULINARY IMAGE RESOLVER FOR FOODOSCOPE RECIPEDB
+  // Pairs authentic high-res food photography based on dish title keywords & recipe ID
+  // so dishes like Palak Paneer, Biryani, Pasta, and Cakes never show a generic salad bowl.
+  // ========================================================
+  function getAuthenticRecipeImage(recipe) {
+    const rawUrl = recipe?.img_url;
+    if (rawUrl && typeof rawUrl === 'string' && rawUrl.startsWith('http') && !rawUrl.includes('79591.png') && !rawUrl.includes('placeholder')) {
+      return rawUrl;
+    }
+
+    const title = ((recipe?.Recipe_title || recipe?.title || '') + ' ' + (recipe?.Region || '') + ' ' + (recipe?.Sub_region || '')).toLowerCase();
+    const idNum = Math.abs(parseInt(recipe?.Recipe_id || recipe?._id || '0', 10)) || 0;
+
+    if (/palak|saag|spinach/i.test(title)) {
+      const palakImgs = [
+        'https://images.unsplash.com/photo-1645177628172-a94c1f96e6db?w=600&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=600&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&auto=format&fit=crop&q=80'
+      ];
+      return palakImgs[idNum % palakImgs.length];
+    }
+
+    if (/paneer|shahi|makhani|butter masala|tikka masala/i.test(title)) {
+      const paneerImgs = [
+        'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&auto=format&fit=crop&q=80'
+      ];
+      return paneerImgs[idNum % paneerImgs.length];
+    }
+
+    if (/biryani|pulao|tehri|pilaf|fried rice|arroz/i.test(title)) {
+      const biryaniImgs = [
+        'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=600&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=600&auto=format&fit=crop&q=80'
+      ];
+      return biryaniImgs[idNum % biryaniImgs.length];
+    }
+
+    if (/tiramisu|mascarpone/i.test(title)) {
+      const tiramisuImgs = [
+        'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1586040140378-b5634cb4c8fc?w=600&auto=format&fit=crop&q=80'
+      ];
+      return tiramisuImgs[idNum % tiramisuImgs.length];
+    }
+
+    if (/chocolate|cake|brownie|fudge|dessert|muffin|pastry/i.test(title)) {
+      const cakeImgs = [
+        'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop&q=80'
+      ];
+      return cakeImgs[idNum % cakeImgs.length];
+    }
+
+    if (/pasta|spaghetti|penne|fettuccine|lasagna|ravioli|macaroni|carbonara/i.test(title)) {
+      const pastaImgs = [
+        'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=600&auto=format&fit=crop&q=80'
+      ];
+      return pastaImgs[idNum % pastaImgs.length];
+    }
+
+    if (/soup|bisque|chowder|broth|potage|stew/i.test(title)) {
+      const soupImgs = [
+        'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1607528971899-2e89e6c0ec69?w=600&auto=format&fit=crop&q=80'
+      ];
+      return soupImgs[idNum % soupImgs.length];
+    }
+
+    if (/pizza|flatbread|calzone|focaccia/i.test(title)) {
+      return 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop&q=80';
+    }
+
+    if (/burger|sandwich|toast|slider|wrap/i.test(title)) {
+      return 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80';
+    }
+
+    if (/noodle|ramen|udon|pad thai|wok|chow mein/i.test(title)) {
+      return 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&auto=format&fit=crop&q=80';
+    }
+
+    if (/dal|lentil|curry|masala|korma|rogan|vindaloo/i.test(title)) {
+      const curryImgs = [
+        'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&auto=format&fit=crop&q=80'
+      ];
+      return curryImgs[idNum % curryImgs.length];
+    }
+
+    if (/salad|greens|arugula|slaw|cucumber|tomato/i.test(title)) {
+      return 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop&q=80';
+    }
+
+    if (/naan|roti|paratha|bread|puri|kulcha/i.test(title)) {
+      return 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&auto=format&fit=crop&q=80';
+    }
+
+    if (/coffee|latte|cappuccino|tea|chai|matcha/i.test(title)) {
+      return 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop&q=80';
+    }
+
+    const defaultImgs = [
+      'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop&q=80'
+    ];
+    return defaultImgs[idNum % defaultImgs.length];
+  }
+
   // Helper: Format Currency
   function formatMoney(amount) {
     return `${state.currency}${Number(amount).toFixed(2)}`;
@@ -1673,7 +1786,7 @@
           const renderCard = (r, badgeText, badgeBg) => {
             const rId = r.Recipe_id || r._id || '';
             const rTitle = r.Recipe_title || r.title || 'RecipeDB Dish';
-            const rImg = r.img_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80';
+            const rImg = getAuthenticRecipeImage(r);
             const rRegion = r.Region || 'Global';
             const rCals = r.Calories || r.CaloriesNum || '—';
             return `
@@ -2208,7 +2321,7 @@
         const calories = r.Calories || r.CaloriesNum || '—';
         const cookTime = r.cook_time || r.CookTimeNum || '—';
         const servings = r.servings || '2';
-        const imgUrl = r.img_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80';
+        const imgUrl = getAuthenticRecipeImage(r);
 
         cardsHtml += `
           <div class="recipe-card group rounded-3xl overflow-hidden bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 hover:border-terracotta shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
@@ -2475,6 +2588,14 @@
 
         <!-- Body -->
         <div class="p-6 sm:p-8 space-y-6 max-h-[85vh] overflow-y-auto">
+          <div class="relative h-56 sm:h-64 w-full rounded-2xl overflow-hidden border border-beige-200 dark:border-stone-800 shadow-sm">
+            <img
+              src="${getAuthenticRecipeImage(info)}"
+              alt="${title}"
+              class="w-full h-full object-cover"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80';"
+            />
+          </div>
           <div>
             <h2 class="font-heading font-black text-2xl sm:text-3xl text-forest dark:text-ivory">
               ${title}
