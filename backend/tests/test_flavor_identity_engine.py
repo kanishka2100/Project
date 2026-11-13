@@ -60,3 +60,15 @@ def test_overall_formula_score():
     contribs = res["contributions"]
     assert contribs["flavor"] + contribs["recipe"] + contribs["cost"] == res["score"]
 
+
+def test_flavorgraph_300d_matcher():
+    """Verify FlavorGraph 300D embedding matcher calculates aroma vector similarity."""
+    from app.ml.flavorgraph.matcher import flavor_matcher
+    res = flavor_matcher.compute_similarity("heavy cream", "whisked malai & hung curd (50/50)")
+    assert res["compatibility_score"] >= 0.70
+    assert "match_percentage" in res
+    assert len(res["shared_volatile_compounds"]) > 0
+    assert res.get("vector_dimension") == 300
+    assert res.get("model_engine") == "FlavorGraph 300D Vector Embeddings"
+
+

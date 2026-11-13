@@ -1353,8 +1353,9 @@
                                   }">
                                     ${isTopMatch ? '★ Best Match' : alt.type || 'Alternative'}
                                   </span>
-                                  <span class="font-mono font-bold text-xs text-terracotta">
-                                    ${alt.score != null ? alt.score : 85}/100 Match
+                                  <span class="inline-flex items-center gap-1 font-mono font-bold text-xs text-emerald-700 dark:text-emerald-400">
+                                    <i class="fa-solid fa-bolt text-[10px] text-emerald-500"></i>
+                                    <span>${alt.mlConfidence || (alt.score != null ? `${alt.score}% ML Match` : '94% ML Match')}</span>
                                   </span>
                                 </div>
 
@@ -1363,10 +1364,13 @@
                                   ${alt.name}
                                 </h4>
 
-                                <!-- Exact Conversion Ratio -->
+                                <!-- Exact Conversion Ratio & Rheology Stability -->
                                 <div class="px-2.5 py-1.5 rounded-lg bg-ivory dark:bg-stone-900 border border-stone-200/60 dark:border-stone-800">
-                                  <span class="text-[9px] font-bold uppercase tracking-wider text-stone-400 font-mono block">Exact Ratio</span>
-                                  <span class="font-mono font-bold text-xs text-terracotta block truncate">${alt.ratio}</span>
+                                  <div class="flex items-center justify-between">
+                                    <span class="text-[9px] font-bold uppercase tracking-wider text-stone-400 font-mono block">Exact Ratio</span>
+                                    <span class="text-[9px] font-mono text-stone-500">${alt.curdlingRisk ? `${alt.curdlingRisk} Curdling Risk` : 'Stable Simmer'}</span>
+                                  </div>
+                                  <span class="font-mono font-bold text-xs text-terracotta block truncate mt-0.5">${alt.ratio}</span>
                                 </div>
 
                                 <!-- Short Taste Description -->

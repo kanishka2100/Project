@@ -31,6 +31,14 @@ async def lifespan(app: FastAPI):
     """Application lifespan manager: runs startup and shutdown tasks."""
     logger.info("Initializing FlavorShift AI database tables...")
     await init_db()
+    try:
+        from app.ml.sensory.rheology import sensory_predictor
+        from app.ml.flavorgraph.matcher import flavor_matcher
+        await sensory_predictor.load()
+        await flavor_matcher.load()
+        logger.info("FlavorShift AI ML Models (Sensory Rheology, FlavorGraph 300D) loaded.")
+    except Exception as e:
+        logger.warning("Could not warm up ML models in lifespan: %s", e)
     logger.info("FlavorShift AI backend started successfully [%s].", settings.VERSION)
     yield
     logger.info("FlavorShift AI backend shutting down...")

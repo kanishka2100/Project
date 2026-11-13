@@ -157,3 +157,36 @@ async def test_api_router_recommend_and_ontology():
         assert gate_data["passed"] is False
         assert gate_data["gate"] == 0
 
+
+def test_ml_model_predictions_and_sensory_radar():
+    """Verify trained ML models produce real predictions for substitutions."""
+    req = SubstitutionRecommendRequest(
+        missing_ingredient="Heavy Cream",
+        recipe_context="Curries & Gravies",
+        dish_name="Dal Makhani",
+        original_quantity=100.0,
+        servings=4
+    )
+    res = substitution_service.recommend(req)
+    assert res.status == "success"
+    assert len(res.recommendations) >= 3
+
+    for rec in res.recommendations:
+        # Check XGBoost predicted quality score and confidence badge
+        assert rec.ml_score is not None
+        assert 50.0 <= rec.ml_score <= 100.0
+        assert rec.ml_confidence is not None
+        assert "% ML Match" in rec.ml_confidence
+
+        # Check Sensory Rheology 6-axis radar vector
+        assert rec.curdling_risk in ("Low", "Medium", "High")
+        assert rec.sensory_radar is not None
+        for axis in [
+            "viscosity", "creaminess", "mouthfeel",
+            "sweetness_balance", "thermal_stability", "aftertaste_cleanliness"
+        ]:
+            assert axis in rec.sensory_radar
+            val = rec.sensory_radar[axis]
+            assert 1.0 <= val <= 10.0
+
+

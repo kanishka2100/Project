@@ -14,11 +14,19 @@ import os
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+import numpy as np
+
+try:
+    import xgboost as xgb
+except ImportError:
+    xgb = None
+
 from app.ml.flavorgraph.identity_engine import (
     DEFAULT_WEIGHTS,
     compute_cosine_similarity,
     normalize_weights,
 )
+from app.ml.sensory.rheology import sensory_predictor
 from app.schemas.substitution import (
     EvaluatedSubstitute,
     ExcludedSubstitute,
@@ -71,7 +79,24 @@ class IntelligentSubstitutionService:
 
     def __init__(self):
         self._kb: Optional[Dict[str, Any]] = None
+        self._xgb_booster: Optional[Any] = None
         self._load_knowledge_base()
+        self._load_ml_model()
+
+    def _load_ml_model(self):
+        if xgb is None:
+            return
+        model_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+            "data", "substitution_model", "xgb_quality_model.json"
+        )
+        if os.path.exists(model_path):
+            try:
+                self._xgb_booster = xgb.Booster()
+                self._xgb_booster.load_model(model_path)
+                logger.info("IntelligentSubstitutionService: XGBoost model loaded from %s", model_path)
+            except Exception as e:
+                logger.warning("Could not load XGBoost model from %s: %s", model_path, e)
 
     def _load_knowledge_base(self):
         kb_path = os.path.join(
@@ -266,6 +291,43 @@ class IntelligentSubstitutionService:
 
             dietary = cand.get("dietary", {})
 
+            # ML Model Prediction (XGBoost acceptance regressor)
+            orig_fat = float(ing_data.get("fat_g_per_100g", 35.0))
+            cand_fat = float(cand.get("fat_g_per_100g", 25.0))
+            orig_moist = float(ing_data.get("moisture_g_per_100g", 55.0))
+            cand_moist = float(cand.get("moisture_g_per_100g", 60.0))
+            orig_prot = float(ing_data.get("protein_g_per_100g", 2.5))
+            cand_prot = float(cand.get("protein_g_per_100g", 3.0))
+
+            fat_delta = abs(orig_fat - cand_fat)
+            moist_delta = abs(orig_moist - cand_moist)
+            prot_delta = abs(orig_prot - cand_prot)
+
+            if self._xgb_booster is not None and xgb is not None:
+                feat = np.array([[
+                    float(f_score), float(r_score), float(c_score),
+                    float(fat_delta), float(moist_delta), float(prot_delta),
+                    0.2, 0.8, 0.9, 1.0
+                ]], dtype=np.float32)
+                pred_quality = float(self._xgb_booster.predict(xgb.DMatrix(feat))[0])
+                ml_score = round(min(99.0, max(50.0, pred_quality)), 1)
+                ml_confidence = f"{round(ml_score)}% ML Match"
+            else:
+                ml_score = round(float(score_100), 1)
+                ml_confidence = f"{score_100}% ML Match"
+
+            # Sensory Rheology Model Prediction
+            sensory_eval = sensory_predictor.predict(
+                substitute_name=cand_name,
+                fat_percentage=cand_fat,
+                moisture_percentage=cand_moist,
+                simmer_temperature_c=85.0,
+                protein_percentage=cand_prot,
+                carbs_percentage=float(cand.get("carbs_g_per_100g", 4.0)),
+            )
+            curdling_risk = sensory_eval.get("curdling_risk", "Low")
+            sensory_radar = sensory_eval.get("radar_metrics", {})
+
             evaluated = EvaluatedSubstitute(
                 name=cand_name,
                 score=score_100,
@@ -292,6 +354,10 @@ class IntelligentSubstitutionService:
                 is_vegetarian=dietary.get("is_vegetarian", True),
                 is_gluten_free=dietary.get("is_gluten_free", True),
                 is_dairy_free=dietary.get("is_dairy_free", False),
+                ml_score=ml_score,
+                ml_confidence=ml_confidence,
+                curdling_risk=curdling_risk,
+                sensory_radar=sensory_radar,
             )
             eligible_list.append(evaluated)
 

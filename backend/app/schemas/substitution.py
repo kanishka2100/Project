@@ -52,6 +52,10 @@ class EvaluatedSubstitute(BaseModel):
     is_vegetarian: bool = Field(True)
     is_gluten_free: bool = Field(True)
     is_dairy_free: bool = Field(False)
+    ml_score: Optional[float] = Field(None, examples=[96.2])
+    ml_confidence: Optional[str] = Field(None, examples=["96% ML Match"])
+    curdling_risk: Optional[str] = Field(None, examples=["Low"])
+    sensory_radar: Optional[Dict[str, float]] = Field(None, examples=[{"viscosity": 8.5, "creaminess": 8.8}])
 
 
 class ExcludedSubstitute(BaseModel):

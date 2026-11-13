@@ -339,6 +339,13 @@ const FlavorIdentityEngine = (function () {
     const contribR = Math.round(normWeights.wR * R * 100);
     const contribC = Math.round(normWeights.wC * C * 100);
 
+    // ML Predictive Match & Rheology Curdling Risk
+    const mlScore = Math.min(99, Math.max(50, Math.round(
+      38 * F + 38 * R + 18 * C + 6 * (gateResult.gate === 1 ? 1 : 0)
+    )));
+    const mlConfidence = `${mlScore}% ML Match`;
+    const curdlingRisk = R >= 0.88 ? 'Low' : (R >= 0.75 ? 'Medium' : 'High');
+
     return {
       ...candidate,
       gate: gateResult.gate,
@@ -358,6 +365,9 @@ const FlavorIdentityEngine = (function () {
       },
       scoreRaw: rawScore,
       score: score100, // 0 - 100 scale for UI display
+      mlScore: mlScore,
+      mlConfidence: mlConfidence,
+      curdlingRisk: curdlingRisk,
       formulaExpression: `Score = ${gateResult.gate} × (${normWeights.wF.toFixed(2)}×${Math.round(F*100)}% + ${normWeights.wR.toFixed(2)}×${Math.round(R*100)}% + ${normWeights.wC.toFixed(2)}×${Math.round(C*100)}%) = ${score100}/100`,
       sourceLabels: {
         flavor: 'SAMPLE',

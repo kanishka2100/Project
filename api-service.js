@@ -1451,7 +1451,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "North Indian",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Paneer Cubes",
       "Fresh Spinach (Palak)",
@@ -1486,7 +1486,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "Punjabi",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Paneer",
       "Spinach Puree",
@@ -1520,7 +1520,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "Awadhi",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Paneer",
       "Spinach & Mustard Greens",
@@ -1554,7 +1554,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "Modern Fusion",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Firm Pressed Tofu",
       "Baby Spinach",
@@ -1588,7 +1588,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "Indian",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Sweet Corn",
       "Paneer",
@@ -1622,7 +1622,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "North Indian",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Paneer",
       "Spinach Leaves",
@@ -1656,7 +1656,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "Rajasthani",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Paneer",
       "Palak",
@@ -1690,7 +1690,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "Gujarati",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Fresh Fenugreek (Methi)",
       "Spinach",
@@ -1724,7 +1724,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "Indian",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Button Mushrooms",
       "Spinach Puree",
@@ -1758,7 +1758,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "Kerala Fusion",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Paneer",
       "Baby Spinach",
@@ -1792,7 +1792,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "Fitness Bistro",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Low-Fat Paneer",
       "Blanched Spinach",
@@ -1826,7 +1826,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "Punjabi",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Crumbled Fresh Paneer",
       "Finely Chopped Spinach",
@@ -2679,7 +2679,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Italian",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Penne Rigate",
       "Cannellini White Beans",
@@ -2714,7 +2714,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Roman",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Penne Rigate",
       "San Marzano Tomatoes",
@@ -2749,7 +2749,7 @@ const ApiService = (function () {
     "Region": "Western Europe",
     "Sub_region": "Italian-American",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Penne Rigate",
       "Cremini Mushrooms",
@@ -2784,7 +2784,7 @@ const ApiService = (function () {
     "Region": "Western Europe",
     "Sub_region": "Vegan Bistro",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Penne Pasta",
       "Soaked Cashew Silk Puree",
@@ -2819,7 +2819,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Tuscan",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Penne Pasta",
       "Sun-Dried Tomatoes",
@@ -2854,7 +2854,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Sicilian",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Penne",
       "Charred Bell Peppers",
@@ -2889,7 +2889,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Italian-American",
     "Continent": "Americas",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Penne Pasta",
       "Mozzarella",
@@ -2924,7 +2924,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Italian",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Penne",
       "Whole Milk Ricotta",
@@ -2959,7 +2959,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Italian",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Penne Rigate",
       "Tomato Paste",
@@ -2993,7 +2993,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Tuscan",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Penne",
       "Crumbled Italian Sausage",
@@ -3028,7 +3028,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Genoese",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Whole Wheat Penne",
       "Fresh Genovese Basil",
@@ -3062,7 +3062,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Northern Italian",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Penne Rigate",
       "Tender Asparagus Tips",
@@ -3096,7 +3096,7 @@ const ApiService = (function () {
     "Region": "Western Europe",
     "Sub_region": "French Bistro",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1659603851579-17755833517e?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Dried Porcini Mushrooms",
       "Cremini Mushrooms",
@@ -3131,7 +3131,7 @@ const ApiService = (function () {
     "Region": "Western Europe",
     "Sub_region": "Modern Continental",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1659603851579-17755833517e?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Shiitake Mushrooms",
       "Roasted Garlic Head",
@@ -3166,7 +3166,7 @@ const ApiService = (function () {
     "Region": "Eastern Europe",
     "Sub_region": "Hungarian",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1659603851579-17755833517e?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Button Mushrooms",
       "Sweet Hungarian Paprika",
@@ -3200,7 +3200,7 @@ const ApiService = (function () {
     "Region": "Western Europe",
     "Sub_region": "Plant-Based",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1659603851579-17755833517e?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Button Mushrooms",
       "Cashew Cream Velvet",
@@ -3234,7 +3234,7 @@ const ApiService = (function () {
     "Region": "Western Europe",
     "Sub_region": "Artisan Consomme",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1659603851579-17755833517e?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Portobello Caps",
       "Fresh Thyme",
@@ -3337,7 +3337,7 @@ const ApiService = (function () {
     "Region": "Western Europe",
     "Sub_region": "French Provincial",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1659603851579-17755833517e?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Mixed Field Mushrooms",
       "Butter",
@@ -3407,7 +3407,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Healthy Bistro",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1659603851579-17755833517e?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Baby Bella Mushrooms",
       "Strained Greek Yogurt",
@@ -3476,7 +3476,7 @@ const ApiService = (function () {
     "Region": "Western Europe",
     "Sub_region": "French Classical",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1659603851579-17755833517e?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Wild Morels",
       "Dry White Wine",
@@ -3648,7 +3648,7 @@ const ApiService = (function () {
     "Region": "Indian Subcontinent",
     "Sub_region": "Indian",
     "Continent": "Asia",
-    "img_url": "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Button Mushrooms",
       "Sweet Green Peas",
@@ -4026,7 +4026,7 @@ const ApiService = (function () {
     "Region": "Southern Europe",
     "Sub_region": "Modern Vegan",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Raw Cashews",
       "Nutritional Yeast",
@@ -4060,7 +4060,7 @@ const ApiService = (function () {
     "Region": "North America",
     "Sub_region": "Cafe & Brunch",
     "Continent": "Americas",
-    "img_url": "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Ripe Hass Avocado",
       "Sourdough Bread",
@@ -4094,7 +4094,7 @@ const ApiService = (function () {
     "Region": "Central America",
     "Sub_region": "Mexican",
     "Continent": "Americas",
-    "img_url": "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Avocados",
       "Fresh Lime Juice",
@@ -4197,7 +4197,7 @@ const ApiService = (function () {
     "Region": "Northern Europe",
     "Sub_region": "Scandinavian",
     "Continent": "Europe",
-    "img_url": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=700&auto=format&fit=crop&q=80",
+    "img_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80",
     "ingredients": [
       "Atlantic Salmon Fillet",
       "Fresh Dill",
@@ -4646,6 +4646,43 @@ const ApiService = (function () {
 
         if (res.ok) {
           const data = await res.json();
+          if (data && data.status === 'success' && Array.isArray(data.recommendations)) {
+            return {
+              status: 'recognized',
+              source: 'FlavorShift AI Backend & Trained ML Predictor',
+              ingredientName: data.canonical_name || data.missing_ingredient,
+              category: data.category || 'Culinary Ingredient',
+              functions: data.all_functions || [data.primary_function || 'Flavor Match'],
+              flavorProfile: data.flavor_profile || 'Balanced sensory profile',
+              textureProfile: data.texture_profile || 'Standard kitchen texture',
+              dishContext: data.recipe_context,
+              alternatives: data.recommendations.map(r => ({
+                name: r.name,
+                type: r.culinary_role_match || 'Chef Tested Alternative',
+                score: r.score,
+                mlScore: r.ml_score,
+                mlConfidence: r.ml_confidence,
+                curdlingRisk: r.curdling_risk,
+                sensoryRadar: r.sensory_radar,
+                ratio: `100g = ${r.scaled_quantity}${r.scaled_unit} (Ratio ${r.substitution_ratio}:1)`,
+                calcMethod: r.scientific_mechanism,
+                tasteDesc: r.taste_delta,
+                textureDesc: `${r.texture_delta} • Tip: ${r.cooking_tip}`,
+                dietary: [
+                  r.is_vegan ? 'Vegan' : '',
+                  r.is_vegetarian ? 'Vegetarian' : '',
+                  r.is_gluten_free ? 'Gluten-Free' : '',
+                  r.is_dairy_free ? 'Dairy-Free' : ''
+                ].filter(Boolean),
+                allergens: (r.allergens && r.allergens.length) ? r.allergens : ['None'],
+                gate: r.gate
+              })),
+              excludedAlternatives: (data.excluded_candidates || []).map(e => ({
+                name: e.name,
+                rejectionReason: e.rejection_reason
+              }))
+            };
+          }
           return data;
         }
       } catch (e) {
