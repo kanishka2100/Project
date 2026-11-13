@@ -957,7 +957,7 @@
     if (n.includes('pea') || n.includes('edamame')) return 'https://images.unsplash.com/photo-1515543237350-b3eea1ec8082?w=600&auto=format&fit=crop&q=80';
     if (n.includes('porcini') || n.includes('mushroom')) return 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&auto=format&fit=crop&q=80';
     if (n.includes('ricotta') || n.includes('cheese') || n.includes('mascarpone')) return 'https://images.unsplash.com/photo-1552767059-ce182ead6c1b?w=600&auto=format&fit=crop&q=80';
-    if (n.includes('tofu') || n.includes('soy')) return 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80';
+    if (n.includes('tofu') || n.includes('soy')) return 'https://images.unsplash.com/photo-1722635940350-d1b2e5129379?w=600&auto=format&fit=crop&q=80';
     if (n.includes('butter') || n.includes('seed')) return 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80';
     return 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop&q=80';
   }
