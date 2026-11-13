@@ -4620,6 +4620,60 @@ const ApiService = (function () {
   }
 
   // ========================================================
+  // INTELLIGENT SUBSTITUTION RECOMMENDATION BRIDGE
+  // ========================================================
+  async function recommendSubstitutions(payload) {
+    if (!payload || !payload.missing_ingredient) {
+      return { status: 'empty', message: 'Ingredient name is required.' };
+    }
+
+    // Try backend if connected
+    if (isBackendConnected && API_BASE_URL && !isFoodoscopeCloud(API_BASE_URL)) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+        const res = await fetch(`${API_BASE_URL}/substitutions/recommend`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        if (res.ok) {
+          const data = await res.json();
+          return data;
+        }
+      } catch (e) {
+        console.warn('Backend /substitutions/recommend failed, using offline engine:', e);
+      }
+    }
+
+    // Client-side fallback using UniversalIngredientEngine + FlavorIdentityEngine
+    if (typeof UniversalIngredientEngine !== 'undefined') {
+      const userPrefs = {
+        dietary: (payload.dietary_preferences && payload.dietary_preferences[0]) || 'all',
+        restricted_allergens: payload.allergens_to_avoid || [],
+        in_stock_only: false
+      };
+      return UniversalIngredientEngine.analyzeIngredient(
+        payload.missing_ingredient,
+        payload.recipe_context || 'General / All Dishes',
+        userPrefs
+      );
+    }
+
+    return {
+      status: 'offline',
+      message: 'Substitution engine is currently offline.'
+    };
+  }
+
+  // ========================================================
   // INTERACTIVE DIAGNOSTICS DRAWER UI
   // ========================================================
   function setupDrawerUI() {
@@ -4714,6 +4768,7 @@ const ApiService = (function () {
   return {
     checkHealth,
     resetConfig,
+    recommendSubstitutions,
     optimizeRatio,
     getFlavorCompatibility,
     getSensoryProfile,

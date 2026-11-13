@@ -1,0 +1,1318 @@
+{
+  "_meta": {
+    "title": "FlavorShift AI Structured Culinary Knowledge Base",
+    "version": "2.0.0",
+    "description": "Deterministic culinary ontology, 12D sensory vectors, macronutrients, functional roles, and scientifically calibrated substitution ratios.",
+    "dimensions": [
+      "sweet",
+      "savory_umami",
+      "sour_acidic",
+      "bitter",
+      "salty",
+      "fatty_creamy",
+      "nutty",
+      "spicy_pungent",
+      "herbal",
+      "floral",
+      "earthy",
+      "dairy"
+    ]
+  },
+  "ingredients": [
+    {
+      "id": "heavy-cream",
+      "canonical_name": "Heavy Cream",
+      "category": "Dairy",
+      "synonyms": [
+        "fresh cream",
+        "double cream",
+        "whipping cream",
+        "cream",
+        "malai"
+      ],
+      "primary_function": "Fat Carrier & Emulsion",
+      "functional_roles": [
+        "Fat Carrier & Emulsion",
+        "Mouthfeel Enhancer",
+        "Acid Buffer",
+        "Viscosity Builder"
+      ],
+      "nutrition_per_100g": {
+        "calories_kcal": 340.0,
+        "fat_g": 36.0,
+        "moisture_pct": 57.0,
+        "protein_g": 2.2,
+        "carbs_g": 2.8,
+        "sodium_mg": 38.0
+      },
+      "sensory_vector": [
+        0.3,
+        0.1,
+        0.05,
+        0.0,
+        0.05,
+        0.95,
+        0.1,
+        0.0,
+        0.0,
+        0.05,
+        0.0,
+        0.95
+      ],
+      "flavor_profile": "Sweet lactic richness, subtle buttery undertones, smooth dairy coating",
+      "texture_profile": "High viscosity, velvety coating emulsion, silky mouthfeel",
+      "market_price_per_100g_usd": 0.7,
+      "market_price_per_100g_inr": 35.0,
+      "dietary": {
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_gluten_free": true,
+        "is_dairy_free": false
+      },
+      "allergens": [
+        "dairy"
+      ],
+      "substitutes": [
+        {
+          "name": "Whisked Malai & Hung Curd (50/50)",
+          "ratio": 1.0,
+          "culinary_role_match": "Fat Carrier & Emulsion",
+          "sensory_vector": [
+            0.25,
+            0.12,
+            0.3,
+            0.0,
+            0.05,
+            0.88,
+            0.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.92
+          ],
+          "market_price_per_100g_usd": 0.4,
+          "market_price_per_100g_inr": 20.0,
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": {
+            "is_vegan": false,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": false
+          },
+          "taste_delta": "Subtle lactic tang from yogurt curd with identical rich creaminess",
+          "texture_delta": "Thick velvety coat; stable emulsion without curdling when tempered",
+          "scientific_mechanism": "Lactic acid casein micelle network provides structural thickness while malai lipids match cream dairy emulsion",
+          "cooking_tip": "Whisk until satin-smooth. Temper with 2 tbsp warm sauce before folding in off high heat.",
+          "best_dish_contexts": [
+            "Curries & Gravies",
+            "Pastas & Sauces",
+            "General / All Dishes"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Coconut Cream (Solidified Top Layer)",
+          "ratio": 0.85,
+          "culinary_role_match": "Fat Carrier & Emulsion",
+          "sensory_vector": [
+            0.42,
+            0.1,
+            0.05,
+            0.0,
+            0.05,
+            0.9,
+            0.35,
+            0.0,
+            0.0,
+            0.1,
+            0.0,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.65,
+          "market_price_per_100g_inr": 32.0,
+          "allergens": [
+            "none"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Mild tropical aroma; round natural sweetness",
+          "texture_delta": "Luxurious, high-fat satin body with zero dairy heaviness",
+          "scientific_mechanism": "Medium-chain triglyceride lipids mimic milkfat globule mouth-coating without dairy allergens",
+          "cooking_tip": "Chill can overnight; scoop only the solidified white top layer. Simmer gently without rapid boiling.",
+          "best_dish_contexts": [
+            "Curries & Gravies",
+            "Soups & Broths",
+            "Baking & Cakes"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Soaked Cashew & Warm Milk Puree",
+          "ratio": 1.0,
+          "culinary_role_match": "Fat Carrier & Viscosity Builder",
+          "sensory_vector": [
+            0.38,
+            0.15,
+            0.05,
+            0.0,
+            0.05,
+            0.88,
+            0.75,
+            0.0,
+            0.0,
+            0.0,
+            0.1,
+            0.5
+          ],
+          "market_price_per_100g_usd": 0.9,
+          "market_price_per_100g_inr": 45.0,
+          "allergens": [
+            "tree_nuts",
+            "dairy"
+          ],
+          "dietary": {
+            "is_vegan": false,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": false
+          },
+          "taste_delta": "Rich, nutty sweetness; enhances savory depth in tomato or spice bases",
+          "texture_delta": "Exceptionally thick, glossy restaurant-style consistency",
+          "scientific_mechanism": "Suspension of micro-milled cashew proteins and unsaturated fatty acids binds water and oil",
+          "cooking_tip": "Soak cashews in hot water for 20 mins; blend on high speed for 90 seconds until zero grain remains.",
+          "best_dish_contexts": [
+            "Curries & Gravies",
+            "Pastas & Sauces",
+            "Soups & Broths"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Cashew Cream (Water-Blended, Vegan)",
+          "ratio": 1.0,
+          "culinary_role_match": "Fat Carrier & Viscosity Builder",
+          "sensory_vector": [
+            0.35,
+            0.15,
+            0.05,
+            0.0,
+            0.05,
+            0.85,
+            0.8,
+            0.0,
+            0.0,
+            0.0,
+            0.1,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.95,
+          "market_price_per_100g_inr": 48.0,
+          "allergens": [
+            "tree_nuts"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Clean toasted nut sweetness with neutral culinary background",
+          "texture_delta": "Silky, stable emulsified viscosity identical to cream",
+          "scientific_mechanism": "Pure plant lipids and starch polymers create a stable heat-tolerant emulsion",
+          "cooking_tip": "Blend 1 cup soaked cashews with 3/4 cup filtered water until glass-smooth. Add at end of cooking.",
+          "best_dish_contexts": [
+            "Curries & Gravies",
+            "Pastas & Sauces",
+            "Baking & Cakes"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Silken Tofu Puree (Light & Low Fat)",
+          "ratio": 0.9,
+          "culinary_role_match": "Viscosity Builder & Protein Base",
+          "sensory_vector": [
+            0.15,
+            0.2,
+            0.05,
+            0.0,
+            0.05,
+            0.4,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            0.1,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.35,
+          "market_price_per_100g_inr": 18.0,
+          "allergens": [
+            "soy"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Neutral soy profile that readily absorbs sauce spices and aromatics",
+          "texture_delta": "Light, spoonable cream body with 70% lower calories and 0g cholesterol",
+          "scientific_mechanism": "Pre-coagulated soy glycinin proteins provide body without fat separation",
+          "cooking_tip": "Puree drained silken tofu with 1 tsp neutral oil and pinch of salt until creamy.",
+          "best_dish_contexts": [
+            "Soups & Broths",
+            "Pastas & Sauces",
+            "Salads & Dressings"
+          ],
+          "in_stock": true
+        }
+      ]
+    },
+    {
+      "id": "butter",
+      "canonical_name": "Butter",
+      "category": "Dairy",
+      "synonyms": [
+        "table butter",
+        "unsalted butter",
+        "salted butter",
+        "makkhan"
+      ],
+      "primary_function": "Fat Carrier & Flakiness",
+      "functional_roles": [
+        "Fat Carrier & Flakiness",
+        "Aroma Contributor",
+        "Moisture Carrier",
+        "Maillard Catalyst"
+      ],
+      "nutrition_per_100g": {
+        "calories_kcal": 717.0,
+        "fat_g": 81.0,
+        "moisture_pct": 16.0,
+        "protein_g": 0.9,
+        "carbs_g": 0.1,
+        "sodium_mg": 11.0
+      },
+      "sensory_vector": [
+        0.1,
+        0.1,
+        0.0,
+        0.0,
+        0.1,
+        0.98,
+        0.1,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.9
+      ],
+      "flavor_profile": "Cultured butyric richness, sweet milk fats, melting savory notes",
+      "texture_profile": "Solid at refrigeration, melts at body temperature (36°C) for clean oral release",
+      "market_price_per_100g_usd": 0.85,
+      "market_price_per_100g_inr": 55.0,
+      "dietary": {
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_gluten_free": true,
+        "is_dairy_free": false
+      },
+      "allergens": [
+        "dairy"
+      ],
+      "substitutes": [
+        {
+          "name": "Ghee (Clarified Butter)",
+          "ratio": 0.8,
+          "culinary_role_match": "Fat Carrier & Flakiness",
+          "sensory_vector": [
+            0.1,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.35,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.45
+          ],
+          "market_price_per_100g_usd": 1.1,
+          "market_price_per_100g_inr": 65.0,
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": {
+            "is_vegan": false,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": false
+          },
+          "taste_delta": "Intense nutty, caramelized aroma; zero burning at high heat",
+          "texture_delta": "Pure 99.8% lipid; produces crispier crusts and deep sizzle",
+          "scientific_mechanism": "Milk solids and water removed, raising smoke point to 250°C and concentrating flavor compounds",
+          "cooking_tip": "Use 20% less by volume because ghee contains 0% water compared to 16% in butter.",
+          "best_dish_contexts": [
+            "Curries & Gravies",
+            "Breakfast & Bowls",
+            "Baking & Cakes"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Refined Coconut Oil (Neutral Flavor)",
+          "ratio": 0.8,
+          "culinary_role_match": "Fat Carrier & Flakiness",
+          "sensory_vector": [
+            0.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.6,
+          "market_price_per_100g_inr": 35.0,
+          "allergens": [
+            "none"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Neutral, non-coconut taste when steam-refined; clean mouthfeel",
+          "texture_delta": "Solid below 24°C; creates flaky pastry laminations in baking",
+          "scientific_mechanism": "High saturated lauric acid content mimics solid crystalline butter fat matrices",
+          "cooking_tip": "Keep chilled when cutting into flour for pastries; melt gently for sauteing.",
+          "best_dish_contexts": [
+            "Baking & Cakes",
+            "Curries & Gravies",
+            "General / All Dishes"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Extra Virgin Olive Oil",
+          "ratio": 0.75,
+          "culinary_role_match": "Fat Carrier & Emulsion",
+          "sensory_vector": [
+            0.05,
+            0.15,
+            0.05,
+            0.1,
+            0.0,
+            0.95,
+            0.1,
+            0.05,
+            0.3,
+            0.0,
+            0.1,
+            0.0
+          ],
+          "market_price_per_100g_usd": 1.2,
+          "market_price_per_100g_inr": 70.0,
+          "allergens": [
+            "none"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Fruity, peppery green notes; Mediterranean culinary personality",
+          "texture_delta": "Liquid gold mouthfeel; emulsifies gracefully with pasta water",
+          "scientific_mechanism": "High monounsaturated oleic acid keeps sauces tender without arterial saturated fats",
+          "cooking_tip": "Ideal for finishing and savory sauteing; reduce heat to prevent smoking.",
+          "best_dish_contexts": [
+            "Pastas & Sauces",
+            "Salads & Dressings"
+          ],
+          "in_stock": true
+        }
+      ]
+    },
+    {
+      "id": "paneer",
+      "canonical_name": "Paneer",
+      "category": "Dairy",
+      "synonyms": [
+        "indian cottage cheese",
+        "chenna",
+        "paneer cubes"
+      ],
+      "primary_function": "Protein Core & Chew",
+      "functional_roles": [
+        "Protein Core & Chew",
+        "Sauce Absorption",
+        "Shape Retention"
+      ],
+      "nutrition_per_100g": {
+        "calories_kcal": 265.0,
+        "fat_g": 20.0,
+        "moisture_pct": 55.0,
+        "protein_g": 18.0,
+        "carbs_g": 1.2,
+        "sodium_mg": 18.0
+      },
+      "sensory_vector": [
+        0.1,
+        0.3,
+        0.1,
+        0.0,
+        0.05,
+        0.7,
+        0.05,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.85
+      ],
+      "flavor_profile": "Mild, milky, lightly sweet curd with clean fresh finish",
+      "texture_profile": "Non-melting, dense spongy curd that absorbs gravy spices",
+      "market_price_per_100g_usd": 0.8,
+      "market_price_per_100g_inr": 45.0,
+      "dietary": {
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_gluten_free": true,
+        "is_dairy_free": false
+      },
+      "allergens": [
+        "dairy"
+      ],
+      "substitutes": [
+        {
+          "name": "Pressed Firm Organic Tofu",
+          "ratio": 1.0,
+          "culinary_role_match": "Protein Core & Chew",
+          "sensory_vector": [
+            0.1,
+            0.25,
+            0.05,
+            0.0,
+            0.05,
+            0.35,
+            0.15,
+            0.0,
+            0.0,
+            0.0,
+            0.1,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.5,
+          "market_price_per_100g_inr": 28.0,
+          "allergens": [
+            "soy"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Slightly bean-like when raw, but absorbs curry spices even deeper than paneer",
+          "texture_delta": "Identical cubed chew and heat stability; pan-fries with crisp golden crust",
+          "scientific_mechanism": "Soy protein isolate network forms dense, non-melting curd structurally equivalent to acid-set casein",
+          "cooking_tip": "Press under heavy plate for 15 mins to expel excess water; pan-sear in 1 tsp oil before simmering.",
+          "best_dish_contexts": [
+            "Curries & Gravies",
+            "Breakfast & Bowls",
+            "General / All Dishes"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Halloumi Cheese",
+          "ratio": 1.0,
+          "culinary_role_match": "Protein Core & Chew",
+          "sensory_vector": [
+            0.1,
+            0.45,
+            0.1,
+            0.0,
+            0.5,
+            0.8,
+            0.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.85
+          ],
+          "market_price_per_100g_usd": 1.4,
+          "market_price_per_100g_inr": 85.0,
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": {
+            "is_vegan": false,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": false
+          },
+          "taste_delta": "Saltier, tangy sheep/goat milk flavor with savory caramelized notes",
+          "texture_delta": "Firm, squeaky chew; maintains shape perfectly under high griddle heat",
+          "scientific_mechanism": "High curd cooking temperature denatures whey proteins preventing thermal melting",
+          "cooking_tip": "Reduce added recipe salt by 30% to balance natural brine of halloumi.",
+          "best_dish_contexts": [
+            "Curries & Gravies",
+            "Salads & Dressings"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Whole Milk Ricotta Salata",
+          "ratio": 1.0,
+          "culinary_role_match": "Protein Core & Texture",
+          "sensory_vector": [
+            0.15,
+            0.4,
+            0.1,
+            0.0,
+            0.35,
+            0.65,
+            0.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.85
+          ],
+          "market_price_per_100g_usd": 1.2,
+          "market_price_per_100g_inr": 75.0,
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": {
+            "is_vegan": false,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": false
+          },
+          "taste_delta": "Milky, gently salty with delicate crumbly mouthfeel",
+          "texture_delta": "Firm enough to dice and hold shape in warm sauces",
+          "scientific_mechanism": "Salt-cured whey and milk protein matrix resistant to thermal dissolution",
+          "cooking_tip": "Cut into 1-inch cubes and toss in sauce just before serving.",
+          "best_dish_contexts": [
+            "Pastas & Sauces",
+            "Salads & Dressings"
+          ],
+          "in_stock": true
+        }
+      ]
+    },
+    {
+      "id": "eggs",
+      "canonical_name": "Eggs",
+      "category": "Eggs & Binders",
+      "synonyms": [
+        "egg",
+        "whole eggs",
+        "egg white",
+        "egg yolk",
+        "anda"
+      ],
+      "primary_function": "Binder & Leavener",
+      "functional_roles": [
+        "Binder & Leavener",
+        "Emulsifier",
+        "Moisture Provider",
+        "Coagulant"
+      ],
+      "nutrition_per_100g": {
+        "calories_kcal": 143.0,
+        "fat_g": 9.5,
+        "moisture_pct": 76.0,
+        "protein_g": 12.6,
+        "carbs_g": 0.7,
+        "sodium_mg": 142.0
+      },
+      "sensory_vector": [
+        0.1,
+        0.5,
+        0.0,
+        0.0,
+        0.1,
+        0.7,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.1
+      ],
+      "flavor_profile": "Savory albumin and rich lecithin yolk umami",
+      "texture_profile": "Liquid when cold, coagulates at 62-70°C into firm resilient gel",
+      "market_price_per_100g_usd": 0.35,
+      "market_price_per_100g_inr": 18.0,
+      "dietary": {
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_gluten_free": true,
+        "is_dairy_free": true
+      },
+      "allergens": [
+        "eggs"
+      ],
+      "substitutes": [
+        {
+          "name": "Aquafaba (Whipped Chickpea Brine)",
+          "ratio": 1.0,
+          "culinary_role_match": "Leavener & Foam Stabilizer",
+          "sensory_vector": [
+            0.1,
+            0.2,
+            0.0,
+            0.0,
+            0.05,
+            0.1,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            0.3,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.15,
+          "market_price_per_100g_inr": 8.0,
+          "allergens": [
+            "none"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Completely neutral once baked; zero legume flavor remains",
+          "texture_delta": "Whips into glossy stiff peaks like egg whites; produces ultra-light crumb",
+          "scientific_mechanism": "Chickpea saponins, albumins, and globulins trap air bubbles identically to egg ovalbumin",
+          "cooking_tip": "Use 3 tbsp (45g) liquid aquafaba per 1 whole egg. Add 1/8 tsp cream of tartar for stiff peaks.",
+          "best_dish_contexts": [
+            "Baking & Cakes",
+            "Breakfast & Bowls"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Ground Flaxseed Egg (1 tbsp Flax + 3 tbsp Water)",
+          "ratio": 1.0,
+          "culinary_role_match": "Binder & Moisture",
+          "sensory_vector": [
+            0.1,
+            0.2,
+            0.0,
+            0.1,
+            0.0,
+            0.5,
+            0.6,
+            0.0,
+            0.0,
+            0.0,
+            0.4,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.25,
+          "market_price_per_100g_inr": 12.0,
+          "allergens": [
+            "none"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Pleasant wholesome nutty flavor, matches brownies, cookies and wholemeal breads",
+          "texture_delta": "Dense, moist chewy crumb with excellent structural cohesion",
+          "scientific_mechanism": "Soluble mucilage polysaccharides form a viscous sticky matrix that binds flours",
+          "cooking_tip": "Mix 1 tbsp finely ground flax with 3 tbsp warm water; let gel for 10 minutes before adding.",
+          "best_dish_contexts": [
+            "Baking & Cakes",
+            "Breakfast & Bowls"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Pureed Silken Tofu",
+          "ratio": 1.0,
+          "culinary_role_match": "Binder & Moisture",
+          "sensory_vector": [
+            0.1,
+            0.25,
+            0.0,
+            0.0,
+            0.0,
+            0.4,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            0.1,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.35,
+          "market_price_per_100g_inr": 18.0,
+          "allergens": [
+            "soy"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Undetectable neutral taste in baked goods",
+          "texture_delta": "Produces tender, dense, fudgy crumb ideal for brownies and quick breads",
+          "scientific_mechanism": "Soy protein curd supplies bulk moisture and mild structural hold",
+          "cooking_tip": "Use 1/4 cup (60g) pureed silken tofu per 1 large egg. Blend until completely smooth.",
+          "best_dish_contexts": [
+            "Baking & Cakes"
+          ],
+          "in_stock": true
+        }
+      ]
+    },
+    {
+      "id": "all-purpose-flour",
+      "canonical_name": "All-Purpose Flour",
+      "category": "Grains & Flours",
+      "synonyms": [
+        "maida",
+        "flour",
+        "wheat flour",
+        "plain flour",
+        "white flour"
+      ],
+      "primary_function": "Structure & Gluten Network",
+      "functional_roles": [
+        "Structure & Gluten Network",
+        "Thickener",
+        "Crumb Former",
+        "Moisture Binder"
+      ],
+      "nutrition_per_100g": {
+        "calories_kcal": 364.0,
+        "fat_g": 1.0,
+        "moisture_pct": 12.0,
+        "protein_g": 10.3,
+        "carbs_g": 76.3,
+        "sodium_mg": 2.0
+      },
+      "sensory_vector": [
+        0.15,
+        0.1,
+        0.0,
+        0.0,
+        0.0,
+        0.1,
+        0.2,
+        0.0,
+        0.0,
+        0.0,
+        0.3,
+        0.0
+      ],
+      "flavor_profile": "Neutral cereal starch, mild cereal sweetness when gelatinized",
+      "texture_profile": "Elastic gluten mesh when hydrated; soft tender crumb when baked",
+      "market_price_per_100g_usd": 0.15,
+      "market_price_per_100g_inr": 8.0,
+      "dietary": {
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_gluten_free": false,
+        "is_dairy_free": true
+      },
+      "allergens": [
+        "gluten"
+      ],
+      "substitutes": [
+        {
+          "name": "1-to-1 Gluten-Free Flour Blend (Rice, Potato & Tapioca)",
+          "ratio": 1.0,
+          "culinary_role_match": "Structure & Crumb Former",
+          "sensory_vector": [
+            0.15,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            0.1,
+            0.15,
+            0.0,
+            0.0,
+            0.0,
+            0.25,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.55,
+          "market_price_per_100g_inr": 32.0,
+          "allergens": [
+            "none"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Clean, neutral profile indistinguishable from wheat flour in cakes",
+          "texture_delta": "Soft, tender crumb; includes xanthan gum to replicate elasticity",
+          "scientific_mechanism": "Hydrocolloid xanthan gum mimics gluten viscoelasticity without allergen proteins",
+          "cooking_tip": "Let mixed batter rest for 15 minutes before baking to fully hydrate rice starch grains.",
+          "best_dish_contexts": [
+            "Baking & Cakes",
+            "Pastas & Sauces",
+            "General / All Dishes"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Superfine Blanched Almond Flour",
+          "ratio": 1.0,
+          "culinary_role_match": "Structure & Moisture",
+          "sensory_vector": [
+            0.2,
+            0.15,
+            0.0,
+            0.05,
+            0.0,
+            0.6,
+            0.85,
+            0.0,
+            0.0,
+            0.0,
+            0.2,
+            0.0
+          ],
+          "market_price_per_100g_usd": 1.3,
+          "market_price_per_100g_inr": 80.0,
+          "allergens": [
+            "tree_nuts"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Fragrant toasted almond sweetness; low glycemic impact",
+          "texture_delta": "Extremely moist, melt-in-mouth crumb with rich natural oils",
+          "scientific_mechanism": "Nut lipids provide superior moisture retention and tenderness without starch swelling",
+          "cooking_tip": "Pack lightly when measuring; add 1 extra egg or flax binder to replace gluten structure.",
+          "best_dish_contexts": [
+            "Baking & Cakes"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Cornstarch / Arrowroot (For Sauce Thickening)",
+          "ratio": 0.5,
+          "culinary_role_match": "Thickener",
+          "sensory_vector": [
+            0.05,
+            0.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.1,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.3,
+          "market_price_per_100g_inr": 15.0,
+          "allergens": [
+            "none"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Completely neutral, transparent glossy finish",
+          "texture_delta": "Creates crystal-clear high sheen without chalky flour taste",
+          "scientific_mechanism": "Amylopectin starch granules swell rapidly at 75°C, yielding twice the thickening power of flour",
+          "cooking_tip": "Always dissolve in equal volume cold water first (slurry); whisk into boiling sauce for 1 minute.",
+          "best_dish_contexts": [
+            "Pastas & Sauces",
+            "Soups & Broths",
+            "Curries & Gravies"
+          ],
+          "in_stock": true
+        }
+      ]
+    },
+    {
+      "id": "soy-sauce",
+      "canonical_name": "Soy Sauce",
+      "category": "Seasonings & Umami",
+      "synonyms": [
+        "soya sauce",
+        "shoyu",
+        "dark soy sauce",
+        "light soy sauce"
+      ],
+      "primary_function": "Umami & Salinity",
+      "functional_roles": [
+        "Umami & Salinity",
+        "Color Contributor",
+        "Savory Flavor Enhancer"
+      ],
+      "nutrition_per_100g": {
+        "calories_kcal": 53.0,
+        "fat_g": 0.1,
+        "moisture_pct": 68.0,
+        "protein_g": 8.1,
+        "carbs_g": 4.9,
+        "sodium_mg": 5600.0
+      },
+      "sensory_vector": [
+        0.1,
+        0.95,
+        0.15,
+        0.0,
+        0.9,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.2,
+        0.0
+      ],
+      "flavor_profile": "Intense savory glutamate umami, sharp salinity, fermented complexity",
+      "texture_profile": "Thin free-flowing dark amber liquid",
+      "market_price_per_100g_usd": 0.45,
+      "market_price_per_100g_inr": 25.0,
+      "dietary": {
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_gluten_free": false,
+        "is_dairy_free": true
+      },
+      "allergens": [
+        "soy",
+        "gluten"
+      ],
+      "substitutes": [
+        {
+          "name": "Tamari (Gluten-Free Brewed Soy)",
+          "ratio": 1.0,
+          "culinary_role_match": "Umami & Salinity",
+          "sensory_vector": [
+            0.1,
+            0.96,
+            0.12,
+            0.0,
+            0.85,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.2,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.7,
+          "market_price_per_100g_inr": 40.0,
+          "allergens": [
+            "soy"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Deeper, smoother umami with zero gluten and slightly less harsh salt bite",
+          "texture_delta": "Identical liquid consistency with richer dark glaze",
+          "scientific_mechanism": "Brewed with 100% whole soybeans without wheat, yielding higher natural glutamate concentration",
+          "cooking_tip": "Substitute 1:1 in any recipe for identical savory depth without gluten.",
+          "best_dish_contexts": [
+            "Pastas & Sauces",
+            "Soups & Broths",
+            "General / All Dishes"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Coconut Aminos (Soy-Free & Gluten-Free)",
+          "ratio": 1.25,
+          "culinary_role_match": "Umami & Mild Salinity",
+          "sensory_vector": [
+            0.48,
+            0.72,
+            0.2,
+            0.0,
+            0.52,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.1,
+            0.0
+          ],
+          "market_price_per_100g_usd": 1.1,
+          "market_price_per_100g_inr": 65.0,
+          "allergens": [
+            "none"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Sweeter with gentle molasses umami; contains 65% less sodium",
+          "texture_delta": "Slightly thicker syrupy cling",
+          "scientific_mechanism": "Aged sap of coconut blossoms fermented with mineral sea salt",
+          "cooking_tip": "Use 25% more volume and add a tiny pinch of sea salt to match soy sauce saltiness.",
+          "best_dish_contexts": [
+            "Salads & Dressings",
+            "Pastas & Sauces",
+            "General / All Dishes"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Red / White Miso Dissolved in Water",
+          "ratio": 1.0,
+          "culinary_role_match": "Fermented Umami Depth",
+          "sensory_vector": [
+            0.2,
+            0.92,
+            0.1,
+            0.05,
+            0.8,
+            0.2,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            0.3,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.85,
+          "market_price_per_100g_inr": 50.0,
+          "allergens": [
+            "soy"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Complex earthy fermented warmth with intense savory backbone",
+          "texture_delta": "Slightly cloudier broth body that coats noodles beautifully",
+          "scientific_mechanism": "Koji-fermented Aspergillus oryzae delivers free glutamates and amino acid peptides",
+          "cooking_tip": "Dissolve 1 tbsp miso paste in 2 tbsp warm broth or water before adding to pan.",
+          "best_dish_contexts": [
+            "Soups & Broths",
+            "Pastas & Sauces"
+          ],
+          "in_stock": true
+        }
+      ]
+    },
+    {
+      "id": "lemon-juice",
+      "canonical_name": "Lemon Juice",
+      "category": "Produce & Aromatics",
+      "synonyms": [
+        "fresh lemon juice",
+        "lemon",
+        "lime juice",
+        "nimbu ras"
+      ],
+      "primary_function": "Acidulant & Brightness",
+      "functional_roles": [
+        "Acidulant & Brightness",
+        "pH Adjuster",
+        "Flavor Balancer",
+        "Enzymatic Inhibitor"
+      ],
+      "nutrition_per_100g": {
+        "calories_kcal": 22.0,
+        "fat_g": 0.2,
+        "moisture_pct": 92.0,
+        "protein_g": 0.4,
+        "carbs_g": 6.9,
+        "sodium_mg": 1.0
+      },
+      "sensory_vector": [
+        0.15,
+        0.05,
+        0.95,
+        0.1,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.2,
+        0.3,
+        0.0,
+        0.0
+      ],
+      "flavor_profile": "Sharp citrus citric acid, zesty aromatic brightness, palate cleanser",
+      "texture_profile": "Clear aqueous liquid",
+      "market_price_per_100g_usd": 0.4,
+      "market_price_per_100g_inr": 20.0,
+      "dietary": {
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_gluten_free": true,
+        "is_dairy_free": true
+      },
+      "allergens": [
+        "none"
+      ],
+      "substitutes": [
+        {
+          "name": "Apple Cider Vinegar (Raw & Unfiltered)",
+          "ratio": 0.85,
+          "culinary_role_match": "Acidulant & Brightness",
+          "sensory_vector": [
+            0.25,
+            0.05,
+            0.9,
+            0.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.05,
+            0.1,
+            0.1,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.5,
+          "market_price_per_100g_inr": 25.0,
+          "allergens": [
+            "none"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Crisp fruity acidity with fermented apple notes",
+          "texture_delta": "Identical clean liquid acidity",
+          "scientific_mechanism": "5% acetic acid mimics citric acid pH reduction (pH ~ 3.0)",
+          "cooking_tip": "Start with 80% volume because acetic acid has a sharper initial vapor punch than citric acid.",
+          "best_dish_contexts": [
+            "Salads & Dressings",
+            "Curries & Gravies",
+            "General / All Dishes"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "Amchur (Dry Green Mango Powder)",
+          "ratio": 0.5,
+          "culinary_role_match": "Acidulant & Tartness",
+          "sensory_vector": [
+            0.1,
+            0.1,
+            0.92,
+            0.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.1,
+            0.0,
+            0.35,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.4,
+          "market_price_per_100g_inr": 22.0,
+          "allergens": [
+            "none"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Fruity sour tang without adding extra liquid volume to thick dry gravies",
+          "texture_delta": "Fine powder; preserves concentrated dry roasted crust",
+          "scientific_mechanism": "Natural citric and malic acids from dehydrated unripe mangos deliver clean tartness",
+          "cooking_tip": "Use 1/2 tsp amchur per 1 tbsp lemon juice. Stir directly into sizzling spices.",
+          "best_dish_contexts": [
+            "Curries & Gravies",
+            "Breakfast & Bowls"
+          ],
+          "in_stock": true
+        },
+        {
+          "name": "White Wine Vinegar",
+          "ratio": 0.85,
+          "culinary_role_match": "Acidulant & Brightness",
+          "sensory_vector": [
+            0.1,
+            0.05,
+            0.92,
+            0.05,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.1,
+            0.15,
+            0.0,
+            0.0
+          ],
+          "market_price_per_100g_usd": 0.6,
+          "market_price_per_100g_inr": 35.0,
+          "allergens": [
+            "none"
+          ],
+          "dietary": {
+            "is_vegan": true,
+            "is_vegetarian": true,
+            "is_gluten_free": true,
+            "is_dairy_free": true
+          },
+          "taste_delta": "Delicate, bright grape acidity without heaviness",
+          "texture_delta": "Light liquid",
+          "scientific_mechanism": "Refined acetic acid enhances delicate emulsions and pan deglazing",
+          "cooking_tip": "Perfect for pastas, risottos, and salad dressings.",
+          "best_dish_contexts": [
+            "Pastas & Sauces",
+            "Salads & Dressings"
+          ],
+          "in_stock": true
+        }
+      ]
+    }
+  ]
+}

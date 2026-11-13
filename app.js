@@ -714,7 +714,12 @@
     let uResult = null;
     if (typeof UniversalIngredientEngine !== 'undefined' && currentIng) {
       try {
-        uResult = UniversalIngredientEngine.analyzeIngredient(currentIng, currentCtx);
+        const userPrefs = {
+          dietary: state.selectedDiet || 'all',
+          restrictedAllergens: state.restrictedAllergens || [],
+          inStockOnly: false
+        };
+        uResult = UniversalIngredientEngine.analyzeIngredient(currentIng, currentCtx, userPrefs);
       } catch (e) {
         console.warn('Universal engine lookup fallback:', e);
       }
@@ -953,6 +958,40 @@
                   <i class="fa-solid fa-bolt"></i>
                   <span>Analyze</span>
                 </button>
+              </div>
+            </div>
+
+            <!-- Dietary Preference Gate Filter Rail -->
+            <div class="flex flex-wrap items-center justify-between gap-2.5 pt-1">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="text-xs font-mono font-bold uppercase tracking-wider text-stone-500 mr-1 flex items-center gap-1">
+                  <i class="fa-solid fa-filter text-terracotta text-xs"></i>
+                  <span>Dietary Gate:</span>
+                </span>
+                ${['all', 'vegan', 'vegetarian', 'gluten-free', 'dairy-free'].map(diet => `
+                  <button
+                    type="button"
+                    data-diet-filter="${diet}"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      (state.selectedDiet || 'all') === diet
+                        ? 'bg-forest text-ivory dark:bg-forest-600 shadow-sm ring-2 ring-forest/30'
+                        : 'bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-stone-600 dark:text-stone-300 hover:border-terracotta'
+                    }"
+                  >
+                    ${diet === 'vegan' ? '<i class="fa-solid fa-leaf text-emerald-500 text-[10px]"></i>' :
+                      diet === 'vegetarian' ? '<i class="fa-solid fa-seedling text-emerald-600 text-[10px]"></i>' :
+                      diet === 'gluten-free' ? '<i class="fa-solid fa-wheat-awn-circle-exclamation text-amber-500 text-[10px]"></i>' :
+                      diet === 'dairy-free' ? '<i class="fa-solid fa-ban text-terracotta text-[10px]"></i>' :
+                      '<i class="fa-solid fa-utensils text-stone-400 text-[10px]"></i>'}
+                    <span>${diet === 'all' ? 'All Dietary' : diet.charAt(0).toUpperCase() + diet.slice(1).replace('-', ' ')}</span>
+                  </button>
+                `).join('')}
+              </div>
+              <div class="flex items-center gap-2 text-xs text-stone-500 font-mono">
+                <span class="inline-flex items-center gap-1">
+                  <i class="fa-solid fa-shield-halved text-terracotta text-[11px]"></i>
+                  <span>Gate Formula: <strong>Gate × (0.40F + 0.40R + 0.20C)</strong></span>
+                </span>
               </div>
             </div>
 
@@ -1632,6 +1671,21 @@
 
     uAnalyze?.addEventListener('click', runUniversalLookup);
 
+    // Dietary Filter Buttons (Vegan, Vegetarian, Gluten-Free, Dairy-Free)
+    container.querySelectorAll('[data-diet-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const diet = btn.getAttribute('data-diet-filter') || 'all';
+        state.selectedDiet = diet;
+        state.selectedSubstitutedAlt = '';
+        renderSwapLabView();
+        showNotification(
+          'Dietary Filter Applied',
+          `Filtering substitutes for "${diet === 'all' ? 'All Dietary' : diet.toUpperCase()}". Candidates failing safety gates are excluded.`,
+          'info'
+        );
+      });
+    });
+
     container.querySelectorAll('[data-prompt-ing]').forEach(btn => {
       btn.addEventListener('click', () => {
         state.universalCurrentIngredient = btn.getAttribute('data-prompt-ing') || 'Fresh Cream';
@@ -1879,12 +1933,12 @@
             </div>
 
             <h1 class="font-heading font-black text-4xl sm:text-5xl md:text-[3.25rem] leading-tight tracking-tight text-ivory">
-              Culinary Recipe Library.<br>
-              <span class="text-terracotta font-serif italic">Scale Portions & Explore</span> Live Databases.
+              Every Recipe You Love.<br>
+              <span class="text-terracotta font-serif italic">Scaled & Swapped</span> in Seconds.
             </h1>
 
             <p class="text-ivory/90 text-base md:text-lg leading-relaxed font-normal">
-              Switch between our 40 chef-crafted kitchen recipes with dynamic portion scaling, or search across 118,000+ global computational recipes directly from the live Foodoscope RecipeDB API.
+              Explore chef-crafted kitchen favorites with instant portion scaling, or search 118,000+ global recipes with smart ingredient substitutions.
             </p>
           </div>
 
@@ -4217,6 +4271,13 @@
     renderExploreView();
     renderHtvView();
     setupEventListeners();
+
+    // Hash-based direct view navigation
+    const hash = (window.location.hash || '').replace('#', '').trim();
+    if (hash === 'explore' || hash === 'htv' || hash === 'favorites' || hash === 'swaplab') {
+      switchTab(hash);
+    }
+
     setTimeout(initScrollAnimations, 100);
   }
 

@@ -24,6 +24,14 @@ from app.schemas.sop import (
     RecipeAdaptationRequest,
     RecipeAdaptationResponse,
 )
+from app.schemas.substitution import (
+    SubstitutionRecommendRequest,
+    SubstitutionRecommendResponse,
+    EvaluatedSubstitute,
+    ExcludedSubstitute,
+    GateValidationRequest,
+    GateValidationResponse,
+)
 
 __all__ = [
     "RatioOptimizationRequest",
@@ -36,4 +44,10 @@ __all__ = [
     "RecipeAdaptationResponse",
     "HtvFeedbackRequest",
     "HtvFeedbackResponse",
+    "SubstitutionRecommendRequest",
+    "SubstitutionRecommendResponse",
+    "EvaluatedSubstitute",
+    "ExcludedSubstitute",
+    "GateValidationRequest",
+    "GateValidationResponse",
 ]

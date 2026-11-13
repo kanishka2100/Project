@@ -19,6 +19,7 @@ from app.routers import (
     ratio_router,
     sensory_router,
     sop_router,
+    substitution_router,
 )
 
 logger = logging.getLogger("flavorshift")
@@ -57,6 +58,7 @@ app.include_router(sensory_router.router, prefix=settings.API_PREFIX)
 app.include_router(ratio_router.router, prefix=settings.API_PREFIX)
 app.include_router(sop_router.router, prefix=settings.API_PREFIX)
 app.include_router(htv_router.router, prefix=settings.API_PREFIX)
+app.include_router(substitution_router.router, prefix=settings.API_PREFIX)
 
 
 @app.get("/", tags=["Root"])
