@@ -49,7 +49,7 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://localhost:6379/0"
 
     # ── Foodoscope / FlavorDB API ────────────────────────────────────────
-    FOODOSCOPE_API_KEY: str = "voGqE62pvGkTkldxUqQDxGIv4KRlruf5KqGlN7wPjoZV9Yts"
+    FOODOSCOPE_API_KEY: str = "XSHWtIa1UXATvKvsrWpZtgtPDWo6IaOsVKgBGSRPsdxewtur"
     FOODOSCOPE_BASE_URL: str = "https://api.foodoscope.com"
 
     # ── AI Model Artefact Paths ──────────────────────────────────────────

@@ -47,6 +47,9 @@
     // Foodoscope RecipeDB Live Database State
     exploreMode: 'catalog', // 'catalog' | 'foodoscope'
     foodoscopeQuery: 'Biryani',
+    foodoscopePage: 1,
+    foodoscopeTotalPages: 1,
+    foodoscopeTotalCount: 0,
     foodoscopeResults: [],
     foodoscopeLoading: false,
     foodoscopeSelectedRecipe: null
@@ -1101,33 +1104,38 @@
                     ` : ''}
 
                     <!-- Foodoscope Live RecipeDB & Molecular Intelligence Context -->
-                    <div id="swaplab-foodoscope-context" class="p-4 sm:p-5 rounded-2xl bg-forest/5 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                      <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-forest/10 dark:bg-stone-800 text-forest dark:text-sage-300 flex items-center justify-center text-sm shrink-0">
-                          <i class="fa-solid fa-cloud text-terracotta"></i>
-                        </div>
-                        <div>
-                          <div class="flex items-center gap-2">
-                            <span class="text-xs font-mono font-bold text-forest dark:text-ivory">
-                              Foodoscope RecipeDB Context
-                            </span>
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sage-100 dark:bg-emerald-950/40 text-forest dark:text-sage-300 border border-sage-300/40 font-mono">
-                              Live API Connected
-                            </span>
+                    <div id="swaplab-foodoscope-context" class="p-4 sm:p-5 rounded-2xl bg-forest/5 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 space-y-4">
+                      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                          <div class="w-9 h-9 rounded-xl bg-forest/10 dark:bg-stone-800 text-forest dark:text-sage-300 flex items-center justify-center text-sm shrink-0">
+                            <i class="fa-solid fa-cloud text-terracotta"></i>
                           </div>
-                          <p id="swaplab-foodoscope-context-text" class="text-xs text-stone-500 font-mono mt-0.5">
-                            Cross-referencing 118,000+ RecipeDB records for "${uResult.ingredientName}" in ${currentDish || matchedRecipe.title}...
-                          </p>
+                          <div>
+                            <div class="flex items-center gap-2">
+                              <span class="text-xs font-mono font-bold text-forest dark:text-ivory">
+                                Foodoscope RecipeDB Context
+                              </span>
+                              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sage-100 dark:bg-emerald-950/40 text-forest dark:text-sage-300 border border-sage-300/40 font-mono">
+                                Live API Connected
+                              </span>
+                            </div>
+                            <p id="swaplab-foodoscope-context-text" class="text-xs text-stone-500 font-mono mt-0.5">
+                              Cross-referencing 118,000+ RecipeDB records for "${uResult.ingredientName}" in ${currentDish || matchedRecipe.title}...
+                            </p>
+                          </div>
                         </div>
+                        <button
+                          type="button"
+                          id="swaplab-explore-recipedb-btn"
+                          class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-terracotta flex items-center gap-1.5 cursor-pointer whitespace-nowrap self-start sm:self-center transition-all shadow-xs"
+                        >
+                          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-terracotta"></i>
+                          <span>Explore RecipeDB Matches</span>
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        id="swaplab-explore-recipedb-btn"
-                        class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-terracotta flex items-center gap-1.5 cursor-pointer whitespace-nowrap self-start sm:self-center transition-all shadow-xs"
-                      >
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-terracotta"></i>
-                        <span>Explore RecipeDB Matches</span>
-                      </button>
+
+                      <!-- RecipeDB Dual Showcase Container -->
+                      <div id="swaplab-dual-recipedb-container" class="space-y-3 pt-1"></div>
                     </div>
 
                     <!-- Complete Recipe with the Selected Substitute Replacing Original Missing Ingredient -->
@@ -1645,15 +1653,82 @@
     });
 
     if (uResult && uResult.ingredientName && typeof ApiService !== 'undefined') {
-      ApiService.searchByIngredient(uResult.ingredientName, currentDish, 3).then(matches => {
+      const activeAltName = (activeAlt ? activeAlt.name : state.selectedSubstitutedAlt) || '';
+      ApiService.searchDualRecipesForSwap(uResult.ingredientName, activeAltName, currentDish, 2).then(dualData => {
         const contextEl = document.getElementById('swaplab-foodoscope-context-text');
+        const dualContainer = document.getElementById('swaplab-dual-recipedb-container');
+
+        const origRecipes = dualData.original?.recipes || [];
+        const subRecipes = dualData.substitute?.recipes || [];
+
         if (contextEl) {
-          if (matches && matches.length) {
-            const titles = matches.map(m => m.Recipe_title || m.title).slice(0, 2).join(', ');
-            contextEl.innerHTML = `Identified <strong>${matches.length}+ verified RecipeDB dishes</strong> using <em>${uResult.ingredientName}</em> (e.g. "${titles}").`;
+          if (origRecipes.length || subRecipes.length) {
+            contextEl.innerHTML = `Cross-referenced <strong>${origRecipes.length} original & ${subRecipes.length} substitute dishes</strong> across RecipeDB for <em>${uResult.ingredientName}</em> & <em>${activeAltName}</em>.`;
           } else {
             contextEl.textContent = `Calibrated for "${uResult.ingredientName}" via Foodoscope flavor chemistry & 40-recipe kitchen catalog.`;
           }
+        }
+
+        if (dualContainer && (origRecipes.length || subRecipes.length)) {
+          const renderCard = (r, badgeText, badgeBg) => {
+            const rId = r.Recipe_id || r._id || '';
+            const rTitle = r.Recipe_title || r.title || 'RecipeDB Dish';
+            const rImg = r.img_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80';
+            const rRegion = r.Region || 'Global';
+            const rCals = r.Calories || r.CaloriesNum || '—';
+            return `
+              <div class="p-3.5 rounded-2xl bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 flex items-center justify-between gap-3 shadow-xs">
+                <div class="flex items-center gap-3 min-w-0">
+                  <img src="${rImg}" alt="${rTitle}" class="w-14 h-14 rounded-xl object-cover shrink-0 border border-beige-200 dark:border-stone-700" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80'">
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-black font-mono ${badgeBg}">${badgeText}</span>
+                      <span class="text-[10px] text-stone-500 font-mono">#${rId} · ${rRegion}</span>
+                    </div>
+                    <h5 class="text-xs font-bold text-forest dark:text-ivory truncate mt-0.5" title="${rTitle}">${rTitle}</h5>
+                    <span class="text-[11px] text-terracotta font-mono font-bold">${rCals} kcal</span>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  data-dual-inspect="${rId}"
+                  class="px-3 py-1.5 rounded-xl text-xs font-bold terracotta-btn text-white shrink-0 cursor-pointer flex items-center gap-1 shadow-xs"
+                >
+                  <i class="fa-solid fa-chart-pie text-[10px]"></i>
+                  <span>Inspect</span>
+                </button>
+              </div>
+            `;
+          };
+
+          dualContainer.innerHTML = `
+            <div class="p-4 rounded-2xl bg-ivory/60 dark:bg-[#181410]/60 border border-beige-200 dark:border-stone-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="text-xs font-black uppercase tracking-wider text-forest dark:text-ivory font-mono flex items-center gap-1.5">
+                  <i class="fa-solid fa-scale-balanced text-terracotta"></i>
+                  <span>RecipeDB Dual Showcase (Original vs. Substituted Dishes)</span>
+                </h4>
+                <span class="text-[10px] text-stone-500 font-mono">Live Macro Data Available</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="space-y-2">
+                  <span class="text-[11px] font-bold text-stone-500 uppercase tracking-wider block">Dishes with: ${uResult.ingredientName}</span>
+                  ${origRecipes.length ? origRecipes.map(r => renderCard(r, 'Original Base', 'bg-forest/15 text-forest dark:text-sage-300')).join('') : '<p class="text-xs text-stone-400 italic">No direct matches</p>'}
+                </div>
+                <div class="space-y-2">
+                  <span class="text-[11px] font-bold text-terracotta uppercase tracking-wider block">Dishes with: ${activeAltName}</span>
+                  ${subRecipes.length ? subRecipes.map(r => renderCard(r, 'Calibrated Swap', 'bg-terracotta/15 text-terracotta')).join('') : '<p class="text-xs text-stone-400 italic">No direct matches</p>'}
+                </div>
+              </div>
+            </div>
+          `;
+
+          dualContainer.querySelectorAll('[data-dual-inspect]').forEach(b => {
+            b.addEventListener('click', () => {
+              const rId = b.getAttribute('data-dual-inspect');
+              openFoodoscopeModal(rId);
+            });
+          });
         }
       }).catch(() => {});
     }
@@ -1891,6 +1966,9 @@
             <div id="foodoscope-recipes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <!-- Dynamically populated by renderFoodoscopeGrid() -->
             </div>
+
+            <!-- Foodoscope Pagination Controls Container -->
+            <div id="foodoscope-pagination" class="flex items-center justify-center pt-2"></div>
           </div>
         </div>
         ` : `
@@ -2018,13 +2096,13 @@
 
       fSubmitBtn?.addEventListener('click', () => {
         const q = fSearchInput ? fSearchInput.value.trim() : '';
-        if (q) renderFoodoscopeGrid(q);
+        if (q) renderFoodoscopeGrid(q, 1);
       });
 
       fSearchInput?.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           const q = fSearchInput.value.trim();
-          if (q) renderFoodoscopeGrid(q);
+          if (q) renderFoodoscopeGrid(q, 1);
         }
       });
 
@@ -2032,12 +2110,12 @@
         btn.addEventListener('click', () => {
           const chip = btn.getAttribute('data-foodoscope-quick');
           if (fSearchInput) fSearchInput.value = chip;
-          renderFoodoscopeGrid(chip);
+          renderFoodoscopeGrid(chip, 1);
         });
       });
 
       // Initial render for foodoscope grid
-      renderFoodoscopeGrid(state.foodoscopeQuery || 'Biryani');
+      renderFoodoscopeGrid(state.foodoscopeQuery || 'Biryani', state.foodoscopePage || 1);
     } else {
       // Attach Catalog Search, Category, Diet, and Sort Listeners
       const searchInput = document.getElementById('search-input');
@@ -2078,28 +2156,36 @@
   // ========================================================
   // RENDER: FOODOSCOPE RECIPEDB LIVE GRID
   // ========================================================
-  async function renderFoodoscopeGrid(queryToSearch) {
+  async function renderFoodoscopeGrid(queryToSearch, pageToFetch = 1) {
     const grid = document.getElementById('foodoscope-recipes-grid');
     const countDisplay = document.getElementById('foodoscope-count-display');
+    const paginationContainer = document.getElementById('foodoscope-pagination');
     if (!grid) return;
 
     const query = queryToSearch !== undefined ? queryToSearch : (state.foodoscopeQuery || 'Biryani');
     state.foodoscopeQuery = query;
+    state.foodoscopePage = Math.max(1, parseInt(pageToFetch, 10) || 1);
 
     grid.innerHTML = `
       <div class="col-span-full py-12 text-center space-y-3">
         <div class="w-10 h-10 border-4 border-terracotta border-t-transparent rounded-full animate-spin mx-auto"></div>
-        <p class="text-sm font-bold text-forest dark:text-ivory">Querying Foodoscope RecipeDB for "${query}"...</p>
-        <p class="text-xs text-stone-500 font-mono">Token: voGqE62...Yts · API: api.foodoscope.com</p>
+        <p class="text-sm font-bold text-forest dark:text-ivory">Querying Foodoscope RecipeDB for "${query}" (Page ${state.foodoscopePage})...</p>
+        <p class="text-xs text-stone-500 font-mono">Limit: 10/page · Auth: Bearer Token · API: api.foodoscope.com</p>
       </div>
     `;
+    if (paginationContainer) paginationContainer.innerHTML = '';
 
     try {
-      const results = await ApiService.searchRecipes(query, 12);
+      const results = await ApiService.searchRecipes(query, 10, state.foodoscopePage);
       state.foodoscopeResults = results || [];
 
+      const totalCount = results.meta?.total != null ? results.meta.total : state.foodoscopeResults.length;
+      const totalPages = results.meta?.totalPages != null ? results.meta.totalPages : (Math.ceil(totalCount / 10) || 1);
+      state.foodoscopeTotalCount = totalCount;
+      state.foodoscopeTotalPages = totalPages;
+
       if (countDisplay) {
-        countDisplay.textContent = `Found ${state.foodoscopeResults.length} Foodoscope Recipes`;
+        countDisplay.textContent = `Found ${totalCount} Foodoscope Recipes (Page ${state.foodoscopePage} of ${totalPages})`;
       }
 
       if (!state.foodoscopeResults.length) {
@@ -2110,6 +2196,7 @@
             <p class="text-xs text-stone-500 max-w-md mx-auto">Try common dish keywords like "Paneer", "Curry", "Pasta", "Cake", "Biryani", "Soup", or "Salmon".</p>
           </div>
         `;
+        if (paginationContainer) paginationContainer.innerHTML = '';
         return;
       }
 
@@ -2205,6 +2292,102 @@
           switchTab('swaplab');
         });
       });
+
+      // Render Pagination Controls
+      if (paginationContainer) {
+        if (totalPages <= 1) {
+          paginationContainer.innerHTML = '';
+        } else {
+          let pagesToRender = [];
+          const cur = state.foodoscopePage;
+          const maxP = totalPages;
+
+          if (maxP <= 7) {
+            for (let i = 1; i <= maxP; i++) pagesToRender.push(i);
+          } else {
+            pagesToRender.push(1);
+            if (cur > 3) pagesToRender.push('...');
+            const start = Math.max(2, cur - 1);
+            const end = Math.min(maxP - 1, cur + 1);
+            for (let i = start; i <= end; i++) {
+              if (!pagesToRender.includes(i)) pagesToRender.push(i);
+            }
+            if (cur < maxP - 2) pagesToRender.push('...');
+            if (!pagesToRender.includes(maxP)) pagesToRender.push(maxP);
+          }
+
+          paginationContainer.innerHTML = `
+            <div class="flex items-center gap-2 flex-wrap justify-center py-4">
+              <button
+                type="button"
+                id="foodoscope-prev-page-btn"
+                ${cur <= 1 ? 'disabled' : ''}
+                class="px-3 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#181410] text-stone-700 dark:text-stone-300 hover:border-terracotta disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5 transition-all shadow-xs"
+              >
+                <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                <span>Prev</span>
+              </button>
+
+              <div class="flex items-center gap-1">
+                ${pagesToRender.map(p => {
+                  if (p === '...') {
+                    return `<span class="px-2 text-stone-400 font-bold">...</span>`;
+                  }
+                  const isActive = p === cur;
+                  return `
+                    <button
+                      type="button"
+                      data-f-page="${p}"
+                      class="w-9 h-9 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center ${
+                        isActive
+                          ? 'bg-forest text-ivory shadow-md font-black ring-2 ring-forest/30'
+                          : 'bg-white dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-terracotta shadow-xs'
+                      }"
+                    >
+                      ${p}
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+
+              <button
+                type="button"
+                id="foodoscope-next-page-btn"
+                ${cur >= totalPages ? 'disabled' : ''}
+                class="px-3 py-2 rounded-xl text-xs font-bold border border-beige-200 dark:border-stone-800 bg-white dark:bg-[#181410] text-stone-700 dark:text-stone-300 hover:border-terracotta disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1.5 transition-all shadow-xs"
+              >
+                <span>Next</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+              </button>
+            </div>
+          `;
+
+          // Event listeners for pagination
+          paginationContainer.querySelectorAll('[data-f-page]').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const p = parseInt(btn.getAttribute('data-f-page'), 10);
+              if (p && p !== state.foodoscopePage) {
+                renderFoodoscopeGrid(state.foodoscopeQuery, p);
+                grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            });
+          });
+
+          paginationContainer.querySelector('#foodoscope-prev-page-btn')?.addEventListener('click', () => {
+            if (state.foodoscopePage > 1) {
+              renderFoodoscopeGrid(state.foodoscopeQuery, state.foodoscopePage - 1);
+              grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          });
+
+          paginationContainer.querySelector('#foodoscope-next-page-btn')?.addEventListener('click', () => {
+            if (state.foodoscopePage < totalPages) {
+              renderFoodoscopeGrid(state.foodoscopeQuery, state.foodoscopePage + 1);
+              grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          });
+        }
+      }
     } catch (err) {
       grid.innerHTML = `
         <div class="col-span-full p-6 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 text-center space-y-2">
@@ -2212,8 +2395,10 @@
           <p class="text-xs text-stone-500">${err?.message || 'Check network connection or try again.'}</p>
         </div>
       `;
+      if (paginationContainer) paginationContainer.innerHTML = '';
     }
   }
+
 
   // ========================================================
   // RENDER: FOODOSCOPE RECIPEDB DEEP DIVE MODAL

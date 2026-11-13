@@ -598,3 +598,32 @@ h1, h2, h3, h4, h5, h6 {
     background: #fff !important;
   }
 }
+
+/* ========================================================
+   FOODOSCOPE RECIPEDB LIVE SHIMMER SKELETON & GLOW
+   ======================================================== */
+@keyframes foodoscopeShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(233, 223, 201, 0.45) 25%, rgba(255, 255, 255, 0.85) 50%, rgba(233, 223, 201, 0.45) 75%);
+  background-size: 200% 100%;
+  animation: foodoscopeShimmer 1.6s infinite ease-in-out;
+}
+
+[data-theme="dark"] .skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(40, 32, 26, 0.6) 25%, rgba(70, 56, 46, 0.9) 50%, rgba(40, 32, 26, 0.6) 75%);
+  background-size: 200% 100%;
+  animation: foodoscopeShimmer 1.6s infinite ease-in-out;
+}
+
+.pulse-glow-emerald {
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+}
+
