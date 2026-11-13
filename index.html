@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>FlavorShift AI | Intelligent Culinary Ingredient Substitution & Human Taste Validation Platform</title>
   
   <!-- Google Fonts: Editorial Food-Tech Typography -->
@@ -98,8 +101,8 @@
     }
   </script>
 
-  <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="./styles.css">
+  <!-- Custom Stylesheet with Cache Busting -->
+  <link rel="stylesheet" href="./styles.css?v=20261113_v2">
 </head>
 <body class="min-h-screen flex flex-col font-sans bg-ivory text-espresso dark:bg-[#181410] dark:text-[#FAF7F0] selection:bg-terracotta selection:text-white transition-colors duration-300">
 
@@ -639,13 +642,13 @@
     </div>
   </footer>
 
-  <!-- Core Recipe Data & Application Scripts -->
-  <script src="./recipes-data.js?v=20261113engine"></script>
-  <script src="./flavor-identity-engine.js?v=20261113engine"></script>
-  <script src="./universal-ingredient-engine.js?v=20261113engine"></script>
-  <script src="./api-service.js?v=20261113engine"></script>
-  <script src="./food-cursor-canvas.js?v=20261113engine"></script>
-  <script src="./app.js?v=20261113engine"></script>
+  <!-- Core Recipe Data & Application Scripts (Cache Busted) -->
+  <script src="./recipes-data.js?v=20261113_v2"></script>
+  <script src="./flavor-identity-engine.js?v=20261113_v2"></script>
+  <script src="./universal-ingredient-engine.js?v=20261113_v2"></script>
+  <script src="./api-service.js?v=20261113_v2"></script>
+  <script src="./food-cursor-canvas.js?v=20261113_v2"></script>
+  <script src="./app.js?v=20261113_v2"></script>
 
 </body>
 </html>
