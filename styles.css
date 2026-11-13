@@ -1,5 +1,5 @@
 /* ========================================================
-   FlavorShift AI - Premium Editorial Food-Tech Design System
+   FlavorShift AI - Premium Minimalist Food-Tech Design System
    Palette: Warm Ivory, Sage Green, Deep Forest Green, 
             Terracotta, Soft Peach, Warm Beige, Dark Espresso
    Typography: Playfair Display, DM Sans, Cormorant Garamond
@@ -8,13 +8,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600&display=swap');
 
 :root {
-  /* Editorial Food-Tech Color System */
+  /* Food-Tech Color System */
   --color-ivory: #FAF7F0;
   --color-sage: #879B76;
   --color-sage-light: #E7EDE3;
   --color-sage-dark: #6D815D;
   --color-forest: #263D32;
-  --color-forest-dark: #182720;
+  --color-forest-dark: #1C2E25;
   --color-terracotta: #C87957;
   --color-terracotta-dark: #B5623E;
   --color-peach: #F2D5C4;
@@ -25,48 +25,48 @@
 
   /* Theme Canvas */
   --bg-primary: #FAF7F0;
-  --bg-secondary: #F4EFE4;
-  --bg-card: rgba(255, 255, 255, 0.94);
-  --bg-card-hover: #ffffff;
-  --border-color: rgba(135, 155, 118, 0.22);
+  --bg-secondary: #F5EFE3;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFFFFF;
+  --border-color: rgba(48, 40, 32, 0.08);
   --border-focus: #C87957;
 
   /* Typography */
-  --text-primary: #302820;
-  --text-secondary: #5C564C;
-  --text-muted: #8F887C;
+  --text-primary: #263D32;
+  --text-secondary: #546546;
+  --text-muted: #7E786D;
 
   --font-heading: 'Playfair Display', serif;
   --font-sans: 'DM Sans', sans-serif;
   --font-accent: 'Cormorant Garamond', serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Soft Organic Shadows */
-  --shadow-sm: 0 2px 10px rgba(48, 40, 32, 0.04);
-  --shadow-md: 0 10px 25px rgba(48, 40, 32, 0.08);
-  --shadow-lg: 0 20px 45px rgba(48, 40, 32, 0.12);
-  --glass-bg: rgba(250, 247, 240, 0.88);
-  --glass-border: rgba(233, 223, 201, 0.8);
+  /* Clean, Subtle Shadows */
+  --shadow-sm: 0 1px 2px rgba(48, 40, 32, 0.04);
+  --shadow-md: 0 4px 12px rgba(48, 40, 32, 0.06);
+  --shadow-lg: 0 8px 24px rgba(48, 40, 32, 0.08);
+  --glass-bg: rgba(250, 247, 240, 0.92);
+  --glass-border: rgba(233, 223, 201, 0.6);
 }
 
 /* Midnight Gourmet Dark Theme */
 [data-theme="dark"] {
   --bg-primary: #181410;
-  --bg-secondary: #221C17;
-  --bg-card: rgba(34, 28, 23, 0.92);
-  --bg-card-hover: rgba(44, 36, 30, 0.96);
-  --border-color: rgba(233, 223, 201, 0.12);
+  --bg-secondary: #201A15;
+  --bg-card: #1F1A16;
+  --bg-card-hover: #26201B;
+  --border-color: rgba(245, 239, 227, 0.08);
   --border-focus: #C87957;
 
   --text-primary: #FAF7F0;
   --text-secondary: #D4CBBA;
-  --text-muted: #8C8272;
+  --text-muted: #968D7F;
 
-  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.55);
-  --shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.7);
-  --glass-bg: rgba(24, 20, 16, 0.88);
-  --glass-border: rgba(233, 223, 201, 0.14);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --glass-bg: rgba(24, 20, 16, 0.92);
+  --glass-border: rgba(245, 239, 227, 0.08);
 }
 
 /* Global Reset & Base */
@@ -75,31 +75,19 @@ html {
   font-size: 16px;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 17px;
-  }
-}
-
-@media (min-width: 1280px) {
-  html {
-    font-size: 18px;
-  }
-}
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.15s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
 }
 
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 0.95rem;
+  line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
@@ -107,7 +95,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
 }
 
 .font-accent {
@@ -115,184 +103,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ========================================================
-   FOOD & AROMA-INSPIRED BACKGROUND ANIMATIONS
+   CARDS & CONTAINERS (CLEAN & MINIMALIST)
    ======================================================== */
-.aroma-botanical-layer {
-  pointer-events: none;
-}
-
-/* Ambient Gradient Blobs */
-.aroma-blob-1 {
-  animation: morphBlob 18s ease-in-out infinite alternate;
-}
-
-.aroma-blob-2 {
-  animation: morphBlob 22s ease-in-out infinite alternate-reverse;
-}
-
-.aroma-blob-3 {
-  animation: morphBlob 16s ease-in-out infinite alternate;
-}
-
-@keyframes morphBlob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
-    opacity: 0.25;
-  }
-  50% {
-    transform: translate(25px, -20px) scale(1.08);
-    opacity: 0.4;
-  }
-  100% {
-    transform: translate(-20px, 20px) scale(0.95);
-    opacity: 0.2;
-  }
-}
-
-/* Floating Aroma Steam Trails */
-.steam-path {
-  stroke-dasharray: 200;
-  stroke-dashoffset: 200;
-  animation: steamRise 10s ease-in-out infinite;
-}
-
-.path-delay-1 { animation-delay: 0s; }
-.path-delay-2 { animation-delay: 3s; }
-.path-delay-3 { animation-delay: 6s; }
-
-@keyframes steamRise {
-  0% {
-    stroke-dashoffset: 200;
-    opacity: 0;
-    transform: translateY(20px) scale(0.96);
-  }
-  20% {
-    opacity: 0.6;
-  }
-  80% {
-    opacity: 0.4;
-  }
-  100% {
-    stroke-dashoffset: 0;
-    opacity: 0;
-    transform: translateY(-50px) translateX(8px) scale(1.06);
-  }
-}
-
-/* Floating Botanical Elements (Herbs, Citrus, Anise) */
-.floating-botanical {
-  transition: transform 0.4s ease;
-  filter: drop-shadow(0 4px 10px rgba(48, 40, 32, 0.08));
-}
-
-.botanical-basil-1 {
-  animation: herbFloat 14s ease-in-out infinite alternate;
-}
-
-.botanical-citrus {
-  animation: citrusFloat 20s ease-in-out infinite alternate;
-}
-
-.botanical-anise {
-  animation: aniseSpin 30s linear infinite;
-}
-
-.botanical-rosemary {
-  animation: rosemarySway 16s ease-in-out infinite alternate;
-}
-
-@keyframes herbFloat {
-  0% {
-    transform: translateY(0px) rotate(-5deg);
-  }
-  50% {
-    transform: translateY(-22px) rotate(8deg);
-  }
-  100% {
-    transform: translateY(-8px) rotate(-2deg);
-  }
-}
-
-@keyframes citrusFloat {
-  0% {
-    transform: translateY(0px) rotate(0deg) scale(0.96);
-  }
-  50% {
-    transform: translateY(-25px) rotate(35deg) scale(1.02);
-  }
-  100% {
-    transform: translateY(-10px) rotate(70deg) scale(0.98);
-  }
-}
-
-@keyframes aniseSpin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes rosemarySway {
-  0% {
-    transform: translateY(0px) rotate(4deg);
-  }
-  50% {
-    transform: translateY(-18px) rotate(-6deg);
-  }
-  100% {
-    transform: translateY(-6px) rotate(2deg);
-  }
-}
-
-/* ========================================================
-   CARDS & CONTAINERS (AESTHETIC EDITORIAL)
-   ======================================================== */
-.cafe-card, .editorial-card {
+.cafe-card, .editorial-card, .glow-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   position: relative;
-  overflow: hidden;
 }
 
-.cafe-card:hover, .editorial-card:hover {
-  transform: translateY(-4px);
+.cafe-card:hover, .editorial-card:hover, .glow-card:hover {
+  border-color: rgba(200, 121, 87, 0.35);
   box-shadow: var(--shadow-md);
-  border-color: rgba(200, 121, 87, 0.45);
-}
-
-.glow-card {
-  position: relative;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glow-card::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1.5px;
-  background: linear-gradient(135deg, rgba(200, 121, 87, 0.4), rgba(135, 155, 118, 0.3), rgba(233, 223, 201, 0.35));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  opacity: 0.45;
-  transition: opacity 0.3s ease;
-}
-
-.glow-card:hover::before {
-  opacity: 1;
+  display: none !important;
 }
 
 .glass-nav {
   background-color: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -301,91 +135,71 @@ h1, h2, h3, h4, h5, h6 {
    ======================================================== */
 .forest-btn {
   background-color: var(--color-forest);
-  color: var(--color-ivory);
+  color: #FAF7F0;
   font-weight: 600;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(38, 61, 50, 0.2);
+  border-radius: 0.75rem;
+  transition: opacity 0.2s ease, transform 0.15s ease;
 }
 
 .forest-btn:hover {
-  background-color: var(--color-terracotta);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200, 121, 87, 0.28);
+  background-color: var(--color-forest-dark);
+  opacity: 0.95;
 }
 
 .terracotta-btn {
   background-color: var(--color-terracotta);
-  color: #ffffff;
+  color: #FFFFFF;
   font-weight: 600;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(200, 121, 87, 0.25);
+  border-radius: 0.75rem;
+  transition: opacity 0.2s ease, transform 0.15s ease;
 }
 
 .terracotta-btn:hover {
   background-color: var(--color-terracotta-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(200, 121, 87, 0.35);
+  opacity: 0.95;
 }
 
 .sage-btn {
   background-color: var(--color-sage-light);
   color: var(--color-forest);
-  border: 1px solid rgba(135, 155, 118, 0.4);
+  border: 1px solid rgba(135, 155, 118, 0.3);
   font-weight: 600;
-  transition: all 0.25s ease;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
 }
 
 .sage-btn:hover {
   background-color: var(--color-sage);
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
 [data-theme="dark"] .sage-btn {
-  background-color: rgba(135, 155, 118, 0.18);
+  background-color: rgba(135, 155, 118, 0.15);
   color: #FAF7F0;
-  border-color: rgba(135, 155, 118, 0.3);
+  border-color: rgba(135, 155, 118, 0.25);
 }
 
 /* ========================================================
-   NAVIGATION & ACTIVE STATES (ANIMATED UNDERLINE)
+   NAVIGATION & ACTIVE STATES
    ======================================================== */
 .nav-tab-btn {
   position: relative;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s ease;
 }
 
 .nav-tab-btn:hover {
   color: var(--color-terracotta) !important;
-  transform: translateY(-1px);
 }
 
 .active-nav-tab {
-  color: var(--color-terracotta) !important;
+  color: var(--color-forest) !important;
   font-weight: 700 !important;
-  background: rgba(200, 121, 87, 0.08) !important;
-}
-
-.active-nav-tab::after {
-  content: '';
-  position: absolute;
-  bottom: 0px;
-  left: 15%;
-  width: 70%;
-  height: 2.5px;
-  border-radius: 9999px;
-  background-color: var(--color-terracotta);
-  box-shadow: 0 2px 8px rgba(200, 121, 87, 0.4);
-  animation: slideUnderline 0.25s ease forwards;
-}
-
-@keyframes slideUnderline {
-  from { width: 0%; left: 50%; opacity: 0; }
-  to { width: 70%; left: 15%; opacity: 1; }
+  background-color: rgba(38, 61, 50, 0.08) !important;
 }
 
 [data-theme="dark"] .active-nav-tab {
-  color: #E3C1B2 !important;
-  background: rgba(200, 121, 87, 0.16) !important;
+  color: #FAF7F0 !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Active Category & Diet Filters */
@@ -393,129 +207,34 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--color-forest) !important;
   color: #FAF7F0 !important;
   border-color: transparent !important;
-  box-shadow: 0 4px 14px rgba(38, 61, 50, 0.25) !important;
 }
 
 .active-diet {
   background-color: var(--color-terracotta) !important;
-  color: #ffffff !important;
+  color: #FFFFFF !important;
   border-color: transparent !important;
-  box-shadow: 0 4px 14px rgba(200, 121, 87, 0.28) !important;
 }
 
 /* ========================================================
-   FOOD MARQUEE PHOTO SHOWCASE
-   ======================================================== */
-.food-marquee-container {
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-}
-
-.food-marquee-container::before,
-.food-marquee-container::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 70px;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.food-marquee-container::before {
-  left: 0;
-  background: linear-gradient(to right, var(--bg-primary), transparent);
-}
-
-.food-marquee-container::after {
-  right: 0;
-  background: linear-gradient(to left, var(--bg-primary), transparent);
-}
-
-.food-marquee-track {
-  display: flex;
-  gap: 1rem;
-  width: max-content;
-  animation: marqueeScroll 38s linear infinite;
-}
-
-.food-marquee-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes marqueeScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-/* ========================================================
-   PULSE & STATUS BADGES
-   ======================================================== */
-.live-pulse-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 9999px;
-  background-color: var(--color-sage);
-  box-shadow: 0 0 0 0 rgba(135, 155, 118, 0.7);
-  animation: pulseGreen 2.2s infinite;
-}
-
-@keyframes pulseGreen {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(135, 155, 118, 0.7);
-  }
-  70% {
-    transform: scale(1.1);
-    box-shadow: 0 0 0 8px rgba(135, 155, 118, 0);
-  }
-  100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(135, 155, 118, 0);
-  }
-}
-
-/* ========================================================
-   IMAGE HOVER MICRO-INTERACTIONS
+   SUBTLE MICRO-INTERACTIONS & UTILITIES
    ======================================================== */
 .food-img-hover {
   overflow: hidden;
-  border-radius: 1.25rem;
+  border-radius: 0.875rem;
 }
 
 .food-img-hover img {
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+  transition: transform 0.4s ease;
 }
 
 .food-img-hover:hover img {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
-
-/* ========================================================
-   SCROLL-BASED REVEAL ANIMATIONS
-   ======================================================== */
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.reveal-on-scroll.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.stagger-1 { transition-delay: 0.08s; }
-.stagger-2 { transition-delay: 0.16s; }
-.stagger-3 { transition-delay: 0.24s; }
-.stagger-4 { transition-delay: 0.32s; }
 
 @keyframes slideUpFade {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -524,21 +243,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .animate-fade-up {
-  animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUpFade 0.25s ease-out forwards;
 }
 
-/* Custom Scrollbar */
+/* Custom Slim Scrollbar */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(135, 155, 118, 0.35);
+  background: rgba(135, 155, 118, 0.3);
   border-radius: 9999px;
 }
 
@@ -548,41 +267,18 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Modal Styling */
 #recipe-webx-modal {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-/* Accessibility: Respect Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  .food-marquee-track {
-    animation: none !important;
-  }
-  .steam-path, .floating-botanical, .aroma-blob {
-    animation: none !important;
-  }
-  .reveal-on-scroll {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
-
-/* Dashboard KPI Card Hover */
+/* Dashboard KPI Card */
 .dash-kpi-card {
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dash-kpi-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
   border-color: rgba(200, 121, 87, 0.35);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Print Layout for Kitchen Prep Ticket */
@@ -599,9 +295,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* ========================================================
-   FOODOSCOPE RECIPEDB LIVE SHIMMER SKELETON & GLOW
-   ======================================================== */
+/* Foodoscope Live Shimmer Skeleton */
 @keyframes foodoscopeShimmer {
   0% {
     background-position: -200% 0;
@@ -612,18 +306,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .skeleton-shimmer {
-  background: linear-gradient(90deg, rgba(233, 223, 201, 0.45) 25%, rgba(255, 255, 255, 0.85) 50%, rgba(233, 223, 201, 0.45) 75%);
+  background: linear-gradient(90deg, rgba(233, 223, 201, 0.3) 25%, rgba(255, 255, 255, 0.7) 50%, rgba(233, 223, 201, 0.3) 75%);
   background-size: 200% 100%;
   animation: foodoscopeShimmer 1.6s infinite ease-in-out;
 }
 
 [data-theme="dark"] .skeleton-shimmer {
-  background: linear-gradient(90deg, rgba(40, 32, 26, 0.6) 25%, rgba(70, 56, 46, 0.9) 50%, rgba(40, 32, 26, 0.6) 75%);
+  background: linear-gradient(90deg, rgba(40, 32, 26, 0.5) 25%, rgba(60, 48, 40, 0.8) 50%, rgba(40, 32, 26, 0.5) 75%);
   background-size: 200% 100%;
   animation: foodoscopeShimmer 1.6s infinite ease-in-out;
 }
-
-.pulse-glow-emerald {
-  box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
-}
-
