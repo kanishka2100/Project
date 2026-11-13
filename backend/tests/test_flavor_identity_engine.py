@@ -59,3 +59,4 @@ def test_overall_formula_score():
     assert 0 <= res["score"] <= 100
     contribs = res["contributions"]
     assert contribs["flavor"] + contribs["recipe"] + contribs["cost"] == res["score"]
+

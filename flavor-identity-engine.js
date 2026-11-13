@@ -440,3 +440,4 @@ if (typeof module !== 'undefined' && module.exports) {
 if (typeof window !== 'undefined') {
   window.FlavorIdentityEngine = FlavorIdentityEngine;
 }
+

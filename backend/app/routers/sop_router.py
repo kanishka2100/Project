@@ -16,13 +16,14 @@ async def adapt_recipe_sop(request: RecipeAdaptationRequest):
     Updates ingredient amounts, step temperatures, cooking durations,
     and returns a tailored culinary safety warning.
     """
+    data = request.model_dump()
     result = sop_generator.generate_adapted_sop(
         recipe_id=request.recipe_id,
-        recipe_title=request.recipe_title,
-        original_ingredient=request.original_ingredient,
-        substitute_ingredient=request.substitute_ingredient,
-        substitute_ratio=request.substitute_ratio,
-        scaling_factor=request.scaling_factor,
+        recipe_title=data.get("recipe_title") or request.recipe_id,
+        original_ingredient=data.get("original_ingredient") or data.get("missing_ingredient") or "",
+        substitute_ingredient=data.get("substitute_ingredient") or data.get("replacement_name") or "",
+        substitute_ratio=data.get("substitute_ratio") or data.get("replacement_ratio_text") or "",
+        scaling_factor=data.get("scaling_factor", 1.0),
         original_steps=request.original_steps,
     )
     return RecipeAdaptationResponse(

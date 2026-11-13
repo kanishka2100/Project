@@ -597,78 +597,25 @@
       <div class="space-y-8 animate-fade-up max-w-6xl mx-auto">
 
         <!-- ============================================== -->
-        <!-- SECTION 1: EDITORIAL HERO & DISH SHOWCASE      -->
+        <!-- SECTION 1: HERO (SIMPLE & CATCHY)             -->
         <!-- ============================================== -->
-        <section class="relative overflow-hidden rounded-3xl bg-forest dark:bg-[#1A2620] text-ivory shadow-xl p-6 sm:p-10 lg:p-12 border border-beige-200/20 glow-card reveal-on-scroll">
-          <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <section class="relative overflow-hidden rounded-3xl bg-forest dark:bg-[#1A2620] text-ivory shadow-xl p-8 sm:p-12 lg:p-14 border border-beige-200/20 glow-card reveal-on-scroll">
+          <div class="relative z-10 max-w-3xl space-y-5">
 
-            <div class="lg:col-span-7 space-y-5">
-              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-ivory/15 backdrop-blur-md text-xs font-bold tracking-wider text-beige uppercase border border-ivory/20">
-                <i class="fa-solid fa-wand-magic-sparkles text-terracotta"></i>
-                <span>Culinary Substitution & Portion Studio</span>
-              </div>
+            <h1 class="font-heading font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.12]">
+              Out of an Ingredient?<br>
+              <span class="text-terracotta font-serif italic">Find the Perfect Swap</span> in Seconds.
+            </h1>
 
-              <h1 class="font-heading font-black text-3xl sm:text-5xl lg:text-[3.15rem] tracking-tight leading-[1.12]">
-                Culinary Precision When Ingredients Run Short.<br>
-                <span class="text-terracotta font-serif italic">Chef-Calibrated Ratios</span> for Real Kitchens.
-              </h1>
+            <p class="text-ivory/90 text-base sm:text-xl leading-relaxed font-normal max-w-2xl font-sans">
+              Instant, chef-tested ingredient substitutes with exact kitchen measurements, taste notes, and allergen safety for any recipe.
+            </p>
 
-              <p class="text-ivory/90 text-base sm:text-lg leading-relaxed font-normal max-w-2xl font-sans">
-                Substitute scarce or dietary ingredients cleanly without losing sauce emulsion, aroma depth, or texture—across ${RECIPES_DATA.length} curated kitchen recipes.
-              </p>
-
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-center">
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15">
-                  <span class="block text-xl font-black text-ivory font-heading">${RECIPES_DATA.length} Dishes</span>
-                  <span class="text-xs text-beige/85 font-bold uppercase tracking-wider">Recipe Library</span>
-                </div>
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15">
-                  <span class="block text-xl font-black text-terracotta font-heading">${presetShowcase.length || FLAVORSHIFT_SWAP_DATABASE.length} Presets</span>
-                  <span class="text-xs text-beige/85 font-bold uppercase tracking-wider">Quick Swaps</span>
-                </div>
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15">
-                  <span class="block text-xl font-black text-sage-300 font-heading">1+ Covers</span>
-                  <span class="text-xs text-beige/85 font-bold uppercase tracking-wider">Portion Scaling</span>
-                </div>
-                <div class="bg-forest-800/80 dark:bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-beige-200/15">
-                  <span class="block text-xl font-black text-peach font-heading">Local Log</span>
-                  <span class="text-xs text-beige/85 font-bold uppercase tracking-wider">Tasting Notes</span>
-                </div>
-              </div>
-
-              <div class="pt-2 flex flex-wrap items-center gap-3.5">
-                <a href="#ai-swaplab-stage" class="terracotta-btn px-6 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-2 cursor-pointer shadow-md">
-                  <i class="fa-solid fa-magnifying-glass"></i>
-                  <span>Open Swap Prompt Studio</span>
-                </a>
-                <button type="button" data-hero-action="explore" class="px-6 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-2 cursor-pointer bg-ivory/15 hover:bg-ivory/25 text-ivory border border-ivory/30 backdrop-blur-sm transition-all">
-                  <span>Browse ${RECIPES_DATA.length} Catalog Dishes</span>
-                  <i class="fa-solid fa-arrow-right"></i>
-                </button>
-              </div>
-            </div>
-
-            <!-- Sorted 2x2 Culinary Dish Mosaic (Zero Videos) -->
-            <div class="lg:col-span-5 grid grid-cols-2 gap-3.5">
-              ${[
-                { id: 'paneer-butter-masala', label: 'Paneer Butter Masala', sub: 'Cashew Cream Swap', img: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=80' },
-                { id: 'dal-makhani-bistro', label: 'Slow-Simmered Dal Makhani', sub: 'Cream-Free Emulsion', img: './assets/recipes/slow-simmered-dal-makhani.jpg' },
-                { id: 'classic-penne-arrabbiata', label: 'Penne all\'Arrabbiata', sub: 'Roma Tomato Reduction', img: './assets/recipes/classic-penne-arrabbiata.jpg' },
-                { id: 'masala-chai-bistro', label: 'Karak Masala Chai', sub: 'Whole Spice Decoction', img: './assets/recipes/artisan-karak-masala-chai.jpg' }
-              ].map(card => `
-                <button
-                  type="button"
-                  data-open-hero-recipe="${card.id}"
-                  class="group text-left rounded-2xl overflow-hidden border border-beige-200/20 bg-black/30 relative aspect-[4/3] shadow-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta"
-                >
-                  <img src="${card.img}" alt="${card.label}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-                  <div class="absolute bottom-2.5 left-3 right-3">
-                    <span class="block text-sm font-bold text-ivory leading-tight truncate">${card.label}</span>
-                    <span class="block text-xs text-peach/90 truncate mt-0.5">${card.sub}</span>
-                  </div>
-                </button>
-              `).join('')}
+            <div class="pt-2 flex items-center">
+              <a href="#ai-swaplab-stage" class="terracotta-btn px-7 py-4 rounded-2xl text-base font-bold flex items-center gap-2.5 cursor-pointer shadow-lg hover:shadow-xl transition-all">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Find a Substitute</span>
+              </a>
             </div>
 
           </div>

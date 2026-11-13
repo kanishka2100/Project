@@ -143,3 +143,4 @@ def score_substitute(
             "cost": round(norm_w["wC"] * c_score * 100),
         },
     }
+
