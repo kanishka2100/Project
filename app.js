@@ -597,25 +597,140 @@
       <div class="space-y-8 animate-fade-up max-w-6xl mx-auto">
 
         <!-- ============================================== -->
-        <!-- SECTION 1: HERO (SIMPLE & CATCHY)             -->
+        <!-- SECTION 1: IMPRESSIVE CULINARY HERO            -->
         <!-- ============================================== -->
-        <section class="relative overflow-hidden rounded-3xl bg-forest dark:bg-[#1A2620] text-ivory shadow-xl p-8 sm:p-12 lg:p-14 border border-beige-200/20 glow-card reveal-on-scroll">
-          <div class="relative z-10 max-w-3xl space-y-5">
+        <section class="relative overflow-hidden rounded-3xl bg-forest dark:bg-[#1A2620] text-ivory shadow-2xl p-6 sm:p-10 lg:p-12 border border-beige-200/20 glow-card reveal-on-scroll">
+          
+          <!-- Subtle Ambient Glow Effects Inside Card -->
+          <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-terracotta/20 blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-sage/20 blur-3xl pointer-events-none"></div>
 
-            <h1 class="font-heading font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.12]">
-              Out of an Ingredient?<br>
-              <span class="text-terracotta font-serif italic">Find the Perfect Swap</span> in Seconds.
-            </h1>
+          <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
 
-            <p class="text-ivory/90 text-base sm:text-xl leading-relaxed font-normal max-w-2xl font-sans">
-              Instant, chef-tested ingredient substitutes with exact kitchen measurements, taste notes, and allergen safety for any recipe.
-            </p>
+            <!-- Left Column: Catchy Editorial Copy -->
+            <div class="lg:col-span-7 space-y-5">
+              
+              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 dark:bg-white/5 border border-white/15 text-xs font-mono font-medium text-peach tracking-wide">
+                <span class="w-2 h-2 rounded-full bg-terracotta animate-pulse"></span>
+                <span>Flavor Identity Engine • Smart Ingredient Swaps</span>
+              </div>
 
-            <div class="pt-2 flex items-center">
-              <a href="#ai-swaplab-stage" class="terracotta-btn px-7 py-4 rounded-2xl text-base font-bold flex items-center gap-2.5 cursor-pointer shadow-lg hover:shadow-xl transition-all">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <span>Find a Substitute</span>
-              </a>
+              <h1 class="font-heading font-black text-3xl sm:text-5xl lg:text-[3.25rem] tracking-tight leading-[1.12]">
+                Change the Ingredient.<br>
+                <span class="text-terracotta font-serif italic">Preserve the Experience.</span>
+              </h1>
+
+              <p class="text-ivory/85 text-base sm:text-lg leading-relaxed font-normal max-w-xl font-sans">
+                Instant, chef-calibrated substitutions with exact kitchen measurements, flavor identity scoring, and allergen safety for any dish.
+              </p>
+
+              <!-- Impressive Feature Highlights -->
+              <div class="flex flex-wrap items-center gap-2 pt-1 text-xs font-medium text-ivory/90">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 dark:bg-white/5 backdrop-blur-sm border border-white/15 shadow-xs">
+                  <i class="fa-solid fa-chart-pie text-terracotta text-xs"></i>
+                  <span>Flavor Identity Scoring</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 dark:bg-white/5 backdrop-blur-sm border border-white/15 shadow-xs">
+                  <i class="fa-solid fa-scale-balanced text-sage-300 text-xs"></i>
+                  <span>Chef Conversion Ratios</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 dark:bg-white/5 backdrop-blur-sm border border-white/15 shadow-xs">
+                  <i class="fa-solid fa-shield-halved text-peach text-xs"></i>
+                  <span>Zero Allergen Risks</span>
+                </span>
+              </div>
+
+              <!-- CTA Row -->
+              <div class="pt-2 flex flex-wrap items-center gap-3">
+                <a href="#ai-swaplab-stage" class="terracotta-btn px-6 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-2 cursor-pointer shadow-lg hover:shadow-xl transition-all">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <span>Find a Substitute</span>
+                </a>
+                <button type="button" data-hero-preset="Heavy Cream" class="px-5 py-3.5 rounded-2xl text-sm font-semibold bg-white/10 hover:bg-white/15 text-ivory border border-white/15 backdrop-blur-sm transition-all flex items-center gap-2 cursor-pointer shadow-xs">
+                  <i class="fa-solid fa-wand-magic-sparkles text-terracotta text-xs"></i>
+                  <span>Try "Fresh Cream" Demo</span>
+                </button>
+              </div>
+
+            </div>
+
+            <!-- Right Column: Impressive Interactive Swap Preview Widget -->
+            <div class="lg:col-span-5">
+              <div class="relative">
+                <!-- Ambient Glow Ring -->
+                <div class="absolute -inset-1 rounded-3xl bg-gradient-to-tr from-terracotta/40 via-peach/20 to-sage/40 blur-xl opacity-60"></div>
+
+                <!-- Glassmorphic Card -->
+                <div class="relative rounded-3xl bg-white/15 dark:bg-[#141d18]/90 backdrop-blur-xl border border-white/20 p-5 sm:p-6 shadow-2xl space-y-4">
+                  
+                  <!-- Card Header Bar -->
+                  <div class="flex items-center justify-between border-b border-white/15 pb-3">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                      <span class="text-xs font-mono font-bold uppercase tracking-wider text-beige">Live Swap Preview</span>
+                    </div>
+                    <span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full bg-terracotta text-white shadow-xs">
+                      Score: 91/100
+                    </span>
+                  </div>
+
+                  <!-- Visual Flow -->
+                  <div class="space-y-2.5">
+                    <!-- Missing Step Box -->
+                    <div class="flex items-center justify-between p-3 rounded-2xl bg-black/25 border border-white/10">
+                      <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-peach/20 text-peach flex items-center justify-center text-sm font-bold shrink-0">
+                          <i class="fa-solid fa-circle-xmark text-terracotta text-base"></i>
+                        </div>
+                        <div>
+                          <span class="block text-[10px] font-mono font-bold uppercase tracking-wider text-stone-400">Missing from Pantry</span>
+                          <span class="text-sm font-bold text-ivory">Fresh Cream</span>
+                        </div>
+                      </div>
+                      <span class="text-xs font-mono text-stone-300 bg-white/10 px-2 py-0.5 rounded-md">100g Target</span>
+                    </div>
+
+                    <!-- Down Transition Indicator -->
+                    <div class="flex items-center justify-center -my-1">
+                      <div class="h-6 w-6 rounded-full bg-white/15 border border-white/25 flex items-center justify-center text-terracotta shadow-sm">
+                        <i class="fa-solid fa-arrow-down text-xs"></i>
+                      </div>
+                    </div>
+
+                    <!-- Swapped Result Card -->
+                    <div class="p-3.5 rounded-2xl bg-white/20 dark:bg-white/10 border border-white/25 space-y-2.5 shadow-sm">
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sage-500/50 text-emerald-200 border border-emerald-400/30 font-mono uppercase tracking-wider">
+                          ✓ Best Kitchen Match
+                        </span>
+                        <span class="text-xs font-mono font-bold text-peach text-right truncate">Whisked Malai & Curd</span>
+                      </div>
+
+                      <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+                        <div class="p-2 rounded-xl bg-black/30 border border-white/10">
+                          <span class="block text-[9px] text-stone-400 uppercase tracking-wider font-bold">Exact Ratio</span>
+                          <span class="font-bold text-ivory block mt-0.5">50g Malai + 50g Curd</span>
+                        </div>
+                        <div class="p-2 rounded-xl bg-black/30 border border-white/10">
+                          <span class="block text-[9px] text-stone-400 uppercase tracking-wider font-bold">Culinary Emulsion</span>
+                          <span class="font-bold text-ivory block mt-0.5">Velvety & Thick</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Quick Interactive CTA -->
+                  <button
+                    type="button"
+                    data-hero-demo-trigger="true"
+                    class="w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-terracotta hover:bg-terracotta/90 text-white transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                  >
+                    <span>Load This Swap in Studio</span>
+                    <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                  </button>
+
+                </div>
+              </div>
             </div>
 
           </div>
@@ -1473,6 +1588,21 @@
     container.querySelectorAll('[data-open-hero-recipe]').forEach(btn => {
       btn.addEventListener('click', () => {
         openRecipeModal(btn.getAttribute('data-open-hero-recipe'));
+      });
+    });
+
+    // Hero Live Swap Demo & Preset Click Listeners
+    container.querySelectorAll('[data-hero-demo-trigger], [data-hero-preset]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.universalCurrentIngredient = 'Fresh Cream';
+        state.universalCurrentDishContext = 'Curries & Gravies';
+        state.universalCurrentDishName = 'Paneer Butter Masala';
+        state.selectedSubstitutedAlt = 'Whisked Malai & Hung Curd (50/50)';
+        renderSwapLabView();
+        const studioEl = document.getElementById('ai-swaplab-stage');
+        if (studioEl) {
+          studioEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       });
     });
 
