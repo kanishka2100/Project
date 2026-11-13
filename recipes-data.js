@@ -1885,7 +1885,7 @@ const RECIPES_DATA = [
     title: "Almond Milk Chia & Wild Berry Parfait",
     category: "Breakfast & Morning",
     tagline: "Slow-hydrated organic black chia seeds steeped in vanilla almond milk, layered with fresh berry compote and granola.",
-    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1552528591-eff865d28318?w=800&auto=format&fit=crop&q=80",
     prepTime: "5 mins",
     cookTime: "0 mins",
     difficulty: "Easy",
