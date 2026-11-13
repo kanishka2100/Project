@@ -560,24 +560,25 @@
 
     const activeSwap = FLAVORSHIFT_SWAP_DATABASE[state.selectedSwapIndex] || FLAVORSHIFT_SWAP_DATABASE[0];
     const currentIng = state.universalCurrentIngredient;
-    const currentDish = state.universalCurrentDishName || 'Paneer Butter Masala';
+    let currentCtx = state.universalCurrentDishContext || 'Pastas & Sauces';
+    const dishContexts = [
+      'Pastas & Sauces',
+      'Curries & Gravies',
+      'Baking & Cakes',
+      'Tea & Beverages',
+      'Salads & Dressings',
+      'Breakfast & Bowls',
+      'General / All Dishes'
+    ];
 
-    let currentCtx = state.universalCurrentDishContext || 'General / All Dishes';
-    if (currentDish) {
-      const dLower = currentDish.toLowerCase();
-      if (dLower.includes('curry') || dLower.includes('masala') || dLower.includes('makhani') || dLower.includes('korma') || dLower.includes('dal') || dLower.includes('biryani')) {
-        currentCtx = 'Curries & Gravies';
-      } else if (dLower.includes('pasta') || dLower.includes('spaghetti') || dLower.includes('penne') || dLower.includes('arrabbiata') || dLower.includes('sauce') || dLower.includes('gnocchi') || dLower.includes('lasagna')) {
-        currentCtx = 'Pastas & Sauces';
-      } else if (dLower.includes('cake') || dLower.includes('bake') || dLower.includes('muffin') || dLower.includes('cookie') || dLower.includes('tiramisu') || dLower.includes('pie') || dLower.includes('bread') || dLower.includes('souffle') || dLower.includes('cheesecake')) {
-        currentCtx = 'Baking & Cakes';
-      } else if (dLower.includes('tea') || dLower.includes('latte') || dLower.includes('coffee') || dLower.includes('smoothie') || dLower.includes('drink') || dLower.includes('chai')) {
-        currentCtx = 'Tea & Beverages';
-      } else if (dLower.includes('salad') || dLower.includes('dressing') || dLower.includes('pesto') || dLower.includes('bowl')) {
-        currentCtx = 'Salads & Dressings';
-      } else if (dLower.includes('toast') || dLower.includes('egg') || dLower.includes('pancake') || dLower.includes('oat') || dLower.includes('waffle') || dLower.includes('breakfast')) {
-        currentCtx = 'Breakfast & Bowls';
-      }
+    let currentDish = state.universalCurrentDishName;
+    if (!currentDish || currentDish === 'Paneer Butter Masala') {
+      if (currentCtx === 'Pastas & Sauces') currentDish = 'Wild Mushroom Fettuccine';
+      else if (currentCtx === 'Curries & Gravies') currentDish = 'Paneer Butter Masala';
+      else if (currentCtx === 'Baking & Cakes') currentDish = 'San Sebastian Basque Cake';
+      else if (currentCtx === 'Salads & Dressings') currentDish = 'Crispy Herb Falafel Bowl';
+      else if (currentCtx === 'Breakfast & Bowls') currentDish = 'Smashed Avocado Toast';
+      else currentDish = 'Paneer Butter Masala';
     }
 
     let uResult = null;
@@ -714,78 +715,88 @@
           </div>
 
           ${state.swapStudioMode !== 'curated' ? `
-          <!-- Missing Ingredient Substitution Studio -->
+          <!-- Universal Ingredient Intelligence Lookup (Any Ingredient + Dish Context) -->
           <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-6 glow-card">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-4">
               <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono">Missing Ingredient Substitution</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono">UNIVERSAL INGREDIENT PROMPT</span>
                 <h3 class="text-2xl sm:text-3xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2.5 mt-1">
                   <i class="fa-solid fa-magnifying-glass text-terracotta text-xl"></i>
-                  <span>Type Your Missing Ingredient</span>
+                  <span>What Ingredient Are You Substituting Today?</span>
                 </h3>
               </div>
               <span class="text-sm text-stone-500 font-accent italic">Context-aware kitchen ratios, texture notes & allergens</span>
             </div>
 
-            <!-- Two Search / Input Boxes: Missing Ingredient + Dish Name + Analyze CTA -->
+            <!-- Executive Chef Quick-Prompt Starters -->
+            <div class="p-4 rounded-2xl bg-ivory/80 dark:bg-[#181410] border border-beige-200/80 dark:border-stone-800 space-y-2.5">
+              <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-forest dark:text-sage-300 font-mono">
+                <i class="fa-solid fa-sparkles text-terracotta"></i>
+                <span>QUICK KITCHEN SCENARIOS (CLICK TO TEST PROMPT)</span>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                ${[
+                  { label: '“Out of heavy cream for rich Indian curry”', ing: 'Fresh Cream', ctx: 'Curries & Gravies', dish: 'Paneer Butter Masala' },
+                  { label: '“Need a dairy-free aged cheese swap for pasta”', ing: 'Parmesan', ctx: 'Pastas & Sauces', dish: 'Wild Mushroom Fettuccine' },
+                  { label: '“Eggless baking binder for sponges & muffins”', ing: 'Eggs', ctx: 'Baking & Cakes', dish: 'San Sebastian Basque Cake' },
+                  { label: '“Warm saffron color & aroma alternative for rice”', ing: 'Saffron', ctx: 'Curries & Gravies', dish: 'Paneer Butter Masala' },
+                  { label: '“Nut-free toasted crunch for pesto & salads”', ing: 'Pine Nuts', ctx: 'Salads & Dressings', dish: 'Smashed Avocado Toast' }
+                ].map(p => `
+                  <button
+                    type="button"
+                    data-prompt-ing="${p.ing}"
+                    data-prompt-ctx="${p.ctx}"
+                    data-prompt-dish="${p.dish}"
+                    class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all cursor-pointer text-left ${
+                      currentIng && currentIng.toLowerCase() === p.ing.toLowerCase() && currentCtx === p.ctx
+                        ? 'bg-terracotta text-white border-terracotta shadow-sm'
+                        : 'bg-white dark:bg-stone-900 border-beige-200 dark:border-stone-700 text-espresso dark:text-ivory hover:border-terracotta'
+                    }"
+                  >
+                    ${p.label}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Search Bar + Dish Context + Analyze CTA -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-end">
-              <!-- Box 1: Missing Ingredient -->
-              <div class="md:col-span-5 relative">
-                <label for="universal-ingredient-input" class="block text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-1.5 ml-1 flex items-center gap-1.5">
-                  <i class="fa-solid fa-circle-exclamation text-terracotta"></i>
-                  <span>Missing Ingredient</span>
-                </label>
+              <div class="md:col-span-6 relative">
+                <label for="universal-ingredient-input" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5 ml-1">TARGET INGREDIENT</label>
                 <div class="relative">
                   <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
                   <input
                     type="text"
                     id="universal-ingredient-input"
                     value="${currentIng || ''}"
-                    placeholder="Enter the ingredient you don't have (e.g. Fresh Cream, Butter, Eggs, Parmesan...)"
+                    placeholder="Type any ingredient (Milk, Paneer, Mushroom, Miso, Gochuj..."
                     class="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-semibold text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta transition-all shadow-xs"
                   />
                   <button
                     type="button"
                     id="universal-search-clear-btn"
                     class="${currentIng ? '' : 'hidden'} absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-xs cursor-pointer"
-                    title="Clear missing ingredient"
+                    title="Clear input"
                   >
                     <i class="fa-solid fa-xmark"></i>
                   </button>
                 </div>
               </div>
 
-              <!-- Box 2: Dish Name -->
-              <div class="md:col-span-5 relative">
-                <label for="universal-dish-input" class="block text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-1.5 ml-1 flex items-center gap-1.5">
-                  <i class="fa-solid fa-bowl-food text-terracotta"></i>
-                  <span>Dish Name</span>
-                </label>
+              <div class="md:col-span-4 relative">
+                <label for="universal-dish-context-select" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5 ml-1">CULINARY DISH CONTEXT</label>
                 <div class="relative">
-                  <i class="fa-solid fa-utensils absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
-                  <input
-                    type="text"
-                    id="universal-dish-input"
-                    list="catalog-dish-datalist"
-                    value="${currentDish || ''}"
-                    placeholder="Enter the dish/recipe (e.g. Paneer Butter Masala, Pasta, Tiramisu...)"
-                    class="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-semibold text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta transition-all shadow-xs"
-                  />
-                  <datalist id="catalog-dish-datalist">
-                    ${RECIPES_DATA.map(r => `<option value="${r.title}">`).join('')}
-                  </datalist>
-                  <button
-                    type="button"
-                    id="universal-dish-clear-btn"
-                    class="${currentDish ? '' : 'hidden'} absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-xs cursor-pointer"
-                    title="Clear dish name"
+                  <i class="fa-solid fa-bowl-food absolute left-4 top-1/2 -translate-y-1/2 text-terracotta text-sm"></i>
+                  <select
+                    id="universal-dish-context-select"
+                    class="w-full pl-11 pr-9 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer appearance-none shadow-xs"
                   >
-                    <i class="fa-solid fa-xmark"></i>
-                  </button>
+                    ${dishContexts.map(ctx => `<option value="${ctx}" ${ctx === currentCtx ? 'selected' : ''}>${ctx}</option>`).join('')}
+                  </select>
+                  <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 text-xs pointer-events-none"></i>
                 </div>
               </div>
 
-              <!-- Analyze CTA -->
               <div class="md:col-span-2">
                 <button
                   type="button"
@@ -797,6 +808,27 @@
                 </button>
               </div>
             </div>
+
+            <!-- Common Pantry Targets -->
+            ${presetShowcase.length > 0 ? `
+              <div class="flex flex-wrap items-center gap-2 pt-1">
+                <span class="text-xs font-bold text-stone-500 mr-1">Common Pantry Targets:</span>
+                ${presetShowcase.slice(0, 12).map(p => `
+                  <button
+                    type="button"
+                    data-universal-chip="${p.name}"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
+                      currentIng && currentIng.toLowerCase() === p.name.toLowerCase()
+                        ? 'bg-forest text-ivory border-forest shadow-xs'
+                        : 'bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-terracotta'
+                    }"
+                  >
+                    <i class="${p.icon} text-xs text-terracotta"></i>
+                    <span>${p.name}</span>
+                  </button>
+                `).join('')}
+              </div>
+            ` : ''}
 
             <!-- Universal Engine Output -->
             <div id="universal-results-container">
@@ -835,72 +867,132 @@
                 const subRecipe = createSubstitutedRecipe(matchedRecipe, uResult.ingredientName, activeAlt, state.substitutedRecipePersons || 1);
 
                 return `
-                  <div class="pt-6 border-t border-beige-200 dark:border-stone-800 space-y-7">
-                    <!-- Clean Section Header -->
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-beige-200 dark:border-stone-800">
-                      <div>
-                        <div class="flex items-center gap-2 mb-1 flex-wrap">
-                          <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-terracotta/10 text-terracotta border border-terracotta/25 font-mono flex items-center gap-1.5">
-                            <i class="fa-solid fa-wand-magic-sparkles text-xs"></i> 3 Chef-Calibrated Substitutes
+                  <div class="pt-6 border-t border-beige-200 dark:border-stone-800 space-y-6">
+                    <!-- Top Summary Bar (Matching Image 2) -->
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-beige-200 dark:border-stone-800">
+                      <div class="space-y-1.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <span class="px-3 py-1 rounded-full text-xs font-bold bg-peach/50 text-terracotta border border-terracotta/30 flex items-center gap-1.5">
+                            <i class="${uResult.icon || 'fa-solid fa-utensils'} text-xs"></i> Missing: ${uResult.ingredientName}
                           </span>
-                          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sage-100 dark:bg-emerald-950/40 text-forest dark:text-sage-300 border border-sage-300 font-mono flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-sage-600 animate-pulse"></span>
-                            <span>Foodoscope RecipeDB & Chemistry Verified</span>
+                          <span class="px-3 py-1 rounded-full text-xs font-bold bg-beige-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
+                            ${uResult.category}
                           </span>
-                          <span class="text-xs text-stone-500 dark:text-stone-400 font-medium">For <strong class="text-forest dark:text-ivory">${currentDish || matchedRecipe.title}</strong></span>
+                          <span class="px-3 py-1 rounded-full text-xs font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">
+                            Target Dish: ${currentDish || matchedRecipe.title}
+                          </span>
                         </div>
-                        <h3 class="text-2xl sm:text-3xl font-heading font-black text-forest dark:text-ivory">
-                          Top 3 Alternatives for <span class="text-terracotta">${uResult.ingredientName}</span>
-                        </h3>
+                        <p class="text-sm text-stone-600 dark:text-stone-300">
+                          <strong>Culinary Role:</strong> ${(uResult.functions || []).join(', ')} • <strong>Profile:</strong> ${uResult.flavorProfile}
+                        </p>
                       </div>
-                      <div class="text-xs text-stone-500 dark:text-stone-400 font-medium sm:text-right">
-                        <span class="inline-block bg-ivory dark:bg-stone-900 px-3 py-1.5 rounded-xl border border-beige-200 dark:border-stone-800">
-                          Click any card to load its recipe below
-                        </span>
+                      <div class="flex items-center gap-2 shrink-0">
+                        <button
+                          type="button"
+                          id="toggle-compare-mode-btn"
+                          class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold border transition-all cursor-pointer flex items-center gap-2 ${
+                            state.universalCompareMode
+                              ? 'bg-forest text-ivory border-forest shadow-sm'
+                              : 'bg-ivory dark:bg-[#181410] border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory hover:border-terracotta'
+                          }"
+                        >
+                          <i class="fa-solid fa-table-columns"></i>
+                          <span>${state.universalCompareMode ? 'Hide Comparison' : 'Compare Matrix'}</span>
+                        </button>
                       </div>
                     </div>
 
-                    <!-- Exactly 3 Alternative Cards -->
+                    <!-- Comparison Matrix Table -->
+                    ${state.universalCompareMode ? `
+                      <div class="overflow-x-auto p-4 rounded-2xl bg-ivory/70 dark:bg-[#181410] border border-beige-200 dark:border-stone-800">
+                        <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                          <thead>
+                            <tr class="border-b border-beige-200 dark:border-stone-800 text-xs uppercase tracking-wider text-stone-500">
+                              <th class="py-2.5 px-3">Alternative</th>
+                              <th class="py-2.5 px-3">Score</th>
+                              <th class="py-2.5 px-3">Conversion Ratio</th>
+                              <th class="py-2.5 px-3">Taste Notes</th>
+                              <th class="py-2.5 px-3">Dietary & Allergens</th>
+                              <th class="py-2.5 px-3 text-right">Select</th>
+                            </tr>
+                          </thead>
+                          <tbody class="divide-y divide-beige-200/70 dark:divide-stone-800">
+                            ${alts.map(alt => `
+                              <tr>
+                                <td class="py-3 px-3 font-bold text-forest dark:text-ivory">
+                                  ${alt.name}
+                                  <span class="block text-xs font-normal text-terracotta mt-0.5">${alt.type}</span>
+                                </td>
+                                <td class="py-3 px-3 font-mono font-bold text-xs text-terracotta">${alt.score != null ? alt.score : 85}/100</td>
+                                <td class="py-3 px-3 font-mono text-xs sm:text-sm text-espresso dark:text-stone-200">${alt.ratio}</td>
+                                <td class="py-3 px-3 text-xs sm:text-sm text-stone-600 dark:text-stone-300 max-w-[220px]">${alt.tasteDesc}</td>
+                                <td class="py-3 px-3">
+                                  <div class="flex flex-wrap gap-1">
+                                    ${(alt.dietary || []).map(d => `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">${d}</span>`).join('')}
+                                  </div>
+                                </td>
+                                <td class="py-3 px-3 text-right">
+                                  <button type="button" data-select-alt="${alt.name}" class="px-3 py-1.5 rounded-lg bg-terracotta text-white font-bold text-xs cursor-pointer">Select</button>
+                                </td>
+                              </tr>
+                            `).join('')}
+                          </tbody>
+                        </table>
+                      </div>
+                    ` : ''}
+
+                    <!-- Top 3 Alternatives Header (Matching Image 2) -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+                      <h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-stone-500 font-mono">
+                        TOP 3 ALTERNATIVE INGREDIENTS (CLICK TO APPLY TO COMPLETE RECIPE)
+                      </h4>
+                      <span class="text-xs text-stone-500 dark:text-stone-400 font-accent italic">
+                        Select any alternative below to view updated complete recipe
+                      </span>
+                    </div>
+
+                    <!-- Exactly 3 Alternative Cards (Matching Image 2) -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                       ${alts.map((alt, idx) => {
                         const isSelected = state.selectedSubstitutedAlt === alt.name;
-                        const optionLabel = idx === 0 
-                          ? 'Option 1 · Household Match' 
-                          : idx === 1 
-                            ? 'Option 2 · Plant-Based' 
-                            : 'Option 3 · Chef Recommendation';
+                        const optionHeader = alt.type 
+                          ? `OPTION ${idx + 1}: ${alt.type.toUpperCase()}`
+                          : idx === 0 
+                            ? 'OPTION 1: BUDGET & HOUSEHOLD ESSENTIAL' 
+                            : idx === 1 
+                              ? 'OPTION 2: BEST PLANT-BASED / VEGAN CREAM' 
+                              : 'OPTION 3: BEST TASTE & TEXTURE MATCH';
+
                         return `
                           <div
                             data-select-alt="${alt.name}"
-                            class="editorial-card group p-6 sm:p-7 rounded-3xl flex flex-col justify-between transition-all duration-300 cursor-pointer ${
+                            class="editorial-card p-5 sm:p-6 rounded-3xl flex flex-col justify-between transition-all duration-300 cursor-pointer ${
                               isSelected
-                                ? 'bg-white dark:bg-[#1c1713] border-2 border-terracotta shadow-xl ring-2 ring-terracotta/20 scale-[1.01]'
-                                : 'bg-ivory/80 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 hover:border-terracotta/60 hover:shadow-md'
+                                ? 'bg-white dark:bg-[#1c1713] border-2 border-terracotta shadow-xl ring-2 ring-terracotta/20'
+                                : 'bg-ivory/70 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 hover:border-terracotta/60 hover:shadow-md'
                             }"
                           >
-                            <div>
-                              <!-- Card Header: Option Badge + Active State -->
+                            <div class="space-y-3.5">
+                              <!-- Option Badge + Status -->
                               <div class="flex items-center justify-between gap-2">
-                                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider font-mono ${
-                                  isSelected
-                                    ? 'bg-terracotta text-white shadow-xs'
-                                    : 'bg-forest/10 dark:bg-stone-800 text-forest dark:text-sage-300'
+                                <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider font-mono ${
+                                  idx === 0 
+                                    ? 'bg-forest text-ivory' 
+                                    : idx === 1 
+                                      ? 'bg-sage-600 text-white' 
+                                      : 'bg-terracotta text-white'
                                 }">
-                                  ${optionLabel}
+                                  ${optionHeader}
                                 </span>
                                 ${isSelected ? `
                                   <span class="text-xs font-bold text-terracotta flex items-center gap-1 font-mono">
-                                    <i class="fa-solid fa-circle-check"></i> Active
+                                    <i class="fa-solid fa-circle-dot"></i> Selected
                                   </span>
-                                ` : `
-                                  <span class="text-xs text-stone-400 group-hover:text-forest transition-colors font-medium">
-                                    Select <i class="fa-solid fa-arrow-right text-[10px] ml-0.5"></i>
-                                  </span>
-                                `}
+                                ` : ''}
                               </div>
 
                               <!-- Flavor Identity Engine Score Badge [SAMPLE] -->
-                              <div class="flex items-center justify-between text-xs font-mono font-bold text-forest dark:text-ivory mt-2.5 mb-1 pt-1.5 border-t border-beige-200/50 dark:border-stone-800/50">
+                              <div class="flex items-center justify-between text-xs font-mono font-bold text-forest dark:text-ivory pt-1 border-t border-beige-200/50 dark:border-stone-800/50">
                                 <span class="flex items-center gap-1.5">
                                   <i class="fa-solid fa-chart-simple text-terracotta text-xs"></i>
                                   <span>Score: <strong class="text-terracotta text-sm">${alt.score != null ? alt.score : 85}/100</strong></span>
@@ -912,63 +1004,71 @@
                               </div>
 
                               <!-- Alternative Title -->
-                              <h4 class="text-xl sm:text-2xl font-bold font-heading text-forest dark:text-ivory leading-snug mt-2 mb-3.5">
+                              <h4 class="text-xl font-bold font-heading text-forest dark:text-ivory leading-snug">
                                 ${alt.name}
                               </h4>
 
-                              <!-- Hero Conversion Ratio Box -->
-                              <div class="p-4 rounded-2xl bg-beige-100/70 dark:bg-stone-900 border border-beige-200 dark:border-stone-800 mb-4">
+                              <!-- Conversion Ratio Box (Matching Image 2) -->
+                              <div class="p-3.5 rounded-2xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800">
                                 <span class="block text-[10px] font-bold uppercase tracking-wider text-terracotta font-mono">
-                                  Calibrated Ratio
+                                  CONVERSION RATIO
                                 </span>
-                                <span class="block text-sm sm:text-base font-bold font-mono text-forest dark:text-ivory mt-1 leading-snug">
+                                <span class="block text-sm font-bold font-mono text-forest dark:text-ivory mt-1 leading-snug">
                                   ${alt.ratio}
                                 </span>
+                                ${alt.calcMethod ? `
+                                  <span class="block text-xs text-stone-500 mt-1 leading-normal">
+                                    ${alt.calcMethod}
+                                  </span>
+                                ` : ''}
                               </div>
 
-                              <!-- Crisp Culinary Description with Formula Contributions -->
-                              <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed mb-3">
-                                ${alt.tasteDesc}
+                              <!-- Flavor Note -->
+                              <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                                <strong>Flavor:</strong> ${alt.tasteDesc}
                                 ${alt.contributions ? `
-                                  <span class="block text-xs text-stone-500 dark:text-stone-400 mt-1.5 font-mono">
+                                  <span class="block text-[11px] text-stone-500 dark:text-stone-400 mt-1 font-mono">
                                     Contributions: Flavor ${alt.contributions.flavor}pts + Recipe ${alt.contributions.recipe}pts + Cost ${alt.contributions.cost}pts = ${alt.score}pts.
                                   </span>
                                 ` : ''}
                               </p>
+
+                              <!-- Texture & Handling -->
                               ${alt.textureDesc ? `
-                                <div class="text-xs text-stone-500 dark:text-stone-400 leading-normal flex items-start gap-1.5 mb-4">
-                                  <i class="fa-solid fa-kitchen-set text-terracotta mt-0.5 shrink-0 text-xs"></i>
-                                  <span><strong>Handling:</strong> ${alt.textureDesc}</span>
-                                </div>
+                                <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+                                  <strong>Texture & Handling:</strong> ${alt.textureDesc}
+                                </p>
                               ` : ''}
 
-                              <!-- Clean Dietary Chips -->
-                              <div class="flex flex-wrap gap-1.5 mb-5">
-                                ${(alt.dietary || []).slice(0, 2).map(tag => `
+                              <!-- Dietary Badges (Matching Image 2) -->
+                              <div class="flex flex-wrap gap-1.5 pt-1">
+                                ${(alt.dietary || []).map(tag => `
                                   <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-sage-100/80 dark:bg-stone-800 text-forest dark:text-sage-300">
                                     ${tag}
                                   </span>
                                 `).join('')}
                                 ${(alt.allergens && alt.allergens.length && alt.allergens[0] !== 'None')
-                                  ? `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-peach/50 text-terracotta">${alt.allergens[0]}</span>`
-                                  : `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-beige-100 dark:bg-stone-800 text-stone-500">Allergen Safe</span>`
+                                  ? alt.allergens.map(a => `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-peach/50 text-terracotta">${a}</span>`).join('')
+                                  : `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-beige-100 dark:bg-stone-800 text-stone-500">No Major Allergens</span>`
                                 }
                               </div>
                             </div>
 
-                            <!-- Action CTA Button -->
-                            <button
-                              type="button"
-                              data-select-alt="${alt.name}"
-                              class="w-full py-3 px-4 rounded-2xl text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
-                                isSelected
-                                  ? 'bg-terracotta text-white shadow-md'
-                                  : 'bg-forest hover:bg-forest/90 text-white shadow-xs'
-                              }"
-                            >
-                              <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-arrows-rotate'}"></i>
-                              <span>${isSelected ? 'Active in Recipe Below' : 'Apply This Substitute'}</span>
-                            </button>
+                            <!-- Button at Bottom (Matching Image 2) -->
+                            <div class="pt-5 mt-auto">
+                              <button
+                                type="button"
+                                data-select-alt="${alt.name}"
+                                class="w-full py-3 px-4 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                                  isSelected
+                                    ? 'bg-terracotta text-white shadow-md'
+                                    : 'bg-forest hover:bg-forest/90 text-white shadow-xs'
+                                }"
+                              >
+                                <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-hand-pointer'}"></i>
+                                <span>${isSelected ? 'Selected Substitute' : 'Select Substitute'}</span>
+                              </button>
+                            </div>
                           </div>
                         `;
                       }).join('')}
@@ -1429,23 +1529,20 @@
       });
     });
 
-    // Missing Ingredient & Dish Name Universal Lookup Events
+    // Universal Ingredient Lookup Events
     const uInput = container.querySelector('#universal-ingredient-input');
     const uClear = container.querySelector('#universal-search-clear-btn');
-    const uDishInput = container.querySelector('#universal-dish-input');
-    const uDishClear = container.querySelector('#universal-dish-clear-btn');
+    const uSelect = container.querySelector('#universal-dish-context-select');
     const uAnalyze = container.querySelector('#universal-analyze-btn');
 
     const runUniversalLookup = () => {
       const val = uInput ? uInput.value.trim() : '';
-      const dishVal = uDishInput ? uDishInput.value.trim() : '';
       if (!val) {
-        showNotification('Missing Ingredient Required', 'Please enter the ingredient you need to substitute.', 'warning');
+        showNotification('Ingredient Required', 'Please enter an ingredient to substitute.', 'warning');
         if (uInput) uInput.focus();
         return;
       }
       state.universalCurrentIngredient = val;
-      state.universalCurrentDishName = dishVal;
       state.selectedSubstitutedAlt = '';
       renderSwapLabView();
     };
@@ -1463,20 +1560,31 @@
       uClear.classList.add('hidden');
     });
 
-    uDishInput?.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') runUniversalLookup();
-    });
-    uDishInput?.addEventListener('input', (e) => {
-      state.universalCurrentDishName = e.target.value;
-      if (uDishClear) uDishClear.classList.toggle('hidden', !e.target.value);
-    });
-    uDishClear?.addEventListener('click', () => {
-      state.universalCurrentDishName = '';
-      if (uDishInput) { uDishInput.value = ''; uDishInput.focus(); }
-      uDishClear.classList.add('hidden');
+    uSelect?.addEventListener('change', (e) => {
+      state.universalCurrentDishContext = e.target.value;
+      renderSwapLabView();
     });
 
     uAnalyze?.addEventListener('click', runUniversalLookup);
+
+    container.querySelectorAll('[data-prompt-ing]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.universalCurrentIngredient = btn.getAttribute('data-prompt-ing') || 'Fresh Cream';
+        state.universalCurrentDishContext = btn.getAttribute('data-prompt-ctx') || 'General / All Dishes';
+        const dish = btn.getAttribute('data-prompt-dish');
+        if (dish) state.universalCurrentDishName = dish;
+        state.selectedSubstitutedAlt = '';
+        renderSwapLabView();
+      });
+    });
+
+    container.querySelectorAll('[data-universal-chip]').forEach(chip => {
+      chip.addEventListener('click', () => {
+        state.universalCurrentIngredient = chip.getAttribute('data-universal-chip');
+        state.selectedSubstitutedAlt = '';
+        renderSwapLabView();
+      });
+    });
 
     container.querySelector('#try-another-ingredient-btn')?.addEventListener('click', () => {
       state.universalCurrentIngredient = '';
