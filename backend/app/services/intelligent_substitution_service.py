@@ -320,3 +320,4 @@ class IntelligentSubstitutionService:
 
 
 substitution_service = IntelligentSubstitutionService()
+

@@ -82,3 +82,4 @@ async def validate_gate(request: GateValidationRequest):
         passed=gate == 1,
         rejection_reason=reason
     )
+

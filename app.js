@@ -872,62 +872,50 @@
         </section>
 
         <!-- ============================================== -->
-        <!-- SECTION 2: UNIFIED SWAP WORKSPACE (COMBINED)    -->
+        <!-- ============================================== -->
+        <!-- SECTION 2: SMART INGREDIENT SUBSTITUTION       -->
         <!-- ============================================== -->
         <section id="ai-swaplab-stage" class="space-y-6 reveal-on-scroll">
 
-          <!-- Workspace Header Bar -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-[#1f1a16] px-6 py-4 rounded-2xl border border-beige-200 dark:border-stone-800 shadow-xs">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-terracotta/15 text-terracotta flex items-center justify-center text-lg">
-                <i class="fa-solid fa-flask-vial"></i>
-              </div>
+          <!-- Main Substitution Studio Card -->
+          <div class="p-6 sm:p-8 md:p-10 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-6 glow-card">
+            
+            <!-- Clean, Simple Studio Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-beige-200 dark:border-stone-800 pb-5">
               <div>
-                <h2 class="font-heading font-bold text-xl sm:text-2xl text-forest dark:text-ivory leading-tight">Swap Workspace</h2>
-                <p class="text-xs text-stone-500 font-sans">Universal Ingredient Search & Visual Dish Pair Guides combined in one unified studio</p>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-black font-heading text-forest dark:text-ivory flex items-center gap-3">
+                  <i class="fa-solid fa-wand-magic-sparkles text-terracotta"></i>
+                  <span>Find an Ingredient Substitute</span>
+                </h2>
+                <p class="text-sm sm:text-base text-stone-600 dark:text-stone-300 font-normal mt-1">
+                  Type any missing ingredient below to see chef-tested alternatives with exact ratios and taste notes.
+                </p>
               </div>
-            </div>
-
-            <div class="flex items-center gap-2">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold bg-peach/40 dark:bg-stone-900 border border-terracotta/30 text-espresso dark:text-ivory">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/50 self-start md:self-center">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 <span>Flavor Identity Engine Active</span>
               </span>
             </div>
-          </div>
-
-          <!-- Unified Substitution Studio Card -->
-          <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1f1a16] border border-beige-200 dark:border-stone-800 shadow-sm space-y-6 glow-card">
-            
-            <!-- Universal Prompt Title -->
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-beige-200 dark:border-stone-800 pb-4">
-              <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-terracotta font-mono">UNIVERSAL INGREDIENT & DISH SEARCH</span>
-                <h3 class="text-2xl sm:text-3xl font-bold font-heading text-forest dark:text-ivory flex items-center gap-2.5 mt-1">
-                  <i class="fa-solid fa-magnifying-glass text-terracotta text-xl"></i>
-                  <span>What Ingredient Are You Substituting Today?</span>
-                </h3>
-              </div>
-              <span class="text-xs sm:text-sm text-stone-500 font-accent italic">Context-aware kitchen ratios, texture notes & photographic dish pairing</span>
-            </div>
 
             <!-- Search Bar + Dish Context + Analyze CTA -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-end">
-              <div class="md:col-span-6 relative">
-                <label for="universal-ingredient-input" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5 ml-1">TARGET INGREDIENT</label>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+              <div class="md:col-span-5 relative">
+                <label for="universal-ingredient-input" class="block text-sm sm:text-base font-bold text-forest dark:text-ivory mb-2 ml-1">
+                  Missing Ingredient
+                </label>
                 <div class="relative">
-                  <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
+                  <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-base"></i>
                   <input
                     type="text"
                     id="universal-ingredient-input"
                     value="${currentIng || ''}"
-                    placeholder="Type any ingredient (Milk, Paneer, Mushroom, Miso, Gochuj..."
-                    class="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-semibold text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta transition-all shadow-xs"
+                    placeholder="e.g. Heavy Cream, Butter, Eggs, Paneer..."
+                    class="w-full pl-12 pr-11 py-3.5 sm:py-4 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-700 text-base font-semibold text-forest dark:text-ivory placeholder:text-stone-400 focus:outline-none focus:border-terracotta transition-all shadow-xs"
                   />
                   <button
                     type="button"
                     id="universal-search-clear-btn"
-                    class="${currentIng ? '' : 'hidden'} absolute right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-xs cursor-pointer"
+                    class="${currentIng ? '' : 'hidden'} absolute right-3.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-beige-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-forest dark:hover:text-ivory flex items-center justify-center text-sm cursor-pointer"
                     title="Clear input"
                   >
                     <i class="fa-solid fa-xmark"></i>
@@ -936,97 +924,88 @@
               </div>
 
               <div class="md:col-span-4 relative">
-                <label for="universal-dish-context-select" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5 ml-1">CULINARY DISH CONTEXT</label>
+                <label for="universal-dish-context-select" class="block text-sm sm:text-base font-bold text-forest dark:text-ivory mb-2 ml-1">
+                  Dish or Recipe
+                </label>
                 <div class="relative">
-                  <i class="fa-solid fa-bowl-food absolute left-4 top-1/2 -translate-y-1/2 text-terracotta text-sm"></i>
+                  <i class="fa-solid fa-bowl-food absolute left-4 top-1/2 -translate-y-1/2 text-terracotta text-base"></i>
                   <select
                     id="universal-dish-context-select"
-                    class="w-full pl-11 pr-9 py-3.5 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-sm sm:text-base font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer appearance-none shadow-xs"
+                    class="w-full pl-12 pr-10 py-3.5 sm:py-4 rounded-2xl bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-700 text-base font-bold text-espresso dark:text-ivory focus:outline-none focus:border-terracotta cursor-pointer appearance-none shadow-xs"
                   >
                     ${dishContexts.map(ctx => `<option value="${ctx}" ${ctx === currentCtx ? 'selected' : ''}>${ctx}</option>`).join('')}
                   </select>
-                  <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 text-xs pointer-events-none"></i>
+                  <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm pointer-events-none"></i>
                 </div>
               </div>
 
-              <div class="md:col-span-2">
+              <div class="md:col-span-3">
                 <button
                   type="button"
                   id="universal-analyze-btn"
-                  class="w-full py-3.5 px-4 rounded-2xl text-sm sm:text-base font-bold terracotta-btn text-white transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
+                  class="w-full py-3.5 sm:py-4 px-5 rounded-2xl text-base font-bold terracotta-btn text-white transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
                 >
-                  <i class="fa-solid fa-bolt"></i>
-                  <span>Analyze</span>
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <span>Find Substitutes</span>
                 </button>
               </div>
             </div>
 
-            <!-- Dietary Preference Gate Filter Rail -->
-            <div class="flex flex-wrap items-center justify-between gap-2.5 pt-1">
-              <div class="flex flex-wrap items-center gap-1.5">
-                <span class="text-xs font-mono font-bold uppercase tracking-wider text-stone-500 mr-1 flex items-center gap-1">
+            <!-- Dietary Preference Filter Rail -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-sm font-bold text-stone-600 dark:text-stone-300 mr-1 flex items-center gap-1.5">
                   <i class="fa-solid fa-filter text-terracotta text-xs"></i>
-                  <span>Dietary Gate:</span>
+                  <span>Dietary Preference:</span>
                 </span>
                 ${['all', 'vegan', 'vegetarian', 'gluten-free', 'dairy-free'].map(diet => `
                   <button
                     type="button"
                     data-diet-filter="${diet}"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                       (state.selectedDiet || 'all') === diet
                         ? 'bg-forest text-ivory dark:bg-forest-600 shadow-sm ring-2 ring-forest/30'
-                        : 'bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-stone-600 dark:text-stone-300 hover:border-terracotta'
+                        : 'bg-ivory dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-terracotta'
                     }"
                   >
-                    ${diet === 'vegan' ? '<i class="fa-solid fa-leaf text-emerald-500 text-[10px]"></i>' :
-                      diet === 'vegetarian' ? '<i class="fa-solid fa-seedling text-emerald-600 text-[10px]"></i>' :
-                      diet === 'gluten-free' ? '<i class="fa-solid fa-wheat-awn-circle-exclamation text-amber-500 text-[10px]"></i>' :
-                      diet === 'dairy-free' ? '<i class="fa-solid fa-ban text-terracotta text-[10px]"></i>' :
-                      '<i class="fa-solid fa-utensils text-stone-400 text-[10px]"></i>'}
-                    <span>${diet === 'all' ? 'All Dietary' : diet.charAt(0).toUpperCase() + diet.slice(1).replace('-', ' ')}</span>
+                    ${diet === 'vegan' ? '<i class="fa-solid fa-leaf text-emerald-500 text-xs"></i>' :
+                      diet === 'vegetarian' ? '<i class="fa-solid fa-seedling text-emerald-600 text-xs"></i>' :
+                      diet === 'gluten-free' ? '<i class="fa-solid fa-wheat-awn-circle-exclamation text-amber-500 text-xs"></i>' :
+                      diet === 'dairy-free' ? '<i class="fa-solid fa-ban text-terracotta text-xs"></i>' :
+                      '<i class="fa-solid fa-utensils text-stone-400 text-xs"></i>'}
+                    <span>${diet === 'all' ? 'All Diets' : diet.charAt(0).toUpperCase() + diet.slice(1).replace('-', ' ')}</span>
                   </button>
                 `).join('')}
               </div>
-              <div class="flex items-center gap-2 text-xs text-stone-500 font-mono">
-                <span class="inline-flex items-center gap-1">
-                  <i class="fa-solid fa-shield-halved text-terracotta text-[11px]"></i>
-                  <span>Gate Formula: <strong>Gate × (0.40F + 0.40R + 0.20C)</strong></span>
-                </span>
-              </div>
             </div>
 
-            <!-- Integrated Visual Dish Pair Guides Carousel (From Curated Slide!) -->
-            <div class="pt-2 border-t border-beige-200/70 dark:border-stone-800 space-y-2.5">
+            <!-- Integrated Visual Dish Pair Guides Carousel -->
+            <div class="pt-3 border-t border-beige-200/70 dark:border-stone-800 space-y-3">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid fa-camera-retro text-terracotta text-sm"></i>
-                  <span class="text-xs font-mono font-bold uppercase tracking-wider text-forest dark:text-sage-300">
-                    Visual Dish Pair Guides (${FLAVORSHIFT_SWAP_DATABASE.length} Curated Pairs)
-                  </span>
-                </div>
-                <span class="text-[11px] text-stone-500 font-accent italic">
-                  Click any dish pair to load ingredient, dish context & calibrated substitutions
+                <span class="text-sm sm:text-base font-bold text-forest dark:text-ivory flex items-center gap-2">
+                  <i class="fa-solid fa-lightbulb text-terracotta"></i>
+                  <span>Popular Dishes (Click to test a swap):</span>
                 </span>
               </div>
 
-              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
                 ${FLAVORSHIFT_SWAP_DATABASE.map((item, idx) => {
                   const isPairActive = currentIng && currentIng.toLowerCase().includes(item.targetIngredient.toLowerCase().split(' ')[0]);
-                  const categoryTag = idx === 0 ? '🥛 Dairy' : idx === 1 ? '🥑 Produce' : idx === 2 ? '🍄 Umami' : idx === 3 ? '🧀 Cheese' : '🥜 Nuts';
+                  const categoryTag = idx === 0 ? 'Dairy' : idx === 1 ? 'Produce' : idx === 2 ? 'Umami' : idx === 3 ? 'Cheese' : 'Nuts';
                   return `
                     <button
                       type="button"
                       data-load-dish-pair="${idx}"
-                      class="group p-2.5 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between gap-2 relative overflow-hidden ${
+                      class="group p-3 rounded-2xl text-left border transition-all cursor-pointer flex flex-col justify-between gap-2.5 relative overflow-hidden ${
                         isPairActive
                           ? 'bg-peach/30 dark:bg-stone-900 border-2 border-terracotta shadow-md ring-2 ring-terracotta/20 scale-[1.02]'
                           : 'bg-ivory/60 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 text-espresso dark:text-ivory hover:border-terracotta/70 hover:shadow-xs'
                       }"
                     >
-                      <div class="h-20 w-full rounded-xl overflow-hidden relative shadow-xs">
+                      <div class="h-24 w-full rounded-xl overflow-hidden relative shadow-xs">
                         <img src="${item.dishPhoto}" alt="${item.commonInDishes[0]}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                        <span class="absolute top-1 left-1 text-[9px] bg-black/60 backdrop-blur text-beige px-1.5 py-0.5 rounded-md font-mono">
+                        <span class="absolute top-1.5 left-1.5 text-[11px] bg-black/60 backdrop-blur-sm text-beige px-2 py-0.5 rounded-md font-medium">
                           ${categoryTag}
                         </span>
                         <span class="absolute bottom-1 left-1.5 right-1.5 text-[11px] font-bold text-white truncate font-heading">
@@ -1090,53 +1069,53 @@
 
                 return `
                   <div class="pt-6 border-t border-beige-200 dark:border-stone-800 space-y-6">
-                    <!-- Photographic Pair Visual & Top Summary Bar (Best of Both Slides!) -->
-                    <div class="p-4 sm:p-5 rounded-2xl bg-ivory/80 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <!-- Photographic Pair Visual & Top Summary Bar -->
+                    <div class="p-5 sm:p-6 rounded-2xl bg-ivory/80 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
                       
-                      <div class="flex items-center gap-3.5">
+                      <div class="flex items-center gap-4">
                         <!-- Missing Original Photo -->
                         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border border-beige-200 dark:border-stone-700 shadow-sm relative shrink-0">
                           <img src="${matchedSwap?.originalPhoto || 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200'}" alt="${uResult.ingredientName}" class="w-full h-full object-cover">
-                          <span class="absolute bottom-0 inset-x-0 bg-black/75 backdrop-blur-xs text-[9px] font-mono font-bold text-white text-center py-0.5 truncate px-1">
+                          <span class="absolute bottom-0 inset-x-0 bg-black/75 backdrop-blur-xs text-[10px] font-mono font-bold text-white text-center py-0.5 truncate px-1">
                             ${uResult.ingredientName}
                           </span>
                         </div>
 
                         <!-- Swap Directional Indicator -->
                         <div class="flex flex-col items-center justify-center shrink-0 text-terracotta px-1">
-                          <i class="fa-solid fa-arrow-right-arrow-left text-base sm:text-lg animate-pulse"></i>
-                          <span class="text-[9px] font-mono font-bold uppercase mt-0.5">Swap In</span>
+                          <i class="fa-solid fa-arrow-right-arrow-left text-lg animate-pulse"></i>
+                          <span class="text-[10px] font-mono font-bold uppercase mt-0.5">Swap In</span>
                         </div>
 
                         <!-- Target Dish Photo -->
                         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 border-terracotta/40 shadow-sm relative shrink-0">
                           <img src="${matchedSwap?.dishPhoto || 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=200'}" alt="${currentDish}" class="w-full h-full object-cover">
-                          <span class="absolute bottom-0 inset-x-0 bg-terracotta/95 text-[9px] font-mono font-bold text-white text-center py-0.5 truncate px-1">
+                          <span class="absolute bottom-0 inset-x-0 bg-terracotta/95 text-[10px] font-mono font-bold text-white text-center py-0.5 truncate px-1">
                             ${currentDish || matchedRecipe.title}
                           </span>
                         </div>
 
                         <!-- Context Text Information -->
                         <div class="space-y-1.5 ml-1 min-w-0">
-                          <div class="flex flex-wrap items-center gap-1.5">
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-peach/50 text-terracotta border border-terracotta/30 font-mono">
+                          <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-3 py-1 rounded-full text-xs sm:text-sm font-bold bg-peach/50 text-terracotta border border-terracotta/30">
                               Missing: ${uResult.ingredientName}
                             </span>
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-beige-200/60 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
+                            <span class="px-3 py-1 rounded-full text-xs sm:text-sm font-bold bg-beige-200/60 dark:bg-stone-800 text-stone-700 dark:text-stone-300">
                               ${uResult.category}
                             </span>
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">
-                              Target Dish: ${currentDish || matchedRecipe.title}
+                            <span class="px-3 py-1 rounded-full text-xs sm:text-sm font-bold bg-sage-100 dark:bg-stone-800 text-forest dark:text-sage-300">
+                              Recipe: ${currentDish || matchedRecipe.title}
                             </span>
                           </div>
                           <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300">
-                            <strong>Culinary Role:</strong> ${(uResult.functions || []).join(', ')} • <strong>Profile:</strong> ${uResult.flavorProfile}
+                            <strong>Role in dish:</strong> ${(uResult.functions || []).join(', ')} • <strong>Flavor:</strong> ${uResult.flavorProfile}
                           </p>
                         </div>
                       </div>
 
                       <!-- Right: Compare Matrix Button -->
-                      <div class="flex items-center gap-2 shrink-0 self-end lg:self-center">
+                      <div class="flex items-center gap-2 shrink-0 self-start md:self-center">
                         <button
                           type="button"
                           id="toggle-compare-mode-btn"
@@ -1147,7 +1126,7 @@
                           }"
                         >
                           <i class="fa-solid fa-table-columns"></i>
-                          <span>${state.universalCompareMode ? 'Hide Comparison' : 'Compare Matrix'}</span>
+                          <span>${state.universalCompareMode ? 'Hide Comparison' : 'Compare All'}</span>
                         </button>
                       </div>
                     </div>
@@ -1191,28 +1170,30 @@
                       </div>
                     ` : ''}
 
-                    <!-- Top 3 Alternatives Header (Matching Image 2) -->
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
-                      <h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-stone-500 font-mono">
-                        TOP 3 ALTERNATIVE INGREDIENTS (CLICK TO APPLY TO COMPLETE RECIPE)
-                      </h4>
-                      <span class="text-xs text-stone-500 dark:text-stone-400 font-accent italic">
-                        Select any alternative below to view updated complete recipe
-                      </span>
+                    <!-- Top Alternatives Header -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pt-2">
+                      <div>
+                        <h3 class="text-2xl sm:text-3xl font-black font-heading text-forest dark:text-ivory">
+                          Recommended Substitutes
+                        </h3>
+                        <p class="text-sm sm:text-base text-stone-600 dark:text-stone-300 mt-1">
+                          Click any substitute to view the complete updated recipe below with exact measurements.
+                        </p>
+                      </div>
                     </div>
 
-                    <!-- Exactly 3 Alternative Cards (Matching Image 2) -->
+                    <!-- Exactly 3 Alternative Cards -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                       ${alts.map((alt, idx) => {
                         const isSelected = state.selectedSubstitutedAlt === alt.name;
                         const altPhoto = getAlternativePhoto(alt.name, alt.type, uResult.ingredientName);
-                        const optionHeader = alt.type 
-                          ? `OPTION ${idx + 1}: ${alt.type.toUpperCase()}`
+                        const badgeLabel = alt.type 
+                          ? alt.type 
                           : idx === 0 
-                            ? 'OPTION 1: BUDGET & HOUSEHOLD ESSENTIAL' 
+                            ? 'Best Household Match' 
                             : idx === 1 
-                              ? 'OPTION 2: BEST PLANT-BASED / VEGAN CREAM' 
-                              : 'OPTION 3: BEST TASTE & TEXTURE MATCH';
+                              ? 'Plant-Based Choice' 
+                              : 'Chef Selected';
 
                         return `
                           <div
@@ -1223,103 +1204,97 @@
                                 : 'bg-ivory/70 dark:bg-[#181410] border border-beige-200 dark:border-stone-800 hover:border-terracotta/60 hover:shadow-md'
                             }"
                           >
-                            <div class="space-y-3.5">
-                              <!-- Photographic Preview of Alternative (Curated Guide Quality) -->
-                              <div class="h-32 sm:h-36 rounded-2xl overflow-hidden relative shadow-xs food-img-hover">
+                            <div class="space-y-4">
+                              <!-- Photographic Preview of Alternative -->
+                              <div class="h-36 sm:h-40 rounded-2xl overflow-hidden relative shadow-xs food-img-hover">
                                 <img src="${altPhoto}" alt="${alt.name}" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"></div>
-                                <span class="absolute top-2 left-2 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+                                <span class="absolute top-2.5 left-2.5 px-3 py-1 rounded-full text-xs font-bold ${
                                   idx === 0 
                                     ? 'bg-forest text-ivory' 
                                     : idx === 1 
                                       ? 'bg-sage-600 text-white' 
                                       : 'bg-terracotta text-white'
-                                } shadow-md font-mono">
-                                  ${optionHeader}
+                                } shadow-md">
+                                  ${badgeLabel}
                                 </span>
                                 ${isSelected ? `
-                                  <span class="absolute top-2 right-2 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-terracotta shadow-md flex items-center gap-1 font-mono">
-                                    <i class="fa-solid fa-circle-check"></i> Active
+                                  <span class="absolute top-2.5 right-2.5 px-3 py-1 rounded-full text-xs font-bold bg-white text-terracotta shadow-md flex items-center gap-1 font-mono">
+                                    <i class="fa-solid fa-circle-check"></i> Selected
                                   </span>
                                 ` : ''}
                               </div>
 
-                              <!-- Flavor Identity Engine Score Badge [SAMPLE] -->
-                              <div class="flex items-center justify-between text-xs font-mono font-bold text-forest dark:text-ivory pt-0.5">
-                                <span class="flex items-center gap-1.5">
-                                  <i class="fa-solid fa-chart-simple text-terracotta text-xs"></i>
-                                  <span>Score: <strong class="text-terracotta text-sm">${alt.score != null ? alt.score : 85}/100</strong></span>
-                                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-beige-200/60 dark:bg-stone-800 text-stone-500 font-semibold">[SAMPLE]</span>
+                              <!-- Clean Score Badge -->
+                              <div class="flex items-center justify-between pt-0.5">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-peach/40 text-terracotta font-mono font-bold text-xs sm:text-sm">
+                                  <i class="fa-solid fa-chart-pie text-terracotta text-xs"></i>
+                                  <span>${alt.score != null ? alt.score : 85}/100 Match Score</span>
                                 </span>
-                                <span class="text-[11px] text-stone-500 font-mono font-medium">
-                                  F:${Math.round((alt.flavorSimilarity != null ? alt.flavorSimilarity : 0.88) * 100)}% · R:${Math.round((alt.recipeCompatibility != null ? alt.recipeCompatibility : 0.85) * 100)}% · C:${Math.round((alt.costEfficiency != null ? alt.costEfficiency : 0.80) * 100)}%
+                                <span class="text-xs sm:text-sm text-emerald-600 dark:text-emerald-400 font-semibold">
+                                  ${alt.gate === 1 ? '✓ Safety Passed' : ''}
                                 </span>
                               </div>
 
                               <!-- Alternative Title -->
-                              <h4 class="text-xl font-bold font-heading text-forest dark:text-ivory leading-snug">
+                              <h4 class="text-xl sm:text-2xl font-bold font-heading text-forest dark:text-ivory leading-snug">
                                 ${alt.name}
                               </h4>
 
-                              <!-- Conversion Ratio Box (Matching Image 2) -->
-                              <div class="p-3.5 rounded-2xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800">
-                                <span class="block text-[10px] font-bold uppercase tracking-wider text-terracotta font-mono">
-                                  CONVERSION RATIO
+                              <!-- How Much to Use (Conversion Ratio) -->
+                              <div class="p-4 rounded-2xl bg-white dark:bg-stone-900 border border-beige-200 dark:border-stone-800 space-y-1">
+                                <span class="block text-xs font-bold uppercase tracking-wider text-terracotta font-mono">
+                                  How Much to Use
                                 </span>
-                                <span class="block text-sm font-bold font-mono text-forest dark:text-ivory mt-1 leading-snug">
+                                <span class="block text-base sm:text-lg font-bold font-mono text-forest dark:text-ivory leading-snug">
                                   ${alt.ratio}
                                 </span>
                                 ${alt.calcMethod ? `
-                                  <span class="block text-xs text-stone-500 mt-1 leading-normal">
+                                  <span class="block text-xs sm:text-sm text-stone-500 mt-1 leading-normal">
                                     ${alt.calcMethod}
                                   </span>
                                 ` : ''}
                               </div>
 
                               <!-- Flavor Note -->
-                              <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                                <strong>Flavor:</strong> ${alt.tasteDesc}
-                                ${alt.contributions ? `
-                                  <span class="block text-[11px] text-stone-500 dark:text-stone-400 mt-1 font-mono">
-                                    Contributions: Flavor ${alt.contributions.flavor}pts + Recipe ${alt.contributions.recipe}pts + Cost ${alt.contributions.cost}pts = ${alt.score}pts.
-                                  </span>
-                                ` : ''}
+                              <p class="text-sm sm:text-base text-stone-700 dark:text-stone-200 leading-relaxed">
+                                <strong class="text-forest dark:text-ivory font-bold">Taste:</strong> ${alt.tasteDesc}
                               </p>
 
                               <!-- Texture & Handling -->
                               ${alt.textureDesc ? `
-                                <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
-                                  <strong>Texture & Handling:</strong> ${alt.textureDesc}
+                                <p class="text-sm sm:text-base text-stone-700 dark:text-stone-200 leading-relaxed">
+                                  <strong class="text-forest dark:text-ivory font-bold">Kitchen Tip:</strong> ${alt.textureDesc}
                                 </p>
                               ` : ''}
 
-                              <!-- Dietary Badges (Matching Image 2) -->
-                              <div class="flex flex-wrap gap-1.5 pt-1">
+                              <!-- Dietary Badges -->
+                              <div class="flex flex-wrap gap-2 pt-1">
                                 ${(alt.dietary || []).map(tag => `
-                                  <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-sage-100/80 dark:bg-stone-800 text-forest dark:text-sage-300">
+                                  <span class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold bg-sage-100/80 dark:bg-stone-800 text-forest dark:text-sage-300">
                                     ${tag}
                                   </span>
                                 `).join('')}
                                 ${(alt.allergens && alt.allergens.length && alt.allergens[0] !== 'None')
-                                  ? alt.allergens.map(a => `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-peach/50 text-terracotta">${a}</span>`).join('')
-                                  : `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-beige-100 dark:bg-stone-800 text-stone-500">No Major Allergens</span>`
+                                  ? alt.allergens.map(a => `<span class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold bg-peach/50 text-terracotta">${a}</span>`).join('')
+                                  : `<span class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold bg-beige-100 dark:bg-stone-800 text-stone-500">No Major Allergens</span>`
                                 }
                               </div>
                             </div>
 
-                            <!-- Button at Bottom (Matching Image 2) -->
+                            <!-- Button at Bottom -->
                             <div class="pt-5 mt-auto">
                               <button
                                 type="button"
                                 data-select-alt="${alt.name}"
-                                class="w-full py-3 px-4 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                                class="w-full py-3.5 px-4 rounded-2xl text-sm sm:text-base font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
                                   isSelected
                                     ? 'bg-terracotta text-white shadow-md'
                                     : 'bg-forest hover:bg-forest/90 text-white shadow-xs'
                                 }"
                               >
                                 <i class="fa-solid ${isSelected ? 'fa-check' : 'fa-hand-pointer'}"></i>
-                                <span>${isSelected ? 'Selected Substitute' : 'Select Substitute'}</span>
+                                <span>${isSelected ? 'Selected Substitute' : 'Use This Substitute'}</span>
                               </button>
                             </div>
                           </div>
@@ -1328,14 +1303,14 @@
                     </div>
 
                     ${(uResult.excludedAlternatives && uResult.excludedAlternatives.length > 0) ? `
-                      <div class="p-4 rounded-2xl bg-ivory/80 dark:bg-stone-900 border border-beige-200 dark:border-stone-800 text-xs text-stone-600 dark:text-stone-300 space-y-2">
-                        <span class="font-bold text-forest dark:text-ivory flex items-center gap-1.5 font-mono uppercase tracking-wider text-[11px]">
+                      <div class="p-5 rounded-2xl bg-amber-50/70 dark:bg-stone-900 border border-amber-200/80 dark:border-stone-800 text-sm text-stone-700 dark:text-stone-300 space-y-2">
+                        <span class="font-bold text-amber-900 dark:text-amber-200 flex items-center gap-2 text-sm sm:text-base">
                           <i class="fa-solid fa-shield-halved text-terracotta"></i>
-                          <span>Safety Gate: Excluded Candidates (${uResult.excludedAlternatives.length})</span>
+                          <span>Excluded by your dietary preferences (${uResult.excludedAlternatives.length}):</span>
                         </span>
                         <div class="flex flex-wrap gap-2 pt-1">
                           ${uResult.excludedAlternatives.map(ex => `
-                            <span class="px-2.5 py-1 rounded-xl bg-peach/30 text-terracotta border border-terracotta/20 text-xs font-mono">
+                            <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-amber-200 dark:border-stone-700 text-xs sm:text-sm font-medium">
                               <strong>${ex.name}:</strong> ${ex.rejectionReason}
                             </span>
                           `).join('')}

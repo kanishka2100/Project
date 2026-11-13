@@ -156,3 +156,4 @@ async def test_api_router_recommend_and_ontology():
         gate_data = gate_resp.json()
         assert gate_data["passed"] is False
         assert gate_data["gate"] == 0
+

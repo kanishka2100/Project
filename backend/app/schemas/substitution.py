@@ -103,3 +103,4 @@ class GateValidationResponse(BaseModel):
     gate: int = Field(..., ge=0, le=1)
     passed: bool
     rejection_reason: Optional[str] = None
+
