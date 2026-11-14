@@ -4414,6 +4414,8 @@
       renderExploreView();
     } else if (tabName === 'htv') {
       renderHtvView();
+    } else if (tabName === 'dashboard') {
+      renderDashboardView();
     } else if (tabName === 'favorites') {
       renderFavoritesView();
     }
@@ -4481,7 +4483,7 @@
 
     // Hash-based direct view navigation
     const hash = (window.location.hash || '').replace('#', '').trim();
-    if (hash === 'explore' || hash === 'htv' || hash === 'favorites' || hash === 'swaplab') {
+    if (hash === 'explore' || hash === 'htv' || hash === 'dashboard' || hash === 'favorites' || hash === 'swaplab') {
       switchTab(hash);
     }
 

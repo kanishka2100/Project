@@ -102,7 +102,7 @@
   </script>
 
   <!-- Custom Stylesheet with Cache Busting -->
-  <link rel="stylesheet" href="./styles.css?v=20261113_v12">
+  <link rel="stylesheet" href="./styles.css?v=20261114_v1">
 </head>
 <body class="min-h-screen flex flex-col font-sans bg-ivory text-forest dark:bg-[#181410] dark:text-[#FAF7F0] selection:bg-terracotta selection:text-white transition-colors duration-200">
 
@@ -240,6 +240,15 @@
 
         <button 
           type="button" 
+          data-tab="dashboard"
+          class="nav-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-stone-700 dark:text-stone-300 hover:text-forest dark:hover:text-white transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+        >
+          <i class="fa-solid fa-chart-pie text-terracotta text-xs"></i>
+          <span>Cost & Margin</span>
+        </button>
+
+        <button 
+          type="button" 
           data-tab="favorites"
           class="nav-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-stone-700 dark:text-stone-300 hover:text-forest dark:hover:text-white transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
         >
@@ -287,6 +296,10 @@
       <button type="button" data-tab="htv" class="nav-tab-btn py-1 px-2 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-clipboard-check mb-0.5 text-sage-600"></i>
         <span>Tasting</span>
+      </button>
+      <button type="button" data-tab="dashboard" class="nav-tab-btn py-1 px-2 text-xs font-medium flex flex-col items-center">
+        <i class="fa-solid fa-chart-pie mb-0.5 text-terracotta"></i>
+        <span>Margin</span>
       </button>
       <button type="button" data-tab="favorites" class="nav-tab-btn py-1 px-2 text-xs font-medium flex flex-col items-center">
         <i class="fa-solid fa-heart mb-0.5 text-terracotta"></i>
@@ -418,6 +431,13 @@
       </div>
     </section>
 
+    <!-- VIEW 4: CAFE COST & MARGIN DASHBOARD -->
+    <section id="view-dashboard" class="tab-view-container hidden space-y-6 animate-fade-up">
+      <div id="dashboard-view-container">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
     <!-- VIEW 5: FAVORITES VIEW -->
     <section id="view-favorites" class="tab-view-container hidden space-y-6 animate-fade-up">
       <div id="favorites-view-container">
@@ -461,12 +481,12 @@
   </footer>
 
   <!-- Core Recipe Data & Application Scripts (Cache Busted) -->
-  <script src="./recipes-data.js?v=20261113_v12"></script>
-  <script src="./flavor-identity-engine.js?v=20261113_v12"></script>
-  <script src="./universal-ingredient-engine.js?v=20261113_v12"></script>
-  <script src="./api-service.js?v=20261113_v12"></script>
-  <script src="./food-cursor-canvas.js?v=20261113_v12"></script>
-  <script src="./app.js?v=20261113_v12"></script>
+  <script src="./recipes-data.js?v=20261114_v1"></script>
+  <script src="./flavor-identity-engine.js?v=20261114_v1"></script>
+  <script src="./universal-ingredient-engine.js?v=20261114_v1"></script>
+  <script src="./api-service.js?v=20261114_v1"></script>
+  <script src="./food-cursor-canvas.js?v=20261114_v1"></script>
+  <script src="./app.js?v=20261114_v1"></script>
 
 </body>
 </html>
